@@ -1,0 +1,692 @@
+# Biak Hotspot Monitoring — Data Sources & Implementation Plan
+
+**Status:** planning / architecture spec. Written for a downstream implementation model
+(GLM-5.3-flash / DeepSeek-V4-flash). Each phase ends with acceptance criteria that the
+reviewer will check against.
+
+**Area of interest (AOI):** Biak, Supiori, Numfor and the Padaido islands, Papua, Indonesia.
+
+```
+BBOX_WSEN = (134.60, -1.45, 136.70, -0.55)   # west, south, east, north (EPSG:4326)
+```
+
+Use this bounding box for every API request, then clip precisely with an admin polygon
+(see §2.7). The bbox is deliberately generous — a hotspot at the edge of the box that
+falls in the sea after clipping is a useful false-positive signal, not an error.
+
+**Timezone:** Papua is UTC+9 (WIT). Satellites report UTC. Every ingest must store UTC and
+derive a `local_datetime` column. A "daily" product must be defined against WIT local days,
+or the two overpasses of a single night get split across two reports.
+
+---
+
+## 1. Guiding principles
+
+1. **A hotspot is a thermal anomaly, not a confirmed fire, and never a confirmed culprit.**
+   All published wording must reflect this. See §8 on publication ethics.
+2. **Build the smallest thing that produces a correct daily brief, then extend.** Phase 1
+   alone (FIRMS pull + clip + map + brief) is a genuinely useful public product. Do not
+   build Phases 3–5 before Phase 1 has run unattended for a week.
+3. **Prefer one platform.** Google Earth Engine (free for non-commercial/research use) hosts
+   almost every raster listed below. Using it removes an entire download-and-mosaic layer
+   from the project. Fall back to direct APIs only for what GEE does not carry
+   (near-real-time FIRMS, Himawari, METAR, BMKG).
+4. **Everything reproducible from a config file.** No coordinates, dates, thresholds, or
+   API keys hard-coded in logic.
+
+---
+
+## 2. Data sources
+
+### 2.1 Active fire / hotspot detection — PRIMARY
+
+| Source | Sensor / resolution | Latency | Access |
+|---|---|---|---|
+| NASA FIRMS VIIRS S-NPP | 375 m, 2 overpasses/day | ~3 h (NRT), ~1 h (URT) | REST API, free MAP_KEY |
+| NASA FIRMS VIIRS NOAA-20 | 375 m | ~3 h | same API |
+| NASA FIRMS VIIRS NOAA-21 | 375 m | ~3 h | same API |
+| NASA FIRMS MODIS Terra/Aqua | 1 km, 2 overpasses/day | ~3 h | same API |
+| Himawari-9 AHI wildfire | 2 km, every 10 min | ~20 min | JAXA P-Tree FTP |
+| Sentinel-3 SLSTR FRP | 1 km, night | ~3 h | Copernicus Data Space |
+| SiPongi (KLHK) | national official hotspot portal | daily | sipongi.menlhk.go.id |
+
+**FIRMS is the backbone.** Three VIIRS platforms give roughly 4–6 looks per day at 375 m,
+which is the right resolution for an island of Biak's size. Register a free MAP_KEY at
+`https://firms.modaps.eosdis.nasa.gov/api/map_key/`.
+
+Endpoint shape:
+
+```
+https://firms.modaps.eosdis.nasa.gov/api/area/csv/{MAP_KEY}/{SOURCE}/{W,S,E,N}/{DAY_RANGE}/{START_DATE}
+```
+
+- `SOURCE` values for near-real-time: `VIIRS_SNPP_NRT`, `VIIRS_NOAA20_NRT`,
+  `VIIRS_NOAA21_NRT`, `MODIS_NRT`. Archive equivalents replace `_NRT` with `_SP`.
+- `DAY_RANGE` is capped at **5 days** per request, not 10. Exceeding it returns HTTP 400
+  with the body `Invalid day range. Expects [1..5].` Backfill loops must chunk in fives.
+- Check `https://firms.modaps.eosdis.nasa.gov/api/data_availability/csv/{MAP_KEY}/all` before
+  any historical pull. Each NRT source has a limited window and rolls over into its `_SP`
+  archive counterpart; as of 2026-08-27, `VIIRS_SNPP_NRT` reached back only to 2026-04-28
+  while `VIIRS_SNPP_SP` covered 2012-01-20 to 2026-04-27. A backfill that assumes NRT goes
+  back years will return empty results rather than an error.
+- Rate limit is roughly 5000 transactions per 10 minutes; a polite 1 s sleep between
+  requests is enough.
+- For the multi-year history needed by Phases 4–5, do **not** loop the API. Use the bulk
+  archive download, or the GEE `FIRMS` collection (MODIS only) plus the archive VIIRS
+  `VNP14IMGML` monthly files.
+
+Two further FIRMS sources are available through the same API and were not in the original
+source table:
+
+- **`LANDSAT_NRT`** — active fire detections at 30 m. Far finer than VIIRS 375 m, which
+  matters on an island this size, at the cost of a 16-day revisit. Use it opportunistically
+  for detail on a known event, not as a monitoring backbone.
+- **`BA_MODIS`** and **`BA_VIIRS`** — burned area products. These give a Phase 4 first cut
+  without touching Earth Engine at all, and are worth trying before building the Sentinel-2
+  dNBR chain in §2.2. Note both lag: as of 2026-08-27 they extended only to 2026-05-01.
+- `GOES_NRT` covers the Americas and is irrelevant here.
+
+Fields to retain: `latitude`, `longitude`, `bright_ti4`, `bright_ti5`, `scan`, `track`,
+`acq_date`, `acq_time`, `satellite`, `instrument`, `confidence`, `version`, `frp`,
+`daynight`. `frp` (Fire Radiative Power, MW) is the intensity proxy — keep it, it carries
+most of the analytical value and is routinely discarded by naive pipelines.
+
+**Himawari-9** is the source that makes chronological analysis possible. VIIRS gives
+snapshots; Himawari's 10-minute full-disk cadence gives ignition time and spread sequence.
+Biak at 136°E sits comfortably inside the disk (sub-satellite point 140.7°E). Access is the
+JAXA P-Tree FTP service (`ftp.ptree.jaxa.jp`), free registration, wildfire product under
+`/pub/himawari/L3/WLF/`. Raw AHI L1b is also mirrored on AWS Open Data at
+`s3://noaa-himawari9/` with no credentials required. Defer this to Phase 4 — it is the
+single most operationally awkward source here, and Phases 1–3 do not need it.
+
+**Cross-validation with SiPongi** matters for credibility with Indonesian institutions.
+SiPongi applies its own confidence filtering to the same underlying NASA data, so counts
+will differ from a raw FIRMS pull. Report both, and explain the difference rather than
+silently picking one.
+
+### 2.2 Burned area / burn scar — for postmortem
+
+- **Sentinel-2 MSI L2A**, 10–20 m, ~5-day revisit. GEE: `COPERNICUS/S2_SR_HARMONIZED`.
+  This is the postmortem workhorse. Compute NBR = (NIR − SWIR2)/(NIR + SWIR2) using bands
+  B8 and B12, then dNBR = NBR_pre − NBR_post.
+- **Cloud masking is the hard part, not the index.** Equatorial Papua is heavily clouded.
+  Use `GOOGLE/CLOUD_SCORE_PLUS/V1/S2_HARMONIZED` rather than the SCL band or the QA60
+  bitmask — it is materially better over tropical cloud and costs one join.
+- **Landsat 8/9 OLI L2**, 30 m, 16-day. GEE: `LANDSAT/LC09/C02/T1_L2` and `LC08`. Gap-fill
+  when Sentinel-2 is clouded out for a whole window.
+- **MODIS MCD64A1** burned area, 500 m monthly. GEE: `MODIS/061/MCD64A1`. Too coarse for
+  individual Biak fires but correct for multi-year trend context.
+- **FireCCI51**, 250 m. GEE: `ESA/CCI/FireCCI/5_1`. Historical only (ends 2020); useful for
+  building the training label set in Phase 5, not for current events.
+
+Standard dNBR severity breaks (Key & Benson) are a defensible starting point but were
+derived for temperate forest. State that in the output, and treat the classes as
+indicative until locally calibrated.
+
+### 2.3 Land cover and fuel type
+
+- **ESA WorldCover v200**, 10 m, 2021. GEE: `ESA/WorldCover/v200`. Best free global 10 m
+  product; correct default.
+- **Dynamic World**, 10 m, near-real-time probabilistic. GEE: `GOOGLE/DYNAMICWORLD/V1`.
+  Use this when you need land cover *contemporary with the fire* rather than a 2021 snapshot.
+- **KLHK Penutupan Lahan** (Indonesian Ministry of Environment and Forestry national land
+  cover). Authoritative for domestic use and uses locally meaningful classes. Obtain the
+  shapefile from the KLHK geoportal.
+- **Hansen Global Forest Change**, 30 m annual tree cover loss. GEE:
+  `UMD/hansen/global_forest_change_YYYY_v1_XX` — check the catalog for the current year and
+  version suffix rather than copying an ID from this document.
+- **Global Mangrove Watch** for the coastal fringe.
+
+**Important local correction: Biak is a raised coral limestone island, not a peatland.**
+Do not import the Sumatra/Kalimantan peat-fire analytical frame. Expect fuel to be savanna
+and grassland, secondary shrub, and shifting-cultivation plots — fast-moving,
+low-residence-time surface fires, not smouldering ground fire. This changes everything
+downstream: FRP distributions, burn duration, dNBR interpretation, emissions estimates, and
+which drought index is actually diagnostic. Verify the fuel assumption against WorldCover
+before building on it, but do not carry a peat model in by default.
+
+### 2.4 Vegetation condition and fuel moisture
+
+- **MODIS MOD13Q1** NDVI/EVI, 250 m, 16-day composite. GEE: `MODIS/061/MOD13Q1`. Has the
+  20+ year record needed for a meaningful anomaly baseline.
+- **VIIRS VNP13A1**, 500 m, 8-day. GEE: `NASA/VIIRS/002/VNP13A1`. Shorter record, better
+  cadence — use it for current condition, use MODIS for the climatology it is compared
+  against.
+- **NDMI / NDWI** from Sentinel-2 (B8, B11) as a live fuel moisture proxy. Cheap to compute
+  from imagery already pulled for §2.2.
+- **Land surface temperature**: `MODIS/061/MOD11A1` (daily 1 km) and
+  `NASA/VIIRS/002/VNP21A1D`.
+
+The analytically useful quantity is not NDVI but **NDVI anomaly against the same
+day-of-year across the baseline period** (2001–2020, or the full available record).
+Absolute NDVI in the humid tropics is high and nearly flat; only the departure is
+informative. This is a common implementation error — check for it in review.
+
+### 2.5 Precipitation and drought
+
+- **CHIRPS**, 0.05°, daily, 1981–present. GEE: `UCSB-CHG/CHIRPS/DAILY`. Best choice for
+  tropical drought anomaly work — the long record is what makes SPI computable.
+- **GPM IMERG V07**, 0.1°, half-hourly. GEE: `NASA/GPM_L3/IMERG_V07`. Late run for
+  operations, Final for retrospective analysis.
+- **GSMaP** (JAXA), 0.1°, hourly, tuned for the Asia-Pacific.
+  GEE: `JAXA/GPM_L3/GSMaP/v8/operational`.
+- **ERA5-Land daily aggregates**. GEE: `ECMWF/ERA5_LAND/DAILY_AGGR` — 2 m temperature,
+  dewpoint, wind components, soil moisture at four depths. The meteorological backbone for
+  any index you compute yourself.
+- **SMAP L4** soil moisture. GEE: `NASA/SMAP/SPL4SMGP/007`.
+
+Derived indices to compute:
+
+- **Days since last rain > 1 mm** — the crudest and often the most predictive single feature
+  for this fire regime. Compute it first.
+- **SPI** at 1, 3, and 6 months from CHIRPS.
+- **KBDI** (Keetch-Byram Drought Index) from daily rainfall, daily maximum temperature, and
+  mean annual rainfall. BMKG publishes KBDI for Indonesia, so computing it locally gives a
+  directly comparable number.
+- **FWI** (Canadian Fire Weather Index). Either compute from ERA5-Land, or take the
+  ready-made Copernicus product: CEMS/GWIS publishes ERA5-based historical FWI and an 8-day
+  forecast at `https://gwis.jrc.ec.europa.eu/`. Taking the ready-made one first is the right
+  call — implement your own only if the resolution proves too coarse.
+
+### 2.6 Climate drivers and ground truth
+
+- **ENSO indices** — ONI, Niño 3.4, SOI from NOAA CPC; **IOD Dipole Mode Index** from BMKG
+  or JAMSTEC. Both matter for Papua. Plain text/CSV, trivially fetched. These provide the
+  seasonal framing the project's premise rests on, so pull them early and check that the
+  claimed El Niño signal is actually present in the local rainfall record — do not assume it.
+- **BMKG station data** — Biak Frans Kaisiepo, WMO 97560 / ICAO WABB. Register at
+  `dataonline.bmkg.go.id`.
+- **METAR from WABB** — free, hourly, no registration via the `aviationweather.gov` API or
+  NOAA ISD. Gives temperature, dewpoint, wind, and — critically — **visibility and present
+  weather codes `FU` (smoke) and `HZ` (haze)**. This is the cheapest independent ground
+  truth in the entire project: a satellite hotspot cluster upwind of the airport coinciding
+  with reported smoke and falling visibility is a corroborated fire. Wire this in during
+  Phase 2, not later.
+
+### 2.7 Terrain, infrastructure, boundaries
+
+- **Copernicus DEM GLO-30**. GEE: `COPERNICUS/DEM/GLO30`. Better than SRTM for coastal and
+  small-island terrain. Derive slope and aspect for spread modelling.
+- **OpenStreetMap** roads, settlements, land use — via the Geofabrik Indonesia extract.
+  Distance to road and distance to settlement are the two strongest human-ignition proxies.
+- **WorldPop** 100 m population. GEE: `WorldPop/GP/100m/pop`.
+- **Google Open Buildings v3** — `GOOGLE/Research/open-buildings/v3/polygons`. Better
+  building coverage than OSM in this region.
+- **Administrative boundaries** — Indonesian BPS/BIG village (desa/kelurahan) boundaries for
+  Biak Numfor and Supiori regencies. Needed for per-district aggregation in the daily brief;
+  district-level numbers are what local stakeholders actually act on. GADM level 4 is an
+  acceptable fallback if BIG data is hard to obtain.
+
+---
+
+## 3. Phase plan
+
+### Phase 1 — Daily hotspot ingest and brief (build this first)
+
+1. `config.yaml`: AOI bbox, admin polygon path, FIRMS map key (read from an environment
+   variable, **never committed**), source list, output paths.
+2. `ingest_firms.py`: pull the last N days from all four FIRMS sources, concatenate,
+   deduplicate, clip to the admin polygon, write to a local SQLite or Parquet store keyed by
+   a stable detection ID.
+3. Persist raw API responses to a dated `raw/` directory before any parsing. Re-parsing is
+   free; re-fetching a day that has aged out of the NRT window is not.
+4. `report_daily.py`: counts by district, by satellite, by confidence class; FRP total and
+   maximum; a static PNG map; a GeoJSON export; a Markdown brief.
+5. Schedule daily. Windows Task Scheduler is sufficient — do not introduce Airflow.
+
+**Acceptance criteria**
+
+- Re-running the same day is idempotent: no duplicate rows, no changed detection IDs.
+- The pipeline exits non-zero and writes a clear log line when the FIRMS API fails or
+  returns an HTML error page instead of CSV. It must never silently write an empty day —
+  "zero hotspots" and "the fetch failed" are different facts and must be distinguishable in
+  the stored output.
+- Timestamps stored in UTC with a derived WIT local column; the brief is built on local days.
+- All four satellite sources are pulled, and the brief states which ones actually returned
+  data.
+- One runnable self-check covering dedup and the UTC→WIT day boundary.
+
+### Phase 2 — Quality control and corroboration
+
+1. **Persistent-source filter.** Cluster detections across the full history; any location
+   producing hotspots on a large fraction of days is infrastructure (airport, port, flare,
+   industrial), not a fire event. Maintain the resulting mask as a reviewable data file, not
+   as code constants.
+2. **Confidence handling.** VIIRS confidence is categorical (`l`/`n`/`h`); MODIS is 0–100.
+   Do not average them or coerce one into the other. Report separately.
+3. **Sun-glint and coastline checks.** Detections on water or within one pixel of the
+   shoreline warrant a flag.
+4. **METAR corroboration** (§2.6) — join daily hotspot clusters to WABB visibility and
+   present-weather codes.
+5. Compare daily counts against SiPongi and record the discrepancy as a time series.
+
+**Acceptance criteria**
+
+- Every filter is a flag column, never a deleted row. Nothing is destructive.
+- The persistent-source mask is regenerated from data on a schedule, not frozen by hand.
+- The QC report states how many detections each filter touched, per day.
+
+### Phase 3 — Event clustering and chronological analysis
+
+1. Cluster detections into fire **events** with space-time DBSCAN (ST-DBSCAN, or plain
+   DBSCAN on scaled x/y/t). Suggested starting parameters: 1 km spatial, 24 h temporal,
+   `min_samples=2`. These are a starting point and must be tuned against known events —
+   leave them in config.
+2. Per event: first and last detection, duration, detection count, total and peak FRP,
+   centroid track, convex hull area, land cover composition at ignition, distance to nearest
+   road and settlement.
+3. Overlay the environmental time series (§2.4, §2.5) for the 30 days preceding ignition.
+4. Chronology narrative generated from the event record, not free-written.
+
+**Acceptance criteria**
+
+- Clustering parameters live in config with a documented rationale.
+- Events have stable IDs across re-runs as new detections arrive — an event that grows must
+  not be reassigned a new identity.
+- At least three known events are used as a check on the parameter choice.
+
+### Phase 4 — Postmortem
+
+1. Sentinel-2 pre/post dNBR for each event above a size threshold, with Cloud Score+ masking.
+2. Burned-area polygon extraction and area estimate, with an explicit statement of cloud gap
+   and therefore of uncertainty.
+3. Cross-tabulate burned area against land cover to describe what actually burned.
+4. Himawari-9 10-minute reconstruction of ignition timing and spread for the largest events.
+   Ignition hour is the strongest available discriminator between natural and human causes —
+   a fire starting at 14:00 local in dry grass near a road is a very different narrative from
+   one starting at 03:00.
+
+**Acceptance criteria**
+
+- Every burned-area figure is published with a cloud-cover percentage for its scene pair.
+- Where no usable post-fire image exists, the output says so rather than falling back to a
+  stale scene.
+
+### Phase 5 — Fire danger and prediction
+
+Sequence matters here; do not skip to step 3.
+
+1. **Fire danger index first.** Publish daily FWI and KBDI for the AOI, using the Copernicus
+   product plus your own computation from ERA5-Land forecast fields. This is defensible,
+   explainable, internationally standard, and requires no training data. For most of this
+   project's actual utility, this is sufficient — ship it and stop unless there is a clear
+   reason to continue.
+2. **Climatological baseline.** Probability of a detection per grid cell per day-of-year,
+   from the full history. Any statistical model must beat this to justify its existence.
+3. **Statistical model only if 1 and 2 are running.** Gradient boosting (LightGBM) or
+   logistic regression on a daily grid. Features: FWI components, KBDI, days since rain,
+   NDVI anomaly, land cover class, slope, distance to road and settlement, detection history
+   in the cell, ENSO/IOD indices.
+   - **Split temporally, by fire season — never randomly.** Random splits leak, badly, in
+     spatiotemporally autocorrelated fire data and will produce an impressive and entirely
+     fictitious score.
+   - Evaluate with AUC-PR, Brier score, and a reliability curve. Plain accuracy and ROC-AUC
+     are near-meaningless under this class imbalance.
+   - Requires at least 3–5 years of history. Biak is a small island: the positive-class
+     sample may simply be too small for a stable model, and finding that out is a valid
+     result. Say so rather than shipping an overfitted one.
+4. **Do not use deep learning here.** The sample size does not support it.
+
+**Acceptance criteria**
+
+- Baseline comparison is published alongside every model metric.
+- Any predictive output carries a calibration statement and an explicit uncertainty range.
+- The temporal split is visible in the code and described in the output.
+
+### Phase 6 — Dissemination
+
+- Daily Markdown/PNG brief; GeoJSON and CSV for anyone who wants the raw data.
+- Static site, GitHub Pages, generated by the same cron. No backend, no database server.
+- Bahasa Indonesia output for local audiences. This is a real requirement, not a nicety —
+  the stakeholders who can act on a Biak hotspot report read Indonesian.
+- Stable public URL for the current-day GeoJSON so others can build on it.
+
+---
+
+## 4. Suggested layout
+
+```
+biak_hotspot/
+  config.yaml
+  src/
+    ingest_firms.py
+    ingest_met.py
+    qc.py
+    events.py
+    report.py
+  data/raw/YYYY-MM-DD/
+  data/processed/
+  outputs/daily/
+  tests/
+```
+
+Python. `requests`, `pandas`, `geopandas`, `shapely`, `rasterio`, `xarray`, `scikit-learn`,
+`matplotlib`, plus `earthengine-api` for Phases 4–5.
+
+---
+
+## 5. Known failure modes to watch for in review
+
+1. Reporting a failed fetch as zero hotspots.
+2. Mixing UTC and local dates, which shifts night-overpass detections into the wrong day.
+3. Averaging VIIRS and MODIS confidence into one meaningless number.
+4. Random train/test split in Phase 5.
+5. Persistent industrial heat sources counted as fire events.
+6. Discarding FRP at ingest.
+7. Using absolute NDVI instead of an anomaly.
+8. Importing a peat-fire model for a limestone island.
+9. Silent cloud-masking failure producing a confidently wrong burned-area figure.
+10. Detection IDs that change between runs, breaking every downstream join.
+
+---
+
+## 6. Cost and access notes
+
+Every source listed is free. Registration is needed for: NASA FIRMS (instant), JAXA P-Tree
+(manual approval, apply early — this is the long pole), Copernicus Data Space (instant),
+Google Earth Engine (project registration, non-commercial use), BMKG data online.
+
+Apply for the P-Tree account during Phase 1 even though Himawari is not used until Phase 4.
+
+---
+
+## 7. Deliverable priority
+
+If effort is limited, the order of value is: Phase 1 → Phase 2 → Phase 6 → Phase 3 →
+Phase 5 step 1 → Phase 4 → Phase 5 step 3.
+
+A reliable, corroborated, plainly-worded daily hotspot brief in Bahasa Indonesia is worth
+more to Biak than an unvalidated prediction model.
+
+---
+
+## 8. Publication ethics
+
+This project publishes geolocated evidence of burning in a populated area. That carries real
+risk to real people.
+
+- **Publish coordinates of detections, never inferred responsibility.** A 375 m VIIRS pixel
+  cannot identify who lit a fire. Attributing a hotspot to a named landowner, company, or
+  village is unsupportable from this data and exposes both the project and the named party
+  to serious harm.
+- Aggregate to district level in public-facing summaries where individual attribution would
+  otherwise be inferable.
+- Use "hotspot" or "thermal anomaly" in publication. Reserve "fire" for corroborated events.
+- State the false-positive caveats and the QC flags alongside the counts, every time.
+- Where the analysis distinguishes agricultural burning from wildfire, note that small-scale
+  shifting cultivation is a lawful and long-established practice in Papua. A monitoring
+  product that frames every detection as illegal misrepresents the data and damages its own
+  credibility with the communities it depends on.
+
+---
+
+## 9. Dashboard architecture and tech stack
+
+The dashboard is the first deliverable the user actually wants: a map with switchable
+layers (land cover, NDVI, derived indices, hotspots), a daily precipitation chart with a
+month selector, and an hourly air-quality panel.
+
+### 9.1 The architectural decision
+
+**Split the data by how often it changes, and pre-compute everything.**
+
+| Layer | Changes | Therefore |
+|---|---|---|
+| Land cover | Yearly | Static raster, generated once |
+| NDVI / NDMI composites | 8–16 days | Static raster, regenerated on schedule |
+| Daily precipitation series | Daily | Small JSON time series |
+| Hourly air quality | Hourly | Small JSON time series |
+| Hotspot detections | ~4x daily | GeoJSON, small |
+
+Nothing here requires a server to answer a browser request. All the expensive work — Earth
+Engine queries, FIRMS pulls, raster processing — happens in a scheduled job that writes
+small files. The browser only reads files. This makes the entire dashboard a static site.
+
+### 9.2 Stack
+
+**Compute layer — GitHub Actions, on a cron schedule**
+
+Python. `earthengine-api`, `geemap`, `leafmap`, `requests`, `pandas`, `geopandas`,
+`rasterio`. Runs the Phase 1–2 pipeline, then exports products into the published data
+directory. The Earth Engine service-account key lives in GitHub Actions secrets and is never
+exposed to the browser. On a public repository, Actions minutes are unlimited.
+
+**Frontend — a single `index.html`, no build step**
+
+- MapLibre GL JS (from CDN) for the map, layer toggles, and popups.
+- The `pmtiles` MapLibre plugin for raster layers. PMTiles is a single-file tile archive read
+  over HTTP range requests, so raster layers work with no tile server at all. For a single
+  small island this is the correct trade — one file per layer, served statically.
+- Chart.js (from CDN) for the precipitation bars and the air-quality line, with a month
+  selector that swaps which JSON is loaded.
+
+No React, no Vite, no bundler, no npm. A single hand-written HTML file is both easier for an
+implementation model to produce correctly and easier to review. Introduce a framework only
+when the single file demonstrably stops being workable.
+
+**Hosting — GitHub Pages**
+
+Free, no cold start, no idle sleep. The compute job and the site live in the same repository,
+so there is one place to look when something breaks. Vercel would also serve this fine, but
+its Hobby-tier cron (once daily, short function timeout) cannot run the Earth Engine job, so
+the compute would stay in GitHub Actions regardless — which makes Pages the simpler choice.
+
+Watch the limits: 100 MB per file (a git constraint), ~1 GB total site size. For an AOI the
+size of Biak this is not close to binding, but a careless national-scale export would blow
+through it.
+
+### 9.3 Where leafmap and geemap belong
+
+Both are Qiusheng Wu's packages and both are worth using — as **authoring and processing
+tools, not as the hosted dashboard**. They are Python libraries; static hosting has no Python
+runtime, and `leafmap.to_html()` produces a snapshot without the ability to re-query data.
+
+Use them for:
+
+- Notebook exploration: choosing thresholds, inspecting NDVI anomalies, verifying cloud
+  masking before committing it to a pipeline.
+- `geemap` export helpers (`ee_export_image`, `ee_to_geojson`) inside the Actions job.
+- Prototyping the layer stack with `leafmap.maplibregl` before hand-writing the final HTML.
+
+Note there is no package named "geolibre"; the MapLibre backend lives inside `leafmap`.
+
+### 9.4 The alternative, and when to take it
+
+Streamlit plus geemap, deployed on Streamlit Community Cloud (free), is the pattern Qiusheng
+Wu demonstrates in `streamlit-geospatial`. It works, and it is the right answer if users need
+to drive arbitrary Earth Engine queries interactively. The costs are a cold start of roughly
+30 seconds, sleeping when idle, and community-tier quotas. It cannot deploy to Vercel, whose
+serverless model does not fit Streamlit's websocket session.
+
+For a dashboard with a fixed set of layers and a date selector, the static approach wins on
+load time, cost, reliability, and maintenance. Take Streamlit only when on-demand
+user-defined computation is a real requirement.
+
+### 9.5 Air quality — check before building
+
+**Confirmed 2026-08-27: there is no ground-based air quality station on Biak, and none
+anywhere in Papua.** Queried against the OpenAQ v3 API: zero locations returned for the AOI
+bbox, and zero for a wide Papua sweep (130-141E, -9.5 to 0.5). Indonesia has 58 OpenAQ
+locations in total, all low-cost PM sensors, and the nearest one to Biak is approximately
+2,439 km away in Bali. There is therefore no measured AQI for this AOI and no prospect of one.
+
+The dashboard's air quality panel must be built on modelled and satellite data from the
+outset. Do not scaffold a station-ingest path "for later" — there is no station to ingest.
+Re-run the OpenAQ query on a slow schedule (quarterly is plenty) so that a station appearing
+in future is noticed, but treat that as a bonus validation layer, never as the foundation.
+
+Realistic sources, in order of fit:
+
+- **Sentinel-5P TROPOMI UV Aerosol Index** — GEE `COPERNICUS/S5P/NRTI/L3_AER_AI`, daily,
+  ~7 km. A direct smoke-plume signal and the best match for this project's purpose.
+  Sentinel-5P also carries CO (`L3_CO`), which responds to biomass burning.
+- **CAMS global atmospheric composition** (Copernicus, free) — modelled PM2.5 and PM10,
+  3-hourly. This is what an "hourly AQI" for Biak would actually be.
+- **METAR visibility and present-weather from WABB** (§2.6) — hourly, genuinely observed,
+  crude but real.
+
+If the displayed value is modelled rather than measured, the dashboard must say so on the
+panel itself, not in a footnote. People make health decisions from air quality numbers, and
+presenting a coarse global model output as a local measurement is a misrepresentation with
+real consequences.
+
+### 9.6 Suggested repository layout
+
+```
+biak_hotspot/
+  .github/workflows/daily.yml    # cron: run pipeline, commit outputs
+  src/                           # ingest, qc, events, export (see §4)
+  docs/                          # GitHub Pages root
+    index.html                   # the entire frontend
+    data/
+      hotspots_latest.geojson
+      precip_daily.json
+      aqi_hourly.json
+      layers/*.pmtiles
+```
+
+**Acceptance criteria**
+
+- The site loads and renders correctly with no network access beyond its own origin and the
+  named CDNs.
+- Every data file carries a generation timestamp, and the page displays it. A stale dashboard
+  that looks live is worse than one that is visibly stale.
+- The Earth Engine credential appears only in Actions secrets — never in the repository,
+  never in the published output.
+- If the scheduled job fails, the previous data remains published and the page shows its real
+  age rather than silently presenting old data as current.
+
+---
+
+## 10. Verified access notes and observed baseline (checked 2026-08-27)
+
+### 10.1 METAR from WABB — confirmed working, no authentication
+
+Biak Frans Kaisiepo (ICAO `WABB`, WMO 97560, -1.190, 136.108, elevation 12 m) reports
+approximately every 30 minutes, giving roughly 48 observations per day. Both access paths
+were tested and both work with no API key and no registration.
+
+**Live feed** — `https://aviationweather.gov/api/data/metar?ids=WABB&format=json&hours=N`
+Returns fields including `temp`, `dewp`, `wdir`, `wspd`, `visib`, `wxString`, `clouds`,
+`rawOb`, `obsTime`. Use for the operational dashboard.
+
+**Historical archive** — Iowa State Environmental Mesonet ASOS service at
+`https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py`, with
+`station=WABB&data=vsby&data=wxcodes&tz=Etc/UTC&format=onlycomma&report_type=3&report_type=4`.
+The `report_type` parameters are required; omitting them returns an empty result. This
+endpoint is slow — fetch it once, cache the result, and never call it from the daily cron.
+
+**Implementation traps, all of which will silently corrupt output:**
+
+1. The JSON `visib` field is in **statute miles**; the raw METAR string is in **metres**.
+   5000 m corresponds to 3.11 sm. Mixing the two units produces a roughly 60% error that
+   looks entirely plausible on a chart.
+2. A visibility of 6.21 sm (9999 m) is a **reporting ceiling meaning "10 km or more"**, not
+   a measurement. It is censored data. Do not compute means across it and present the result
+   as an average visibility; treat it as a bounded value or exclude it explicitly.
+3. `wxString` may contain several codes at once (`FU HZ`, `-RA BR`). Match by substring,
+   never by equality.
+4. Observations are timestamped UTC. The same WIT conversion required everywhere else in
+   this project applies here.
+
+### 10.2 Observed smoke baseline and the event in progress
+
+Visibility and present-weather codes were pulled for 2026-06-01 through 2026-08-27 (4,293
+observations) and aggregated by day:
+
+| Period | Days with smoke/haze codes | Median visibility |
+|---|---|---|
+| 2026-06-01 to 2026-08-21 | 0 (one isolated pair on 08-14) | 6.2 sm (at the 10 km ceiling) |
+| 2026-08-22 | 4 observations | 5.6 sm |
+| 2026-08-23 | 28 observations | 2.5 sm |
+| 2026-08-24 | 39 observations | 3.1 sm |
+| 2026-08-25 | 26 observations | 3.1 sm |
+| 2026-08-26 | 30 observations | 3.1 sm |
+| 2026-08-27 (partial) | 7 of 7 observations | 3.1 sm |
+
+This establishes two useful things.
+
+**A clean local baseline.** Eighty-three consecutive days at the visibility ceiling with no
+smoke codes at all. Any `FU` report at WABB is therefore a strong anomaly rather than
+background noise, which makes this a far better corroboration signal than it would be at a
+station with chronic haze.
+
+**An active event, in progress.** Onset on 2026-08-22, sharp escalation on 08-23, sustained
+through the time of writing — day five and continuing. Winds through the episode were light
+and variable from roughly 230-260 degrees. This is consistent with a local source, but METAR
+alone cannot establish that the fire is on Biak rather than upwind of it; that requires
+joining to FIRMS detections.
+
+**Use this event as the primary tuning case for Phase 3 clustering.** It has a firm onset
+date, an independent ground observation of its severity, and it is recent enough that
+Sentinel-2 post-fire imagery will become available shortly for the Phase 4 postmortem.
+Two further historical events should be identified for comparison before the clustering
+parameters in §3 are considered settled.
+
+### 10.3 OpenAQ — confirmed absent
+
+See §9.5. Query executed 2026-08-27 against the OpenAQ v3 API returned zero locations for
+both the AOI and a wide Papua sweep.
+
+### 10.4 Validated event: 19-25 August 2026 (FIRMS pull executed 2026-08-27)
+
+FIRMS was queried across all four sources for the AOI, 2026-08-13 to 2026-08-27, returning
+653 detections. Aggregated to WIT local days:
+
+| WIT day | S-NPP | NOAA-20 | NOAA-21 | MODIS | Total | Sum FRP (MW) | Max FRP |
+|---|---|---|---|---|---|---|---|
+| 08-13 | 1 | 0 | 1 | 0 | 2 | 10.9 | 6.7 |
+| 08-15 | 0 | 1 | 0 | 0 | 1 | 1.3 | 1.3 |
+| 08-18 | 0 | 2 | 1 | 0 | 3 | 11.2 | 6.0 |
+| 08-19 | 4 | 1 | 10 | 1 | 16 | 85.0 | 9.8 |
+| 08-20 | 5 | 7 | 6 | 0 | 18 | 172.7 | 18.8 |
+| 08-21 | 97 | 67 | 35 | 3 | 202 | 1195.5 | 23.9 |
+| 08-22 | 89 | 140 | 48 | 6 | 283 | 2605.1 | 90.5 |
+| 08-23 | 8 | 29 | 32 | 0 | 69 | 377.9 | 17.4 |
+| 08-24 | 8 | 10 | 22 | 1 | 41 | 251.1 | 22.6 |
+| 08-25 | 6 | 1 | 11 | 0 | 18 | 88.6 | 7.6 |
+| 08-26, 08-27 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+Spatial extent of detections: latitude -1.199 to -0.666, longitude 134.808 to 136.588. The
+western extreme falls on Numfor, confirming the AOI bounding box in the header is correctly
+sized and that the event was not confined to Biak proper. The highest-FRP cluster sits around
+-1.127, 136.044 and -1.185, 136.130, in south-central Biak.
+
+**This independently corroborates the METAR record in §10.2, with a physically sensible lag.**
+Fire activity peaks 21-22 August; airport smoke observations peak 23-24 August. Smoke
+accumulating and persisting for roughly a day after peak burning is exactly what should
+happen. Two unrelated instruments, one consistent story. The project premise holds.
+
+Four findings that should shape the implementation:
+
+**1. The fire regime is daytime ignition, not sustained wildfire.** Of 653 detections, 651
+were daytime and 2 were night. Fires that do not survive the night, recurring across
+consecutive days, is the signature of deliberate daytime land clearing rather than an escaped
+wildfire front. This corroborates the fuel assumption in §2.3 and argues against importing a
+wildfire-spread model. It also has direct bearing on §8: this pattern is consistent with
+ordinary agricultural burning, and the analysis must not be written as though it were not.
+
+**2. The confidence-column trap is real and present in this data.** The single `confidence`
+column returned `n` (491), `l` (139), `h` (12) from VIIRS alongside numeric values 0, 31, 36,
+38, 56, 66, 68, 71 from MODIS. Any code that coerces this column to a number will silently
+discard 642 of 653 VIIRS detections. This is the failure mode listed at §5.3, confirmed live.
+
+**3. Detections stop on 08-25 while METAR still reports smoke on 08-26 and 08-27.** Two
+readings are possible: the fires burned out and smoke lingered, or cloud cover masked still-
+active fires from the satellites. Distinguishing them requires a cloud check. Do not assume
+either. This divergence is the single best argument for keeping METAR in the pipeline, and it
+should be preserved as a worked example in the documentation.
+
+**4. The highest-FRP cluster is roughly 2.4 km from the airport.** Close enough that the
+Phase 2 persistent-source filter must be built and validated before any of this is published.
+The detections are almost certainly genuine fires rather than airport infrastructure, given
+they appear for six days and then stop, but "almost certainly" is not the standard for a
+public product.
+
+**Use this event as the primary Phase 3 clustering test case.** It has a clean baseline before
+it, a defined onset, a sharp peak, an observable decay, independent ground corroboration, and
+a known spatial extent. Two further events should be identified from the `_SP` archive for
+comparison before the clustering parameters are fixed.
+
+Raw responses from this pull are stored under `data/raw/` and should be committed as
+regression fixtures for the ingest tests.
