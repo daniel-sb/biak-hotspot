@@ -721,3 +721,77 @@ comparison before the clustering parameters are fixed.
 
 Raw responses from this pull are stored under `data/raw/` and should be committed as
 regression fixtures for the ingest tests.
+
+---
+
+## 11. Three-year baseline (backfill executed 2026-08-27)
+
+A full backfill was run over 2023-09-01 to 2026-08-27: 851 chunks fetched, 1 range recorded
+unavailable (NOAA-21 before its 2024-01-17 window opens), **1,078 unique detections**, 1,076 on
+land.
+
+### 11.1 August 2026 is not a normal fire season
+
+| Year | Detections |
+|---|---|
+| 2023 (from September) | 100 |
+| 2024 | 90 |
+| 2025 | 71 |
+| 2026 | 817 |
+
+Of the 2026 total, **671 fell in August alone** — in 27 days — against 407 detections across the
+preceding ~1,065 days. That is a **65-fold increase over the baseline daily rate**. Only 180 of
+1,093 calendar days in the record carry any detection at all; the normal state of this island is
+no fire.
+
+2026 runs elevated all year (April 38, June 20, July 62) rather than spiking only in August,
+which is the signature of a developing drought rather than a single ignition event. The
+secondary peak in the record, November 2023 (65 detections), coincides with the 2023-24 El Nino
+and is the closest analogue available.
+
+**This materially strengthens the project's premise, which until now was an assumption.** It
+also sets the bar for the daily brief: against a baseline of roughly two detections per week,
+any day in double figures is genuinely exceptional and should read that way.
+
+### 11.2 Persistent-source candidates
+
+Detections were binned into ~375 m cells and counted by distinct WIT days:
+
+```
+cells seen on  1 day : 483        cells seen on  5 days :  2
+cells seen on  2 days:  87        cells seen on  7 days :  1
+cells seen on  3 days:  22        cells seen on 11 days :  1
+cells seen on  4 days:  16        cells seen on 66 days :  1
+```
+
+613 distinct cells, and the distribution is sharply bimodal. **One cell at -1.1449, 136.0353
+(Yendidori distrik, near Saramom hamlet) carries 66 distinct days and 89 detections** — six
+times the next-highest cell.
+
+Two things follow.
+
+**Grid cells fragment a single source.** That cell's immediate neighbours carry 11 days and 7
+days. Geolocation jitter spreads one physical source across adjacent cells, so a per-cell count
+undercounts it. Recurrence must be computed by clustering within a radius, not by binning.
+
+**What is there is unknown, and that matters.** An OpenStreetMap query returns only residential
+landuse at Saramom — no landfill, no industrial site, no power infrastructure. OSM coverage in
+Papua is sparse, so an unmapped facility is entirely possible; so is repeated agricultural
+burning of the same plot. 66 days out of 1,093 is 6% — high recurrence, but nothing like the
+near-daily signature of a gas flare.
+
+**Therefore the persistent-source filter must flag and never delete.** If this site is recurrent
+land management rather than infrastructure, removing it erases real fire activity, and
+describing a repeatedly-burned plot beside a hamlet as "industrial" would be wrong in the way
+section 8 exists to prevent. Publish the count, flag the recurrence, and let a reader who knows
+Biak tell us what is actually there.
+
+### 11.3 The airport cluster is resolved
+
+Section 10.4 finding 4 flagged that the highest-FRP cluster sat 2.4 km from Frans Kaisiepo and
+had to be cleared before publication. Across three years, detections within 3 km of the airport
+number **39 across only 10 distinct days**, of which **35 fall in August 2026** (the rest: two
+days in November 2023, two in April 2026).
+
+That is a fire signature, not infrastructure. A permanent heat source would appear on hundreds
+of days. This finding is now closed: the August 2026 cluster near the airport is real burning.
