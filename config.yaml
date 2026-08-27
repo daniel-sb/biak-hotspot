@@ -20,6 +20,11 @@ sources:
 # longer windows are chunked automatically in src/ingest_firms.py.
 lookback_days: 15
 
+# Phase 2 prerequisite (Task 03): years of history the persistent-source
+# filter needs. Do not raise this casually - MODIS reaches back to 2000, and
+# pulling all of it wastes an hour to answer a question three years answers.
+backfill_years: 3
+
 output_paths:
   raw_dir: data/raw
   processed: data/processed/detections.parquet

@@ -1,15 +1,26 @@
-"""FIRMS active-fire ingest for the Biak AOI (Task 01, PLAN.md 2.1 / Phase 1).
+"""FIRMS active-fire ingest for the Biak AOI (PLAN.md 2.1 / Phase 1, Task 03).
 
-Pulls near-real-time detections for all configured sources, persists raw
+Pulls active-fire detections for all configured sources, persists raw
 responses under data/raw/ before parsing, then deduplicates on a stable
 detection_id and merges into data/processed/detections.parquet.
 
-Chunks whose window touches today or yesterday (UTC) are always re-downloaded;
-wholly-past chunks reuse cached raw files unless --refetch. FIRMS refreshes
-NRT several times a day, so recent cache is never trusted.
+Two modes:
+  * Daily lookback (default): pulls the last N days of near-real-time data.
+    Chunks touching today or yesterday (UTC) are always re-downloaded;
+    wholly-past chunks reuse cached raw files unless --refetch. FIRMS
+    refreshes NRT several times a day, so recent cache is never trusted.
+  * Historical backfill (--from/--to): multi-year history for Phase 2's
+    persistent-source filter. Each satellite has a limited NRT window plus a
+    reprocessed archive (_SP) window; the live data-availability table picks
+    the correct source per day, a range straddling the boundary is split so
+    no satellite-day is ever pulled from both, and days outside every window
+    are recorded in the manifest as 'unavailable' rather than silently empty.
+    Wholly-past chunks are cached forever, so an interrupted backfill resumes
+    without refetching.
 
 Usage:
     python src/ingest_firms.py [--lookback N] [--end YYYY-MM-DD] [--refetch]
+    python src/ingest_firms.py --from YYYY-MM-DD --to YYYY-MM-DD [--refetch]
 
 FIRMS_MAP_KEY must be set in the environment.
 """
@@ -34,6 +45,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 FIRMS_URL = ("https://firms.modaps.eosdis.nasa.gov/api/area/csv/"
              "{key}/{source}/{w},{s},{e},{n}/{days}/{start}")
+DATA_AVAILABILITY_URL = ("https://firms.modaps.eosdis.nasa.gov/api/"
+                         "data_availability/csv/{key}/all")
 DAY_RANGE_MAX = 5  # FIRMS rejects >5: "Invalid day range. Expects [1..5]."
 WIT = timezone(timedelta(hours=9))  # Papua is UTC+9
 
@@ -44,6 +57,10 @@ log = logging.getLogger("ingest_firms")
 # the detections store. The report layer reads it to distinguish "observed,
 # nothing there" from "never queried / query failed" (AGENTS rule 2).
 MANIFEST_FILENAME = "run_manifest.json"
+
+
+def utc_stamp() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def append_manifest(path: Path, entries: list[dict]) -> None:
@@ -85,6 +102,132 @@ def should_refetch(start: str, days: int, today: date) -> bool:
     """
     chunk_end = date.fromisoformat(start) + timedelta(days=days - 1)
     return chunk_end >= today - timedelta(days=1)
+
+
+def parse_availability(text: str) -> dict[str, tuple[date, date]]:
+    """data_availability CSV -> {data_id: (min_date, max_date)}.
+
+    Every source's coverage windows roll forward continuously; this table is
+    the only authority on them and is fetched live each backfill run.
+    """
+    rows = text.strip().splitlines()
+    if not rows or not rows[0].strip().startswith("data_id"):
+        raise ValueError("unexpected data_availability header")
+    table = {}
+    for line in rows[1:]:
+        parts = [p.strip() for p in line.split(",")]
+        if len(parts) < 3 or not parts[0]:
+            raise ValueError(f"unexpected availability row: {line!r}")
+        try:
+            table[parts[0]] = (date.fromisoformat(parts[1]),
+                               date.fromisoformat(parts[2]))
+        except ValueError as exc:
+            raise ValueError(f"bad dates in availability row {line!r}") \
+                from exc
+    return table
+
+
+def fetch_availability(key: str) -> dict[str, tuple[date, date]] | None:
+    """Live per-source coverage windows; None on any failure (logged loudly).
+
+    Returns None rather than a guess because a backfill that assumes NRT
+    reaches back years gets silent empty results - the dangerous kind.
+    """
+    url = DATA_AVAILABILITY_URL.format(key=key)
+    try:
+        r = requests.get(url, timeout=60)
+    except requests.RequestException as exc:
+        log.error("AVAILABILITY FETCH FAILED: %s", exc)
+        return None
+    if r.status_code != 200:
+        log.error("HTTP %s fetching availability: %.200s", r.status_code,
+                  r.text.strip())
+        return None
+    try:
+        return parse_availability(r.text)
+    except ValueError as exc:
+        log.error("UNPARSEABLE AVAILABILITY RESPONSE: %.200s (%s)",
+                  r.text.strip(), exc)
+        return None
+
+
+def tile_forward(start: date, n_days: int) -> list[tuple[str, int]]:
+    """Tile [start, start+n_days-1] with chunks of <= DAY_RANGE_MAX.
+
+    Aligned at the range start so that extending n_days only appends chunks
+    and never shifts existing ones - an interrupted backfill therefore hits
+    its cache on resume instead of refetching. (The daily lookback keeps its
+    own end-aligned tiling in chunk_starts(); only backfill needs stability.)
+    """
+    out, s = [], start
+    while n_days > 0:
+        k = min(DAY_RANGE_MAX, n_days)
+        out.append((s.isoformat(), k))
+        s += timedelta(days=k)
+        n_days -= k
+    return out
+
+
+def plan_backfill(availability: dict[str, tuple[date, date]],
+                  families: list[str], d_from: date,
+                  d_to: date) -> tuple[list[tuple[str, str, int]], list[dict]]:
+    """Choose exactly one FIRMS source per satellite per requested day.
+
+    families are the configured _NRT source names. The reprocessed archive
+    (_SP) window wins wherever it covers a day, otherwise NRT; a run of days
+    served by one source is tiled with tile_forward(). Days outside both
+    windows become contiguous gap records with outcome filled in by the
+    caller - recorded as 'unavailable', never silently empty.
+
+    Returns (jobs, gaps): jobs are (source_id, start_iso, n_days); gaps are
+    {"source": <family _NRT name>, "chunk_start": iso, "days": n}.
+    """
+    def covers(win, d):
+        return win is not None and win[0] <= d <= win[1]
+
+    jobs: list[tuple[str, str, int]] = []
+    gaps: list[dict] = []
+    for fam in families:
+        # Archive counterpart of an _NRT source is its _SP twin (FIRMS naming
+        # convention); NOAA-21-style satellites simply have no entry.
+        sp_id = fam[:-4] + "_SP" if fam.endswith("_NRT") else None
+        sp_win = availability.get(sp_id) if sp_id else None
+        nrt_win = availability.get(fam)
+
+        def chosen(d):
+            # SP first: if the windows ever overlap, this one consistent
+            # choice keeps a satellite-day out of both sources - pulling both
+            # would double-count fires that dedup cannot collapse because the
+            # archive reprocessing changes coordinates/times slightly.
+            if covers(sp_win, d):
+                return sp_id
+            if covers(nrt_win, d):
+                return fam
+            return None
+
+        # One pass over the requested range per family: four satellites times
+        # ~1100 days is nothing next to the HTTP requests, and far easier to
+        # verify than interval algebra.
+        d = d_from
+        while d <= d_to:
+            src = chosen(d)
+            if src is None:
+                gap_end = d
+                while gap_end < d_to and chosen(
+                        gap_end + timedelta(days=1)) is None:
+                    gap_end += timedelta(days=1)
+                gaps.append({"source": fam,
+                             "chunk_start": d.isoformat(),
+                             "days": (gap_end - d).days + 1})
+                d = gap_end + timedelta(days=1)
+                continue
+            run_end = d
+            while run_end < d_to and chosen(run_end + timedelta(days=1)) == src:
+                run_end += timedelta(days=1)
+            for start_iso, n in tile_forward(d, (run_end - d).days + 1):
+                jobs.append((src, start_iso, n))
+            d = run_end + timedelta(days=1)
+    return jobs, gaps
 
 
 def fetch_chunk(key: str, source: str, bbox: list[float], start: str,
@@ -262,6 +405,13 @@ def main(argv=None) -> int:
                     help="window size in days (default: config lookback_days)")
     ap.add_argument("--end",
                     help="window end date YYYY-MM-DD (default: today)")
+    ap.add_argument("--from", dest="date_from", metavar="YYYY-MM-DD",
+                    help="backfill mode: first requested day")
+    ap.add_argument("--to", dest="date_to", metavar="YYYY-MM-DD",
+                    help="backfill mode: last requested day (inclusive)")
+    ap.add_argument("--backfill", action="store_true",
+                    help="backfill the last config backfill_years ending today "
+                         "(UTC); --from/--to override either end")
     ap.add_argument("--refetch", action="store_true",
                     help="re-download every raw file, including wholly-past "
                          "chunks (default: recent chunks always refetch, "
@@ -293,10 +443,52 @@ def main(argv=None) -> int:
     # Local date would run ahead of UTC on a UTC+9 machine and request a
     # window that ends in the future; FIRMS answers with a short result, no error.
     today_utc = datetime.now(timezone.utc).date()
-    end = date.fromisoformat(args.end) if args.end else today_utc
-    lookback = args.lookback if args.lookback is not None else int(cfg["lookback_days"])
-    jobs = [(src, *chunk) for src in cfg["sources"]
-            for chunk in chunk_starts(end, lookback)]
+
+    backfill = bool(args.backfill or args.date_from or args.date_to)
+    if not args.backfill and bool(args.date_from) != bool(args.date_to):
+        sys.exit("--from and --to must be given together, "
+                 "or use --backfill to take both defaults.")
+    if backfill and (args.end or args.lookback is not None):
+        log.warning("--end/--lookback are ignored in backfill mode")
+
+    gaps: list[dict] = []
+    if backfill:
+        availability = fetch_availability(key)
+        if availability is None:
+            sys.exit("Could not read the FIRMS data-availability table; "
+                     "refusing to guess which archive windows exist "
+                     "(a wrong guess yields silent empty results). Re-run "
+                     "when the API responds.")
+        # backfill_years drives the default range. It is the only consumer of
+        # that config value: a knob that merely warns earns nothing.
+        years_cfg = float(cfg.get("backfill_years", 3))
+        d_to = date.fromisoformat(args.date_to) if args.date_to else today_utc
+        d_from = (date.fromisoformat(args.date_from) if args.date_from
+                  else d_to - timedelta(days=round(years_cfg * 365.25)))
+        if d_from > d_to:
+            sys.exit("--from must not be after --to.")
+        table_max = max(mx for _, (_, mx) in availability.items())
+        table_min = min(mn for _, (mn, _) in availability.items())
+        if d_to > table_max or d_from < table_min:
+            log.warning("requested range %s..%s extends beyond the live "
+                        "availability table (%s..%s); those days are "
+                        "recorded as unavailable", d_from, d_to,
+                        table_min, table_max)
+        years_cap = years_cfg
+        if args.date_from and args.date_to and                 (d_to - d_from).days + 1 > years_cap * 366:
+            log.warning("requested span exceeds the configured "
+                        "backfill_years (%.0f); reconsider scope before "
+                        "paying for the extra requests", years_cap)
+        jobs, gaps = plan_backfill(availability, cfg["sources"], d_from, d_to)
+        log.info("backfill %s..%s planned: %d chunks across %d satellites, "
+                 "%d days recorded unavailable", d_from, d_to, len(jobs),
+                 len(cfg["sources"]), sum(g["days"] for g in gaps))
+    else:
+        end = date.fromisoformat(args.end) if args.end else today_utc
+        lookback = args.lookback if args.lookback is not None \
+            else int(cfg["lookback_days"])
+        jobs = [(src, *chunk) for src in cfg["sources"]
+                for chunk in chunk_starts(end, lookback)]
 
     frames, fetched, num_cached, failures = [], 0, 0, 0
     records = []
@@ -305,9 +497,8 @@ def main(argv=None) -> int:
             time.sleep(1)
         raw_path = cache_path(raw_dir, source, start, days)
         force = args.refetch or should_refetch(start, days, today_utc)
-        stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         record = {"source": source, "chunk_start": start, "days": days,
-                  "rows": None, "utc": stamp}
+                  "rows": None, "utc": utc_stamp()}
         if raw_path.exists() and not force:
             text = raw_path.read_text()
             num_cached += 1
@@ -327,17 +518,32 @@ def main(argv=None) -> int:
             record["rows"] = len(text.splitlines()) - 1
         frames.append(prepare(text, bbox))
         records.append(record)
-        log.info("%s %s (%dd) -> %s", source, start, days, note)
+        # Progress marker so an interrupted multi-year run is obviously
+        # resumable: the next run replays chunk N of M entirely from cache.
+        log.info("[%d/%d] %s %s (%dd) -> %s", i + 1, len(jobs), source,
+                 start, days, note)
+
+    # Uncovered stretches are recorded like any other outcome: 'unavailable'
+    # must never masquerade as zero rows (AGENTS rule 2).
+    for g in gaps:
+        records.append({**g, "outcome": "unavailable", "rows": None,
+                        "utc": utc_stamp()})
 
     # Provenance is persisted even when the run then aborts: the failure paths
     # below are exactly when the report layer most needs it.
     append_manifest(processed.parent / MANIFEST_FILENAME, records)
     log.info("provenance: %d chunk records appended -> %s", len(records),
              MANIFEST_FILENAME)
-    log.info("summary: %d fetched, %d served from cache, %d failed of %d chunks",
-             fetched, num_cached, failures, len(jobs))
+    log.info("summary: %d fetched, %d served from cache, %d failed, "
+             "%d unavailable of %d chunks",
+             fetched, num_cached, failures, len(gaps), len(jobs))
 
     if not frames:
+        if backfill and not jobs:
+            sys.exit(f"No part of {args.date_from}..{args.date_to} falls "
+                     "inside any configured satellite's data window - see "
+                     "the manifest records marked 'unavailable'. Existing "
+                     "store left untouched.")
         sys.exit("ALL FIRMS requests failed and no cached raw responses exist "
                  "- no data parsed, existing store left untouched.")
     if fetched == 0 and failures:
