@@ -11,6 +11,9 @@ secrets.yaml
 config.local.yaml
 
 # --- generated data ---
+# Operational API responses, written fresh by every run. Test inputs live in
+# tests/fixtures/ and are tracked; nothing under data/ ever should be.
+data/raw/
 data/processed/
 data/cache/
 *.pmtiles
