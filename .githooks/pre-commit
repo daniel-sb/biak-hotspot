@@ -5,21 +5,29 @@
 
 fail=0
 
+# A line may opt out with the marker below, but only deliberately: the pattern
+# itself is never relaxed. Public identifiers that happen to look like keys
+# (the BIG portal GUID, for example) are the intended use. Never add the marker
+# to silence a real credential.
+ALLOW='pragma: allowlist secret'
+
+staged() { git diff --cached -U0 | grep -v "$ALLOW"; }
+
 # Long hex strings (FIRMS map keys are 32 hex, OpenAQ keys are 64 hex)
-if git diff --cached -U0 | grep -nE '^\+.*[^a-fA-F0-9][a-fA-F0-9]{32,}([^a-fA-F0-9]|$)' >/dev/null 2>&1; then
+if staged | grep -nE '^\+.*[^a-fA-F0-9][a-fA-F0-9]{32,}([^a-fA-F0-9]|$)' >/dev/null 2>&1; then
     echo "pre-commit: staged changes contain a long hex string that may be an API key."
     git diff --cached -U0 --name-only
     fail=1
 fi
 
 # Service account / private key material
-if git diff --cached -U0 | grep -nE '^\+.*("type"[[:space:]]*:[[:space:]]*"service_account"|BEGIN [A-Z ]*PRIVATE KEY)' >/dev/null 2>&1; then
+if staged | grep -nE '^\+.*("type"[[:space:]]*:[[:space:]]*"service_account"|BEGIN [A-Z ]*PRIVATE KEY)' >/dev/null 2>&1; then
     echo "pre-commit: staged changes contain private key or service account material."
     fail=1
 fi
 
 # Assignment to a known secret name with a non-empty value
-if git diff --cached -U0 | grep -nE '^\+.*(FIRMS_MAP_KEY|OPENAQ_KEY|PTREE_PASS|GEE_SERVICE_ACCOUNT_JSON)[[:space:]]*[:=][[:space:]]*[^[:space:]"'"'"']' >/dev/null 2>&1; then
+if staged | grep -nE '^\+.*(FIRMS_MAP_KEY|OPENAQ_KEY|PTREE_PASS|GEE_SERVICE_ACCOUNT_JSON)[[:space:]]*[:=][[:space:]]*[^[:space:]"'"'"']' >/dev/null 2>&1; then
     echo "pre-commit: a secret environment variable appears to have a value assigned in a tracked file."
     fail=1
 fi

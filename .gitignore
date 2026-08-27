@@ -38,3 +38,8 @@ Thumbs.db
 desktop.ini
 .vscode/
 .idea/
+
+# National BIG geodatabase (340 MB, manually downloaded, not redistributable here).
+# Derive data/boundaries/ from it with scripts/extract_boundary.sh
+*.gdb/
+*.gdb.zip
