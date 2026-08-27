@@ -1,0 +1,30 @@
+# Biak hotspot monitoring - FIRMS ingest configuration (Task 01).
+# Credentials come from the environment only (FIRMS_MAP_KEY), never from this file.
+
+# West, South, East, North (EPSG:4326). PLAN.md header.
+# Widened 2026-08-27 to cover BOTH regencies in full. Kepulauan Mapia (Supiori
+# Barat distrik) sits at 134.30E, +0.94N, roughly 300 km northwest of Biak, and
+# two Aimando Padaido desa lie east of 136.70. The earlier box excluded all four,
+# which would have published them as zero-hotspot districts without ever looking.
+# The added area is almost entirely ocean; FIRMS returns only detections and the
+# desa polygon clip discards anything not on land.
+aoi_bbox_wsen: [134.25, -1.39, 136.76, 0.99]
+
+sources:
+  - VIIRS_SNPP_NRT
+  - VIIRS_NOAA20_NRT
+  - VIIRS_NOAA21_NRT
+  - MODIS_NRT
+
+# Default window size for a daily pull. FIRMS accepts max 5 days per request;
+# longer windows are chunked automatically in src/ingest_firms.py.
+lookback_days: 15
+
+output_paths:
+  raw_dir: data/raw
+  processed: data/processed/detections.parquet
+
+# Desa/kelurahan boundaries for Biak Numfor and Supiori, derived from the
+# national BIG geodatabase by scripts/extract_boundary.sh. 306 features.
+# Not yet wired into the ingest - see the hook in prepare().
+admin_polygon: data/boundaries/biak_desa.geojson
