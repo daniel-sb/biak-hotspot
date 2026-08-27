@@ -106,8 +106,14 @@ snapshots; Himawari's 10-minute full-disk cadence gives ignition time and spread
 Biak at 136°E sits comfortably inside the disk (sub-satellite point 140.7°E). Access is the
 JAXA P-Tree FTP service (`ftp.ptree.jaxa.jp`), free registration, wildfire product under
 `/pub/himawari/L3/WLF/`. Raw AHI L1b is also mirrored on AWS Open Data at
-`s3://noaa-himawari9/` with no credentials required. Defer this to Phase 4 — it is the
-single most operationally awkward source here, and Phases 1–3 do not need it.
+`s3://noaa-himawari9/` with no credentials required.
+
+**Priority raised 2026-08-28.** This is no longer a Phase 4 convenience. Section 12
+establishes that the polar-orbiting constellation does not observe Biak at all between
+15:00 and 00:31 WIT. Himawari-9 is the only open-access sensor covering that window. It is
+coarser at 2 km and will miss small fires, but it is the difference between partial evening
+data and none. The JAXA P-Tree registration requires manual approval, so apply immediately
+regardless of when the code gets written.
 
 **Cross-validation with SiPongi** matters for credibility with Indonesian institutions.
 SiPongi applies its own confidence filtering to the same underlying NASA data, so counts
@@ -212,6 +218,14 @@ Derived indices to compute:
   truth in the entire project: a satellite hotspot cluster upwind of the airport coinciding
   with reported smoke and falling visibility is a corroborated fire. Wire this in during
   Phase 2, not later.
+
+  **But it is one point, and section 12 shows how badly that can fail.** On the night of
+  2026-08-27 the airport reported 8000 m visibility and no smoke code for ten consecutive
+  hours while a resident 6.5 km away was in smoke heavy enough to bring out fire trucks.
+  Under a calm nocturnal inversion smoke pools locally and a sensor a few kilometres away
+  is in different air entirely. A `FU` report is strong positive evidence; the absence of
+  one is close to no evidence at all. The brief must never treat a clear METAR as
+  confirmation that nothing is burning.
 
 ### 2.7 Terrain, infrastructure, boundaries
 
@@ -423,8 +437,12 @@ Apply for the P-Tree account during Phase 1 even though Himawari is not used unt
 
 ## 7. Deliverable priority
 
-If effort is limited, the order of value is: Phase 1 → Phase 2 → Phase 6 → Phase 3 →
-Phase 5 step 1 → Phase 4 → Phase 5 step 3.
+If effort is limited, the order of value is: Phase 1, Phase 2, **Himawari evening coverage
+(section 2.1)**, Phase 6, Phase 3, Phase 5 step 1, Phase 4, Phase 5 step 3.
+
+Himawari was moved forward on 2026-08-28. The evening blind window documented in section 12
+is not a gap in analysis quality, it is a gap in observation covering exactly the hours when
+residents experience smoke.
 
 A reliable, corroborated, plainly-worded daily hotspot brief in Bahasa Indonesia is worth
 more to Biak than an unvalidated prediction model.
@@ -795,3 +813,74 @@ days in November 2023, two in April 2026).
 
 That is a fire signature, not infrastructure. A permanent heat source would appear on hundreds
 of days. This finding is now closed: the August 2026 cluster near the airport is real burning.
+
+---
+
+## 12. The evening blind window, and the night of 2026-08-27
+
+### 12.1 When the satellites actually look
+
+Every FIRMS acquisition over Biak in the three-year record falls into two windows:
+
+```
+00:31 - 01:58 WIT     night pass    S-NPP, NOAA-20, NOAA-21
+09:00 - 15:00 WIT     day passes    VIIRS (12:00-14:00), Terra (09:00-10:00), Aqua (13:00-15:00)
+```
+
+**Nothing observes Biak between 15:00 and 00:31 WIT — a 9.5-hour blind window.** This is not a
+data gap that better processing can close. The polar-orbiting constellation is sun-synchronous;
+those are the only times it passes. Terra contributes 3 detections in 1,078 and Aqua 18, all
+afternoon, so in practice the record is VIIRS at midday and VIIRS after midnight.
+
+Night detections are 114 of 1,078 across three years (10.6%), every one of them between 00:31
+and 01:58 WIT. Fires burning past midnight are therefore common enough to be well observed when
+they occur. In the August 2026 event specifically, only 1 of 661 detections in ten days was at
+night — a sharp departure from the three-year rate, consistent with daytime ignition that does
+not persist.
+
+### 12.2 The night of 2026-08-27
+
+At 22:16 WIT the project owner, in Sorido, reported smoke strong enough inside the house to be
+unpleasant, and fire trucks passing roughly two hours earlier.
+
+What the instruments said at that moment:
+
+| Source | Reading |
+|---|---|
+| FIRMS, most recent pass | 15:44 WIT, 6.5 hours earlier |
+| FIRMS overnight pass (00:31-01:58 WIT) | **zero night detections** |
+| WABB METAR, 13:00 WIT onward | 8000 m visibility, **no `FU` smoke code**, for ten consecutive hours |
+
+The last `FU` at the airport was 04:00Z (13:00 WIT). From then until past midnight the airport,
+6.5 km from Sorido, reported clear air.
+
+**All three instruments reported nothing. The only detector that worked was a person standing
+in the smoke.**
+
+The day's detections place the likely source: a cluster 3.0-5.0 km NNW of Sorido at bearing
+326-336 degrees, adjacent to the recurrent site in section 11.2, burning at 13:17-13:36 WIT.
+Evening wind at the airport was 300-340 degrees — blowing from precisely that bearing onto
+Sorido — before falling to `VRB02KT`, effectively calm, by 22:00.
+
+### 12.3 What this means for the product
+
+**Three separate failure modes, all real, all now dated:**
+
+1. **No evening observation exists.** Between 15:00 and 00:31 WIT the project is blind. Himawari-9
+   is the only open-access remedy and its priority is raised accordingly (§2.1, §7).
+2. **A clear METAR is not evidence of clear air.** Under a calm nocturnal inversion smoke pools
+   locally; a sensor 6.5 km away is in different air entirely. A `FU` report corroborates; its
+   absence corroborates nothing.
+3. **VIIRS detects radiant heat, not smoke.** A smouldering fire with no flame produces heavy
+   smoke and little radiance. "No hot combustion detected" is a much weaker claim than "no fire",
+   and the brief must not blur them.
+
+**And one thing the project does not yet have: ground reports.** No remote sensing available here
+covers the evening hours when residents actually experience smoke. A simple reporting channel —
+a form, or a WhatsApp number, capturing time, place and severity — would outperform every
+satellite in this document for that window, at near-zero cost. It belongs in the plan as a data
+source, not as outreach.
+
+This section exists because the alternative was to publish a brief for 2026-08-27 stating that
+no thermal anomalies were detected overnight and the airport reported clear air. Both statements
+would have been true, and together they would have been badly misleading.
