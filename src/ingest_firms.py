@@ -16,6 +16,7 @@ FIRMS_MAP_KEY must be set in the environment.
 import argparse
 import hashlib
 import io
+import json
 import logging
 import os
 import sys
@@ -26,6 +27,8 @@ from pathlib import Path
 import pandas as pd
 import requests
 import yaml
+from shapely import STRtree
+from shapely.geometry import Point, shape
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -35,6 +38,21 @@ DAY_RANGE_MAX = 5  # FIRMS rejects >5: "Invalid day range. Expects [1..5]."
 WIT = timezone(timedelta(hours=9))  # Papua is UTC+9
 
 log = logging.getLogger("ingest_firms")
+
+# Fetch-provenance data file (Task 02b): one record per attempted chunk per
+# run, appended - never overwritten - so history accumulates. Lives next to
+# the detections store. The report layer reads it to distinguish "observed,
+# nothing there" from "never queried / query failed" (AGENTS rule 2).
+MANIFEST_FILENAME = "run_manifest.json"
+
+
+def append_manifest(path: Path, entries: list[dict]) -> None:
+    """Append chunk-outcome records to the run manifest JSON."""
+    data: dict = {"runs": []}
+    if path.exists():
+        data = json.loads(path.read_text(encoding="utf-8"))
+    data.setdefault("runs", []).extend(entries)
+    path.write_text(json.dumps(data, indent=1) + "\n", encoding="utf-8")
 
 
 def chunk_starts(end: date, days: int) -> list[tuple[str, int]]:
@@ -96,13 +114,62 @@ def fetch_chunk(key: str, source: str, bbox: list[float], start: str,
     return text + "\n"
 
 
-def prepare(text: str, bbox: list[float]) -> pd.DataFrame:
+def load_boundaries(path: Path):
+    """Load the desa GeoJSON once per run -> (tree, geoms, names).
+
+    names[i] = (desa, distrik, kabupaten) for geoms[i]. The STRtree indexes
+    bounding boxes; query() returns candidate indices and containment is
+    still verified per candidate in assign_admin().
+    """
+    fc = json.loads(Path(path).read_text(encoding="utf-8"))
+    geoms, names = [], []
+    for feat in fc["features"]:
+        props = feat["properties"]
+        geoms.append(shape(feat["geometry"]))
+        names.append(tuple(props.get(k) or None
+                           for k in ("WADMKD", "WADMKC", "WADMKK")))
+    return STRtree(geoms), geoms, names
+
+
+def assign_admin(df: pd.DataFrame, boundaries) -> pd.DataFrame:
+    """Add desa/distrik/kabupaten/on_land from point-in-polygon.
+
+    Never drops rows (AGENTS rule 5): a detection outside every polygon stays
+    with on_land=False and null name columns - offshore pixels carry real
+    information (coastal pixel vs sun glint) that Phase 2 needs.
+    """
+    tree, geoms, names = boundaries
+    df = df.copy()
+    hits = []
+    for lon, lat in zip(df["longitude"], df["latitude"]):
+        pt = Point(float(lon), float(lat))
+        hit = None
+        for i in tree.query(pt):  # bbox candidates, not answers
+            if geoms[int(i)].covers(pt):
+                hit = names[int(i)]
+                break
+        hits.append(hit)
+    # Explicit dtypes: empty clips (e.g. a header-only day) must not turn
+    # on_land into object or names into float NaN.
+    df["desa"] = pd.Series([h[0] if h else None for h in hits],
+                           index=df.index, dtype=object)
+    df["distrik"] = pd.Series([h[1] if h else None for h in hits],
+                              index=df.index, dtype=object)
+    df["kabupaten"] = pd.Series([h[2] if h else None for h in hits],
+                                index=df.index, dtype=object)
+    df["on_land"] = pd.Series([h is not None for h in hits],
+                              index=df.index, dtype=bool)
+    return df
+
+
+def prepare(text: str, bbox: list[float], boundaries=None) -> pd.DataFrame:
     """Raw FIRMS CSV text -> tidy DataFrame, clipped to the bbox.
 
     Keeps acq_date/acq_time and confidence as returned (confidence must never
     be coerced: VIIRS l/n/h and MODIS 0-100 share the column); latitude and
     longitude become float. Adds detection_id, datetime_utc (tz-aware),
-    datetime_wit (+09:00) and date_wit.
+    datetime_wit (+09:00) and date_wit. When `boundaries` is given (from
+    load_boundaries()), also adds desa/distrik/kabupaten/on_land.
     """
     df = pd.read_csv(io.StringIO(text), dtype=str, keep_default_na=False)
     lat = pd.to_numeric(df["latitude"])
@@ -129,13 +196,47 @@ def prepare(text: str, bbox: list[float]) -> pd.DataFrame:
 
     # --- spatial filter -----------------------------------------------------
     # Step 1: clip to the AOI bbox.
-    # HOOK for step 2 (not built yet): administrative polygon clipping goes here
-    # once a boundary file exists (see admin_polygon in config.yaml,
-    # PLAN.md 2.7 / Phase 1). This function is deliberately the single place
-    # where spatial filtering happens.
     w, s, e, n = bbox
     inside = lat.between(s, n) & lon.between(w, e)
-    return df[inside]
+    df = df[inside]
+
+    # Step 2: administrative assignment (desa/distrik/kabupaten) plus the
+    # on_land flag. Nothing is dropped here either way; pass boundaries=None
+    # when attribution is not wanted (tests of parsing alone).
+    if boundaries is not None:
+        df = assign_admin(df, boundaries)
+    return df
+
+
+def normalise(df: pd.DataFrame) -> pd.DataFrame:
+    """Enforce the storage contract: dtypes and required columns.
+
+    Applied by merge_tables() to every frame that enters it - including the
+    one read back from Parquet - and to the merged result. Because stored rows
+    pass through here on every run, a parser fix is automatically retroactive:
+    no correction to prepare() can be made permanent for existing data.
+
+    Contract (minimum): latitude/longitude/frp float, confidence string
+    (VIIRS l/n/h and MODIS 0-100 share it; never coerced to numbers),
+    detection_id string, on_land boolean. acq_date/acq_time stay as returned.
+
+    Idempotent: applying twice equals applying once.
+    """
+    df = df.copy()
+    for col in ("latitude", "longitude", "frp"):
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors="coerce").astype("float64")
+    if "confidence" in df.columns:
+        df["confidence"] = df["confidence"].astype("string")
+    if "detection_id" in df.columns:
+        df["detection_id"] = df["detection_id"].astype("string")
+    if "on_land" in df.columns:
+        df["on_land"] = df["on_land"].astype("boolean")
+    else:
+        # Column-set half of the contract: merge partners align cleanly, and
+        # assign_admin() replaces these placeholders with real values.
+        df["on_land"] = pd.array([pd.NA] * len(df), dtype="boolean")
+    return df
 
 
 def merge_tables(*frames: pd.DataFrame) -> pd.DataFrame:
@@ -144,10 +245,14 @@ def merge_tables(*frames: pd.DataFrame) -> pd.DataFrame:
     keep="first" with existing tables passed before new ones means re-running
     never overwrites stored rows or changes their IDs. Detections are distinct
     per satellite because satellite/instrument are part of the ID hash.
+    Every incoming frame is normalised first, and the result again, so dtype
+    drift from any source (old Parquet, parser changes, empty frames) cannot
+    propagate into the store.
     """
-    combined = pd.concat(frames, ignore_index=True)
-    return (combined.drop_duplicates(subset="detection_id", keep="first")
-            .sort_values("detection_id").reset_index(drop=True))
+    combined = pd.concat([normalise(f) for f in frames], ignore_index=True)
+    merged = (combined.drop_duplicates(subset="detection_id", keep="first")
+              .sort_values("detection_id").reset_index(drop=True))
+    return normalise(merged)
 
 
 def main(argv=None) -> int:
@@ -176,6 +281,15 @@ def main(argv=None) -> int:
     raw_dir.mkdir(parents=True, exist_ok=True)
     processed.parent.mkdir(parents=True, exist_ok=True)
 
+    # Boundaries are loaded once per run, never per detection: a per-row load
+    # would not survive a multi-year backfill.
+    boundaries = None
+    if cfg.get("admin_polygon"):
+        admin_path = ROOT / cfg["admin_polygon"]
+        if not admin_path.exists():
+            sys.exit(f"admin_polygon from config.yaml not found: {admin_path}")
+        boundaries = load_boundaries(admin_path)
+
     # Local date would run ahead of UTC on a UTC+9 machine and request a
     # window that ends in the future; FIRMS answers with a short result, no error.
     today_utc = datetime.now(timezone.utc).date()
@@ -185,26 +299,41 @@ def main(argv=None) -> int:
             for chunk in chunk_starts(end, lookback)]
 
     frames, fetched, num_cached, failures = [], 0, 0, 0
+    records = []
     for i, (source, start, days) in enumerate(jobs):
         if i:
             time.sleep(1)
         raw_path = cache_path(raw_dir, source, start, days)
         force = args.refetch or should_refetch(start, days, today_utc)
+        stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        record = {"source": source, "chunk_start": start, "days": days,
+                  "rows": None, "utc": stamp}
         if raw_path.exists() and not force:
             text = raw_path.read_text()
             num_cached += 1
             note = "cached"
+            record["outcome"] = "cached"
+            record["rows"] = len(text.splitlines()) - 1
         else:
             text = fetch_chunk(key, source, bbox, start, days)
             if text is None:
                 failures += 1
+                records.append({**record, "outcome": "failed"})
                 continue
             raw_path.write_text(text)
             fetched += 1
             note = f"fetched {len(text.splitlines()) - 1} rows"
+            record["outcome"] = "fetched"
+            record["rows"] = len(text.splitlines()) - 1
         frames.append(prepare(text, bbox))
+        records.append(record)
         log.info("%s %s (%dd) -> %s", source, start, days, note)
 
+    # Provenance is persisted even when the run then aborts: the failure paths
+    # below are exactly when the report layer most needs it.
+    append_manifest(processed.parent / MANIFEST_FILENAME, records)
+    log.info("provenance: %d chunk records appended -> %s", len(records),
+             MANIFEST_FILENAME)
     log.info("summary: %d fetched, %d served from cache, %d failed of %d chunks",
              fetched, num_cached, failures, len(jobs))
 
@@ -224,6 +353,13 @@ def main(argv=None) -> int:
         pieces.append(pd.read_parquet(processed))
     pieces.extend(frames)
     merged = merge_tables(*pieces)
+
+    if boundaries is not None:
+        # Pure function of coordinates, so this is idempotent on stored rows
+        # and upgrades rows written before the boundary file existed, without
+        # touching detection IDs. Re-applied to every row each run: newly
+        # deduped rows and legacy rows both end up consistently attributed.
+        merged = assign_admin(merged, boundaries)
 
     try:
         merged.to_parquet(processed, index=False)

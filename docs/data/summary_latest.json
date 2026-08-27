@@ -1,0 +1,203 @@
+{
+ "covered_wit_date": "2026-08-25",
+ "districts": [
+  {
+   "detections": 0,
+   "distrik": "Aimando Padaido",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Andey",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Biak Barat",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 2,
+   "distrik": "Biak Kota",
+   "kabupaten": "Biak Numfor",
+   "max_frp": 6.6,
+   "total_frp": 12.1
+  },
+  {
+   "detections": 8,
+   "distrik": "Biak Timur",
+   "kabupaten": "Biak Numfor",
+   "max_frp": 7.6,
+   "total_frp": 45.5
+  },
+  {
+   "detections": 2,
+   "distrik": "Biak Utara",
+   "kabupaten": "Biak Numfor",
+   "max_frp": 6.0,
+   "total_frp": 9.8
+  },
+  {
+   "detections": 0,
+   "distrik": "Bondifuar",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Bruyadori",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Kepulauan Aruri",
+   "kabupaten": "Supiori",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Numfor Barat",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Numfor Timur",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Oridek",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Orkeri",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Padaido",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Poiru",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 3,
+   "distrik": "Samofa",
+   "kabupaten": "Biak Numfor",
+   "max_frp": 4.4,
+   "total_frp": 7.1
+  },
+  {
+   "detections": 0,
+   "distrik": "Supiori Barat",
+   "kabupaten": "Supiori",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Supiori Selatan",
+   "kabupaten": "Supiori",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Supiori Timur",
+   "kabupaten": "Supiori",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Supiori Utara",
+   "kabupaten": "Supiori",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Swandiwe",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Warsa",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 0,
+   "distrik": "Yawosi",
+   "kabupaten": "Biak Numfor",
+   "max_frp": null,
+   "total_frp": null
+  },
+  {
+   "detections": 3,
+   "distrik": "Yendidori",
+   "kabupaten": "Biak Numfor",
+   "max_frp": 6.2,
+   "total_frp": 14.1
+  }
+ ],
+ "generated_utc": "2026-08-27T10:55:55Z",
+ "geojson_window_days": 7,
+ "manifest_found": false,
+ "sources": [
+  {
+   "detections": 6,
+   "source": "VIIRS_SNPP_NRT",
+   "status": "observed"
+  },
+  {
+   "detections": 1,
+   "source": "VIIRS_NOAA20_NRT",
+   "status": "observed"
+  },
+  {
+   "detections": 11,
+   "source": "VIIRS_NOAA21_NRT",
+   "status": "observed"
+  },
+  {
+   "detections": 0,
+   "source": "MODIS_NRT",
+   "status": "norecord"
+  }
+ ],
+ "totals": {
+  "detections": 18,
+  "offshore": 0,
+  "on_land": 18
+ }
+}

@@ -6,6 +6,7 @@ or directly (no pytest needed):
     python tests/test_ingest_firms.py
 """
 import hashlib
+import json
 import sys
 import tempfile
 from datetime import date
@@ -20,6 +21,7 @@ import ingest_firms as ing  # noqa: E402
 
 RAW = ROOT / "tests" / "fixtures"
 BBOX = [134.60, -1.45, 136.70, -0.55]
+BOUNDARIES = ing.load_boundaries(ROOT / "data" / "boundaries" / "biak_desa.geojson")
 
 # Minimal realistic VIIRS/MODIS bodies for edge cases the committed fixtures
 # do not cover (21:00 UTC day boundary, rows outside the bbox).
@@ -148,6 +150,119 @@ def test_fixture_corpus_matches_reference_counts():
     counts = merged.groupby("date_wit").size()
     assert len(merged) == 653
     assert counts.get("2026-08-22", 0) == 283
+
+
+def test_pinned_admin_assignments():
+    raw = HEADER + (
+        "\n"
+        "-1.1274,136.0440,320,0.5,0.5,2026-08-25,0630,N,VIIRS,n,2.0NRT,290,5,D\n"
+        "-1.1853,136.1297,320,0.5,0.5,2026-08-25,0700,N20,VIIRS,n,2.0NRT,290,5,D\n"
+        "-1.3000,136.4000,320,0.5,0.5,2026-08-25,0730,N21,VIIRS,n,2.0NRT,290,5,D\n")
+    df = ing.prepare(raw, BBOX, BOUNDARIES)
+
+    def at(lat, lon):
+        m = df[(df["latitude"] == lat) & (df["longitude"] == lon)]
+        assert len(m) == 1
+        return m.iloc[0]
+
+    p1, p2, p3 = at(-1.1274, 136.0440), at(-1.1853, 136.1297), \
+        at(-1.3000, 136.4000)
+    assert (p1["desa"], p1["distrik"], p1["kabupaten"]) == \
+        ("Sambawofuar", "Samofa", "Biak Numfor")
+    assert (p2["desa"], p2["distrik"], p2["kabupaten"]) == \
+        ("Swapodibo", "Biak Kota", "Biak Numfor")
+    assert bool(p3["on_land"]) is False
+    for col in ("desa", "distrik", "kabupaten"):
+        assert pd.isna(p3[col]), f"outside-polygon detection got a {col}"
+
+
+def test_offshore_detection_kept_not_dropped():
+    """A detection outside every polygon must survive ingest (AGENTS rule 5):
+    flagged on_land=False with null names, never deleted."""
+    raw = HEADER + ("\n"
+                    "-1.3000,136.4000,320,0.5,0.5,2026-08-25,0730,N21,"
+                    "VIIRS,n,2.0NRT,290,5,D\n")
+    df = ing.prepare(raw, BBOX, BOUNDARIES)
+    assert len(df) == 1
+    row = df.iloc[0]
+    assert bool(row["on_land"]) is False
+    assert all(pd.isna(row[c]) for c in ("desa", "distrik", "kabupaten"))
+    assert row["detection_id"]  # otherwise-normal row
+
+
+def test_fixture_corpus_admin_counts():
+    """Independently verified: 651 of the 653 fixture detections fall inside
+    a desa polygon, 2 offshore (NOAA-20 pixels in Biak bay), across 18 of the
+    24 distrik."""
+    merged = ing.merge_tables(*[ing.prepare(f.read_text(), BBOX, BOUNDARIES)
+                                for f in sorted(RAW.glob("*.csv"))])
+    assert len(merged) == 653                     # nothing lost to assignment
+    assert int(merged["on_land"].sum()) == 651
+    assert int((~merged["on_land"]).sum()) == 2
+    assert merged.loc[merged["on_land"], "distrik"].nunique() == 18
+
+
+def test_normalise_idempotent_and_contract_holding():
+    raw = HEADER + ("\n"
+                    "-0.90,135.50,320,0.5,0.5,2026-08-25,2100,N20,VIIRS,"
+                    "31,2.0NRT,290,7,D\n")
+    df = ing.prepare(raw, BBOX)          # no boundaries -> on_land absent
+    once = ing.normalise(df)
+    twice = ing.normalise(once)
+    pd.testing.assert_frame_equal(once, twice)
+    # Dtypes enforced...
+    assert once["latitude"].dtype.kind == "f"
+    assert once["longitude"].dtype.kind == "f"
+    assert once["frp"].dtype.kind == "f"
+    assert once["on_land"].dtype == "boolean"
+    assert once["detection_id"].dtype == "string"
+    # ...confidence stays textual, including the MODIS numeric-as-string...
+    conf = once["confidence"].iloc[0]
+    assert isinstance(conf, str) and conf == "31"
+    # ...and acq fields are untouched.
+    assert once["acq_date"].iloc[0] == "2026-08-25"
+    assert once["acq_time"].iloc[0] == "2100"
+
+
+def test_merge_retroactively_fixes_stored_string_coordinates():
+    """A legacy store written before the float fix must come out of
+    merge_tables() with float coordinates, unchanged IDs, and working
+    arithmetic - without any rows being dropped."""
+    fresh = ing.prepare(fixture("VIIRS_NOAA20_NRT_2026-08-18.csv"), BBOX,
+                        BOUNDARIES)
+    with tempfile.TemporaryDirectory() as td:
+        path = Path(td) / "legacy.parquet"
+        legacy = fresh.copy()
+        for col in ("latitude", "longitude", "frp"):
+            legacy[col] = legacy[col].astype(str)
+        legacy.to_parquet(path, index=False)
+        stored = pd.read_parquet(path)
+        assert stored["latitude"].dtype.kind not in "f"   # reproduces defect
+
+        merged = ing.merge_tables(stored, fresh)
+        assert len(merged) == len(fresh)
+        assert list(merged["detection_id"]) == \
+            sorted(fresh["detection_id"])                 # ids untouched
+        assert merged["latitude"].dtype.kind == "f"
+        assert merged["longitude"].dtype.kind == "f"
+        assert merged["frp"].dtype.kind == "f"
+        diff = merged["latitude"] - 0.1                   # must not raise
+        assert abs(float(diff.sum())) > 0
+
+
+def test_manifest_appends_across_runs():
+    with tempfile.TemporaryDirectory() as td:
+        path = Path(td) / ing.MANIFEST_FILENAME
+        first = {"source": "MODIS_NRT", "chunk_start": "2026-08-25",
+                 "days": 3, "outcome": "failed", "rows": None,
+                 "utc": "2026-08-27T00:00:00Z"}
+        second = {"source": "MODIS_NRT", "chunk_start": "2026-08-25",
+                  "days": 3, "outcome": "fetched", "rows": 4,
+                  "utc": "2026-08-27T06:00:00Z"}
+        ing.append_manifest(path, [first])
+        ing.append_manifest(path, [second])
+        runs = json.loads(path.read_text(encoding="utf-8"))["runs"]
+        assert runs == [first, second]   # history accumulates, never overwritten
 
 
 if __name__ == "__main__":

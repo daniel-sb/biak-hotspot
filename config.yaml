@@ -23,8 +23,17 @@ lookback_days: 15
 output_paths:
   raw_dir: data/raw
   processed: data/processed/detections.parquet
+  # Published files (docs/ is the GitHub Pages root):
+  geojson: docs/data/hotspots_latest.geojson
+  summary_json: docs/data/summary_latest.json
+  brief_dir: docs/briefs
+
+# Rolling window for hotspots_latest.geojson, in WIT days ending on the
+# covered day. The brief itself always covers exactly one day.
+geojson_window_days: 7
 
 # Desa/kelurahan boundaries for Biak Numfor and Supiori, derived from the
 # national BIG geodatabase by scripts/extract_boundary.sh. 306 features.
-# Not yet wired into the ingest - see the hook in prepare().
+# Wired into the ingest (src/ingest_firms.py): detections outside every desa
+# are kept with on_land = False, never dropped.
 admin_polygon: data/boundaries/biak_desa.geojson

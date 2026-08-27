@@ -5,32 +5,48 @@
 
 fail=0
 
-# A line may opt out with the marker below, but only deliberately: the pattern
-# itself is never relaxed. Public identifiers that happen to look like keys
+# A line may opt out with this marker, but only deliberately. The patterns
+# themselves are never relaxed. Public identifiers that merely look like keys
 # (the BIG portal GUID, for example) are the intended use. Never add the marker
 # to silence a real credential.
 ALLOW='pragma: allowlist secret'
 
-staged() { git diff --cached -U0 | grep -v "$ALLOW"; }
+# detection_id values are SHA-1 digests of coordinates and timestamps that this
+# project generates and publishes by the hundreds in docs/data/*.geojson. They
+# are content-derived, never secret. Only this exact shape is redacted; every
+# other long hex string in every file, published output included, is still checked.
+clean() {
+    grep -v "$ALLOW" \
+    | sed 's/"detection_id": *"[0-9a-f]\{40\}"/"detection_id":"REDACTED"/g'
+}
 
-# Long hex strings (FIRMS map keys are 32 hex, OpenAQ keys are 64 hex)
-if staged | grep -nE '^\+.*[^a-fA-F0-9][a-fA-F0-9]{32,}([^a-fA-F0-9]|$)' >/dev/null 2>&1; then
-    echo "pre-commit: staged changes contain a long hex string that may be an API key."
-    git diff --cached -U0 --name-only
-    fail=1
+# check <regex> <message> - names the offending files, not every staged file.
+check() {
+    hits=""
+    for f in $(git diff --cached --name-only); do
+        n=$(git diff --cached -U0 -- "$f" | clean | grep -cE "$1")
+        if [ "${n:-0}" -gt 0 ]; then
+            hits="$hits
+    $f ($n line(s))"
+        fi
+    done
+    if [ -n "$hits" ]; then
+        echo "pre-commit: $2"
+        echo "$hits"
+        fail=1
+    fi
+}
+
+check '^\+.*[^a-fA-F0-9][a-fA-F0-9]{32,}([^a-fA-F0-9]|$)' \
+      'staged changes contain a long hex string that may be an API key.'
+
+check '^\+.*("type"[[:space:]]*:[[:space:]]*"service_account"|BEGIN [A-Z ]*PRIVATE KEY)' \
+      'staged changes contain private key or service account material.'
+
+check '^\+.*(FIRMS_MAP_KEY|OPENAQ_KEY|PTREE_PASS|GEE_SERVICE_ACCOUNT_JSON)[[:space:]]*[:=][[:space:]]*[^[:space:]"'"'"']' \
+      'a secret environment variable appears to have a value assigned in a tracked file.'
+
+if [ "$fail" -eq 1 ]; then
+    echo "Commit blocked. Move the value into .env (gitignored) and read it via os.environ."
 fi
-
-# Service account / private key material
-if staged | grep -nE '^\+.*("type"[[:space:]]*:[[:space:]]*"service_account"|BEGIN [A-Z ]*PRIVATE KEY)' >/dev/null 2>&1; then
-    echo "pre-commit: staged changes contain private key or service account material."
-    fail=1
-fi
-
-# Assignment to a known secret name with a non-empty value
-if staged | grep -nE '^\+.*(FIRMS_MAP_KEY|OPENAQ_KEY|PTREE_PASS|GEE_SERVICE_ACCOUNT_JSON)[[:space:]]*[:=][[:space:]]*[^[:space:]"'"'"']' >/dev/null 2>&1; then
-    echo "pre-commit: a secret environment variable appears to have a value assigned in a tracked file."
-    fail=1
-fi
-
-[ "$fail" -eq 1 ] && echo "Commit blocked. Move the value into .env (gitignored) and read it via os.environ."
 exit $fail
