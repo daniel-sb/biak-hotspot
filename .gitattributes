@@ -1,0 +1,13 @@
+* text=auto
+
+# Shell scripts and git hooks must stay LF or they fail with "bad interpreter" on
+# Windows checkouts. This repo is developed on Windows and run in Linux CI.
+*.sh text eol=lf
+.githooks/* text eol=lf
+
+# Keep fixture data byte-identical so ingest regression tests stay meaningful.
+data/raw/**/*.csv -text
+
+*.png binary
+*.pmtiles binary
+*.tif binary
