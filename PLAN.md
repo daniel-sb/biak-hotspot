@@ -7,12 +7,22 @@ reviewer will check against.
 **Area of interest (AOI):** Biak, Supiori, Numfor and the Padaido islands, Papua, Indonesia.
 
 ```
-BBOX_WSEN = (134.60, -1.45, 136.70, -0.55)   # west, south, east, north (EPSG:4326)
+BBOX_WSEN = (134.25, -1.39, 136.76, 0.99)   # west, south, east, north (EPSG:4326)
 ```
 
-Use this bounding box for every API request, then clip precisely with an admin polygon
+Use this bounding box for every API request, then clip precisely with the desa polygons
 (see §2.7). The bbox is deliberately generous — a hotspot at the edge of the box that
 falls in the sea after clipping is a useful false-positive signal, not an error.
+
+**This box was widened on 2026-08-27 and the reason is worth keeping.** The original
+`(134.60, -1.45, 136.70, -0.55)` covered the visible Biak-Supiori-Numfor cluster but excluded
+four desa belonging to the two regencies: two on **Kepulauan Mapia** (Supiori Barat distrik,
+around 134.30E / +0.94N, roughly 300 km northwest and north of the equator) and two in
+**Aimando Padaido** east of 136.70. Publishing per-district counts under the old box would have
+reported those districts as having zero hotspots when they had never been observed at all — the
+same defect as §5.1 wearing different clothes. The enlarged area is almost entirely ocean,
+which costs nothing: FIRMS returns only detections, and the polygon clip discards anything not
+on land.
 
 **Timezone:** Papua is UTC+9 (WIT). Satellites report UTC. Every ingest must store UTC and
 derive a `local_datetime` column. A "daily" product must be defined against WIT local days,
@@ -212,10 +222,27 @@ Derived indices to compute:
 - **WorldPop** 100 m population. GEE: `WorldPop/GP/100m/pop`.
 - **Google Open Buildings v3** — `GOOGLE/Research/open-buildings/v3/polygons`. Better
   building coverage than OSM in this region.
-- **Administrative boundaries** — Indonesian BPS/BIG village (desa/kelurahan) boundaries for
-  Biak Numfor and Supiori regencies. Needed for per-district aggregation in the daily brief;
-  district-level numbers are what local stakeholders actually act on. GADM level 4 is an
-  acceptable fallback if BIG data is hard to obtain.
+- **Administrative boundaries — obtained 2026-08-27.** `data/boundaries/biak_desa.geojson`,
+  1.2 MB, **306 desa** (Biak Numfor 268, Supiori 38) across **24 distrik**, EPSG:4326.
+
+  Derived by `scripts/extract_boundary.sh` from the BIG RBI 1:10,000 national administrative
+  geodatabase (`ADMINISTRASI_AR_DESAKEL`, 83,486 features, 340 MB, 2023-09-28 edition). The
+  source `.gdb` is gitignored and must be downloaded manually; only the extract is tracked.
+
+  The extraction **filters by attribute, never by bounding box**:
+  `WADMKK IN ('Biak Numfor','Supiori')`. A bbox clip would cut desa polygons at the box edge and
+  silently truncate both regencies. Those two strings are the complete and exact set, verified
+  against the source.
+
+  Two properties of this dataset affect implementation:
+
+  - The geometry is 3D measured multipolygon on a compound CRS (WGS 84 + EGM2008 height).
+    `-dim XY -t_srs EPSG:4326` drops the vertical component; without it, downstream tools that
+    expect 2D coordinates behave unpredictably.
+  - **`KDEBPS` and `KDCBPS` — the BPS statistical codes — are null throughout.** Joins to other
+    Indonesian datasets must therefore use the name fields (`WADMKD`, `WADMKC`, `WADMKK`), which
+    is fragile: names carry spelling variants and change over time. If a join to BPS statistics
+    is needed later, source the code lookup separately rather than assuming it is present here.
 
 ---
 
