@@ -45,3 +45,9 @@ changes, no scaffolding for phases you have not been asked to build.
 
 State in your final message: what you built, what you deliberately did not build, how to run
 the check, and anything you are unsure about. Do not claim something works unless you ran it.
+
+**Name every decision the task did not specify.** If you had to choose a file name, a default
+value, an ordering, or the handling of an edge case the task was silent about, say so
+explicitly rather than picking one quietly. Across tasks 01 and 02, every defect found in
+review lived in a decision the task left open — none came from a misread instruction. Surfacing
+those choices is the single most useful thing your final message can do.
