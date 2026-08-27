@@ -225,6 +225,10 @@ Derived indices to compute:
 - **Administrative boundaries — obtained 2026-08-27.** `data/boundaries/biak_desa.geojson`,
   1.2 MB, **306 desa** (Biak Numfor 268, Supiori 38) across **24 distrik**, EPSG:4326.
 
+  **Checked against local knowledge by the project owner on 2026-08-27 and confirmed correct.**
+  This matters: the counts and distrik names can be verified programmatically for consistency
+  but not for truth, and every district figure this project publishes rests on them.
+
   Derived by `scripts/extract_boundary.sh` from the BIG RBI 1:10,000 national administrative
   geodatabase (`ADMINISTRASI_AR_DESAKEL`, 83,486 features, 340 MB, 2023-09-28 edition). The
   source `.gdb` is gitignored and must be downloaded manually; only the extract is tracked.
