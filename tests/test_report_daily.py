@@ -308,6 +308,101 @@ def test_brief_surfaces_recurrent_sites_neutrally():
             brief_path.read_text(encoding="utf-8")
 
 
+def _write_evening(root: Path, brief_day: str, rows):
+    """Write the Himawari evening parquet for the night before brief_day."""
+    prev = (datetime.fromisoformat(brief_day) - timedelta(days=1)) \
+        .date().isoformat()
+    p = Path(root) / "processed" / f"himawari_evening_{prev}.parquet"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(rows).to_parquet(p, index=False)
+    return p
+
+
+def _evening_row(wit, lat, lon, flagged, night, ocean=False, anom=25.0,
+                 utc="2026-08-25T15:30:00Z"):
+    return {"acq_time_utc": utc,
+            "acq_time_wit": wit,
+            "lat": lat, "lon": lon,
+            "bt07": 310.0, "bt14": 296.0,
+            "bt07_minus_bt14": 14.0,
+            "bt07_background": 296.0,
+            "bt07_anomaly": anom,
+            "is_night": night, "flagged": flagged,
+            "ocean_sample": ocean}
+
+
+def test_evening_zero_flags_wording():
+    """Check 3+5: no flags -> the exact 'no anomaly above threshold' framing,
+    the not-evidence caveat, and missing slots counted, never a silent zero.
+    Forbidden all-clear phrasings must not appear."""
+    with tempfile.TemporaryDirectory() as td:
+        cfg = make_cfg(Path(td))
+        _write_evening(td, "2026-08-26", [
+            _evening_row("2026-08-25T15:30:00+09:00", -1.14, 136.03,
+                         False, True, ocean=True, utc="2026-08-25T06:30:00Z"),
+            _evening_row("2026-08-25T16:00:00+09:00", -1.14, 136.04,
+                         False, True, utc="2026-08-25T07:00:00Z"),
+        ])
+        summary, [brief_path, _, _] = build_in(td, NOW)
+        text = brief_path.read_text(encoding="utf-8")
+        assert "No evening thermal anomaly above threshold." in text
+        assert "not evidence that nothing burned" in text
+        assert "Slots retrieved: 2 of 21 expected" in text
+        assert "19 expected slot(s) missing" in text
+        for banned in ("all-clear", "no fire", "the evening was clear",
+                       "conditions improved"):
+            assert banned not in text, banned
+        ev = json.loads((Path(td) / "docs/data/summary_latest.json")
+                        .read_text(encoding="utf-8"))["evening"]
+        assert ev["state"] == "ok"
+        assert ev["slots_missing"] == 19
+        assert ev["flags"] == []
+
+
+def test_evening_presunset_flag_labelled_daylight():
+    """Check 4: a pre-sunset flag is reported as daylight and unreliable,
+    and never as an evening observation without saying so."""
+    with tempfile.TemporaryDirectory() as td:
+        cfg = make_cfg(Path(td))
+        _write_evening(td, "2026-08-26", [
+            _evening_row("2026-08-25T16:30:00+09:00", -1.1449, 136.0353,
+                         True, False, anom=12.5),
+        ])
+        summary, [brief_path, _, _] = build_in(td, NOW)
+        assert summary["evening"]["daylight_flags"] == 1
+        assert summary["evening"]["night_flags"] == 0
+        text = brief_path.read_text(encoding="utf-8")
+        assert "Pixels flagged above threshold: 1 - 1 in daylight" in text
+        assert "(in daylight before sunset - unreliable)" in text
+        assert "- 16:30 WIT, -1.1449, 136.0353: B07 anomaly +12.5 K" in text
+
+
+def test_evening_unavailable_state():
+    """A missing evening file is a stated gap, never a zero."""
+    with tempfile.TemporaryDirectory() as td:
+        cfg = make_cfg(Path(td))     # no evening parquet written
+        summary, [brief_path, _, _] = build_in(td, NOW)
+        assert summary["evening"]["state"] == "unavailable"
+        text = brief_path.read_text(encoding="utf-8")
+        assert "Evening product unavailable" in text
+        assert "not a zero" in text
+        assert "No evening thermal anomaly" not in text
+
+
+def test_evening_section_deterministic():
+    """Check 6 (brief side): the same evening parquet renders identical
+    section lines."""
+    with tempfile.TemporaryDirectory() as td:
+        cfg = make_cfg(Path(td))
+        _write_evening(td, "2026-08-26", [
+            _evening_row("2026-08-25T16:30:00+09:00", -1.1449, 136.0353,
+                         True, False),
+        ])
+        _, lines1 = rep.evening_section(cfg, Path(td), "2026-08-26")
+        _, lines2 = rep.evening_section(cfg, Path(td), "2026-08-26")
+        assert lines1 == lines2
+
+
 if __name__ == "__main__":
     fns = [(name, obj) for name, obj in sorted(globals().items())
            if name.startswith("test_") and callable(obj)]

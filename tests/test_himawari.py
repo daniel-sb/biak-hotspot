@@ -15,11 +15,13 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 import himawari as hw  # noqa: E402
+import ingest_firms as ing  # noqa: E402
 
 FIX = ROOT / "tests" / "fixtures"
 B07 = FIX / "HS_H09_20260822_0650_B07_FLDK_R20_S0610.DAT.bz2"
@@ -138,6 +140,69 @@ def test_flagged_rows_kept_not_deleted():
     # flagging is read-only on the grids: nothing removed, nothing altered
     assert np.array_equal(sub07, before)
     assert np.isfinite(sub07).sum() == np.isfinite(before).sum()
+
+
+def test_evening_parquet_land_and_size():
+    """Checks 1+2: a day's evening file is under 2 MB, carries at most the
+    fixed ocean sample, and every non-sample pixel sits on land (the shared
+    desa-polygon test, not a parallel mechanism)."""
+    p = ROOT / "data" / "processed" / "himawari_evening_2026-08-22.parquet"
+    if not p.exists():
+        print("SKIP: evening parquet not built yet")
+        return
+    assert p.stat().st_size < 2_000_000, "evening file is 2 MB or larger"
+    df = pd.read_parquet(p)
+    slots = df["acq_time_utc"].nunique()
+    # the fixed ocean sample is capped at 300 px per segment (2 segments)
+    assert int(df["ocean_sample"].sum()) <= 600 * slots
+    land_px = df[~df["ocean_sample"]].drop_duplicates(["lat", "lon"])
+    hits = ing.land_hits(land_px["lon"], land_px["lat"],
+                         ing.load_boundaries(
+                             ROOT / "data" / "boundaries" / "biak_desa.geojson"))
+    assert all(h is not None for h in hits)
+
+
+def test_land_mechanism_parity_with_store():
+    """Check 2: the Himawari land test IS the ingest's on_land test - same
+    coordinates give the same answer as the store's on_land column."""
+    if not STORE.exists():
+        print("SKIP: store missing")
+        return
+    df = pd.read_parquet(STORE).drop_duplicates(["latitude", "longitude"])
+    hits = ing.land_hits(df["longitude"], df["latitude"],
+                         ing.load_boundaries(
+                             ROOT / "data" / "boundaries" / "biak_desa.geojson"))
+    assert [h is not None for h in hits] == df["on_land"].tolist()
+
+
+def test_slot_rows_deterministic():
+    """Check 6 (producer side): the same grids give byte-identical Parquet."""
+    hsd7 = hw.read_hsd(B07)
+    hsd14 = hw.read_hsd(B14)
+    bt07 = hw.counts_to_bt(hsd7)
+    bt14 = hw.counts_to_bt(hsd14)
+    r0, r1, c0, c1, _ = hw.segment_window(hsd7, 2689, 2833, 2385, 2537)
+    sub07 = bt07[r0:r1, c0:c1]
+    sub14 = bt14[r0:r1, c0:c1]
+    lon_g, lat_g = hw.lonlat_grid(hsd7, np.arange(r0, r1) + 2751,
+                                  np.arange(c0, c1))
+    bnd = ing.load_boundaries(ROOT / "data" / "boundaries" / "biak_desa.geojson")
+    land = np.array([h is not None for h in ing.land_hits(
+        lon_g.ravel(), lat_g.ravel(), bnd)]).reshape(sub07.shape)
+    ocean = [(i, j) for i in range(sub07.shape[0])
+             for j in range(sub07.shape[1]) if not land[i, j]]
+    ocean = ocean[::max(1, len(ocean) // 300)][:300]
+    utc = datetime(2026, 8, 22, 6, 30, tzinfo=timezone.utc)
+    wit = utc.astimezone(hw.WIT)
+    night = hw.is_night(wit.hour * 60 + wit.minute, 18 * 60 + 15)
+
+    def build():
+        rows = hw._slot_rows(sub07, sub14, lon_g, lat_g, land, ocean,
+                             utc, wit, night, 10.0, 10.0, 15)
+        f = pd.DataFrame(rows)
+        return f.to_parquet(index=False)
+
+    assert build() == build()
 
 
 if __name__ == "__main__":

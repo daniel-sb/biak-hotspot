@@ -1,5 +1,5 @@
 {
- "covered_wit_date": "2026-08-27",
+ "covered_wit_date": "2026-08-23",
  "districts": [
   {
    "detections": 0,
@@ -23,25 +23,25 @@
    "total_frp": null
   },
   {
-   "detections": 0,
+   "detections": 17,
    "distrik": "Biak Kota",
    "kabupaten": "Biak Numfor",
-   "max_frp": null,
-   "total_frp": null
+   "max_frp": 10.9,
+   "total_frp": 105.3
   },
   {
-   "detections": 3,
+   "detections": 6,
    "distrik": "Biak Timur",
    "kabupaten": "Biak Numfor",
-   "max_frp": 9.4,
-   "total_frp": 19.5
+   "max_frp": 17.4,
+   "total_frp": 48.7
   },
   {
-   "detections": 0,
+   "detections": 10,
    "distrik": "Biak Utara",
    "kabupaten": "Biak Numfor",
-   "max_frp": null,
-   "total_frp": null
+   "max_frp": 7.3,
+   "total_frp": 40.0
   },
   {
    "detections": 0,
@@ -51,11 +51,11 @@
    "total_frp": null
   },
   {
-   "detections": 0,
+   "detections": 1,
    "distrik": "Bruyadori",
    "kabupaten": "Biak Numfor",
-   "max_frp": null,
-   "total_frp": null
+   "max_frp": 8.0,
+   "total_frp": 8.0
   },
   {
    "detections": 0,
@@ -65,11 +65,11 @@
    "total_frp": null
   },
   {
-   "detections": 1,
+   "detections": 0,
    "distrik": "Numfor Barat",
    "kabupaten": "Biak Numfor",
-   "max_frp": 3.1,
-   "total_frp": 3.1
+   "max_frp": null,
+   "total_frp": null
   },
   {
    "detections": 0,
@@ -107,11 +107,11 @@
    "total_frp": null
   },
   {
-   "detections": 3,
+   "detections": 15,
    "distrik": "Samofa",
    "kabupaten": "Biak Numfor",
-   "max_frp": 12.8,
-   "total_frp": 22.5
+   "max_frp": 9.9,
+   "total_frp": 80.6
   },
   {
    "detections": 0,
@@ -163,49 +163,321 @@
    "total_frp": null
   },
   {
-   "detections": 4,
+   "detections": 20,
    "distrik": "Yendidori",
    "kabupaten": "Biak Numfor",
-   "max_frp": 7.4,
-   "total_frp": 18.3
+   "max_frp": 8.2,
+   "total_frp": 95.3
   }
  ],
+ "evening": {
+  "daylight_flags": 37,
+  "evening_date": "2026-08-22",
+  "flags": [
+   {
+    "acq_time_wit": "2026-08-22T15:00:00+09:00",
+    "anomaly_k": 11.6,
+    "daylight": true,
+    "lat": -1.07704,
+    "lon": 136.04656
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:00:00+09:00",
+    "anomaly_k": 19.7,
+    "daylight": true,
+    "lat": -1.09515,
+    "lon": 136.04652
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:00:00+09:00",
+    "anomaly_k": 10.6,
+    "daylight": true,
+    "lat": -1.09514,
+    "lon": 136.06459
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:00:00+09:00",
+    "anomaly_k": 11.2,
+    "daylight": true,
+    "lat": -1.11327,
+    "lon": 136.01036
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:00:00+09:00",
+    "anomaly_k": 12.5,
+    "daylight": true,
+    "lat": -1.11326,
+    "lon": 136.02842
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:00:00+09:00",
+    "anomaly_k": 17.0,
+    "daylight": true,
+    "lat": -1.13137,
+    "lon": 136.01032
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:00:00+09:00",
+    "anomaly_k": 19.3,
+    "daylight": true,
+    "lat": -1.13137,
+    "lon": 136.02839
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:00:00+09:00",
+    "anomaly_k": 12.6,
+    "daylight": true,
+    "lat": -1.16755,
+    "lon": 136.10058
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:00:00+09:00",
+    "anomaly_k": 23.1,
+    "daylight": true,
+    "lat": -1.16755,
+    "lon": 136.11864
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:00:00+09:00",
+    "anomaly_k": 19.1,
+    "daylight": true,
+    "lat": -1.18566,
+    "lon": 136.10054
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:00:00+09:00",
+    "anomaly_k": 44.2,
+    "daylight": true,
+    "lat": -1.18565,
+    "lon": 136.11861
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:00:00+09:00",
+    "anomaly_k": 23.2,
+    "daylight": true,
+    "lat": -1.18565,
+    "lon": 136.13667
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:30:00+09:00",
+    "anomaly_k": 15.9,
+    "daylight": true,
+    "lat": -1.09515,
+    "lon": 136.04652
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:30:00+09:00",
+    "anomaly_k": 13.3,
+    "daylight": true,
+    "lat": -1.11327,
+    "lon": 136.01036
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:30:00+09:00",
+    "anomaly_k": 12.3,
+    "daylight": true,
+    "lat": -1.11326,
+    "lon": 136.02842
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:30:00+09:00",
+    "anomaly_k": 15.6,
+    "daylight": true,
+    "lat": -1.13137,
+    "lon": 136.01032
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:30:00+09:00",
+    "anomaly_k": 13.4,
+    "daylight": true,
+    "lat": -1.13137,
+    "lon": 136.02839
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:30:00+09:00",
+    "anomaly_k": 13.7,
+    "daylight": true,
+    "lat": -1.16755,
+    "lon": 136.10058
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:30:00+09:00",
+    "anomaly_k": 20.0,
+    "daylight": true,
+    "lat": -1.16755,
+    "lon": 136.11864
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:30:00+09:00",
+    "anomaly_k": 23.5,
+    "daylight": true,
+    "lat": -1.18566,
+    "lon": 136.10054
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:30:00+09:00",
+    "anomaly_k": 33.3,
+    "daylight": true,
+    "lat": -1.18565,
+    "lon": 136.11861
+   },
+   {
+    "acq_time_wit": "2026-08-22T15:30:00+09:00",
+    "anomaly_k": 12.2,
+    "daylight": true,
+    "lat": -1.18565,
+    "lon": 136.13667
+   },
+   {
+    "acq_time_wit": "2026-08-22T16:00:00+09:00",
+    "anomaly_k": 10.9,
+    "daylight": true,
+    "lat": -1.09515,
+    "lon": 136.04652
+   },
+   {
+    "acq_time_wit": "2026-08-22T16:00:00+09:00",
+    "anomaly_k": 11.1,
+    "daylight": true,
+    "lat": -1.11326,
+    "lon": 136.02842
+   },
+   {
+    "acq_time_wit": "2026-08-22T16:00:00+09:00",
+    "anomaly_k": 10.7,
+    "daylight": true,
+    "lat": -1.13137,
+    "lon": 136.01032
+   },
+   {
+    "acq_time_wit": "2026-08-22T16:00:00+09:00",
+    "anomaly_k": 10.9,
+    "daylight": true,
+    "lat": -1.13137,
+    "lon": 136.02839
+   },
+   {
+    "acq_time_wit": "2026-08-22T16:00:00+09:00",
+    "anomaly_k": 16.6,
+    "daylight": true,
+    "lat": -1.16755,
+    "lon": 136.11864
+   },
+   {
+    "acq_time_wit": "2026-08-22T16:00:00+09:00",
+    "anomaly_k": 17.1,
+    "daylight": true,
+    "lat": -1.18566,
+    "lon": 136.10054
+   },
+   {
+    "acq_time_wit": "2026-08-22T16:00:00+09:00",
+    "anomaly_k": 29.8,
+    "daylight": true,
+    "lat": -1.18565,
+    "lon": 136.11861
+   },
+   {
+    "acq_time_wit": "2026-08-22T16:00:00+09:00",
+    "anomaly_k": 13.7,
+    "daylight": true,
+    "lat": -1.18565,
+    "lon": 136.13667
+   },
+   {
+    "acq_time_wit": "2026-08-22T16:30:00+09:00",
+    "anomaly_k": 12.6,
+    "daylight": true,
+    "lat": -1.16755,
+    "lon": 136.11864
+   },
+   {
+    "acq_time_wit": "2026-08-22T16:30:00+09:00",
+    "anomaly_k": 11.5,
+    "daylight": true,
+    "lat": -1.18566,
+    "lon": 136.10054
+   },
+   {
+    "acq_time_wit": "2026-08-22T16:30:00+09:00",
+    "anomaly_k": 24.1,
+    "daylight": true,
+    "lat": -1.18565,
+    "lon": 136.11861
+   },
+   {
+    "acq_time_wit": "2026-08-22T16:30:00+09:00",
+    "anomaly_k": 12.0,
+    "daylight": true,
+    "lat": -1.18565,
+    "lon": 136.13667
+   },
+   {
+    "acq_time_wit": "2026-08-22T17:00:00+09:00",
+    "anomaly_k": 15.9,
+    "daylight": true,
+    "lat": -1.18565,
+    "lon": 136.11861
+   },
+   {
+    "acq_time_wit": "2026-08-22T17:00:00+09:00",
+    "anomaly_k": 10.3,
+    "daylight": true,
+    "lat": -1.18565,
+    "lon": 136.13667
+   },
+   {
+    "acq_time_wit": "2026-08-22T17:30:00+09:00",
+    "anomaly_k": 11.8,
+    "daylight": true,
+    "lat": -1.18565,
+    "lon": 136.11861
+   }
+  ],
+  "night_flags": 0,
+  "ocean_bt14_median_k": 298.0,
+  "slots_expected": 21,
+  "slots_missing": 0,
+  "slots_retrieved": 21,
+  "state": "ok",
+  "window_utc": "06:00-16:00"
+ },
  "generated_utc": "2026-08-28T01:00:00Z",
  "geojson_window_days": 7,
  "manifest_found": true,
  "recurrent_today": [
   {
-   "days_total": 12,
-   "detections_today": 1,
+   "days_total": 10,
+   "detections_today": 2,
    "distrik": "Yendidori",
-   "site_id": "R002"
+   "site_id": "R003"
   }
  ],
  "sources": [
   {
-   "detections": 3,
+   "detections": 8,
    "source": "VIIRS_SNPP_NRT",
    "status": "observed"
   },
   {
-   "detections": 7,
+   "detections": 29,
    "source": "VIIRS_NOAA20_NRT",
    "status": "observed"
   },
   {
-   "detections": 0,
+   "detections": 32,
    "source": "VIIRS_NOAA21_NRT",
-   "status": "empty"
+   "status": "observed"
   },
   {
-   "detections": 1,
+   "detections": 0,
    "source": "MODIS_NRT",
-   "status": "observed"
+   "status": "empty"
   }
  ],
  "totals": {
-  "detections": 11,
+  "detections": 69,
   "offshore": 0,
-  "on_land": 11
+  "on_land": 69
  }
 }

@@ -29,7 +29,7 @@ import pandas as pd
 import requests
 import yaml
 
-from ingest_firms import WIT
+from ingest_firms import WIT, land_hits, load_boundaries
 
 ROOT = Path(__file__).resolve().parents[1]
 BUCKET = "https://noaa-himawari9.s3.amazonaws.com"
@@ -295,6 +295,55 @@ def wit_date(day_utc: date) -> date:
                              tzinfo=timezone.utc) + timedelta(hours=9)).date()
 
 
+def _slot_rows(sub07, sub14, lon_g, lat_g, land_grid, ocean_pixels,
+               utc, wit, night, min_anomaly_k, min_diff_k, bg_window):
+    """One slot's grids -> output rows: every land pixel plus the fixed
+    ocean-sample pixels (marked ocean_sample, never counted as AOI)."""
+    bg, anom, diff, flagged = flag_anomalies(sub07, sub14, min_anomaly_k,
+                                             min_diff_k, bg_window)
+    rows = []
+    for i, j in ocean_pixels:
+        rows.append({
+            "acq_time_utc": utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "acq_time_wit": wit.strftime("%Y-%m-%dT%H:%M:%S+09:00"),
+            "lat": round(float(lat_g[i, j]), 5),
+            "lon": round(float(lon_g[i, j]), 5),
+            "bt07": round(float(sub07[i, j]), 3),
+            "bt14": round(float(sub14[i, j]), 3),
+            "bt07_minus_bt14": round(float(diff[i, j]), 3),
+            "bt07_background": (round(float(bg[i, j]), 3)
+                                if np.isfinite(bg[i, j]) else None),
+            "bt07_anomaly": (round(float(anom[i, j]), 3)
+                             if np.isfinite(anom[i, j]) else None),
+            "is_night": night,
+            "flagged": bool(flagged[i, j]),
+            "ocean_sample": True,
+        })
+    for i in range(sub07.shape[0]):
+        for j in range(sub07.shape[1]):
+            if not land_grid[i, j]:
+                continue
+            if not np.isfinite(sub07[i, j]):
+                continue
+            rows.append({
+                "acq_time_utc": utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "acq_time_wit": wit.strftime("%Y-%m-%dT%H:%M:%S+09:00"),
+                "lat": round(float(lat_g[i, j]), 5),
+                "lon": round(float(lon_g[i, j]), 5),
+                "bt07": round(float(sub07[i, j]), 3),
+                "bt14": round(float(sub14[i, j]), 3),
+                "bt07_minus_bt14": round(float(diff[i, j]), 3),
+                "bt07_background": (round(float(bg[i, j]), 3)
+                                    if np.isfinite(bg[i, j]) else None),
+                "bt07_anomaly": (round(float(anom[i, j]), 3)
+                                 if np.isfinite(anom[i, j]) else None),
+                "is_night": night,
+                "flagged": bool(flagged[i, j]),
+                "ocean_sample": False,
+            })
+    return rows
+
+
 def build_date(day_utc: date, cfg: dict, root: Path) -> dict:
     """Fetch, read, flag and store one evening window. Returns a summary."""
     raw_dir = root / "data" / "raw" / "himawari"
@@ -309,11 +358,21 @@ def build_date(day_utc: date, cfg: dict, root: Path) -> dict:
     min_diff = float(cfg["himawari_min_bt_diff_k"])
     bg_window = int(cfg["himawari_background_window_px"])
     expected_segments = {int(s) for s in cfg["himawari_expected_segments"]}
+    sample_cap = int(cfg.get("himawari_ocean_sample_pixels", 300))
+
+    boundaries = None
+    if cfg.get("admin_polygon"):
+        admin_path = root / cfg["admin_polygon"]
+        if not admin_path.exists():
+            sys.exit(f"admin_polygon from config.yaml not found: {admin_path}")
+        boundaries = load_boundaries(admin_path)
 
     slots = _slot_list(day_utc, window, cadence)
     nav = None
     segments: set = set()
     line0 = line1 = col0 = col1 = 0
+    land_grids: dict = {}
+    ocean_by_seg: dict = {}
     rows = []
     for slot in slots:
         if nav is None:
@@ -355,43 +414,52 @@ def build_date(day_utc: date, cfg: dict, root: Path) -> dict:
             lon_g, lat_g = lonlat_grid(hsd7,
                                        np.arange(r0, r1) + hsd7["seg_first_line"],
                                        np.arange(c0, c1))
-            bg, anom, diff, flagged = flag_anomalies(
-                sub07, sub14, min_anomaly, min_diff, bg_window)
             utc = slot
             wit = utc.astimezone(WIT)
             night = is_night(wit.hour * 60 + wit.minute, sunset_min)
-            for i in range(sub07.shape[0]):
-                for j in range(sub07.shape[1]):
-                    if not np.isfinite(sub07[i, j]):
-                        continue
-                    rows.append({
-                        "acq_time_utc": utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                        "acq_time_wit": wit.strftime("%Y-%m-%dT%H:%M:%S+09:00"),
-                        "lat": round(float(lat_g[i, j]), 5),
-                        "lon": round(float(lon_g[i, j]), 5),
-                        "bt07": round(float(sub07[i, j]), 3),
-                        "bt14": round(float(sub14[i, j]), 3),
-                        "bt07_minus_bt14": round(float(diff[i, j]), 3),
-                        "bt07_background": (round(float(bg[i, j]), 3)
-                                            if np.isfinite(bg[i, j]) else None),
-                        "bt07_anomaly": (round(float(anom[i, j]), 3)
-                                         if np.isfinite(anom[i, j]) else None),
-                        "is_night": night,
-                        "flagged": bool(flagged[i, j]),
-                    })
-        if slot_rows:
-            rows.extend(slot_rows)
+            # The land test runs once per segment: the AOI window is
+            # identical for every slot, so the land/ocean pixel split and
+            # the fixed ocean sample are computed exactly once per segment.
+            if segment not in land_grids:
+                if boundaries is None:
+                    land_grid = np.ones(sub07.shape, dtype=bool)
+                    ocean_pixels = []
+                else:
+                    land_grid = np.array(
+                        [hit is not None for hit in land_hits(
+                            lon_g.ravel(), lat_g.ravel(), boundaries)]
+                    ).reshape(sub07.shape)
+                    ocean = [(i, j) for i in range(sub07.shape[0])
+                             for j in range(sub07.shape[1])
+                             if not land_grid[i, j]]
+                    stride = max(1, len(ocean) // sample_cap)
+                    ocean_pixels = ocean[::stride][:sample_cap]
+                land_grids[segment] = land_grid
+                ocean_by_seg[segment] = ocean_pixels
+                log.info("seg%d: %d land px, %d ocean px, ocean sample %d px",
+                         segment, int(land_grid.sum()), len(ocean),
+                         len(ocean_pixels))
+            land_grid = land_grids[segment]
+            ocean_pixels = ocean_by_seg[segment]
+            rows.extend(_slot_rows(sub07, sub14, lon_g, lat_g, land_grid,
+                                   ocean_pixels, utc, wit, night,
+                                   min_anomaly, min_diff, bg_window))
 
     processed = root / cfg["output_paths"]["processed"]
     processed.parent.mkdir(parents=True, exist_ok=True)
-    out_csv = processed.parent / f"himawari_evening_{wit_date(day_utc)}.csv"
+    out = processed.parent / f"himawari_evening_{wit_date(day_utc)}.parquet"
     frame = pd.DataFrame(rows)
-    frame.to_csv(out_csv, index=False)
+    frame.to_parquet(out, index=False)
+    size_mb = out.stat().st_size / 1e6
     flagged_n = int(frame["flagged"].sum()) if len(frame) else 0
-    log.info("himawari evening %s: %d slots, %d rows, %d flagged -> %s",
-             wit_date(day_utc), len(slots), len(frame), flagged_n,
-             out_csv.relative_to(root))
-    return {"csv": out_csv, "rows": len(frame), "flagged": flagged_n}
+    if size_mb >= 2.0:
+        log.warning("evening file is %.2f MB (>= 2 MB) - the pixel count is "
+                    "still wrong, not a compression problem", size_mb)
+    log.info("himawari evening %s: %d slots, %d rows (%.2f MB), %d flagged "
+             "-> %s", wit_date(day_utc), len(slots), len(frame), size_mb,
+             flagged_n, out.relative_to(root))
+    return {"parquet": out, "rows": len(frame), "flagged": flagged_n,
+            "size_mb": round(size_mb, 3)}
 
 
 # --------------------------------------------------------------------------

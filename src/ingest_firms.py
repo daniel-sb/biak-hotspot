@@ -276,6 +276,24 @@ def load_boundaries(path: Path):
     return STRtree(geoms), geoms, names
 
 
+def land_hits(lons, lats, boundaries):
+    """The land test: point-in-desa-polygon (contains/covers). Returns a list
+    of (desa, distrik, kabupaten) tuples, None where a point falls outside
+    every polygon. Shared by the ingest and the Himawari evening product so
+    there is exactly one land definition (Task 06)."""
+    tree, geoms, names = boundaries
+    hits = []
+    for lon, lat in zip(lons, lats):
+        pt = Point(float(lon), float(lat))
+        hit = None
+        for i in tree.query(pt):
+            if geoms[int(i)].covers(pt):
+                hit = names[int(i)]
+                break
+        hits.append(hit)
+    return hits
+
+
 def assign_admin(df: pd.DataFrame, boundaries) -> pd.DataFrame:
     """Add desa/distrik/kabupaten/on_land from point-in-polygon.
 
@@ -283,17 +301,8 @@ def assign_admin(df: pd.DataFrame, boundaries) -> pd.DataFrame:
     with on_land=False and null name columns - offshore pixels carry real
     information (coastal pixel vs sun glint) that Phase 2 needs.
     """
-    tree, geoms, names = boundaries
     df = df.copy()
-    hits = []
-    for lon, lat in zip(df["longitude"], df["latitude"]):
-        pt = Point(float(lon), float(lat))
-        hit = None
-        for i in tree.query(pt):  # bbox candidates, not answers
-            if geoms[int(i)].covers(pt):
-                hit = names[int(i)]
-                break
-        hits.append(hit)
+    hits = land_hits(df["longitude"], df["latitude"], boundaries)
     # Explicit dtypes: empty clips (e.g. a header-only day) must not turn
     # on_land into object or names into float NaN.
     df["desa"] = pd.Series([h[0] if h else None for h in hits],

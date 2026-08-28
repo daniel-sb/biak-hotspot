@@ -68,6 +68,33 @@ T = {
                       "what is there, and it does not diminish any individual "
                       "detection: these rows are included in every count "
                       "above, never excluded.",
+    "evening_heading": "The previous evening (Himawari-9)",
+    "evening_scope": "This section describes the night BEFORE the day above: "
+                     "15:00 {prev} WIT to 01:00 {day} WIT. A brief written "
+                     "during a WIT day cannot yet contain that day's own "
+                     "evening, so this is always the night just ended.",
+    "evening_slots": "Slots retrieved: {retrieved} of {expected} expected "
+                     "({cadence}-minute cadence, 06:00-16:00 UTC).",
+    "evening_missing": "{missing} expected slot(s) missing upstream - a "
+                       "missing slot is a gap in the record, not a zero.",
+    "evening_unavailable": "Evening product unavailable for this night (no "
+                           "Himawari file was produced). This is a gap in the "
+                           "record, not an observation, and not a zero.",
+    "evening_none": "No evening thermal anomaly above threshold.",
+    "evening_not_evidence": "That is not evidence that nothing burned: AHI at "
+                            "2 km resolves only larger or hotter fires than "
+                            "VIIRS at 375 m (about 28 times the pixel area), "
+                            "and a smouldering fire without flame may never "
+                            "cross a thermal threshold.",
+    "evening_flags": "Pixels flagged above threshold: {n} - {daylight} in "
+                     "daylight before sunset (unreliable: reflected sunlight), "
+                     "{night} after dark.",
+    "evening_flag_row": "- {wit} WIT, {lat}, {lon}: B07 anomaly +{anom} K"
+                        "{daylight}",
+    "evening_daylight": " (in daylight before sunset - unreliable)",
+    "evening_more": "- and {n} more (see the evening file)",
+    "evening_reader": "Reader check (marked ocean sample - not AOI): B14 "
+                      "median {med} K.",
     "districts_heading": "Detections by district",
     "district_header": "| distrik | kabupaten | detections | total FRP (MW) "
                        "| max FRP (MW) |",
@@ -252,6 +279,102 @@ def recurrent_today(day_df: pd.DataFrame) -> list[dict]:
     return out
 
 
+def evening_section(cfg: dict, root: Path, brief_day: str) -> tuple[dict,
+                                                                    list[str]]:
+    """The Himawari-9 evening product for the night BEFORE the brief's WIT
+    day (15:00 brief_day-1 -> 01:00 brief_day WIT).
+
+    Resolution of "which night" (Task 06): a brief written for a WIT day
+    cannot contain that day's own evening, which ends at 01:00 WIT the next
+    morning. The section therefore always describes the night that has just
+    ended, states so in its scope line, and is titled "previous evening" so
+    a reader can never mistake it for the coming night. The producer
+    (src/himawari.py, run after 16:00 UTC) writes the file the same evening;
+    if it is missing, the section says so rather than rendering a zero.
+
+    Returns (info for the summary JSON, brief lines).
+    """
+    info = {"state": "unavailable", "evening_date": None,
+            "slots_expected": 0, "slots_retrieved": 0, "slots_missing": 0,
+            "flags": [], "daylight_flags": 0, "night_flags": 0,
+            "ocean_bt14_median_k": None}
+    window = cfg["himawari_window_utc"]
+    cadence = int(cfg["himawari_cadence_minutes"])
+    prev = (date.fromisoformat(brief_day) - timedelta(days=1)).isoformat()
+    info["evening_date"] = prev
+    day_d = date.fromisoformat(prev)
+    start_dt = datetime.combine(day_d,
+                                datetime.strptime(window[0], "%H:%M").time(),
+                                tzinfo=timezone.utc)
+    end_dt = datetime.combine(day_d,
+                              datetime.strptime(window[1], "%H:%M").time(),
+                              tzinfo=timezone.utc)
+    info["slots_expected"] = int(
+        (end_dt - start_dt).total_seconds() // 60 // cadence) + 1
+    info["window_utc"] = f"{window[0]}-{window[1]}"
+
+    lines = [T["evening_scope"].format(prev=prev, day=brief_day)]
+    path = (resolve(root, cfg["output_paths"]["processed"]).parent /
+            f"himawari_evening_{prev}.parquet")
+    if not path.exists():
+        lines.append(T["evening_unavailable"])
+        lines.append(T["evening_not_evidence"])
+        return info, lines
+
+    df = pd.read_parquet(path)
+    info["state"] = "ok"
+    retrieved = int(df["acq_time_utc"].nunique()) if len(df) else 0
+    info["slots_retrieved"] = retrieved
+    info["slots_missing"] = max(0, info["slots_expected"] - retrieved)
+
+    ocean = df[df["ocean_sample"]] if "ocean_sample" in df.columns \
+        else df.iloc[0:0]
+    if len(ocean):
+        info["ocean_bt14_median_k"] = round(float(ocean["bt14"].median()), 1)
+
+    flagged = df[df["flagged"]] if "flagged" in df.columns else df.iloc[0:0]
+    flagged = flagged[~flagged["ocean_sample"]] if "ocean_sample" in flagged \
+        else flagged
+    for _, r in flagged.sort_values("acq_time_wit").iterrows():
+        daylight = not bool(r["is_night"])
+        info["flags"].append({
+            "acq_time_wit": str(r["acq_time_wit"]),
+            "lat": float(r["lat"]), "lon": float(r["lon"]),
+            "anomaly_k": (round(float(r["bt07_anomaly"]), 1)
+                          if r["bt07_anomaly"] is not None and
+                          str(r["bt07_anomaly"]) != "nan" else None),
+            "daylight": daylight,
+        })
+    info["daylight_flags"] = sum(f["daylight"] for f in info["flags"])
+    info["night_flags"] = len(info["flags"]) - info["daylight_flags"]
+
+    lines.append(T["evening_slots"].format(
+        retrieved=retrieved, expected=info["slots_expected"],
+        cadence=cadence))
+    if info["slots_missing"]:
+        lines.append(T["evening_missing"].format(
+            missing=info["slots_missing"]))
+    if not info["flags"]:
+        lines.append(T["evening_none"])
+    else:
+        lines.append(T["evening_flags"].format(
+            n=len(info["flags"]), daylight=info["daylight_flags"],
+            night=info["night_flags"]))
+        for f in info["flags"][:20]:
+            lines.append(T["evening_flag_row"].format(
+                wit=f["acq_time_wit"][11:16], lat=f["lat"], lon=f["lon"],
+                anom=f["anomaly_k"] if f["anomaly_k"] is not None else 0.0,
+                daylight=T["evening_daylight"] if f["daylight"] else ""))
+        if len(info["flags"]) > 20:
+            lines.append(T["evening_more"].format(
+                n=len(info["flags"]) - 20))
+    lines.append(T["evening_not_evidence"])
+    if info["ocean_bt14_median_k"] is not None:
+        lines.append(T["evening_reader"].format(
+            med=info["ocean_bt14_median_k"]))
+    return info, lines
+
+
 def render_brief(summary: dict, covered_day: str, gen_utc: datetime,
                  window_days: int, manifest_found: bool) -> str:
     def stamp(dt, tz):
@@ -306,6 +429,9 @@ def render_brief(summary: dict, covered_day: str, gen_utc: datetime,
                 site_id=r["site_id"], distrik=r["distrik"] or "-",
                 today_detections=tod, days=r["days_total"]))
         lines += ["", f"> {T['recurrent_note']}"]
+    if summary.get("evening_lines"):
+        lines += ["", f"## {T['evening_heading']}", ""]
+        lines += summary["evening_lines"]
     lines += ["", f"> {T['caveat']}", ""]
     return "\n".join(lines)
 
@@ -351,9 +477,9 @@ def build(cfg: dict, root: Path, now_utc: datetime | None = None,
                     "geojson_window_days": int(cfg["geojson_window_days"]),
                     "manifest_found": manifest_found})
     summary["recurrent_today"] = recurrent_today(day_df)
-    summary.update({"covered_wit_date": covered_day,
-                    "generated_utc": gen.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                    "geojson_window_days": int(cfg["geojson_window_days"])})
+    evening_info, evening_lines = evening_section(cfg, root, covered_day)
+    summary["evening"] = evening_info
+    summary["evening_lines"] = evening_lines
 
     geo_path = resolve(root, cfg["output_paths"]["geojson"])
     sum_path = resolve(root, cfg["output_paths"]["summary_json"])
@@ -375,6 +501,7 @@ def build(cfg: dict, root: Path, now_utc: datetime | None = None,
         "sources": summary["sources"],
         "districts": summary["districts"],
         "recurrent_today": summary["recurrent_today"],
+        "evening": summary["evening"],
     }
     write_summary(published, sum_path)
     brief_dir.mkdir(parents=True, exist_ok=True)
