@@ -974,6 +974,45 @@ recorded here because it is the only night signal in the run with a fire-like sp
 and because if the evening thresholds are ever revisited, this is the pixel to revisit them
 against.
 
+### 13.5 Correction: the fires do not stop at sunset, they decay (2026-08-28)
+
+Section 13.2 said this data could not separate "the fires stop burning hot at sunset" from "2 km
+cannot see what 375 m would". After task 06 restricted the product to land pixels, it partly can.
+
+The pixel named in 13.3, 1.3 km from Frans Kaisiepo, has a coherent time series:
+
+```
+WIT     B07      anomaly   B07-B14
+18:30   305.6 K   +5.58 K    7.43     sunset 18:15
+19:00   303.5     +3.65      5.72
+19:30   302.8     +3.10      5.37
+20:00   300.8     +1.15      3.38
+20:30   300.9     +1.25      3.67
+21:00   299.9     +0.53      2.87
+21:30   299.3     -0.10      2.52
+22:00   298.3     -0.76      1.94
+```
+
+Across all land pixels that night the anomaly field sits at a median of about -1.0 K with a
+standard deviation near 1.5 K. The 18:30 value is therefore roughly **4.4 standard deviations**
+above the field and the single hottest land pixel in the AOI; 19:00 is about 3. By 20:00 it is
+inside the noise.
+
+Two things follow. **The anomaly is measured against the local background, so general nocturnal
+cooling is already removed** — this pixel cooled faster than everything around it, which is a heat
+source dying, not the ground losing heat. And **combustion continued after sunset**, detectably
+for roughly 75 minutes, then fell below what a 2 km pixel can resolve.
+
+So the correct statement is not that fires stop at dark. It is that they **decay through the early
+evening and drop under the detection floor**, somewhere around 20:00 WIT on this night. Whether
+they then go out or smoulder on unseen is still unresolved, and section 12.3 lesson 3 is the
+reason it matters: a smouldering fire produces heavy smoke and little radiance. That is the exact
+combination that would put smoke in a house at 22:16 WIT with every instrument reading clear.
+
+This is one pixel on one night and it is below the flag threshold. It is not a detection and must
+not be published as one. It is the strongest physical evidence the project has that the evening
+smoke problem is real and simply unobservable at this resolution.
+
 ### 13.4 What this changes
 
 - Himawari stays in the pipeline. A measured null across the evening is a real observation, and a
