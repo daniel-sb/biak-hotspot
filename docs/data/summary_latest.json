@@ -171,11 +171,11 @@
   }
  ],
  "evening": {
+  "closest_after_dark": null,
   "daylight_flags": 0,
   "daylight_summary": null,
   "evening_date": "2026-08-26",
   "flags": [],
-  "largest_after_dark": null,
   "night_flags": 0,
   "ocean_bt14_median_k": null,
   "slots_expected": 21,

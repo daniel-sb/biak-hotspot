@@ -96,9 +96,10 @@ T = {
                                  "reflected sunlight): {n} {pixel}, {t0}-{t1} "
                                  "WIT, peak anomaly +{peak} K. Listed in the "
                                  "evening file."),
-    "evening_largest": ("Largest after-dark anomaly: +{anom:.1f} K at {wit} "
-                        "WIT ({lat}, {lon}). Below the {thr:g} K flag "
-                        "threshold and not a detection."),
+    "evening_closest": ("Closest to the flag condition after dark: "
+                        "{anom:+.1f} K anomaly with a {diff:.1f} K band "
+                        "difference at {wit} WIT ({lat}, {lon}). {thr}; "
+                        "this is not a detection."),
     "evening_reader": "Reader check (marked ocean sample - not AOI): B14 "
                       "median {med} K.",
     "districts_heading": "Detections by district",
@@ -303,7 +304,7 @@ def evening_section(cfg: dict, root: Path, brief_day: str) -> tuple[dict,
     info = {"state": "unavailable", "evening_date": None,
             "slots_expected": 0, "slots_retrieved": 0, "slots_missing": 0,
             "flags": [], "daylight_flags": 0, "night_flags": 0,
-            "daylight_summary": None, "largest_after_dark": None,
+            "daylight_summary": None, "closest_after_dark": None,
             "ocean_bt14_median_k": None}
     window = cfg["himawari_window_utc"]
     cadence = int(cfg["himawari_cadence_minutes"])
@@ -371,16 +372,26 @@ def evening_section(cfg: dict, root: Path, brief_day: str) -> tuple[dict,
                        if pd.notna(peak) else None),
         }
 
-    # When nothing was flagged after dark, report the largest after-dark
-    # anomaly over land (flagged or not) so the reader can weigh it - always
-    # with the "not a detection" clause (Task 06b / PLAN.md 13.5).
-    info["largest_after_dark"] = None
+    # When nothing was flagged after dark, report the after-dark land pixel
+    # CLOSEST TO THE FLAG CONDITION (Task 06c): a pixel flags when
+    # bt07_anomaly and bt07_minus_bt14 BOTH clear their thresholds, so the
+    # honest distance to a flag is the weaker of the two tests. Ranking by
+    # the anomaly alone is dominated by cold cloud edges (PLAN.md 13.3);
+    # ranking by the band difference alone lets through pixels whose
+    # anomaly is negative. Neither statistic separates fire from cloud on
+    # its own - their minimum is the existing flag condition, read as a
+    # distance. Land only; the ocean sample is a reader check, not a scene.
+    info["closest_after_dark"] = None
     if info["night_flags"] == 0 and len(night_rows):
         anom = pd.to_numeric(night_rows["bt07_anomaly"], errors="coerce")
-        if anom.notna().any():
-            r = anom.idxmax()
-            info["largest_after_dark"] = {
+        dif = pd.to_numeric(night_rows["bt07_minus_bt14"], errors="coerce")
+        closeness = pd.concat([anom, dif], axis=1).min(axis=1)
+        if closeness.notna().any():
+            r = closeness.idxmax()
+            info["closest_after_dark"] = {
+                "closeness_k": round(float(closeness.loc[r]), 1),
                 "anomaly_k": round(float(anom.loc[r]), 1),
+                "diff_k": round(float(dif.loc[r]), 1),
                 "wit": str(night_rows.loc[r, "acq_time_wit"])[11:16],
                 "lat": round(float(night_rows.loc[r, "lat"]), 4),
                 "lon": round(float(night_rows.loc[r, "lon"]), 4),
@@ -408,11 +419,18 @@ def evening_section(cfg: dict, root: Path, brief_day: str) -> tuple[dict,
             pixel = "pixel" if n == 1 else "pixels"
             lines.append(T["evening_daylight_summary"].format(
                 n=n, pixel=pixel, t0=d["t0"], t1=d["t1"], peak=peak))
-        if info["largest_after_dark"]:
-            la = info["largest_after_dark"]
-            lines.append(T["evening_largest"].format(
-                anom=la["anomaly_k"], wit=la["wit"], lat=la["lat"],
-                lon=la["lon"], thr=float(cfg["himawari_min_anomaly_k"])))
+        ca = info["closest_after_dark"]
+        if ca:
+            thr_a = float(cfg["himawari_min_anomaly_k"])
+            thr_d = float(cfg["himawari_min_bt_diff_k"])
+            if thr_a == thr_d:
+                thr = f"Both tests must exceed {thr_a:g} K to flag"
+            else:
+                thr = (f"The tests must exceed {thr_a:g} K (anomaly) and "
+                       f"{thr_d:g} K (band difference) to flag")
+            lines.append(T["evening_closest"].format(
+                anom=ca["anomaly_k"], diff=ca["diff_k"], wit=ca["wit"],
+                lat=ca["lat"], lon=ca["lon"], thr=thr))
         lines.append(T["evening_not_evidence"])
     if info["night_flags"]:
         lines.append(T["evening_floor"])

@@ -14,6 +14,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pandas as pd
+import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -319,12 +320,12 @@ def _write_evening(root: Path, brief_day: str, rows):
 
 
 def _evening_row(wit, lat, lon, flagged, night, ocean=False, anom=25.0,
-                 utc="2026-08-25T15:30:00Z"):
+                 utc="2026-08-25T15:30:00Z", diff=14.0):
     return {"acq_time_utc": utc,
             "acq_time_wit": wit,
             "lat": lat, "lon": lon,
             "bt07": 310.0, "bt14": 296.0,
-            "bt07_minus_bt14": 14.0,
+            "bt07_minus_bt14": diff,
             "bt07_background": 296.0,
             "bt07_anomaly": anom,
             "is_night": night, "flagged": flagged,
@@ -405,27 +406,105 @@ def test_after_dark_flag_listed_individually():
         assert "- 19:30 WIT, -1.14, 136.03: B07 anomaly +15.0 K" in text
 
 
-def test_largest_after_dark_anomaly_line():
-    """06b: with nothing flagged after dark, the largest sub-threshold
-    after-dark anomaly is reported with the mandatory 'not a detection'
-    clause."""
+def test_closest_to_flag_exact_task_example():
+    """06c: the task's own numbers (anomaly +5.58, band diff 7.43) render
+    the mandated line with the 'not a detection' clause and config
+    thresholds."""
     with tempfile.TemporaryDirectory() as td:
         cfg = make_cfg(Path(td))
         _write_evening(td, "2026-08-26", [
             _evening_row("2026-08-25T18:30:00+09:00", -1.1857, 136.1186,
-                         False, True, anom=5.6,
+                         False, True, anom=5.58, diff=7.43,
                          utc="2026-08-25T09:30:00Z"),
             _evening_row("2026-08-25T20:00:00+09:00", -1.1857, 136.1186,
-                         False, True, anom=1.2,
+                         False, True, anom=1.2, diff=3.38,
                          utc="2026-08-25T11:00:00Z"),
         ])
         summary, [brief_path, _, _] = build_in(td, NOW)
-        la = summary["evening"]["largest_after_dark"]
-        assert la["anomaly_k"] == 5.6 and la["wit"] == "18:30"
+        ca = summary["evening"]["closest_after_dark"]
+        assert ca["anomaly_k"] == 5.6 and ca["diff_k"] == 7.4
+        assert ca["closeness_k"] == 5.6 and ca["wit"] == "18:30"
         text = brief_path.read_text(encoding="utf-8")
-        assert ("Largest after-dark anomaly: +5.6 K at 18:30 WIT "
-                "(-1.1857, 136.1186). Below the 10 K flag threshold and "
+        assert ("Closest to the flag condition after dark: +5.6 K anomaly "
+                "with a 7.4 K band difference at 18:30 WIT (-1.1857, "
+                "136.1186). Both tests must exceed 10 K to flag; this is "
                 "not a detection.") in text
+
+
+def test_closest_to_flag_uses_weaker_test():
+    """06c checks 1-3: the after-dark line ranks by the WEAKER of the two
+    flag tests (closeness = min(anomaly, band diff)):
+    - a pixel with a high anomaly but a low band difference loses to one
+      where both are moderate;
+    - a large band difference with a negative anomaly is never reported;
+    - the line keeps the 'not a detection' clause and reads thresholds
+      from config."""
+    with tempfile.TemporaryDirectory() as td:
+        cfg = make_cfg(Path(td))
+        _write_evening(td, "2026-08-26", [
+            # high anomaly, low band difference -> closeness 2.0: loses
+            _evening_row("2026-08-25T19:00:00+09:00", -1.10, 136.00,
+                         False, True, anom=9.0, diff=2.0,
+                         utc="2026-08-25T10:00:00Z"),
+            # both moderate -> closeness 4.0: wins
+            _evening_row("2026-08-25T18:30:00+09:00", -1.11, 136.01,
+                         False, True, anom=4.0, diff=5.0,
+                         utc="2026-08-25T09:30:00Z"),
+            # large band difference, negative anomaly -> closeness -5.0
+            _evening_row("2026-08-25T23:30:00+09:00", -0.79, 135.70,
+                         False, True, anom=-5.0, diff=13.5,
+                         utc="2026-08-25T14:30:00Z"),
+        ])
+        summary, [brief_path, _, _] = build_in(td, NOW)
+        ca = summary["evening"]["closest_after_dark"]
+        assert (ca["anomaly_k"], ca["diff_k"], ca["closeness_k"]) == \
+            (4.0, 5.0, 4.0)
+        text = brief_path.read_text(encoding="utf-8")
+        assert ("Closest to the flag condition after dark: +4.0 K anomaly "
+                "with a 5.0 K band difference at 18:30 WIT (-1.11, 136.01). "
+                "Both tests must exceed 10 K to flag; this is not a "
+                "detection.") in text
+        # the negative-anomaly cloud pixel is never named
+        assert "135.7" not in text
+        assert "-5.0 K anomaly" not in text
+
+
+def test_closest_line_thresholds_from_config():
+    """06c: the clause reads its thresholds from config - here two
+    different values render separately."""
+    with tempfile.TemporaryDirectory() as td:
+        cfg = make_cfg(Path(td))
+        cfg["himawari_min_anomaly_k"] = 12.5
+        cfg["himawari_min_bt_diff_k"] = 8.0
+        _write_evening(td, "2026-08-26", [
+            _evening_row("2026-08-25T18:30:00+09:00", -1.11, 136.01,
+                         False, True, anom=4.0,
+                         utc="2026-08-25T09:30:00Z"),
+        ])
+        _, lines = rep.evening_section(cfg, Path(td), "2026-08-26")
+        joined = "\n".join(lines)
+        assert ("The tests must exceed 12.5 K (anomaly) and 8 K (band "
+                "difference) to flag; this is not a detection.") in joined
+
+
+def test_closest_to_flag_on_real_2026_08_22():
+    """06c check 4: on the real 2026-08-22 evening file the line names
+    -1.1857, 136.1186 at 18:30 WIT (the PLAN.md 13.5 pixel)."""
+    p = ROOT / "data" / "processed" / "himawari_evening_2026-08-22.parquet"
+    if not p.exists():
+        print("SKIP: evening parquet not built yet")
+        return
+    cfg = yaml.safe_load((ROOT / "config.yaml").read_text())
+    info, lines = rep.evening_section(cfg, ROOT, "2026-08-23")
+    ca = info["closest_after_dark"]
+    assert ca is not None
+    assert (ca["lat"], ca["lon"], ca["wit"]) == (-1.1857, 136.1186, "18:30")
+    assert ca["closeness_k"] == 5.6
+    joined = "\n".join(lines)
+    assert ("Closest to the flag condition after dark: +5.6 K anomaly with "
+            "a 7.4 K band difference at 18:30 WIT (-1.1857, 136.1186). "
+            "Both tests must exceed 10 K to flag; this is not a detection."
+            ) in joined
 
 
 def test_evening_presunset_flag_labelled_daylight():
