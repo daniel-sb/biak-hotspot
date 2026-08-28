@@ -1020,7 +1020,10 @@ smoke problem is real and simply unobservable at this resolution.
 - The provisional 10 K thresholds are not validated for night. Night backgrounds are far cleaner
   than daytime ones, so a lower night threshold is defensible — but the 45-75 km cloud artifacts
   above show what lowering it would let through first. Do not lower it without a cloud test.
-- Ground reports (section 12.3) remain the only source that covered the evening of 2026-08-27.
-  Nothing in this section changes that, and this null result strengthens the case for building
-  that channel.
+- **Ground reports are out of scope (owner decision, 2026-08-28).** Sections 12.3 and 13.5 stand
+  as findings: nothing in this plan observes the evening hours when residents experience smoke,
+  and on 2026-08-27 a person was the only working detector. That gap is real and stays documented.
+  The project will not collect reports from other people to close it. Do not propose a form, a
+  WhatsApp channel, a self-log, or any social-media source in a future task.
+- The evening remains covered only by Himawari, subject to the 2 km floor established above.
 
