@@ -919,3 +919,69 @@ source, not as outreach.
 This section exists because the alternative was to publish a brief for 2026-08-27 stating that
 no thermal anomalies were detected overnight and the airport reported clear air. Both statements
 would have been true, and together they would have been badly misleading.
+
+---
+
+## 13. What Himawari-9 found in the blind window: nothing
+
+Task 05 built the evening product and ran it over **2026-08-22**, the largest fire day in the
+record — 283 FIRMS detections. The result is a null, and it is the most useful thing this project
+has measured since the backfill.
+
+### 13.1 The numbers
+
+```
+21 slots, 06:00-16:00 UTC (15:00-01:00 WIT), 22,185 AOI pixels per slot
+
+daytime  (15:00-18:15 WIT)   155,295 rows    38 flagged
+night    (18:15-01:00 WIT)   310,590 rows     0 flagged
+
+peak daytime B07 anomaly    +44.2 K   (346 K, on the FIRMS fire cluster)
+peak night   B07 anomaly     +6.6 K   (below the 10 K threshold)
+```
+
+Every flag falls between 15:00 and 17:30 WIT, all of it before sunset. **After dark, on the worst
+fire day of the crisis, Himawari-9 flagged nothing at all.**
+
+### 13.2 Two readings, one operational conclusion
+
+Either the fires genuinely stop burning hot at sunset — consistent with section 12, where only 1
+of 661 detections in ten days was at night — or a 2 km sensor cannot see a smouldering fire that
+VIIRS at 375 m would catch. Both are plausible and this data cannot separate them.
+
+They lead to the same place. **Himawari does not close the blind window for detection.** It closes
+it for *observation*: there is now a measured brightness-temperature series across hours that
+previously held nothing. That is worth having, and it is a much smaller claim than the one this
+project set out to make on 2026-08-28.
+
+The honest sentence for the brief is therefore: *no evening thermal anomaly above threshold*, and
+never *no fire*. Section 12.2 is the standing proof of why — the owner stood in heavy smoke at
+22:16 WIT while three instruments reported clear.
+
+### 13.3 The sub-threshold structure, recorded because it will be asked about
+
+The largest night anomalies are not on the fire. Nine of the top twelve cluster at 23:30 WIT
+around 135.5-135.7E, **45-75 km from the fire cluster**, with B07 minus B14 of only 3-5 K. A real
+fire drives that difference much higher. These read as cloud-edge artifacts, and they are what a
+cloud mask would exist to remove.
+
+One exception is worth naming. At 18:30 WIT a single pixel at -1.1857, 136.1186 shows B07 305.6 K,
+anomaly +5.6 K, and the highest B07 minus B14 in the night set at 7.4 K. That is **1.3 km from
+Frans Kaisiepo**, inside the August 2026 burning that section 11.3 established as real fire.
+
+It is one sub-threshold pixel. It is not a detection and must never be published as one. It is
+recorded here because it is the only night signal in the run with a fire-like spectral signature,
+and because if the evening thresholds are ever revisited, this is the pixel to revisit them
+against.
+
+### 13.4 What this changes
+
+- Himawari stays in the pipeline. A measured null across the evening is a real observation, and a
+  night that departs from it will be visible.
+- The provisional 10 K thresholds are not validated for night. Night backgrounds are far cleaner
+  than daytime ones, so a lower night threshold is defensible — but the 45-75 km cloud artifacts
+  above show what lowering it would let through first. Do not lower it without a cloud test.
+- Ground reports (section 12.3) remain the only source that covered the evening of 2026-08-27.
+  Nothing in this section changes that, and this null result strengthens the case for building
+  that channel.
+
