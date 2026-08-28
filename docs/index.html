@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biak hotspot monitor</title>
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<style>
+:root { --ink:#1c1c1c; --muted:#5a5a5a; --warn:#8a5a00; --line:#d8d4cc; --bg:#faf8f4; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:Georgia,'Times New Roman',serif; color:var(--ink); background:var(--bg); }
+header { padding:14px 16px 6px; }
+h1 { font-size:1.35rem; margin:0 0 2px; }
+.sub { color:var(--muted); font-size:.85rem; margin:0; }
+#data-errors { margin:8px 16px; padding:0; list-style:none; }
+#data-errors li { background:#fde8e8; border:1px solid #e0a0a0; color:#7a1010;
+  padding:6px 10px; margin-bottom:4px; font-size:.85rem; }
+#ethics { margin:10px 16px; padding:10px 12px; background:#fff7ec; border:1px solid #e3cfa4;
+  font-size:.88rem; line-height:1.45; }
+#ethics strong { display:block; margin-bottom:4px; }
+#gap { margin:0 16px 10px; padding:8px 12px; background:#eef2f6; border:1px solid #c9d4de;
+  font-size:.85rem; line-height:1.45; }
+#layout { display:grid; grid-template-columns:minmax(0,3fr) minmax(0,2fr); gap:12px; padding:0 16px; }
+#map { height:480px; min-height:320px; border:1px solid var(--line); }
+#panel { border:1px solid var(--line); background:#fff; padding:10px 12px; overflow-wrap:anywhere; }
+#panel h2 { font-size:1rem; margin:2px 0 6px; }
+#panel h3 { font-size:.92rem; margin:10px 0 4px; }
+#timeline-wrap { margin:12px 16px; border:1px solid var(--line); background:#fff; padding:8px 10px; }
+#timeline-wrap h2 { font-size:1rem; margin:2px 0 4px; }
+#timeline-wrap p { font-size:.82rem; color:var(--muted); margin:2px 0 6px; }
+#timeline { width:100%; height:auto; display:block; }
+#brief { background:#fff; }
+#brief table { border-collapse:collapse; font-size:.8rem; margin:4px 0; width:100%; }
+#brief th, #brief td { border:1px solid var(--line); padding:2px 5px; text-align:left; }
+#brief blockquote { margin:6px 0; padding:4px 10px; border-left:3px solid var(--line);
+  color:var(--muted); font-size:.85rem; }
+#brief ul { margin:4px 0; padding-left:18px; }
+.warn { background:#fdeeee; border-left:3px solid #c06060; padding:4px 8px; }
+.muted { color:var(--muted); font-size:.8rem; }
+footer { padding:12px 16px 20px; font-size:.78rem; color:var(--muted); line-height:1.5; }
+.legend { position:absolute; bottom:8px; left:8px; background:rgba(255,255,255,.92);
+  padding:6px 9px; font-size:.75rem; border:1px solid var(--line); z-index:2; }
+.legend .sw { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:4px; }
+.maplibregl-popup-content { font-size:.82rem; line-height:1.45; max-width:240px; }
+@media (max-width:720px) {
+  #layout { grid-template-columns:1fr; }
+  #map { height:320px; }
+  h1 { font-size:1.15rem; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Biak hotspot monitor</h1>
+  <p class="sub">Thermal anomalies detected from satellite around Biak, Supiori and Numfor,
+  Papua, Indonesia. Data: NASA FIRMS (VIIRS and MODIS) and Himawari-9. Updated after each
+  ingest run.</p>
+</header>
+
+<ul id="data-errors"></ul>
+
+<aside id="ethics">
+  <strong>What a hotspot is — and is not.</strong>
+  A hotspot is a thermal anomaly detected by a satellite sensor. It is not a confirmed fire,
+  and it cannot identify who started anything: a 375&nbsp;m pixel cannot attribute burning to
+  any person, landowner or village. Small-scale shifting cultivation is a long-standing and
+  lawful practice in Papua; a monitoring product that frames every detection as illegal
+  misrepresents the data. False-positive caveats are published with the counts, every time.
+</aside>
+
+<p id="gap"><strong>Observation gap.</strong> Nothing observes Biak between 15:00 and 00:31 WIT.
+Himawari-9 covers those hours from geostationary orbit at 2&nbsp;km resolution — 28 times the
+pixel area of VIIRS — so it sees only larger or hotter fires. The evening section below is an
+observation, never a reassurance.</p>
+
+<div id="layout">
+  <div>
+    <div id="map">
+      <div class="legend">
+        Hotspot size/colour by FRP (MW):
+        <span class="sw" style="background:#ffb14a"></span>small
+        <span class="sw" style="background:#f2762b"></span>moderate
+        <span class="sw" style="background:#c22e12"></span>high
+      </div>
+    </div>
+  </div>
+  <div id="panel">
+    <h2>Latest brief <span class="muted" id="brief-date"></span></h2>
+    <div id="brief"><p class="muted">Loading…</p></div>
+    <h2>Previous evening (Himawari-9)</h2>
+    <div id="evening"><p class="muted">Loading…</p></div>
+  </div>
+</div>
+
+<div id="timeline-wrap">
+  <h2>Detections per day — full record (linear scale)</h2>
+  <p>The flat years are the point: before 2026 the baseline ran at roughly two detections per
+  week. A linear axis is the honest rendering of that; August 2026 is the exception, not the
+  rule.</p>
+  <div id="timeline-error"></div>
+  <svg id="timeline" viewBox="0 0 1000 200" role="img" aria-label="Daily hotspot counts, linear scale"></svg>
+</div>
+
+<footer>
+  Boundaries: desa/kelurahan (BIG, via this project's extraction). Hotspots: NASA FIRMS
+  (VIIRS S-NPP, NOAA-20, NOAA-21, MODIS) and Himawari-9 AHI. A hotspot is a thermal anomaly,
+  not a confirmed fire; it cannot identify who started anything. Confidence values are shown
+  as raw instrument codes and are not comparable between VIIRS and MODIS.
+  <span id="generated"></span>
+</footer>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+// The mandated evening null sentence, kept whole in the source so the page
+// always states it verbatim (Task 07 check 4).
+const EVENING_NONE_AFTER_DARK =
+  "No evening thermal anomaly above threshold after dark.";
+const esc = (s) => String(s).replace(/[&<>"']/g,
+  c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+
+function dataError(name, message) {
+  const li = document.createElement("li");
+  li.textContent = message;
+  $("data-errors").appendChild(li);
+}
+
+async function loadJSON(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(url + ": HTTP " + r.status);
+  return r.json();
+}
+async function loadText(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(url + ": HTTP " + r.status);
+  return r.text();
+}
+
+/* ---------- map ---------- */
+const map = new maplibregl.Map({
+  container: "map",
+  style: "https://tiles.openfreemap.org/styles/liberty",
+  center: [135.5, -0.2],
+  zoom: 7.4,
+  attributionControl: { compact: false },
+});
+map.addControl(new maplibregl.NavigationControl({ showCompass: false }));
+map.fitBounds([[134.25, -1.45], [136.76, 1.0]], { padding: 24, duration: 0 });
+
+map.on("load", async () => {
+  let desaOk = false;
+  try {
+    const desa = await loadJSON("data/biak_desa.geojson");
+    map.addSource("desa", { type: "geojson", data: desa });
+    map.addLayer({
+      id: "desa-lines", type: "line", source: "desa",
+      paint: { "line-color": "#8a8a8a", "line-width": 0.7, "line-opacity": 0.8 },
+    });
+    desaOk = true;
+  } catch (e) {
+    dataError("desa", "District boundaries (biak_desa.geojson) failed to load — " +
+      "desa boundaries are not drawn. " + e.message);
+  }
+
+  try {
+    const hot = await loadJSON("data/hotspots_latest.geojson");
+    map.addSource("hotspots", { type: "geojson", data: hot });
+    map.addLayer({
+      id: "hotspots", type: "circle", source: "hotspots",
+      paint: {
+        // sized and coloured by FRP (MW); confidence is never an encoding
+        "circle-radius": ["interpolate", ["linear"], ["to-number", ["get", "frp"], 0],
+          0, 3, 10, 5, 50, 9, 200, 14],
+        "circle-color": ["interpolate", ["linear"], ["to-number", ["get", "frp"], 0],
+          0, "#ffb14a", 10, "#f2762b", 50, "#e05515", 200, "#c22e12"],
+        "circle-stroke-color": "#5a1408", "circle-stroke-width": 1,
+        "circle-opacity": 0.85,
+      },
+    });
+    map.on("click", "hotspots", (e) => {
+      const p = e.features[0].properties;
+      const distrik = p.distrik ? p.distrik : "outside mapped desa (offshore/water)";
+      new maplibregl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(
+          "<strong>" + esc(p.acq_date) + "</strong> — " +
+          esc((p.datetime_wit || "").slice(11, 16)) + " WIT<br>" +
+          "Satellite: " + esc(p.satellite) + "<br>" +
+          "Confidence: " + esc(p.confidence) + " (raw instrument code)<br>" +
+          "FRP: " + esc(p.frp) + " MW<br>" +
+          "Distrik: " + esc(distrik))
+        .addTo(map);
+    });
+    map.on("mouseenter", "hotspots", () => map.getCanvas().style.cursor = "pointer");
+    map.on("mouseleave", "hotspots", () => map.getCanvas().style.cursor = "");
+  } catch (e) {
+    dataError("hotspots", "Hotspot data (hotspots_latest.geojson) failed to load — " +
+      "the map shows boundaries only. " + e.message);
+  }
+
+  try {
+    const rec = await loadJSON("data/recurrent_sites.json");
+    const sites = {
+      type: "FeatureCollection",
+      features: rec.sites.map((s) => ({
+        type: "Feature",
+        geometry: { type: "Point",
+                    coordinates: [s.centroid_lon, s.centroid_lat] },
+        properties: { days: s.distinct_days,
+                      first: s.first_date, last: s.last_date },
+      })),
+    };
+    map.addSource("recurrent", { type: "geojson", data: sites });
+    map.addLayer({
+      id: "recurrent-ring", type: "circle", source: "recurrent",
+      paint: { "circle-radius": 13, "circle-color": "transparent",
+               "circle-stroke-color": "#5b3fa8", "circle-stroke-width": 2.5 },
+    });
+    map.addLayer({
+      id: "recurrent-label", type: "symbol", source: "recurrent",
+      layout: { "text-field": "recurrent location", "text-font": ["Noto Sans Regular"],
+                "text-offset": [0, 1.6], "text-size": 11 },
+      paint: { "text-color": "#4a2f8f" },
+    });
+    map.on("click", "recurrent-ring", (e) => {
+      const p = e.features[0].properties;
+      new maplibregl.Popup().setLngLat(e.lngLat).setHTML(
+        "<strong>Recurrent location</strong><br>" +
+        "Hotspots on " + esc(p.days) + " distinct days, " +
+        esc(p.first) + " to " + esc(p.last) +
+        ".<br><em>Recurrent location</em> describes how often hotspots have " +
+        "appeared here. It does not say what is here.").addTo(map);
+    });
+  } catch (e) {
+    dataError("recurrent", "Recurrent sites (recurrent_sites.json) failed to load — " +
+      "the recurrent-location layer is unavailable. " + e.message);
+  }
+  if (!desaOk) {
+    // boundaries failed but the notice above already says so
+  }
+});
+
+/* ---------- summary, evening, brief, timeline ---------- */
+(async () => {
+  let summary;
+  try {
+    summary = await loadJSON("data/summary_latest.json");
+  } catch (e) {
+    dataError("summary", "summary_latest.json failed to load — totals, sources, " +
+      "the evening section and the brief are unavailable. " + e.message);
+    $("evening").innerHTML = "<p class='error'>Evening product unavailable — " +
+      "summary data failed to load. A gap in the record is not a zero.</p>";
+    $("brief").innerHTML = "<p class='error'>Brief unavailable — summary data " +
+      "failed to load.</p>";
+    return;
+  }
+  $("generated").textContent = "Data generated: " + summary.generated_utc +
+    " UTC. Brief day covered: " + summary.covered_wit_date + " (WIT).";
+
+  /* evening — after-dark result first; never a reassurance (PLAN.md 13.2) */
+  try {
+    const ev = summary.evening;
+    const out = [];
+    if (!ev || ev.state !== "ok") {
+      out.push("<p class='warn'>Evening product unavailable for this night — a gap " +
+               "in the record, not a zero.</p>");
+    } else {
+      out.push("<p>Slots retrieved: " + ev.slots_retrieved + " of " +
+               ev.slots_expected + " expected.</p>");
+      if (ev.slots_missing > 0)
+        out.push("<p class='warn'>" + ev.slots_missing +
+                 " expected slot(s) missing upstream — a missing slot is a gap " +
+                 "in the record, not a zero.</p>");
+      if (ev.night_flags > 0) {
+        out.push("<p><strong>Pixels flagged after dark: " + ev.night_flags +
+                 ".</strong></p>");
+        out.push("<ul>" + ev.flags.map((f) =>
+          "<li>" + esc(String(f.acq_time_wit).slice(11, 16)) + " WIT, " +
+          f.lat + ", " + f.lon + " — B07 anomaly +" + f.anomaly_k + " K</li>"
+        ).join("") + "</ul>");
+      } else {
+        out.push("<p><strong>" + EVENING_NONE_AFTER_DARK + "</strong></p>");
+      }
+      if (ev.daylight_flags > 0)
+        out.push("<p>Daylight flags before sunset (unreliable — reflected " +
+                 "sunlight): " + ev.daylight_flags + " pixels. Listed in the " +
+                 "evening file.</p>");
+      if (ev.closest_after_dark)
+        out.push("<p>Closest to the flag condition after dark: +" +
+                 ev.closest_after_dark.anomaly_k + " K anomaly with a " +
+                 ev.closest_after_dark.diff_k + " K band difference at " +
+                 ev.closest_after_dark.wit + " WIT (" +
+                 ev.closest_after_dark.lat + ", " + ev.closest_after_dark.lon +
+                 "). Below the flag thresholds and not a detection.</p>");
+    }
+    out.push("<p class='warn'>That is not evidence that nothing burned: AHI at " +
+             "2 km resolves only larger or hotter fires than VIIRS at 375 m " +
+             "(about 28 times the pixel area), and a smouldering fire without " +
+             "flame may never cross a thermal threshold.</p>");
+    $("evening").innerHTML = out.join("");
+  } catch (e) {
+    $("evening").innerHTML = "<p class='error'>Evening section failed to render: " +
+      esc(e.message) + "</p>";
+  }
+
+  /* today's brief — most recent brief, hand-rolled markdown subset */
+  try {
+    const md = await loadText("briefs/" + summary.covered_wit_date + ".md");
+    $("brief-date").textContent = "(" + summary.covered_wit_date + " WIT)";
+    $("brief").innerHTML = miniMarkdown(md);
+  } catch (e) {
+    $("brief-date").textContent = "";
+    $("brief").innerHTML = "<p class='error'>Brief for the latest day failed to " +
+      "load (" + esc(e.message) + "). The Markdown files under docs/briefs/ are " +
+      "the source of record.</p>";
+  }
+
+  /* timeline — daily counts over the full record, linear axis */
+  try {
+    const daily = await loadJSON("data/daily_counts.json");
+    drawTimeline(daily);
+  } catch (e) {
+    $("timeline-error").innerHTML = "<p class='error'>daily_counts.json failed " +
+      "to load — the detection timeline is unavailable. " + esc(e.message) + "</p>";
+  }
+})();
+
+/* hand-rolled markdown subset: headings, bold, italics, lists, tables,
+   blockquotes. No library (Task 07). */
+function miniMarkdown(md) {
+  const esc = (s) => String(s).replace(/[&<>]/g,
+    (c) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;" }[c]));
+  const inline = (s) => esc(s)
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/_([^_]+)_/g, "<em>$1</em>");
+  const lines = md.split(/\r?\n/);
+  const out = [];
+  let list = null, table = null, quote = null;
+  const flush = () => {
+    if (list)  { out.push("<ul>" + list.map((l) => "<li>" + inline(l) + "</li>").join("") + "</ul>"); list = null; }
+    if (quote) { out.push("<blockquote>" + quote.map((l) => inline(l)).join("<br>") + "</blockquote>"); quote = null; }
+    if (table) { out.push(table.html + "</table>"); table = null; }
+  };
+  for (const raw of lines) {
+    const line = raw.replace(/\s+$/, "");
+    if (/^\|/.test(line)) {
+      const cells = line.split("|").slice(1, -1).map((c) => c.trim());
+      if (cells.every((c) => /^:?-{2,}:?$/.test(c))) continue;   // separator
+      flush();
+      if (!table) table = { html: "<table><tr>" +
+        cells.map((c) => "<th>" + inline(c) + "</th>").join("") + "</tr>" };
+      else table.html += "<tr>" +
+        cells.map((c) => "<td>" + inline(c) + "</td>").join("") + "</tr>";
+      continue;
+    }
+    flush();
+    if (/^### /.test(line)) out.push("<h4>" + inline(line.slice(4)) + "</h4>");
+    else if (/^## /.test(line)) out.push("<h3>" + inline(line.slice(3)) + "</h3>");
+    else if (/^# /.test(line)) out.push("<h2>" + inline(line.slice(2)) + "</h2>");
+    else if (/^- /.test(line)) out.push("<p>• " + inline(line.slice(2)) + "</p>");
+    else if (/^> /.test(line)) out.push("<blockquote>" + inline(line.slice(2)) + "</blockquote>");
+    else if (line === "") out.push("");
+    else out.push("<p>" + inline(line) + "</p>");
+  }
+  flush();
+  return out.join("\n");
+}
+
+/* timeline: linear-scale SVG bars over the full record */
+function drawTimeline(daily) {
+  const W = 1000, H = 200, padL = 40, padB = 24, padT = 14;
+  const svg = document.getElementById("timeline");
+  const max = Math.max(1, ...daily.map((d) => d[1]));
+  const iw = W - padL - 10, ih = H - padT - padB;
+  const bw = iw / daily.length;
+  const y = (n) => padT + ih - (n / max) * ih;
+  const parts = [];
+  parts.push("<line x1='" + padL + "' y1='" + (padT + ih) + "' x2='" +
+             (W - 10) + "' y2='" + (padT + ih) + "' stroke='#9a9a9a'/>");
+  [[max, "#c9c9c9"], [max / 2, "#e4e4e4"]].forEach(([v, col]) => {
+    parts.push("<line x1='" + padL + "' y1='" + y(v) + "' x2='" + (W - 10) +
+               "' y2='" + y(v) + "' stroke='" + col + "' stroke-dasharray='3,3'/>");
+    parts.push("<text x='" + (padL - 4) + "' y='" + (y(v) + 3) +
+               "' font-size='10' text-anchor='end' fill='#777'>" + v + "</text>");
+  });
+  let lastYear = "";
+  daily.forEach(([d, n], i) => {
+    const x = padL + i * bw;
+    const yr = d.slice(0, 4);
+    if (yr !== lastYear) {
+      parts.push("<text x='" + (x + 2) + "' y='" + (H - 8) +
+                 "' font-size='10' fill='#777'>" + yr + "</text>");
+      lastYear = yr;
+    }
+    if (n > 0) {
+      const hgt = Math.max(0.5, (n / max) * ih);
+      parts.push("<rect x='" + x.toFixed(2) + "' y='" + (y(n)).toFixed(2) +
+                 "' width='" + Math.max(bw - 0.4, 0.4).toFixed(2) +
+                 "' height='" + hgt.toFixed(2) + "' fill='#c26a1e'>" +
+                 "<title>" + d + ": " + n + "</title></rect>");
+    }
+  });
+  const peak = daily.reduce((a, b) => (b[1] > a[1] ? b : a), daily[0]);
+  parts.push("<text x='" + (padL + daily.indexOf(peak) * bw) + "' y='" +
+             (y(peak[1]) - 4) + "' font-size='10' fill='#7a3010'>" + peak[1] +
+             " on " + peak[0] + "</text>");
+  svg.innerHTML = parts.join("");
+}
+</script>
+</body>
+</html>

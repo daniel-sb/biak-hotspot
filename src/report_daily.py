@@ -556,6 +556,19 @@ def build(cfg: dict, root: Path, now_utc: datetime | None = None,
     window = df[(df["date_wit"] >= window_start)
                 & (df["date_wit"] <= covered_day)]
     write_geojson(window, geo_path, summary["generated_utc"], covered_day)
+
+    # Task 07: detections per WIT day across the whole store, zeros included,
+    # for the dashboard timeline. Flat [date, count] pairs, sorted by date;
+    # no timestamp inside, so regeneration is byte-identical.
+    per_day = df.groupby("date_wit").size()
+    span = pd.date_range(df["date_wit"].min(), df["date_wit"].max(), freq="D")
+    daily = [[d.strftime("%Y-%m-%d"), int(per_day.get(d.strftime("%Y-%m-%d"), 0))]
+             for d in span]
+    daily_path = geo_path.parent / "daily_counts.json"
+    daily_path.write_text(json.dumps(daily, separators=(",", ":")) + "\n",
+                          encoding="utf-8")
+    print(daily_path.relative_to(root))
+
     published = {
         "covered_wit_date": covered_day,
         "generated_utc": summary["generated_utc"],
