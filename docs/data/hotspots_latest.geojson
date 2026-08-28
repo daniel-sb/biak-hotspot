@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
- "generated_utc": "2026-08-27T10:55:55Z",
- "covered_wit_date": "2026-08-25",
+ "generated_utc": "2026-08-27T07:00:00Z",
+ "covered_wit_date": "2026-08-27",
  "features": [
   {
    "type": "Feature",
@@ -32,7 +32,8 @@
     "desa": "Urfu",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -64,7 +65,8 @@
     "desa": "Dousi",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -96,7 +98,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -128,7 +131,8 @@
     "desa": "Manwor Indah",
     "distrik": "Orkeri",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -160,7 +164,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -192,7 +197,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -224,7 +230,8 @@
     "desa": "Woniki",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -256,7 +263,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -288,7 +296,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -320,7 +329,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -352,7 +362,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -384,7 +397,8 @@
     "desa": "Dernafi",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -416,7 +430,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -448,7 +463,8 @@
     "desa": "Dernafi",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -480,7 +496,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -512,7 +529,8 @@
     "desa": "Adoki",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -544,7 +562,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -576,7 +595,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -608,7 +628,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -640,7 +661,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -672,7 +694,8 @@
     "desa": "Anggraidi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -704,7 +727,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -736,7 +760,8 @@
     "desa": "Urfu",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -768,7 +793,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -800,7 +826,8 @@
     "desa": "Sorido",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -832,7 +859,8 @@
     "desa": "Rimba Jaya",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -864,7 +892,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -896,7 +925,8 @@
     "desa": "Banasrares",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -928,7 +958,8 @@
     "desa": "Kabidon",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -960,7 +991,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -992,7 +1024,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1024,7 +1057,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1056,7 +1090,8 @@
     "desa": "Sunde",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1088,7 +1123,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1120,7 +1156,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1152,7 +1189,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -1184,7 +1224,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1216,7 +1257,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -1248,7 +1292,8 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1280,7 +1325,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1312,7 +1358,8 @@
     "desa": "Dousi",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1344,7 +1391,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1376,7 +1424,8 @@
     "desa": "Kababur",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1408,7 +1457,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1440,7 +1490,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1472,7 +1523,8 @@
     "desa": "Sarwom",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1504,7 +1556,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1536,7 +1589,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1568,7 +1622,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1600,7 +1655,8 @@
     "desa": "Birubi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1632,7 +1688,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1664,7 +1721,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1696,7 +1754,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1728,7 +1787,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1760,39 +1820,8 @@
     "desa": "Waroi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.08434,
-     -1.13275
-    ]
-   },
-   "properties": {
-    "detection_id": "173edb203d44ff0e30b3cca4403ecf419745d59b",
-    "bright_ti4": "334.3",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-08-19",
-    "acq_time": "432",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "300.11",
-    "frp": 4.54,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T04:32:00+00:00",
-    "datetime_wit": "2026-08-19T13:32:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Maryendi",
-    "distrik": "Samofa",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1824,39 +1853,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.10303,
-     -1.17835
-    ]
-   },
-   "properties": {
-    "detection_id": "179bc12bda75925390f442c0217bcf12b0a91487",
-    "bright_ti4": "334.2",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-08-19",
-    "acq_time": "432",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "301.94",
-    "frp": 3.52,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T04:32:00+00:00",
-    "datetime_wit": "2026-08-19T13:32:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Mansinyas",
-    "distrik": "Samofa",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1888,7 +1886,8 @@
     "desa": "Darmopis",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1920,7 +1919,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1952,7 +1952,8 @@
     "desa": "Wirmaker",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -1984,7 +1985,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2016,7 +2018,10 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -2048,7 +2053,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2080,7 +2086,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2112,7 +2119,8 @@
     "desa": "Wouna",
     "distrik": "Andey",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2144,7 +2152,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2176,7 +2185,8 @@
     "desa": "Inggiri",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2208,7 +2218,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2240,7 +2251,8 @@
     "desa": "Dousi",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2272,7 +2284,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2304,7 +2317,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2336,7 +2350,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2368,7 +2383,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2400,7 +2416,8 @@
     "desa": "Kababur",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2432,7 +2449,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2464,7 +2482,8 @@
     "desa": "Kabidon",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2496,7 +2515,41 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.04292,
+     -1.13607
+    ]
+   },
+   "properties": {
+    "detection_id": "1ca849304c814c2a97cccf8b56fb962ec7f8d715",
+    "bright_ti4": "338.14",
+    "scan": "0.43",
+    "track": "0.38",
+    "acq_date": "2026-08-27",
+    "acq_time": "436",
+    "satellite": "N20",
+    "instrument": "VIIRS",
+    "confidence": "n",
+    "version": "2.0NRT",
+    "bright_ti5": "297.89",
+    "frp": 7.44,
+    "daynight": "D",
+    "datetime_utc": "2026-08-27T04:36:00+00:00",
+    "datetime_wit": "2026-08-27T13:36:00+09:00",
+    "date_wit": "2026-08-27",
+    "desa": "Darmopis",
+    "distrik": "Samofa",
+    "kabupaten": "Biak Numfor",
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2528,7 +2581,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2560,7 +2614,8 @@
     "desa": "Kababur",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2592,7 +2647,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2624,39 +2680,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14,
-     -1.18763
-    ]
-   },
-   "properties": {
-    "detection_id": "1e351cd5fed028f75833b9e256cc1aa393b95fe3",
-    "bright_ti4": "337.69",
-    "scan": "0.35",
-    "track": "0.57",
-    "acq_date": "2026-08-19",
-    "acq_time": "508",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "293.99",
-    "frp": 4.78,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T05:08:00+00:00",
-    "datetime_wit": "2026-08-19T14:08:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Manggandisapi",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2688,39 +2713,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.1432,
-     -1.18713
-    ]
-   },
-   "properties": {
-    "detection_id": "1f1a692fd4582f0e0d01b2c2cd52323bdb4295a7",
-    "bright_ti4": "345.37",
-    "scan": "0.35",
-    "track": "0.57",
-    "acq_date": "2026-08-19",
-    "acq_time": "508",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "294",
-    "frp": 4.78,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T05:08:00+00:00",
-    "datetime_wit": "2026-08-19T14:08:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Manggandisapi",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2752,7 +2746,8 @@
     "desa": "Wirmaker",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2784,7 +2779,8 @@
     "desa": "Adoki",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2816,7 +2812,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2848,7 +2845,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2880,7 +2878,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2912,7 +2911,8 @@
     "desa": "Sunde",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2944,7 +2944,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -2976,7 +2977,8 @@
     "desa": "Adoki",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3008,7 +3010,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3040,39 +3043,8 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.07578,
-     -1.1404
-    ]
-   },
-   "properties": {
-    "detection_id": "22363d71d2c401e5a547542354b20c0a06fc8944",
-    "bright_ti4": "342.85",
-    "scan": "0.51",
-    "track": "0.41",
-    "acq_date": "2026-08-20",
-    "acq_time": "446",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "298.23",
-    "frp": 4.61,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T04:46:00+00:00",
-    "datetime_wit": "2026-08-20T13:46:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Maryendi",
-    "distrik": "Samofa",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3104,7 +3076,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3136,7 +3109,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3168,7 +3142,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3200,7 +3175,8 @@
     "desa": "Rarnpimbo",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3232,7 +3208,8 @@
     "desa": "Woniki",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3264,7 +3241,8 @@
     "desa": "Amyambenram",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3296,7 +3274,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3328,7 +3307,8 @@
     "desa": "Warido",
     "distrik": "Numfor Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3360,7 +3340,8 @@
     "desa": "Dousi",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3392,39 +3373,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.03448,
-     -1.1312
-    ]
-   },
-   "properties": {
-    "detection_id": "26e42cc3494a5857399ba39909415e95d46d1ac7",
-    "bright_ti4": "329.16",
-    "scan": "0.45",
-    "track": "0.63",
-    "acq_date": "2026-08-20",
-    "acq_time": "508",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "295.35",
-    "frp": 5.46,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T05:08:00+00:00",
-    "datetime_wit": "2026-08-20T14:08:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Yendidori",
-    "distrik": "Yendidori",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3456,7 +3406,8 @@
     "desa": "Amberparem",
     "distrik": "Bruyadori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3488,7 +3439,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3520,7 +3472,8 @@
     "desa": "Kababur",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3552,7 +3505,8 @@
     "desa": "Wirmaker",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3584,7 +3538,8 @@
     "desa": "Inpendi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3616,7 +3571,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3648,7 +3604,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3680,7 +3637,8 @@
     "desa": "Woniki",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3712,7 +3670,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3744,7 +3703,8 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3776,7 +3736,8 @@
     "desa": "Rimba Jaya",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3808,7 +3769,8 @@
     "desa": "Adoki",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3840,7 +3802,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3872,7 +3835,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3904,7 +3868,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3936,7 +3901,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -3968,7 +3934,8 @@
     "desa": "Sarwom",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4000,7 +3967,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4032,7 +4000,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4064,7 +4033,8 @@
     "desa": "Ruar",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4096,7 +4066,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4128,7 +4099,8 @@
     "desa": "Adoki",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4160,7 +4132,8 @@
     "desa": "Yomdori",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4192,7 +4165,8 @@
     "desa": "Dernafi",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4224,7 +4198,8 @@
     "desa": "Sunyar",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4256,7 +4231,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R001",
+    "recurrent_site_days": 74,
+    "recurrent_site": true
    }
   },
   {
@@ -4288,7 +4266,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4320,7 +4299,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4352,7 +4332,8 @@
     "desa": "Dernafi",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4384,7 +4365,8 @@
     "desa": "Wasyai",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4416,7 +4398,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4448,7 +4431,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4480,7 +4464,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4512,7 +4497,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4544,39 +4530,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     135.89595,
-     -1.02918
-    ]
-   },
-   "properties": {
-    "detection_id": "368b77b2b25d13d08aaf74ca5a353e5fc36d51e7",
-    "bright_ti4": "332.55",
-    "scan": "0.34",
-    "track": "0.56",
-    "acq_date": "2026-08-19",
-    "acq_time": "508",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "292.92",
-    "frp": 1.76,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T05:08:00+00:00",
-    "datetime_wit": "2026-08-19T14:08:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Kababur",
-    "distrik": "Biak Barat",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4608,7 +4563,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4640,7 +4596,8 @@
     "desa": "Syabes",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4672,7 +4629,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4704,7 +4662,8 @@
     "desa": "Syabes",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4736,7 +4695,8 @@
     "desa": "Kabidon",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4768,7 +4728,8 @@
     "desa": "Moibaken",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4800,7 +4761,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4832,7 +4794,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4864,7 +4827,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4896,7 +4860,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4928,7 +4893,8 @@
     "desa": "Warberik",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -4960,39 +4926,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     135.92657,
-     -1.03751
-    ]
-   },
-   "properties": {
-    "detection_id": "3c02e19db656ec9fc2f62128f2e7e057a69ed5e3",
-    "bright_ti4": "336.48",
-    "scan": "0.42",
-    "track": "0.38",
-    "acq_date": "2026-08-19",
-    "acq_time": "432",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "300.46",
-    "frp": 5.06,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T04:32:00+00:00",
-    "datetime_wit": "2026-08-19T13:32:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Samber Sup",
-    "distrik": "Yendidori",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5024,7 +4959,8 @@
     "desa": "Adoki",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5056,7 +4992,8 @@
     "desa": "Birubi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5088,7 +5025,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5120,7 +5058,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5152,7 +5091,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5184,7 +5124,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5216,7 +5157,8 @@
     "desa": "Anggraidi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5248,7 +5190,8 @@
     "desa": "Sorido",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5280,7 +5223,8 @@
     "desa": "Birubi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5312,7 +5256,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5344,7 +5289,8 @@
     "desa": "Kabidon",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5376,7 +5322,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5408,7 +5355,8 @@
     "desa": "Adoki",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5440,7 +5388,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5472,39 +5421,8 @@
     "desa": "Darmopis",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14613,
-     -1.18108
-    ]
-   },
-   "properties": {
-    "detection_id": "41891770fa2c8b427e6efdfd2af37ae5ce3d7740",
-    "bright_ti4": "334.26",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-08-20",
-    "acq_time": "412",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "301.75",
-    "frp": 18.75,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T04:12:00+00:00",
-    "datetime_wit": "2026-08-20T13:12:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Anjareuw",
-    "distrik": "Samofa",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5536,7 +5454,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5568,7 +5487,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5600,7 +5520,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5632,7 +5553,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5664,7 +5586,8 @@
     "desa": "Yomdori",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5696,7 +5619,8 @@
     "desa": "Kabidon",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5728,7 +5652,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5760,7 +5685,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5792,7 +5718,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5824,7 +5751,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5856,7 +5784,8 @@
     "desa": "Anggraidi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5888,7 +5817,8 @@
     "desa": "Inmdi",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5920,7 +5850,8 @@
     "desa": "Warberik",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5952,7 +5883,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -5984,7 +5916,8 @@
     "desa": "Inggiri",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6016,7 +5949,8 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6048,7 +5982,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6080,7 +6015,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6112,7 +6048,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6144,7 +6081,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6176,7 +6114,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6208,7 +6147,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6240,7 +6180,8 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6272,7 +6213,8 @@
     "desa": "Mandala",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6304,7 +6246,8 @@
     "desa": "Amyambenram",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6336,39 +6279,8 @@
     "desa": "Wasyai",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     135.89426,
-     -1.02835
-    ]
-   },
-   "properties": {
-    "detection_id": "509473bfc1ee031d06210da44ea10cf1b43f79e1",
-    "bright_ti4": "331.09",
-    "scan": "0.42",
-    "track": "0.38",
-    "acq_date": "2026-08-19",
-    "acq_time": "432",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "297.36",
-    "frp": 8.49,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T04:32:00+00:00",
-    "datetime_wit": "2026-08-19T13:32:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Kababur",
-    "distrik": "Biak Barat",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6400,7 +6312,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6432,7 +6345,8 @@
     "desa": "Syabes",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6464,7 +6378,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6496,7 +6411,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6528,7 +6444,8 @@
     "desa": "Moibaken",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6560,7 +6477,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6592,7 +6510,8 @@
     "desa": "Moibaken",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6624,7 +6543,8 @@
     "desa": "Syabes",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6656,7 +6576,8 @@
     "desa": "Mamoribo",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6688,7 +6609,8 @@
     "desa": "Samofa",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6720,7 +6642,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6752,7 +6675,8 @@
     "desa": "Andei Sup",
     "distrik": "Poiru",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6784,7 +6708,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6816,7 +6741,8 @@
     "desa": "Waroi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6848,7 +6774,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6880,7 +6807,8 @@
     "desa": "Rarnpimbo",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6912,7 +6840,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6944,7 +6873,8 @@
     "desa": "Wirmaker",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -6976,7 +6906,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7008,39 +6939,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14336,
-     -1.18858
-    ]
-   },
-   "properties": {
-    "detection_id": "565dd1c463c356645d2390cd535422068c3eba36",
-    "bright_ti4": "353.06",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-08-20",
-    "acq_time": "412",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "305.86",
-    "frp": 13.25,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T04:12:00+00:00",
-    "datetime_wit": "2026-08-20T13:12:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Manggandisapi",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7072,7 +6972,8 @@
     "desa": "Adoki",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7104,7 +7005,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7136,7 +7038,8 @@
     "desa": "Soon",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7168,7 +7071,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -7200,7 +7106,8 @@
     "desa": "Warbinsi",
     "distrik": "Andey",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7232,7 +7139,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7264,7 +7172,8 @@
     "desa": "Sunyar",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7296,7 +7205,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7328,7 +7238,8 @@
     "desa": "Inggiri",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7360,7 +7271,8 @@
     "desa": "Sumberker",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7392,7 +7304,8 @@
     "desa": "Birubi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7424,7 +7337,8 @@
     "desa": "Banasrares",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7456,39 +7370,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.12912,
-     -1.18264
-    ]
-   },
-   "properties": {
-    "detection_id": "5ac334ce26575de17a153b4c3bf763e5605e7a71",
-    "bright_ti4": "332.7",
-    "scan": "0.51",
-    "track": "0.41",
-    "acq_date": "2026-08-20",
-    "acq_time": "446",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "298.44",
-    "frp": 3.48,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T04:46:00+00:00",
-    "datetime_wit": "2026-08-20T13:46:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Swapodibo",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7520,7 +7403,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7552,7 +7436,8 @@
     "desa": "Moibaken",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7584,7 +7469,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7616,7 +7502,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7648,7 +7535,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7680,7 +7568,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7712,7 +7601,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7744,7 +7634,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7776,7 +7667,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7808,7 +7700,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7840,7 +7733,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7872,7 +7766,41 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.15172,
+     -1.14808
+    ]
+   },
+   "properties": {
+    "detection_id": "5ed828e4c68dea5bcbadbd64f378d7e8f7725552",
+    "bright_ti4": "343.69",
+    "scan": "0.43",
+    "track": "0.38",
+    "acq_date": "2026-08-27",
+    "acq_time": "436",
+    "satellite": "N20",
+    "instrument": "VIIRS",
+    "confidence": "n",
+    "version": "2.0NRT",
+    "bright_ti5": "301.71",
+    "frp": 7.39,
+    "daynight": "D",
+    "datetime_utc": "2026-08-27T04:36:00+00:00",
+    "datetime_wit": "2026-08-27T13:36:00+09:00",
+    "date_wit": "2026-08-27",
+    "desa": "Ruar",
+    "distrik": "Biak Timur",
+    "kabupaten": "Biak Numfor",
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7904,7 +7832,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7936,7 +7865,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -7968,7 +7898,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8000,7 +7931,8 @@
     "desa": "Rarnpimbo",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8032,7 +7964,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8064,7 +7997,8 @@
     "desa": "Kabidon",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8096,7 +8030,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8128,7 +8063,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8160,7 +8096,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8192,7 +8129,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8224,7 +8162,8 @@
     "desa": "Wirmaker",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8256,7 +8195,8 @@
     "desa": "Kababur",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8288,7 +8228,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8320,7 +8261,8 @@
     "desa": "Kababur",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8352,7 +8294,41 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.03127,
+     -1.12155
+    ]
+   },
+   "properties": {
+    "detection_id": "63485467fdedc75eb042703c5c25bfbaa2957c27",
+    "bright_ti4": "332.28",
+    "scan": "0.52",
+    "track": "0.41",
+    "acq_date": "2026-08-27",
+    "acq_time": "417",
+    "satellite": "N",
+    "instrument": "VIIRS",
+    "confidence": "n",
+    "version": "2.0NRT",
+    "bright_ti5": "293.2",
+    "frp": 3.18,
+    "daynight": "D",
+    "datetime_utc": "2026-08-27T04:17:00+00:00",
+    "datetime_wit": "2026-08-27T13:17:00+09:00",
+    "date_wit": "2026-08-27",
+    "desa": "Yendidori",
+    "distrik": "Yendidori",
+    "kabupaten": "Biak Numfor",
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8384,7 +8360,8 @@
     "desa": "Amyambenram",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8416,7 +8393,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R002",
+    "recurrent_site_days": 12,
+    "recurrent_site": true
    }
   },
   {
@@ -8448,7 +8428,8 @@
     "desa": "Adoki",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8480,7 +8461,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8512,7 +8494,8 @@
     "desa": "Urfu",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8544,7 +8527,8 @@
     "desa": "Kabidon",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8576,39 +8560,8 @@
     "desa": "Soon",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14233,
-     -1.18164
-    ]
-   },
-   "properties": {
-    "detection_id": "69be4ef82980fcf27cd0fa98c38b7fa33c05ee57",
-    "bright_ti4": "347.59",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-08-20",
-    "acq_time": "412",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "301.97",
-    "frp": 9.11,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T04:12:00+00:00",
-    "datetime_wit": "2026-08-20T13:12:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Anjareuw",
-    "distrik": "Samofa",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8640,7 +8593,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8672,7 +8626,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -8704,7 +8661,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8736,7 +8694,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8768,7 +8727,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -8800,7 +8762,10 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -8832,7 +8797,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8864,7 +8830,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8896,7 +8863,8 @@
     "desa": "Rim",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8928,7 +8896,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8960,7 +8929,8 @@
     "desa": "Moibaken",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -8992,7 +8962,8 @@
     "desa": "Kajasbo",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9024,7 +8995,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9056,7 +9028,8 @@
     "desa": "Moibaken",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9088,7 +9061,8 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9120,7 +9094,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9152,39 +9127,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14359,
-     -1.1843
-    ]
-   },
-   "properties": {
-    "detection_id": "6eb8e878435dfe4c1540409b0fed8b7073d3a312",
-    "bright_ti4": "367",
-    "scan": "0.51",
-    "track": "0.41",
-    "acq_date": "2026-08-20",
-    "acq_time": "446",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "h",
-    "version": "2.0NRT",
-    "bright_ti5": "304.34",
-    "frp": 14.7,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T04:46:00+00:00",
-    "datetime_wit": "2026-08-20T13:46:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Parai",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9216,7 +9160,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9248,7 +9193,8 @@
     "desa": "Birubi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9280,7 +9226,8 @@
     "desa": "Rarnpimbo",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9312,7 +9259,8 @@
     "desa": "Anggraidi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9344,7 +9292,8 @@
     "desa": "Amyambenram",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9376,7 +9325,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9408,7 +9358,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9440,7 +9391,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9472,7 +9424,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9504,7 +9457,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9536,7 +9490,8 @@
     "desa": "Karyendi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9568,7 +9523,8 @@
     "desa": "Rim",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9600,7 +9556,8 @@
     "desa": "Swapodibo",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9632,7 +9589,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R001",
+    "recurrent_site_days": 74,
+    "recurrent_site": true
    }
   },
   {
@@ -9664,7 +9624,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9696,7 +9657,8 @@
     "desa": "Swapodibo",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9728,7 +9690,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9760,7 +9723,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9792,7 +9756,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9824,7 +9789,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9856,7 +9822,8 @@
     "desa": "Kajasbo",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9888,7 +9855,8 @@
     "desa": "Ruar",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9920,7 +9888,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9952,7 +9921,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -9984,7 +9954,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -10016,7 +9989,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10048,7 +10022,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10080,7 +10055,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10112,7 +10088,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -10144,7 +10123,8 @@
     "desa": "Kababur",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10176,7 +10156,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R002",
+    "recurrent_site_days": 12,
+    "recurrent_site": true
    }
   },
   {
@@ -10208,7 +10191,8 @@
     "desa": "Rim",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10240,7 +10224,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10272,7 +10257,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10304,7 +10290,8 @@
     "desa": "Urfu",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10336,7 +10323,8 @@
     "desa": "Sumberker",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10368,7 +10356,8 @@
     "desa": "Anggraidi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10400,7 +10389,8 @@
     "desa": "Darmopis",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10432,7 +10422,8 @@
     "desa": "Woniki",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10464,7 +10455,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10496,7 +10488,8 @@
     "desa": "Sorido",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10528,7 +10521,41 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.15414,
+     -1.16677
+    ]
+   },
+   "properties": {
+    "detection_id": "7c6ad2298dab0aa86ff2446073a817f3bcfb03bd",
+    "bright_ti4": "338.67",
+    "scan": "0.43",
+    "track": "0.38",
+    "acq_date": "2026-08-27",
+    "acq_time": "436",
+    "satellite": "N20",
+    "instrument": "VIIRS",
+    "confidence": "n",
+    "version": "2.0NRT",
+    "bright_ti5": "299.56",
+    "frp": 2.7,
+    "daynight": "D",
+    "datetime_utc": "2026-08-27T04:36:00+00:00",
+    "datetime_wit": "2026-08-27T13:36:00+09:00",
+    "date_wit": "2026-08-27",
+    "desa": "Ruar",
+    "distrik": "Biak Timur",
+    "kabupaten": "Biak Numfor",
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10560,7 +10587,8 @@
     "desa": "Insrom",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10592,7 +10620,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10624,7 +10653,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R001",
+    "recurrent_site_days": 74,
+    "recurrent_site": true
    }
   },
   {
@@ -10656,7 +10688,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10688,7 +10721,8 @@
     "desa": "Darmopis",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10720,7 +10754,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10752,7 +10787,8 @@
     "desa": "Bosnik Sup",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10784,7 +10820,8 @@
     "desa": "Darmopis",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10816,7 +10853,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10848,7 +10886,8 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10880,7 +10919,8 @@
     "desa": "Anggraidi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10912,7 +10952,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10944,7 +10985,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -10976,7 +11018,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11008,7 +11051,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11040,7 +11084,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11072,7 +11117,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11104,7 +11150,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11136,7 +11183,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11168,39 +11216,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.13936,
-     -1.18694
-    ]
-   },
-   "properties": {
-    "detection_id": "87595a1fa6ce991849d4b9c3359224d9158f7a75",
-    "bright_ti4": "330.95",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-08-19",
-    "acq_time": "432",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "301.17",
-    "frp": 4.29,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T04:32:00+00:00",
-    "datetime_wit": "2026-08-19T13:32:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Manggandisapi",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11232,7 +11249,8 @@
     "desa": "Rarnpimbo",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11264,7 +11282,8 @@
     "desa": "Woniki",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11296,39 +11315,8 @@
     "desa": "Afefbo",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14249,
-     -1.18187
-    ]
-   },
-   "properties": {
-    "detection_id": "88d25848af246f497f44d0ebd99a86f7805809a6",
-    "bright_ti4": "367",
-    "scan": "0.35",
-    "track": "0.57",
-    "acq_date": "2026-08-19",
-    "acq_time": "508",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "h",
-    "version": "2.0NRT",
-    "bright_ti5": "294.46",
-    "frp": 4.78,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T05:08:00+00:00",
-    "datetime_wit": "2026-08-19T14:08:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Anjareuw",
-    "distrik": "Samofa",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11360,7 +11348,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11392,7 +11381,8 @@
     "desa": "Mambesak",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11424,7 +11414,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11456,7 +11447,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11488,7 +11480,8 @@
     "desa": "Anggraidi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11520,7 +11513,8 @@
     "desa": "Inggiri",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11552,7 +11546,8 @@
     "desa": "Mambesak",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11584,7 +11579,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11616,7 +11612,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11648,39 +11645,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.07013,
-     -1.08977
-    ]
-   },
-   "properties": {
-    "detection_id": "8d5c0cbea5d220c4da2f6bdb38e4649ff7ae03fd",
-    "bright_ti4": "338.81",
-    "scan": "0.45",
-    "track": "0.63",
-    "acq_date": "2026-08-20",
-    "acq_time": "508",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "293.46",
-    "frp": 4.68,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T05:08:00+00:00",
-    "datetime_wit": "2026-08-20T14:08:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Warsansan",
-    "distrik": "Biak Utara",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11712,7 +11678,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11744,7 +11711,8 @@
     "desa": "Karabai",
     "distrik": "Aimando Padaido",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11776,7 +11744,8 @@
     "desa": "Dernafi",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11808,7 +11777,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11840,7 +11810,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11872,7 +11843,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11904,7 +11876,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -11936,7 +11911,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -11968,7 +11944,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12000,7 +11977,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -12032,7 +12012,8 @@
     "desa": "Rarnpimbo",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12064,7 +12045,8 @@
     "desa": "Darmopis",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12096,7 +12078,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12128,7 +12111,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12160,7 +12144,8 @@
     "desa": "Rarnpimbo",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12192,7 +12177,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12224,7 +12210,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12256,7 +12243,8 @@
     "desa": "Sunyar",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12288,7 +12276,8 @@
     "desa": "Dernafi",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12320,7 +12309,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12352,7 +12342,41 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.15524,
+     -1.17985
+    ]
+   },
+   "properties": {
+    "detection_id": "9955780e224857694703f5efe84bdd38b0d44beb",
+    "scan": "1.17",
+    "track": "1.08",
+    "acq_date": "2026-08-27",
+    "acq_time": "644",
+    "satellite": "Aqua",
+    "instrument": "MODIS",
+    "confidence": "0",
+    "version": "6.1NRT",
+    "frp": 12.83,
+    "daynight": "D",
+    "datetime_utc": "2026-08-27T06:44:00+00:00",
+    "datetime_wit": "2026-08-27T15:44:00+09:00",
+    "date_wit": "2026-08-27",
+    "brightness": "319.35",
+    "bright_t31": "299.85",
+    "desa": "Anjareuw",
+    "distrik": "Samofa",
+    "kabupaten": "Biak Numfor",
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12384,7 +12408,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12416,7 +12441,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12448,7 +12474,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -12480,7 +12509,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12512,7 +12542,8 @@
     "desa": "Rarnpimbo",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12544,7 +12575,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12576,7 +12608,8 @@
     "desa": "Banasrares",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12608,7 +12641,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12640,39 +12674,8 @@
     "desa": "Mambesak",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14415,
-     -1.18811
-    ]
-   },
-   "properties": {
-    "detection_id": "9cfa548ae898ecc70a2c1fd3157c6887edf60065",
-    "bright_ti4": "355.25",
-    "scan": "0.51",
-    "track": "0.41",
-    "acq_date": "2026-08-20",
-    "acq_time": "446",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "303.6",
-    "frp": 16.4,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T04:46:00+00:00",
-    "datetime_wit": "2026-08-20T13:46:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Manggandisapi",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12704,7 +12707,8 @@
     "desa": "Inmdi",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12736,7 +12740,8 @@
     "desa": "Faknikdi",
     "distrik": "Andey",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12768,7 +12773,8 @@
     "desa": "Dernafi",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12800,7 +12806,8 @@
     "desa": "Swapodibo",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12832,7 +12839,8 @@
     "desa": "Sepse",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12864,7 +12872,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12896,7 +12905,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12928,7 +12938,8 @@
     "desa": "Sumberker",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -12960,39 +12971,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.10173,
-     -1.1443
-    ]
-   },
-   "properties": {
-    "detection_id": "a20d4c9e4b08daade5cbf98b4eee0b735c963890",
-    "bright_ti4": "332.19",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-08-19",
-    "acq_time": "432",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "299.87",
-    "frp": 2.89,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T04:32:00+00:00",
-    "datetime_wit": "2026-08-19T13:32:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Anjareuw",
-    "distrik": "Samofa",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13024,7 +13004,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13056,7 +13037,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13088,7 +13070,8 @@
     "desa": "Kababur",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13120,7 +13103,8 @@
     "desa": "Wirmaker",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13152,39 +13136,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.1432,
-     -1.18635
-    ]
-   },
-   "properties": {
-    "detection_id": "a3ca877a40cba55eb34492779b033d54f5714bfb",
-    "bright_ti4": "334.49",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-08-19",
-    "acq_time": "432",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "300.15",
-    "frp": 9.06,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T04:32:00+00:00",
-    "datetime_wit": "2026-08-19T13:32:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Manggandisapi",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13216,7 +13169,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13248,7 +13202,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13280,7 +13235,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13312,7 +13268,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13344,7 +13301,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13376,7 +13334,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13408,7 +13367,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -13440,7 +13402,8 @@
     "desa": "Wouna",
     "distrik": "Andey",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13472,7 +13435,8 @@
     "desa": "Soon",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13504,7 +13468,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13536,7 +13501,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13568,7 +13534,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R002",
+    "recurrent_site_days": 12,
+    "recurrent_site": true
    }
   },
   {
@@ -13600,7 +13569,8 @@
     "desa": "Anggraidi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13632,7 +13602,8 @@
     "desa": "Warberik",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13664,7 +13635,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13696,7 +13668,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13728,7 +13701,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13760,7 +13734,8 @@
     "desa": "Soon",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13792,7 +13767,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13824,7 +13800,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13856,7 +13833,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13888,7 +13866,8 @@
     "desa": "Dousi",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13920,7 +13899,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13952,7 +13932,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -13984,7 +13965,8 @@
     "desa": "Mambesak",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14016,7 +13998,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14048,7 +14031,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14080,7 +14064,8 @@
     "desa": "Kabidon",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14112,7 +14097,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14144,39 +14130,8 @@
     "desa": "Anggraidi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14268,
-     -1.18287
-    ]
-   },
-   "properties": {
-    "detection_id": "ad2da17e8ddf850df20f1c3b736f404a23e5da0a",
-    "bright_ti4": "350.06",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-08-19",
-    "acq_time": "432",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "303.33",
-    "frp": 9.06,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T04:32:00+00:00",
-    "datetime_wit": "2026-08-19T13:32:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Anjareuw",
-    "distrik": "Samofa",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14208,7 +14163,8 @@
     "desa": "Wasyai",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14240,7 +14196,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14272,7 +14229,8 @@
     "desa": "Amyambenram",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14304,7 +14262,8 @@
     "desa": "Birubi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14336,7 +14295,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14368,7 +14328,8 @@
     "desa": "Mandala",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14400,7 +14361,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14432,7 +14394,8 @@
     "desa": "Sumberker",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14464,7 +14427,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14496,7 +14460,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -14528,7 +14495,8 @@
     "desa": "Ruar",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14560,7 +14528,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14592,7 +14561,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14624,7 +14594,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14656,7 +14627,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14688,7 +14660,8 @@
     "desa": "Sunde",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14720,7 +14693,41 @@
     "desa": "Rarnpimbo",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.02934,
+     -1.12389
+    ]
+   },
+   "properties": {
+    "detection_id": "b1e546fdbe5dd01ce4bb1e05cb48394e6d8bfe3a",
+    "bright_ti4": "332.94",
+    "scan": "0.43",
+    "track": "0.38",
+    "acq_date": "2026-08-27",
+    "acq_time": "436",
+    "satellite": "N20",
+    "instrument": "VIIRS",
+    "confidence": "n",
+    "version": "2.0NRT",
+    "bright_ti5": "297.98",
+    "frp": 5.08,
+    "daynight": "D",
+    "datetime_utc": "2026-08-27T04:36:00+00:00",
+    "datetime_wit": "2026-08-27T13:36:00+09:00",
+    "date_wit": "2026-08-27",
+    "desa": "Yendidori",
+    "distrik": "Yendidori",
+    "kabupaten": "Biak Numfor",
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14752,7 +14759,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14784,7 +14792,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14816,7 +14825,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14848,7 +14858,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14880,7 +14891,8 @@
     "desa": "Kababur",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14912,7 +14924,8 @@
     "desa": "Faknikdi",
     "distrik": "Andey",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14944,7 +14957,8 @@
     "desa": "Moibaken",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -14976,7 +14990,8 @@
     "desa": "Urfu",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15008,7 +15023,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15040,7 +15056,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15072,7 +15089,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15104,7 +15122,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15136,7 +15155,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15168,7 +15188,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15200,7 +15221,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15232,7 +15254,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15264,7 +15287,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15296,7 +15320,8 @@
     "desa": "Sunyar",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15328,7 +15353,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -15360,7 +15388,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15392,7 +15421,8 @@
     "desa": "Sepse",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15424,7 +15454,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15456,7 +15487,8 @@
     "desa": "Insusbari",
     "distrik": "Swandiwe",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15488,7 +15520,8 @@
     "desa": "Sauri",
     "distrik": "Oridek",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15520,7 +15553,8 @@
     "desa": "Kabidon",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15552,7 +15586,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15584,7 +15619,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15616,7 +15652,43 @@
     "desa": "Amyambenram",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.03911,
+     -1.13665
+    ]
+   },
+   "properties": {
+    "detection_id": "bef1e951d6b98c7c8a67f6cdff35d99d76a36d57",
+    "bright_ti4": "335.27",
+    "scan": "0.43",
+    "track": "0.38",
+    "acq_date": "2026-08-27",
+    "acq_time": "436",
+    "satellite": "N20",
+    "instrument": "VIIRS",
+    "confidence": "n",
+    "version": "2.0NRT",
+    "bright_ti5": "297.88",
+    "frp": 7.44,
+    "daynight": "D",
+    "datetime_utc": "2026-08-27T04:36:00+00:00",
+    "datetime_wit": "2026-08-27T13:36:00+09:00",
+    "date_wit": "2026-08-27",
+    "desa": "Yendidori",
+    "distrik": "Yendidori",
+    "kabupaten": "Biak Numfor",
+    "on_land": true,
+    "recurrent_site_id": "R002",
+    "recurrent_site_days": 12,
+    "recurrent_site": true
    }
   },
   {
@@ -15648,7 +15720,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -15680,7 +15755,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15712,7 +15788,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15744,39 +15821,8 @@
     "desa": "Amyambenram",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14278,
-     -1.1853
-    ]
-   },
-   "properties": {
-    "detection_id": "c1696a01564f714621c5a54b43c93f488b72a856",
-    "bright_ti4": "343.12",
-    "scan": "0.46",
-    "track": "0.63",
-    "acq_date": "2026-08-20",
-    "acq_time": "508",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "292.08",
-    "frp": 11.54,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T05:08:00+00:00",
-    "datetime_wit": "2026-08-20T14:08:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Manggandisapi",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15808,7 +15854,8 @@
     "desa": "Andei Sup",
     "distrik": "Poiru",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15840,7 +15887,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15872,7 +15920,8 @@
     "desa": "Rimba Jaya",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15904,7 +15953,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15936,7 +15986,8 @@
     "desa": "Ruar",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -15968,7 +16019,8 @@
     "desa": "Wafor",
     "distrik": "Supiori Timur",
     "kabupaten": "Supiori",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16000,7 +16052,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16032,7 +16085,8 @@
     "desa": "Dernafi",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16064,7 +16118,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16096,7 +16151,8 @@
     "desa": "Darmopis",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16128,7 +16184,8 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16160,7 +16217,8 @@
     "desa": "Mandala",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16192,7 +16250,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16224,7 +16283,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16256,7 +16316,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16288,7 +16349,8 @@
     "desa": "Mambesak",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16320,7 +16382,8 @@
     "desa": "Wirmaker",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16352,7 +16415,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16384,7 +16448,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16416,7 +16481,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16448,7 +16514,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16480,7 +16547,8 @@
     "desa": "Andei",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16512,7 +16580,41 @@
     "desa": "Duber",
     "distrik": "Supiori Timur",
     "kabupaten": "Supiori",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.20824,
+     -1.15474
+    ]
+   },
+   "properties": {
+    "detection_id": "cd2d13b9ccbaabdaa2893c40be59b52e5e678e2d",
+    "bright_ti4": "347.57",
+    "scan": "0.44",
+    "track": "0.38",
+    "acq_date": "2026-08-27",
+    "acq_time": "436",
+    "satellite": "N20",
+    "instrument": "VIIRS",
+    "confidence": "n",
+    "version": "2.0NRT",
+    "bright_ti5": "300.37",
+    "frp": 9.39,
+    "daynight": "D",
+    "datetime_utc": "2026-08-27T04:36:00+00:00",
+    "datetime_wit": "2026-08-27T13:36:00+09:00",
+    "date_wit": "2026-08-27",
+    "desa": "Sunde",
+    "distrik": "Biak Timur",
+    "kabupaten": "Biak Numfor",
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16544,7 +16646,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16576,7 +16679,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16608,7 +16712,8 @@
     "desa": "Woniki",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16640,7 +16745,8 @@
     "desa": "Dousi",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16672,7 +16778,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16704,7 +16811,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16736,7 +16844,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -16765,7 +16876,8 @@
     "datetime_utc": "2026-08-22T04:29:00+00:00",
     "datetime_wit": "2026-08-22T13:29:00+09:00",
     "date_wit": "2026-08-22",
-    "on_land": false
+    "on_land": false,
+    "recurrent_site": false
    }
   },
   {
@@ -16797,7 +16909,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16829,7 +16942,8 @@
     "desa": "Moibaken",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16861,7 +16975,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16890,7 +17005,8 @@
     "datetime_utc": "2026-08-22T04:29:00+00:00",
     "datetime_wit": "2026-08-22T13:29:00+09:00",
     "date_wit": "2026-08-22",
-    "on_land": false
+    "on_land": false,
+    "recurrent_site": false
    }
   },
   {
@@ -16922,39 +17038,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.1441,
-     -1.19105
-    ]
-   },
-   "properties": {
-    "detection_id": "d21ec6b4f01f129d460c8e272d6e198c2d40d0b7",
-    "bright_ti4": "337.95",
-    "scan": "0.46",
-    "track": "0.63",
-    "acq_date": "2026-08-20",
-    "acq_time": "508",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "291.41",
-    "frp": 7.17,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T05:08:00+00:00",
-    "datetime_wit": "2026-08-20T14:08:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Manggandisapi",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -16986,7 +17071,8 @@
     "desa": "Afefbo",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17018,7 +17104,8 @@
     "desa": "Birubi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17050,7 +17137,8 @@
     "desa": "Armnu",
     "distrik": "Andey",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17082,7 +17170,8 @@
     "desa": "Anggraidi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17114,7 +17203,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17146,7 +17236,41 @@
     "desa": "Wirmaker",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     134.8166,
+     -0.98756
+    ]
+   },
+   "properties": {
+    "detection_id": "d4ed2daf22fa86596c47a5126c72f82922601b25",
+    "bright_ti4": "331.77",
+    "scan": "0.4",
+    "track": "0.37",
+    "acq_date": "2026-08-27",
+    "acq_time": "436",
+    "satellite": "N20",
+    "instrument": "VIIRS",
+    "confidence": "n",
+    "version": "2.0NRT",
+    "bright_ti5": "291.62",
+    "frp": 3.07,
+    "daynight": "D",
+    "datetime_utc": "2026-08-27T04:36:00+00:00",
+    "datetime_wit": "2026-08-27T13:36:00+09:00",
+    "date_wit": "2026-08-27",
+    "desa": "Serbin",
+    "distrik": "Numfor Barat",
+    "kabupaten": "Biak Numfor",
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17178,7 +17302,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17210,7 +17335,10 @@
     "desa": "Darmopis",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -17242,7 +17370,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17274,7 +17403,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -17306,7 +17438,8 @@
     "desa": "Wirmaker",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17338,7 +17471,8 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17370,39 +17504,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14328,
-     -1.18483
-    ]
-   },
-   "properties": {
-    "detection_id": "d77749f127759dea0afc97df131a9b7170239579",
-    "bright_ti4": "342.28",
-    "scan": "0.46",
-    "track": "0.63",
-    "acq_date": "2026-08-20",
-    "acq_time": "508",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "292",
-    "frp": 11.5,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T05:08:00+00:00",
-    "datetime_wit": "2026-08-20T14:08:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Manggandisapi",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17434,7 +17537,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17466,39 +17570,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.06694,
-     -1.09006
-    ]
-   },
-   "properties": {
-    "detection_id": "da5b1708e2675331d544f49010351875d0ebee5a",
-    "bright_ti4": "329.39",
-    "scan": "0.45",
-    "track": "0.63",
-    "acq_date": "2026-08-20",
-    "acq_time": "508",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "292.96",
-    "frp": 4.91,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T05:08:00+00:00",
-    "datetime_wit": "2026-08-20T14:08:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Warsansan",
-    "distrik": "Biak Utara",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17530,7 +17603,8 @@
     "desa": "Swapodibo",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17562,7 +17636,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17594,7 +17669,8 @@
     "desa": "Dernafi",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17626,7 +17702,8 @@
     "desa": "Kabidon",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17658,7 +17735,8 @@
     "desa": "Adoki",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17690,7 +17768,8 @@
     "desa": "Mandala",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17722,7 +17801,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17754,39 +17834,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     135.66652,
-     -0.69433
-    ]
-   },
-   "properties": {
-    "detection_id": "dd1be66dd02fd99787f138f46806b5a7c38386c6",
-    "bright_ti4": "330.75",
-    "scan": "0.44",
-    "track": "0.39",
-    "acq_date": "2026-08-20",
-    "acq_time": "412",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "298.63",
-    "frp": 3.53,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T04:12:00+00:00",
-    "datetime_wit": "2026-08-20T13:12:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Puweri",
-    "distrik": "Supiori Utara",
-    "kabupaten": "Supiori",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17818,7 +17867,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -17850,7 +17902,8 @@
     "desa": "Semayen",
     "distrik": "Numfor Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17882,7 +17935,8 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17914,7 +17968,8 @@
     "desa": "Waryei",
     "distrik": "Supiori Barat",
     "kabupaten": "Supiori",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17946,7 +18001,8 @@
     "desa": "Kababur",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -17978,7 +18034,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -18010,7 +18069,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18018,31 +18078,32 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     135.90845,
-     -1.04458
+     136.02911,
+     -1.12339
     ]
    },
    "properties": {
-    "detection_id": "df960f7d1576184135ca6c5a03c0f8b7a3cdf69b",
-    "scan": "1",
-    "track": "1",
-    "acq_date": "2026-08-19",
-    "acq_time": "633",
-    "satellite": "Aqua",
-    "instrument": "MODIS",
-    "confidence": "31",
-    "version": "6.1NRT",
-    "frp": 4.7,
+    "detection_id": "debfe3004aaeb96598ac026811703c4662d976fc",
+    "bright_ti4": "329.52",
+    "scan": "0.51",
+    "track": "0.41",
+    "acq_date": "2026-08-27",
+    "acq_time": "417",
+    "satellite": "N",
+    "instrument": "VIIRS",
+    "confidence": "n",
+    "version": "2.0NRT",
+    "bright_ti5": "293.4",
+    "frp": 2.56,
     "daynight": "D",
-    "datetime_utc": "2026-08-19T06:33:00+00:00",
-    "datetime_wit": "2026-08-19T15:33:00+09:00",
-    "date_wit": "2026-08-19",
-    "brightness": "311.42",
-    "bright_t31": "296.4",
-    "desa": "Warberik",
-    "distrik": "Biak Barat",
+    "datetime_utc": "2026-08-27T04:17:00+00:00",
+    "datetime_wit": "2026-08-27T13:17:00+09:00",
+    "date_wit": "2026-08-27",
+    "desa": "Yendidori",
+    "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18074,7 +18135,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18106,7 +18168,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18138,7 +18201,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18170,7 +18234,8 @@
     "desa": "Anggraidi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18202,7 +18267,8 @@
     "desa": "Rimba Jaya",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18234,7 +18300,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18266,7 +18333,8 @@
     "desa": "Sunyar",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18298,7 +18366,8 @@
     "desa": "Warbinsi",
     "distrik": "Andey",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18330,7 +18399,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18362,7 +18432,8 @@
     "desa": "Sumberker",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18394,7 +18465,8 @@
     "desa": "Wirmaker",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18426,39 +18498,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14452,
-     -1.19059
-    ]
-   },
-   "properties": {
-    "detection_id": "e3fe0978aa3a72e19e7e7d40ef87e2f4df483bef",
-    "bright_ti4": "337.73",
-    "scan": "0.46",
-    "track": "0.63",
-    "acq_date": "2026-08-20",
-    "acq_time": "508",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "291.46",
-    "frp": 6.61,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T05:08:00+00:00",
-    "datetime_wit": "2026-08-20T14:08:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Manggandisapi",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18490,7 +18531,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18522,7 +18564,8 @@
     "desa": "Birubi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18554,7 +18597,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18586,7 +18630,8 @@
     "desa": "Manwor Indah",
     "distrik": "Orkeri",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18618,39 +18663,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14305,
-     -1.18048
-    ]
-   },
-   "properties": {
-    "detection_id": "e4fb1ab5300743ad230faef22ca40663642277ce",
-    "bright_ti4": "342.99",
-    "scan": "0.51",
-    "track": "0.41",
-    "acq_date": "2026-08-20",
-    "acq_time": "446",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "299.6",
-    "frp": 14.7,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T04:46:00+00:00",
-    "datetime_wit": "2026-08-20T13:46:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Anjareuw",
-    "distrik": "Samofa",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18682,7 +18696,8 @@
     "desa": "Birubi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18714,7 +18729,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18746,7 +18762,8 @@
     "desa": "Ruar",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18778,39 +18795,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     134.84436,
-     -1.08015
-    ]
-   },
-   "properties": {
-    "detection_id": "e8c06ad1d0ba7697ed6af479f5858ea735efb43c",
-    "bright_ti4": "340.67",
-    "scan": "0.39",
-    "track": "0.37",
-    "acq_date": "2026-08-19",
-    "acq_time": "432",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "299.64",
-    "frp": 9.8,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T04:32:00+00:00",
-    "datetime_wit": "2026-08-19T13:32:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Rimbaraya",
-    "distrik": "Numfor Barat",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18842,7 +18828,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18874,7 +18861,8 @@
     "desa": "Dousi",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18906,7 +18894,8 @@
     "desa": "Saribi",
     "distrik": "Orkeri",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18938,7 +18927,8 @@
     "desa": "Urfu",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -18970,7 +18960,8 @@
     "desa": "Rarnpimbo",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19002,7 +18993,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19034,7 +19026,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19066,7 +19059,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19098,7 +19092,8 @@
     "desa": "Kababur",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19130,7 +19125,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19162,7 +19158,8 @@
     "desa": "Manggandisapi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19194,39 +19191,8 @@
     "desa": "Moibaken",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14311,
-     -1.18259
-    ]
-   },
-   "properties": {
-    "detection_id": "edc73490046fca0dcb0fcbbd96f7e662d1fe855c",
-    "bright_ti4": "347.9",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-08-20",
-    "acq_time": "412",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "303.75",
-    "frp": 13.23,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T04:12:00+00:00",
-    "datetime_wit": "2026-08-20T13:12:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Anjareuw",
-    "distrik": "Samofa",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19258,7 +19224,8 @@
     "desa": "Suneri",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19290,7 +19257,8 @@
     "desa": "Sunde",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19322,7 +19290,8 @@
     "desa": "Adoki",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19354,7 +19323,8 @@
     "desa": "Adoki",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19386,7 +19356,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19418,39 +19389,8 @@
     "desa": "Anjareuw",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.03035,
-     -1.13744
-    ]
-   },
-   "properties": {
-    "detection_id": "ef7fc687908feb73c79b0e4419d4b524863c354f",
-    "bright_ti4": "331.64",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-08-19",
-    "acq_time": "432",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "298.27",
-    "frp": 3.08,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T04:32:00+00:00",
-    "datetime_wit": "2026-08-19T13:32:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Yendidori",
-    "distrik": "Yendidori",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19482,7 +19422,8 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19514,7 +19455,8 @@
     "desa": "Ruar",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19546,7 +19488,8 @@
     "desa": "Syabes",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19578,39 +19521,8 @@
     "desa": "Waderbo",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14287,
-     -1.18511
-    ]
-   },
-   "properties": {
-    "detection_id": "f1093e0a8264965f31822b609649adeeba43dd12",
-    "bright_ti4": "343.2",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-08-20",
-    "acq_time": "412",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "304.1",
-    "frp": 9.11,
-    "daynight": "D",
-    "datetime_utc": "2026-08-20T04:12:00+00:00",
-    "datetime_wit": "2026-08-20T13:12:00+09:00",
-    "date_wit": "2026-08-20",
-    "desa": "Manggandisapi",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19642,7 +19554,8 @@
     "desa": "Dofyo Wafor",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19674,7 +19587,8 @@
     "desa": "Sunyar",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19706,7 +19620,8 @@
     "desa": "Afefbo",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19738,7 +19653,8 @@
     "desa": "Dernafi",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19770,7 +19686,8 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19802,7 +19719,8 @@
     "desa": "Maryendi",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19834,7 +19752,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19866,7 +19785,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19898,7 +19818,41 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.04289,
+     -1.13539
+    ]
+   },
+   "properties": {
+    "detection_id": "f65914755eaa5acd25ddd7ffb166fb438b131eae",
+    "bright_ti4": "329.21",
+    "scan": "0.51",
+    "track": "0.41",
+    "acq_date": "2026-08-27",
+    "acq_time": "417",
+    "satellite": "N",
+    "instrument": "VIIRS",
+    "confidence": "n",
+    "version": "2.0NRT",
+    "bright_ti5": "294.44",
+    "frp": 2.18,
+    "daynight": "D",
+    "datetime_utc": "2026-08-27T04:17:00+00:00",
+    "datetime_wit": "2026-08-27T13:17:00+09:00",
+    "date_wit": "2026-08-27",
+    "desa": "Darmopis",
+    "distrik": "Samofa",
+    "kabupaten": "Biak Numfor",
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19930,7 +19884,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19962,7 +19917,8 @@
     "desa": "Mandala",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -19994,7 +19950,8 @@
     "desa": "Sunyar",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20026,7 +19983,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20058,7 +20016,8 @@
     "desa": "Parai",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20090,7 +20049,8 @@
     "desa": "Amyambenram",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20122,7 +20082,8 @@
     "desa": "Dernafi",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20154,7 +20115,8 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20186,7 +20148,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20218,39 +20181,8 @@
     "desa": "Yomdori",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.14284,
-     -1.18414
-    ]
-   },
-   "properties": {
-    "detection_id": "fb34c6721183f0207204faac22d7294e80ab6e3e",
-    "bright_ti4": "335.66",
-    "scan": "0.45",
-    "track": "0.63",
-    "acq_date": "2026-08-19",
-    "acq_time": "347",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "292.46",
-    "frp": 4.42,
-    "daynight": "D",
-    "datetime_utc": "2026-08-19T03:47:00+00:00",
-    "datetime_wit": "2026-08-19T12:47:00+09:00",
-    "date_wit": "2026-08-19",
-    "desa": "Manggandisapi",
-    "distrik": "Biak Kota",
-    "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20282,7 +20214,8 @@
     "desa": "Samber Sup",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20314,7 +20247,8 @@
     "desa": "Kobeoser",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20346,7 +20280,8 @@
     "desa": "Insumarires",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20378,7 +20313,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20410,7 +20346,8 @@
     "desa": "Sambawofuar",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20442,7 +20379,8 @@
     "desa": "Darmopis",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20474,7 +20412,8 @@
     "desa": "Dernafi",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20506,7 +20445,8 @@
     "desa": "Anggraidi",
     "distrik": "Biak Kota",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20538,7 +20478,8 @@
     "desa": "Dousi",
     "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20570,7 +20511,8 @@
     "desa": "Sumberker",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20602,7 +20544,8 @@
     "desa": "Warsansan",
     "distrik": "Biak Utara",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20634,7 +20577,10 @@
     "desa": "Yendidori",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site_id": "R003",
+    "recurrent_site_days": 10,
+    "recurrent_site": true
    }
   },
   {
@@ -20666,7 +20612,8 @@
     "desa": "Darmopis",
     "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   },
   {
@@ -20698,7 +20645,8 @@
     "desa": "Afefbo",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
-    "on_land": true
+    "on_land": true,
+    "recurrent_site": false
    }
   }
  ]

@@ -53,14 +53,16 @@ def make_store(root: Path) -> Path:
     return path
 
 
-def make_cfg(root: Path) -> dict:
+def make_cfg(root: Path, build_store: bool = True) -> dict:
     cfg = rep.load_config(ROOT / "config.yaml")
     # Absolute boundary path passes through resolve() unchanged; the store and
     # published outputs stay inside the temp root.
     cfg["admin_polygon"] = ROOT / "data" / "boundaries" / "biak_desa.geojson"
+    processed = make_store(root) if build_store \
+        else root / "processed" / "detections.parquet"
     cfg["output_paths"] = {
         **cfg["output_paths"],
-        "processed": make_store(root),
+        "processed": processed,
         "geojson": root / "docs" / "data" / "hotspots_latest.geojson",
         "summary_json": root / "docs" / "data" / "summary_latest.json",
         "brief_dir": root / "docs" / "briefs",
@@ -68,9 +70,10 @@ def make_cfg(root: Path) -> dict:
     return cfg
 
 
-def build_in(td_root: str, now: datetime, day: str | None = None):
-    return rep.build(make_cfg(Path(td_root)), Path(td_root),
-                     now_utc=now, day=day)
+def build_in(td_root: str, now: datetime, day: str | None = None,
+             build_store: bool = True):
+    return rep.build(make_cfg(Path(td_root), build_store=build_store),
+                     Path(td_root), now_utc=now, day=day)
 
 
 NOW = datetime(2026, 8, 27, 7, 0, 0, tzinfo=timezone.utc)
@@ -240,6 +243,54 @@ def test_deterministic_apart_from_timestamp():
         norm_a = stamp.sub("<STAMP>", raw_a.decode("utf-8"))
         norm_b = stamp.sub("<STAMP>", raw_b.decode("utf-8"))
         assert norm_a == norm_b, f"{name}: non-timestamp content drifted"
+
+
+def test_brief_surfaces_recurrent_sites_neutrally():
+    """Task 04: flagged rows get their own section with neutral wording, and
+    are never silently excluded from the counts (they are not excluded from
+    any count by construction - this pins the wording and the visibility)."""
+    with tempfile.TemporaryDirectory() as td:
+        cfg = make_cfg(Path(td))
+        store = Path(td) / "processed" / "detections.parquet"
+        df = pd.read_parquet(store)
+        day = df["date_wit"] == "2026-08-26"
+        on_biak_kota = day & (df["distrik"] == "Biak Kota")
+        df["recurrent_site_id"] = pd.Series(
+            ["R001" if m else None for m in on_biak_kota], index=df.index,
+            dtype=object)
+        df["recurrent_site_days"] = pd.Series(
+            [74 if m else pd.NA for m in on_biak_kota], index=df.index,
+            dtype="Int64")
+        df["recurrent_site"] = pd.Series(on_biak_kota.tolist(),
+                                         index=df.index, dtype=bool)
+        df.to_parquet(store, index=False)
+
+        summary, [brief_path, _, sum_path] = build_in(td, NOW,
+                                                      build_store=False)
+        assert summary["recurrent_today"] == [
+            {"site_id": "R001", "distrik": "Biak Kota",
+             "detections_today": 1, "days_total": 74}]
+        text = brief_path.read_text(encoding="utf-8")
+        assert rep.T["recurrent_heading"] in text
+        assert "R001" in text and "(Biak Kota)" in text
+        assert rep.T["recurrent_note"] in text
+        # The brief counts stay whole: the flagged detection is still in the
+        # total and in its district row.
+        assert "**3 thermal anomaly detections**" in text
+        assert "| Biak Kota | Biak Numfor | 1 |" in text
+        for banned in ("false positive", "industrial", "non-fire"):
+            assert banned not in text, banned
+        published = json.loads(sum_path.read_text(encoding="utf-8"))
+        assert published["recurrent_today"][0]["site_id"] == "R001"
+
+        # A store without the flag columns (pre-Task-04) renders no section.
+        df = df.drop(columns=["recurrent_site_id", "recurrent_site_days",
+                              "recurrent_site"])
+        df.to_parquet(store, index=False)
+        summary, [brief_path, _, _] = build_in(td, NOW, build_store=False)
+        assert summary["recurrent_today"] == []
+        assert rep.T["recurrent_heading"] not in \
+            brief_path.read_text(encoding="utf-8")
 
 
 if __name__ == "__main__":

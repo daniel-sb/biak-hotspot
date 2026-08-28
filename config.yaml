@@ -25,6 +25,19 @@ lookback_days: 15
 # pulling all of it wastes an hour to answer a question three years answers.
 backfill_years: 3
 
+# Recurrent-location flagging (Phase 2 item 1, calibrated on PLAN.md 11.2).
+# A cluster (detections within radius_m of a shared centre) is flagged when
+# hotspots appear on at least min_days distinct WIT days AND those days span
+# at least min_span_days - the span condition is what keeps a one-week fire
+# from being called recurrent. Flags only: flagged detections stay in every
+# count. Recurrence is computed only when the store spans at least
+# min_history_days; below that no flags are emitted at all.
+recurrence:
+  radius_m: 750
+  min_days: 10
+  min_span_days: 90
+  min_history_days: 365
+
 output_paths:
   raw_dir: data/raw
   processed: data/processed/detections.parquet

@@ -58,6 +58,16 @@ T = {
         "A district count of 0 below means no thermal anomaly was recorded "
         "there. Because coverage for this day was incomplete, it is not "
         "evidence that nothing burned.",
+    "recurrent_heading": "Recurrent locations",
+    "recurrent_line": "Site {site_id} ({distrik}): {today} detection(s) "
+                      "today, at a location flagged as recurrent - hotspots "
+                      "have appeared there on {days} distinct days of the "
+                      "recorded history.",
+    "recurrent_note": "\"Recurrent location\" describes only how often "
+                      "hotspots have appeared at one place. It does not say "
+                      "what is there, and it does not diminish any individual "
+                      "detection: these rows are included in every count "
+                      "above, never excluded.",
     "districts_heading": "Detections by district",
     "district_header": "| distrik | kabupaten | detections | total FRP (MW) "
                        "| max FRP (MW) |",
@@ -220,6 +230,28 @@ def write_summary(doc: dict, path: Path):
                                ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def recurrent_today(day_df: pd.DataFrame) -> list[dict]:
+    """Flagged detections on the covered day, one entry per site.
+
+    Presentational only - the flags live in the store, computed by
+    src/recurrence.py. A store written before that feature has no
+    recurrent_site column and yields an empty list.
+    """
+    if "recurrent_site" not in day_df.columns or not len(day_df):
+        return []
+    flagged = day_df[day_df["recurrent_site"].fillna(False).astype(bool)]
+    out = []
+    for site_id, grp in flagged.groupby("recurrent_site_id", sort=True):
+        d = grp["distrik"].dropna() if "distrik" in grp else []
+        out.append({
+            "site_id": str(site_id),
+            "distrik": str(d.mode().min()) if len(d) else None,
+            "detections_today": int(len(grp)),
+            "days_total": int(grp["recurrent_site_days"].iloc[0]),
+        })
+    return out
+
+
 def render_brief(summary: dict, covered_day: str, gen_utc: datetime,
                  window_days: int, manifest_found: bool) -> str:
     def stamp(dt, tz):
@@ -265,6 +297,13 @@ def render_brief(summary: dict, covered_day: str, gen_utc: datetime,
                      .format(distrik=row["distrik"], kabupaten=row["kabupaten"],
                              det=row["detections"], tfrp=total_frp,
                              mfrp=max_frp))
+    if summary.get("recurrent_today"):
+        lines += ["", f"## {T['recurrent_heading']}", ""]
+        for r in summary["recurrent_today"]:
+            lines.append("- " + T["recurrent_line"].format(
+                site_id=r["site_id"], distrik=r["distrik"] or "-",
+                today=r["detections_today"], days=r["days_total"]))
+        lines += ["", f"> {T['recurrent_note']}"]
     lines += ["", f"> {T['caveat']}", ""]
     return "\n".join(lines)
 
@@ -309,6 +348,7 @@ def build(cfg: dict, root: Path, now_utc: datetime | None = None,
                     "generated_utc": gen.strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "geojson_window_days": int(cfg["geojson_window_days"]),
                     "manifest_found": manifest_found})
+    summary["recurrent_today"] = recurrent_today(day_df)
     summary.update({"covered_wit_date": covered_day,
                     "generated_utc": gen.strftime("%Y-%m-%dT%H:%M:%SZ"),
                     "geojson_window_days": int(cfg["geojson_window_days"])})
@@ -332,6 +372,7 @@ def build(cfg: dict, root: Path, now_utc: datetime | None = None,
                    ("detections", "on_land", "offshore")},
         "sources": summary["sources"],
         "districts": summary["districts"],
+        "recurrent_today": summary["recurrent_today"],
     }
     write_summary(published, sum_path)
     brief_dir.mkdir(parents=True, exist_ok=True)

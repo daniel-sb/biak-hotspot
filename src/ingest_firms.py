@@ -41,6 +41,8 @@ import yaml
 from shapely import STRtree
 from shapely.geometry import Point, shape
 
+import recurrence
+
 ROOT = Path(__file__).resolve().parents[1]
 
 FIRMS_URL = ("https://firms.modaps.eosdis.nasa.gov/api/area/csv/"
@@ -566,6 +568,17 @@ def main(argv=None) -> int:
         # touching detection IDs. Re-applied to every row each run: newly
         # deduped rows and legacy rows both end up consistently attributed.
         merged = assign_admin(merged, boundaries)
+
+    # Recurrent-location flagging (Phase 2 item 1). Recomputed over the whole
+    # store every run, so flags stay consistent as history grows; flagged rows
+    # keep their place in every count - nothing is excluded anywhere.
+    merged, sites, rec_reason = recurrence.flag(
+        merged, cfg.get("recurrence", {}),
+        processed.parent / recurrence.RECURRENT_SITES_FILENAME)
+    if rec_reason:
+        log.warning("recurrence skipped: %s", rec_reason)
+    else:
+        log.info("recurrence: %d recurrent site(s) flagged", len(sites))
 
     try:
         merged.to_parquet(processed, index=False)
