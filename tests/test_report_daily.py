@@ -273,6 +273,9 @@ def test_brief_surfaces_recurrent_sites_neutrally():
         text = brief_path.read_text(encoding="utf-8")
         assert rep.T["recurrent_heading"] in text
         assert "R001" in text and "(Biak Kota)" in text
+        # Published prose: the singular must read "1 detection today".
+        assert "1 detection today" in text
+        assert "detection(s)" not in text
         assert rep.T["recurrent_note"] in text
         # The brief counts stay whole: the flagged detection is still in the
         # total and in its district row.
@@ -282,6 +285,18 @@ def test_brief_surfaces_recurrent_sites_neutrally():
             assert banned not in text, banned
         published = json.loads(sum_path.read_text(encoding="utf-8"))
         assert published["recurrent_today"][0]["site_id"] == "R001"
+
+        # Plural: a second flagged detection at the same site renders
+        # "2 detections today".
+        m2 = df["distrik"] == "Samofa"
+        df.loc[m2, "recurrent_site_id"] = "R001"
+        df.loc[m2, "recurrent_site_days"] = 74
+        df.loc[m2, "recurrent_site"] = True
+        df.to_parquet(store, index=False)
+        summary, [brief_path, _, _] = build_in(td, NOW, build_store=False)
+        assert summary["recurrent_today"][0]["detections_today"] == 2
+        assert "2 detections today" in \
+            brief_path.read_text(encoding="utf-8")
 
         # A store without the flag columns (pre-Task-04) renders no section.
         df = df.drop(columns=["recurrent_site_id", "recurrent_site_days",

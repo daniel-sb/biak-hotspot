@@ -46,8 +46,8 @@ def test_radius_spacing_makes_one_cluster():
     df = synth([(-1.0, 136.0, "2023-09-01", "Yendidori"),
                 (-1.0 - 375 * DEG, 136.0, "2023-12-01", "Yendidori"),
                 (-1.0 - 750 * DEG, 136.0, "2024-03-01", "Yendidori")])
-    out, sites, reason, _ = rec.compute(df, radius_m=750.0, min_days=1,
-                                        min_span_days=0, min_history_days=0)
+    out, sites, reason, _, _ = rec.compute(df, radius_m=750.0, min_days=1,
+                                           min_span_days=0, min_history_days=0)
     assert reason is None
     assert len(sites) == 1
     assert (out["recurrent_site"] == [True, True, True]).all()
@@ -64,8 +64,8 @@ def test_span_condition_excludes_short_bursts():
                              + timedelta(days=20 * i)).isoformat(),
                "Biak Timur") for i in range(10)]
     df = synth(burst + spread)
-    out, sites, _, _ = rec.compute(df, radius_m=750.0, min_days=10,
-                                   min_span_days=90, min_history_days=0)
+    out, sites, _, _, _ = rec.compute(df, radius_m=750.0, min_days=10,
+                                      min_span_days=90, min_history_days=0)
     burst_site = out.loc[out["distrik"] == "Yendidori", "recurrent_site"]
     spread_site = out.loc[out["distrik"] == "Biak Timur", "recurrent_site"]
     assert not burst_site.any()          # 10 days, span 6 -> no
@@ -85,7 +85,7 @@ def test_short_history_refuses_to_flag():
     df = synth(rows)   # 89 consecutive days, dense -> would flag if unguarded
     with tempfile.TemporaryDirectory() as td:
         mask = Path(td) / rec.RECURRENT_SITES_FILENAME
-        out, sites, reason = rec.flag(df, {"min_history_days": 365}, mask)
+        out, sites, reason, _ = rec.flag(df, {"min_history_days": 365}, mask)
         assert reason is not None and "365" in reason
         assert sites == []
         assert not out["recurrent_site"].any()
@@ -98,7 +98,7 @@ def test_flagging_preserves_rows_and_ids():
     """Check 4: flagging never changes the row count or any detection_id."""
     df = pd.read_parquet(STORE) if STORE.exists() else synth(
         [(-1.0, 136.0, "2024-01-01", "Yendidori")])
-    out, _, reason, _ = rec.compute(df, 750.0, 10, 90, 365)
+    out, _, reason, _, _ = rec.compute(df, 750.0, 10, 90, 365)
     assert len(out) == len(df)
     assert list(out["detection_id"]) == list(df["detection_id"])
     assert reason is None or not out["recurrent_site"].any()
@@ -111,8 +111,8 @@ def test_mask_file_deterministic():
     with tempfile.TemporaryDirectory() as td:
         params = {"radius_m": 750.0, "min_days": 10, "min_span_days": 90,
                   "min_history_days": 365}
-        out1, sites1, r1 = rec.flag(df, params, Path(td) / "a.json")
-        out2, sites2, r2 = rec.flag(df, params, Path(td) / "b.json")
+        out1, sites1, r1, _ = rec.flag(df, params, Path(td) / "a.json")
+        out2, sites2, r2, _ = rec.flag(df, params, Path(td) / "b.json")
         a = (Path(td) / "a.json").read_bytes()
         b = (Path(td) / "b.json").read_bytes()
         assert a == b
@@ -135,7 +135,7 @@ def test_real_store_pinned_values():
         print("SKIP: real store not present")
         return
     df = pd.read_parquet(STORE)
-    out, sites, reason, _ = rec.compute(df, 750.0, 10, 90, 365)
+    out, sites, reason, _, _ = rec.compute(df, 750.0, 10, 90, 365)
     assert reason is None
     assert len(out) == 1_078 and \
         list(out["detection_id"]) == list(df["detection_id"])
@@ -158,6 +158,150 @@ def test_real_store_pinned_values():
     air = out[dists <= 3_000]
     assert len(air) == 39 and air["date_wit"].nunique() == 10
     assert not air["recurrent_site"].any()
+
+
+def test_site_id_survives_count_changes():
+    """Check 1: a site keeps its ID when its detection and distinct-day
+    counts change."""
+    with tempfile.TemporaryDirectory() as td:
+        mask = Path(td) / rec.RECURRENT_SITES_FILENAME
+        rows = [(-1.0, 136.0, (date(2024, 1, 1)
+                               + timedelta(days=20 * i)).isoformat(),
+                 "Yendidori") for i in range(10)]
+        out1, sites1, _, v1 = rec.flag(synth(rows), {"min_history_days": 0}, mask)
+        assert [s["id"] for s in sites1] == ["R001"] and v1 == 1
+
+        rows2 = rows + [(-1.0, 136.0, f"2025-0{m}-15", "Yendidori")
+                        for m in range(1, 6)]
+        out2, sites2, _, v2 = rec.flag(synth(rows2), {"min_history_days": 0}, mask)
+        assert [s["id"] for s in sites2] == ["R001"]
+        assert sites2[0]["distinct_days"] == 15 > sites1[0]["distinct_days"]
+        assert v2 == v1
+        assert out2["recurrent_site_id"].tolist() == ["R001"] * 15
+
+
+def test_site_id_survives_overtaking():
+    """Check 2: when site B overtakes site A in distinct days, IDs stay with
+    their places instead of following the rank."""
+    with tempfile.TemporaryDirectory() as td:
+        mask = Path(td) / rec.RECURRENT_SITES_FILENAME
+        a = [(-1.0, 136.0, (date(2024, 1, 1)
+                            + timedelta(days=15 * i)).isoformat(),
+              "Yendidori") for i in range(12)]
+        b = [(-2.0, 136.5, (date(2024, 1, 1)
+                            + timedelta(days=20 * i)).isoformat(),
+              "Biak Timur") for i in range(10)]
+        _, sites1, _, _ = rec.flag(synth(a + b), {"min_history_days": 0}, mask)
+        m1 = {s["distrik"]: s["id"] for s in sites1}
+        assert len(set(m1.values())) == 2
+        d1 = {s["distrik"]: s["distinct_days"] for s in sites1}
+        assert d1["Yendidori"] > d1["Biak Timur"]
+
+        # B grows to 20 days, overtaking A's 10. Ranks would swap the IDs;
+        # the registry must not.
+        b2 = [(-2.0, 136.5, (date(2024, 1, 1)
+                             + timedelta(days=10 * i)).isoformat(),
+               "Biak Timur") for i in range(20)]
+        _, sites2, _, _ = rec.flag(synth(a + b2), {"min_history_days": 0}, mask)
+        m2 = {s["distrik"]: s["id"] for s in sites2}
+        assert m2 == m1
+        d2 = {s["distrik"]: s["distinct_days"] for s in sites2}
+        assert d2["Biak Timur"] > d2["Yendidori"]
+
+
+def test_rebuild_after_deletion_increments_registry_version():
+    """Check 3: with both mask copies gone, IDs are reassigned and
+    registry_version increments past the value the deleted files carried.
+    The hint stands in for the durable manifest ledger the ingest uses."""
+    with tempfile.TemporaryDirectory() as td:
+        mask = Path(td) / rec.RECURRENT_SITES_FILENAME
+        publish = Path(td) / "docs" / rec.RECURRENT_SITES_FILENAME
+        rows = [(-1.0, 136.0, (date(2024, 1, 1)
+                               + timedelta(days=20 * i)).isoformat(),
+                 "Yendidori") for i in range(10)]
+        _, _, _, v1 = rec.flag(synth(rows), {"min_history_days": 0}, mask, publish_path=publish)
+        assert v1 == 1
+        mask.unlink()
+        publish.unlink()
+        _, _, _, v2 = rec.flag(synth(rows), {"min_history_days": 0}, mask, publish_path=publish,
+                               prior_version_hint=v1)
+        assert v2 == 2
+        doc = json.loads(mask.read_text(encoding="utf-8"))
+        assert doc["registry_version"] == 2
+
+
+def test_published_copy_preserves_ids_when_working_copy_deleted():
+    """Registry matching falls back to the published copy, so clearing
+    data/processed/ does not renumber anything and does not bump."""
+    with tempfile.TemporaryDirectory() as td:
+        mask = Path(td) / rec.RECURRENT_SITES_FILENAME
+        publish = Path(td) / "docs" / rec.RECURRENT_SITES_FILENAME
+        rows = [(-1.0, 136.0, (date(2024, 1, 1)
+                               + timedelta(days=20 * i)).isoformat(),
+                 "Yendidori") for i in range(10)]
+        rec.flag(synth(rows), {"min_history_days": 0}, mask, publish_path=publish)
+        mask.unlink()
+        _, sites, _, v = rec.flag(synth(rows), {"min_history_days": 0}, mask,
+                                  publish_path=publish)
+        assert [s["id"] for s in sites] == ["R001"]
+        assert v == 1
+        assert json.loads(publish.read_text(encoding="utf-8")) \
+            ["registry_version"] == 1
+
+
+def test_split_keeps_id_with_larger_fragment():
+    """A site splitting in two: the larger fragment keeps the ID, the other
+    is new, and the file says so."""
+    with tempfile.TemporaryDirectory() as td:
+        mask = Path(td) / rec.RECURRENT_SITES_FILENAME
+        rows = [(-1.0, 136.0, (date(2024, 1, 1)
+                               + timedelta(days=20 * i)).isoformat(),
+                 "Yendidori") for i in range(10)]
+        rec.flag(synth(rows), {"min_history_days": 0}, mask)
+
+        # Two clusters now: each 675 m from the old centroid (inside its
+        # radius) but 1.35 km apart from each other, so centroid clustering
+        # keeps them separate. The northern one has more detections.
+        north = [(-1.0 - 675 * DEG, 136.0, (date(2024, 1, 1)
+                  + timedelta(days=20 * i)).isoformat(), "Yendidori")
+                 for i in range(12)]
+        south = [(-1.0 + 675 * DEG, 136.0, (date(2024, 1, 1)
+                  + timedelta(days=20 * i)).isoformat(), "Yendidori")
+                 for i in range(10)]
+        out, sites, _, _ = rec.flag(synth(north + south), {"min_history_days": 0}, mask)
+        ids = {s["id"] for s in sites}
+        assert len(ids) == 2
+        doc = json.loads(mask.read_text(encoding="utf-8"))
+        assert any("split" in n for n in doc["notes"])
+        inherited = [s["id"] for s in sites if s["detections"] == 12]
+        north_ids = set(out[out["latitude"] < -1.0]
+                        ["recurrent_site_id"].dropna())
+        assert north_ids == set(inherited)
+
+
+def test_numbers_never_reused():
+    """A site that stops qualifying does not free its number: the next new
+    site takes the next unused number."""
+    with tempfile.TemporaryDirectory() as td:
+        mask = Path(td) / rec.RECURRENT_SITES_FILENAME
+        a = [(-1.0, 136.0, (date(2024, 1, 1)
+                            + timedelta(days=20 * i)).isoformat(),
+              "Yendidori") for i in range(10)]
+        b = [(-2.0, 136.5, (date(2024, 1, 1)
+                            + timedelta(days=15 * i)).isoformat(),
+              "Biak Timur") for i in range(10)]
+        rec.flag(synth(a + b), {"min_history_days": 0}, mask)
+        # Site A goes quiet; a brand-new site appears far away.
+        c = [(-3.0, 137.0, (date(2024, 1, 1)
+                            + timedelta(days=20 * i)).isoformat(),
+              "Numfor Timur") for i in range(10)]
+        _, sites, _, _ = rec.flag(synth(b + c), {"min_history_days": 0}, mask)
+        # Biak Timur keeps its inherited ID (whichever of R001/R002 the
+        # first run gave it); the new site takes the next unused number.
+        bt = next(s for s in sites if s["distrik"] == "Biak Timur")
+        nt = next(s for s in sites if s["distrik"] == "Numfor Timur")
+        assert bt["id"] in ("R001", "R002")
+        assert nt["id"] == "R003"
 
 
 if __name__ == "__main__":

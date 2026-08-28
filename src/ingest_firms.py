@@ -572,13 +572,34 @@ def main(argv=None) -> int:
     # Recurrent-location flagging (Phase 2 item 1). Recomputed over the whole
     # store every run, so flags stay consistent as history grows; flagged rows
     # keep their place in every count - nothing is excluded anywhere.
-    merged, sites, rec_reason = recurrence.flag(
+    # The mask is published to docs/data/ too: it is the only way a reader can
+    # check what the brief's site references mean (Task 04b).
+    # registry_version survives deletion of the mask files via the manifest
+    # ledger, so a rebuild can increment it (Task 04b check 3).
+    hint = 0
+    manifest_path = processed.parent / MANIFEST_FILENAME
+    if manifest_path.exists():
+        try:
+            for r in json.loads(manifest_path.read_text(encoding="utf-8")) \
+                    .get("runs", []):
+                if r.get("outcome") == "registry_version":
+                    hint = max(hint, int(r.get("rows") or 0))
+        except (json.JSONDecodeError, TypeError, ValueError):
+            log.warning("unreadable manifest; registry_version hint lost")
+    merged, sites, rec_reason, reg_version = recurrence.flag(
         merged, cfg.get("recurrence", {}),
-        processed.parent / recurrence.RECURRENT_SITES_FILENAME)
+        processed.parent / recurrence.RECURRENT_SITES_FILENAME,
+        publish_path=(ROOT / cfg["output_paths"]["summary_json"]).parent
+        / recurrence.RECURRENT_SITES_FILENAME,
+        prior_version_hint=hint)
+    records.append({"source": "recurrent_sites", "chunk_start": "-",
+                    "days": 0, "outcome": "registry_version",
+                    "rows": reg_version, "utc": utc_stamp()})
     if rec_reason:
         log.warning("recurrence skipped: %s", rec_reason)
     else:
-        log.info("recurrence: %d recurrent site(s) flagged", len(sites))
+        log.info("recurrence: %d recurrent site(s) flagged (registry v%d)",
+                 len(sites), reg_version)
 
     try:
         merged.to_parquet(processed, index=False)

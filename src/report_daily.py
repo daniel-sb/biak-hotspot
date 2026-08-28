@@ -59,7 +59,7 @@ T = {
         "there. Because coverage for this day was incomplete, it is not "
         "evidence that nothing burned.",
     "recurrent_heading": "Recurrent locations",
-    "recurrent_line": "Site {site_id} ({distrik}): {today} detection(s) "
+    "recurrent_line": "Site {site_id} ({distrik}): {today_detections} "
                       "today, at a location flagged as recurrent - hotspots "
                       "have appeared there on {days} distinct days of the "
                       "recorded history.",
@@ -300,9 +300,11 @@ def render_brief(summary: dict, covered_day: str, gen_utc: datetime,
     if summary.get("recurrent_today"):
         lines += ["", f"## {T['recurrent_heading']}", ""]
         for r in summary["recurrent_today"]:
+            n = r["detections_today"]
+            tod = f"{n} detection" if n == 1 else f"{n} detections"
             lines.append("- " + T["recurrent_line"].format(
                 site_id=r["site_id"], distrik=r["distrik"] or "-",
-                today=r["detections_today"], days=r["days_total"]))
+                today_detections=tod, days=r["days_total"]))
         lines += ["", f"> {T['recurrent_note']}"]
     lines += ["", f"> {T['caveat']}", ""]
     return "\n".join(lines)
