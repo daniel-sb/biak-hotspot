@@ -816,6 +816,41 @@ of days. This finding is now closed: the August 2026 cluster near the airport is
 
 ---
 
+### 11.4 What radius clustering changed (2026-08-28)
+
+Task 04 implemented recurrence by clustering within 750 m rather than by grid cell. Two things
+in the sections above have to be corrected in light of what it found.
+
+**Saramom is not one source, it is three along a 2 km line.** Section 11.2 read the 66-day cell
+and its 11-day and 7-day neighbours as a single source smeared by geolocation jitter. That was
+half right. Clustering absorbs the neighbours into one site of **74 distinct days and 120
+detections** at -1.1447, 136.0347 — but it also surfaces two further sites at -1.1336, 136.0339
+(12 days) and -1.1268, 136.0363 (10 days), which no single grid cell had revealed because each
+was itself spread across cell boundaries.
+
+Those three centroids sit **1.2 km and 2.0 km apart, almost due north-south along 136.034E**.
+VIIRS geolocation jitter is on the order of 375 m, so this is not one point smeared out. It is a
+2 km linear feature, and a line is a road, a plot boundary, or a strip burned progressively, not
+a landfill or a flare. The dominant site remains the southernmost, which is the one the project
+owner has independently confirmed as the main source.
+
+**The span condition does not protect the airport. The radius does.** Section 11.3 and the task
+file both stated that Frans Kaisiepo escapes flagging because its 10 distinct days fail the
+90-day span test. That is wrong, and it was verified wrong: within 3 km of the airport there are
+39 detections on 10 distinct days spanning **1,018 days**. Both threshold conditions are met at
+that scale. The airport is unflagged only because no single 750 m cluster inside it accumulates
+10 days.
+
+This matters because it is a silent dependency. Anyone who later widens `radius_m` to catch a
+diffuse site will, at some width, flag the airport and publish it as a recurrent location -
+exactly the outcome section 8 exists to prevent. Any change to `radius_m` must re-run the airport
+check, not merely the tests.
+
+An earlier single-linkage implementation demonstrated this concretely: transitive closure chained
+the August 2026 airport fires to scattered 2023 detections about 2 km away into one 12-day
+flagged site.
+
+
 ## 12. The evening blind window, and the night of 2026-08-27
 
 ### 12.1 When the satellites actually look

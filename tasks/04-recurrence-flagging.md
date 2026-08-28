@@ -80,8 +80,12 @@ The cluster containing (-1.1449, 136.0353) is flagged, and absorbs the neighbour
 cells at 11 and 7 distinct days into a single site.
 
 Detections within 3 km of Frans Kaisiepo airport (-1.190, 136.108) are NOT flagged:
-39 detections across only 10 distinct days, 35 of them in August 2026 — the day-span
-condition excludes them.
+39 detections across 10 distinct days, 35 of them in August 2026.
+
+CORRECTION 2026-08-28: the reason given here was wrong. Those 10 days span 1,018
+days, so both threshold conditions are met at the 3 km scale. The airport escapes
+only because no single 750 m cluster inside it reaches 10 distinct days. See
+PLAN.md 11.4 - widening radius_m can flag the airport.
 
 No detection is dropped: the store still holds 1,078 rows after flagging.
 ```
