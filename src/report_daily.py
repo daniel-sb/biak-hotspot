@@ -80,19 +80,25 @@ T = {
     "evening_unavailable": "Evening product unavailable for this night (no "
                            "Himawari file was produced). This is a gap in the "
                            "record, not an observation, and not a zero.",
-    "evening_none": "No evening thermal anomaly above threshold.",
+    "evening_none_after_dark": "No evening thermal anomaly above threshold "
+                               "after dark.",
     "evening_not_evidence": "That is not evidence that nothing burned: AHI at "
                             "2 km resolves only larger or hotter fires than "
                             "VIIRS at 375 m (about 28 times the pixel area), "
                             "and a smouldering fire without flame may never "
                             "cross a thermal threshold.",
-    "evening_flags": "Pixels flagged above threshold: {n} - {daylight} in "
-                     "daylight before sunset (unreliable: reflected sunlight), "
-                     "{night} after dark.",
-    "evening_flag_row": "- {wit} WIT, {lat}, {lon}: B07 anomaly +{anom} K"
-                        "{daylight}",
-    "evening_daylight": " (in daylight before sunset - unreliable)",
-    "evening_more": "- and {n} more (see the evening file)",
+    "evening_night_flags": "Pixels flagged after dark: {n}.",
+    "evening_flag_row": "- {wit} WIT, {lat}, {lon}: B07 anomaly +{anom} K",
+    "evening_floor": "A Himawari flag is not a FIRMS detection: AHI at 2 km "
+                     "resolves only larger or hotter fires than VIIRS at "
+                     "375 m (about 28 times the pixel area).",
+    "evening_daylight_summary": ("Daylight flags before sunset (unreliable - "
+                                 "reflected sunlight): {n} {pixel}, {t0}-{t1} "
+                                 "WIT, peak anomaly +{peak} K. Listed in the "
+                                 "evening file."),
+    "evening_largest": ("Largest after-dark anomaly: +{anom:.1f} K at {wit} "
+                        "WIT ({lat}, {lon}). Below the {thr:g} K flag "
+                        "threshold and not a detection."),
     "evening_reader": "Reader check (marked ocean sample - not AOI): B14 "
                       "median {med} K.",
     "districts_heading": "Detections by district",
@@ -297,6 +303,7 @@ def evening_section(cfg: dict, root: Path, brief_day: str) -> tuple[dict,
     info = {"state": "unavailable", "evening_date": None,
             "slots_expected": 0, "slots_retrieved": 0, "slots_missing": 0,
             "flags": [], "daylight_flags": 0, "night_flags": 0,
+            "daylight_summary": None, "largest_after_dark": None,
             "ocean_bt14_median_k": None}
     window = cfg["himawari_window_utc"]
     cadence = int(cfg["himawari_cadence_minutes"])
@@ -332,21 +339,52 @@ def evening_section(cfg: dict, root: Path, brief_day: str) -> tuple[dict,
     if len(ocean):
         info["ocean_bt14_median_k"] = round(float(ocean["bt14"].median()), 1)
 
-    flagged = df[df["flagged"]] if "flagged" in df.columns else df.iloc[0:0]
-    flagged = flagged[~flagged["ocean_sample"]] if "ocean_sample" in flagged \
-        else flagged
-    for _, r in flagged.sort_values("acq_time_wit").iterrows():
-        daylight = not bool(r["is_night"])
+    land = df[~df["ocean_sample"]] if "ocean_sample" in df.columns \
+        else df
+    night_rows = land[land["is_night"].astype(bool)]
+    daylight_rows = land[~land["is_night"].astype(bool)]
+
+    # After-dark flagged rows are the product: listed in full.
+    night_flagged = night_rows[night_rows["flagged"]] \
+        if "flagged" in night_rows.columns else night_rows.iloc[0:0]
+    for _, r in night_flagged.sort_values("acq_time_wit").iterrows():
+        anom = pd.to_numeric(r["bt07_anomaly"], errors="coerce")
         info["flags"].append({
             "acq_time_wit": str(r["acq_time_wit"]),
             "lat": float(r["lat"]), "lon": float(r["lon"]),
-            "anomaly_k": (round(float(r["bt07_anomaly"]), 1)
-                          if r["bt07_anomaly"] is not None and
-                          str(r["bt07_anomaly"]) != "nan" else None),
-            "daylight": daylight,
+            "anomaly_k": round(float(anom), 1) if pd.notna(anom) else None,
         })
-    info["daylight_flags"] = sum(f["daylight"] for f in info["flags"])
-    info["night_flags"] = len(info["flags"]) - info["daylight_flags"]
+    info["night_flags"] = len(info["flags"])
+
+    # Daylight flags are summarised, never enumerated: they are labelled
+    # unreliable and must not crowd out the after-dark result.
+    info["daylight_flags"] = int(daylight_rows["flagged"].sum()) \
+        if "flagged" in daylight_rows.columns and len(daylight_rows) else 0
+    info["daylight_summary"] = None
+    if info["daylight_flags"]:
+        times = daylight_rows["acq_time_wit"].astype(str)
+        anom = pd.to_numeric(daylight_rows["bt07_anomaly"], errors="coerce")
+        peak = anom.max()
+        info["daylight_summary"] = {
+            "t0": str(times.min())[11:16], "t1": str(times.max())[11:16],
+            "peak_k": (round(float(peak), 1)
+                       if pd.notna(peak) else None),
+        }
+
+    # When nothing was flagged after dark, report the largest after-dark
+    # anomaly over land (flagged or not) so the reader can weigh it - always
+    # with the "not a detection" clause (Task 06b / PLAN.md 13.5).
+    info["largest_after_dark"] = None
+    if info["night_flags"] == 0 and len(night_rows):
+        anom = pd.to_numeric(night_rows["bt07_anomaly"], errors="coerce")
+        if anom.notna().any():
+            r = anom.idxmax()
+            info["largest_after_dark"] = {
+                "anomaly_k": round(float(anom.loc[r]), 1),
+                "wit": str(night_rows.loc[r, "acq_time_wit"])[11:16],
+                "lat": round(float(night_rows.loc[r, "lat"]), 4),
+                "lon": round(float(night_rows.loc[r, "lon"]), 4),
+            }
 
     lines.append(T["evening_slots"].format(
         retrieved=retrieved, expected=info["slots_expected"],
@@ -354,21 +392,30 @@ def evening_section(cfg: dict, root: Path, brief_day: str) -> tuple[dict,
     if info["slots_missing"]:
         lines.append(T["evening_missing"].format(
             missing=info["slots_missing"]))
-    if not info["flags"]:
-        lines.append(T["evening_none"])
-    else:
-        lines.append(T["evening_flags"].format(
-            n=len(info["flags"]), daylight=info["daylight_flags"],
-            night=info["night_flags"]))
-        for f in info["flags"][:20]:
+    if info["night_flags"]:
+        lines.append(T["evening_night_flags"].format(
+            n=info["night_flags"]))
+        for f in info["flags"]:
             lines.append(T["evening_flag_row"].format(
                 wit=f["acq_time_wit"][11:16], lat=f["lat"], lon=f["lon"],
-                anom=f["anomaly_k"] if f["anomaly_k"] is not None else 0.0,
-                daylight=T["evening_daylight"] if f["daylight"] else ""))
-        if len(info["flags"]) > 20:
-            lines.append(T["evening_more"].format(
-                n=len(info["flags"]) - 20))
-    lines.append(T["evening_not_evidence"])
+                anom=f.get("anomaly_k", 0.0)))
+    else:
+        lines.append(T["evening_none_after_dark"])
+        if info["daylight_summary"]:
+            d = info["daylight_summary"]
+            peak = d["peak_k"] if d["peak_k"] is not None else 0.0
+            n = info["daylight_flags"]
+            pixel = "pixel" if n == 1 else "pixels"
+            lines.append(T["evening_daylight_summary"].format(
+                n=n, pixel=pixel, t0=d["t0"], t1=d["t1"], peak=peak))
+        if info["largest_after_dark"]:
+            la = info["largest_after_dark"]
+            lines.append(T["evening_largest"].format(
+                anom=la["anomaly_k"], wit=la["wit"], lat=la["lat"],
+                lon=la["lon"], thr=float(cfg["himawari_min_anomaly_k"])))
+        lines.append(T["evening_not_evidence"])
+    if info["night_flags"]:
+        lines.append(T["evening_floor"])
     if info["ocean_bt14_median_k"] is not None:
         lines.append(T["evening_reader"].format(
             med=info["ocean_bt14_median_k"]))

@@ -332,9 +332,10 @@ def _evening_row(wit, lat, lon, flagged, night, ocean=False, anom=25.0,
 
 
 def test_evening_zero_flags_wording():
-    """Check 3+5: no flags -> the exact 'no anomaly above threshold' framing,
-    the not-evidence caveat, and missing slots counted, never a silent zero.
-    Forbidden all-clear phrasings must not appear."""
+    """Task 06 check 3+5, restated by 06b: zero AFTER-DARK flags -> the exact
+    mandated sentence (regardless of daylight flags), the not-evidence
+    caveat, and missing slots counted, never a silent zero. Forbidden
+    all-clear phrasings must not appear."""
     with tempfile.TemporaryDirectory() as td:
         cfg = make_cfg(Path(td))
         _write_evening(td, "2026-08-26", [
@@ -345,7 +346,7 @@ def test_evening_zero_flags_wording():
         ])
         summary, [brief_path, _, _] = build_in(td, NOW)
         text = brief_path.read_text(encoding="utf-8")
-        assert "No evening thermal anomaly above threshold." in text
+        assert "No evening thermal anomaly above threshold after dark." in text
         assert "not evidence that nothing burned" in text
         assert "Slots retrieved: 2 of 21 expected" in text
         assert "19 expected slot(s) missing" in text
@@ -356,12 +357,81 @@ def test_evening_zero_flags_wording():
                         .read_text(encoding="utf-8"))["evening"]
         assert ev["state"] == "ok"
         assert ev["slots_missing"] == 19
+        assert ev["night_flags"] == 0
         assert ev["flags"] == []
 
 
+def test_after_dark_zero_with_daylight_flags_still_leads_with_null():
+    """06b check 1: daylight flags alone do not suppress the mandated
+    after-dark sentence, and daylight rows are summarised on one line,
+    never enumerated."""
+    with tempfile.TemporaryDirectory() as td:
+        cfg = make_cfg(Path(td))
+        _write_evening(td, "2026-08-26", [
+            _evening_row("2026-08-25T16:30:00+09:00", -1.14, 136.03,
+                         True, False, anom=12.5,
+                         utc="2026-08-25T07:30:00Z"),
+            _evening_row("2026-08-25T17:00:00+09:00", -1.15, 136.04,
+                         True, False, anom=20.0,
+                         utc="2026-08-25T08:00:00Z"),
+        ])
+        summary, [brief_path, _, _] = build_in(td, NOW)
+        assert summary["evening"]["night_flags"] == 0
+        assert summary["evening"]["daylight_flags"] == 2
+        text = brief_path.read_text(encoding="utf-8")
+        assert "No evening thermal anomaly above threshold after dark." in text
+        assert "Daylight flags before sunset (unreliable - reflected " \
+               "sunlight): 2 pixels, 16:30-17:00 WIT, peak anomaly +20.0 K" \
+               in text
+        # never enumerated, never a combined headline
+        assert "16:30 WIT, -1.14" not in text
+        assert "Pixels flagged above threshold: 2" not in text
+
+
+def test_after_dark_flag_listed_individually():
+    """06b check 3: an after-dark flag is its own bullet and is never
+    summarised away."""
+    with tempfile.TemporaryDirectory() as td:
+        cfg = make_cfg(Path(td))
+        _write_evening(td, "2026-08-26", [
+            _evening_row("2026-08-25T19:30:00+09:00", -1.14, 136.03,
+                         True, True, anom=15.0,
+                         utc="2026-08-25T10:30:00Z"),
+        ])
+        summary, [brief_path, _, _] = build_in(td, NOW)
+        assert summary["evening"]["night_flags"] == 1
+        assert summary["evening"]["flags"][0]["anomaly_k"] == 15.0
+        text = brief_path.read_text(encoding="utf-8")
+        assert "- 19:30 WIT, -1.14, 136.03: B07 anomaly +15.0 K" in text
+
+
+def test_largest_after_dark_anomaly_line():
+    """06b: with nothing flagged after dark, the largest sub-threshold
+    after-dark anomaly is reported with the mandatory 'not a detection'
+    clause."""
+    with tempfile.TemporaryDirectory() as td:
+        cfg = make_cfg(Path(td))
+        _write_evening(td, "2026-08-26", [
+            _evening_row("2026-08-25T18:30:00+09:00", -1.1857, 136.1186,
+                         False, True, anom=5.6,
+                         utc="2026-08-25T09:30:00Z"),
+            _evening_row("2026-08-25T20:00:00+09:00", -1.1857, 136.1186,
+                         False, True, anom=1.2,
+                         utc="2026-08-25T11:00:00Z"),
+        ])
+        summary, [brief_path, _, _] = build_in(td, NOW)
+        la = summary["evening"]["largest_after_dark"]
+        assert la["anomaly_k"] == 5.6 and la["wit"] == "18:30"
+        text = brief_path.read_text(encoding="utf-8")
+        assert ("Largest after-dark anomaly: +5.6 K at 18:30 WIT "
+                "(-1.1857, 136.1186). Below the 10 K flag threshold and "
+                "not a detection.") in text
+
+
 def test_evening_presunset_flag_labelled_daylight():
-    """Check 4: a pre-sunset flag is reported as daylight and unreliable,
-    and never as an evening observation without saying so."""
+    """Task 06 check 4, restated by 06b: a pre-sunset flag is daylight and
+    unreliable, summarised on one line, and the after-dark result still
+    leads."""
     with tempfile.TemporaryDirectory() as td:
         cfg = make_cfg(Path(td))
         _write_evening(td, "2026-08-26", [
@@ -372,9 +442,12 @@ def test_evening_presunset_flag_labelled_daylight():
         assert summary["evening"]["daylight_flags"] == 1
         assert summary["evening"]["night_flags"] == 0
         text = brief_path.read_text(encoding="utf-8")
-        assert "Pixels flagged above threshold: 1 - 1 in daylight" in text
-        assert "(in daylight before sunset - unreliable)" in text
-        assert "- 16:30 WIT, -1.1449, 136.0353: B07 anomaly +12.5 K" in text
+        assert "No evening thermal anomaly above threshold after dark." in text
+        assert ("Daylight flags before sunset (unreliable - reflected "
+                "sunlight): 1 pixel, 16:30-16:30 WIT, peak anomaly +12.5 K"
+                in text)
+        # the daylight row itself is never enumerated
+        assert "- 16:30 WIT, -1.1449" not in text
 
 
 def test_evening_unavailable_state():
