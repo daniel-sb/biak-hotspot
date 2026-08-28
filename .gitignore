@@ -43,3 +43,6 @@ desktop.ini
 # Derive data/boundaries/ from it with scripts/extract_boundary.sh
 *.gdb/
 *.gdb.zip
+
+# Himawari raw band-segments (~100 MB/day) - never commit
+data/raw/himawari/

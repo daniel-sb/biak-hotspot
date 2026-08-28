@@ -25,6 +25,23 @@ lookback_days: 15
 # pulling all of it wastes an hour to answer a question three years answers.
 backfill_years: 3
 
+# Himawari-9 evening coverage (Task 05; PLAN.md 12). The window covers the
+# 15:00-00:31 WIT blind hours: 06:00-16:00 UTC. 30-minute cadence - 10-minute
+# is available but triples the download for little gain. Sunset 18:15 WIT
+# splits day (B07 contaminated by reflected sunlight - unreliable) from the
+# trustworthy dark stretch. Anomaly thresholds are provisional starting
+# values (PLAN.md 12 has no validated evening climatology); flagged rows are
+# recorded, never deleted, and 2 km AHI sees only larger/hotter fires.
+himawari_window_utc: ["06:00", "16:00"]
+himawari_cadence_minutes: 30
+himawari_sunset_wit: "18:15"
+himawari_min_anomaly_k: 10.0
+himawari_min_bt_diff_k: 10.0
+himawari_background_window_px: 15
+# Segment check: the AOI must resolve to exactly these HSD segments (derived
+# from the navigation block, asserted so a layout change fails loudly).
+himawari_expected_segments: [5, 6]
+
 # Recurrent-location flagging (Phase 2 item 1, calibrated on PLAN.md 11.2).
 # A cluster (detections within radius_m of a shared centre) is flagged when
 # hotspots appear on at least min_days distinct WIT days AND those days span
