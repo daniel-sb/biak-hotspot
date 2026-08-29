@@ -448,10 +448,10 @@ def render_brief(summary: dict, covered_day: str, gen_utc: datetime,
     lines = [
         f"# {T['title']} — {covered_day} (WIT)",
         "",
-        "_" + T["generated_line"].format(
+        "*" + T["generated_line"].format(
             utc=stamp(gen_utc, timezone.utc),
-            wit=stamp(gen_utc, WIT), day=covered_day) + "_",
-        "_" + T["window_line"].format(days=window_days, day=covered_day) + "_",
+            wit=stamp(gen_utc, WIT), day=covered_day) + "*",
+        "*" + T["window_line"].format(days=window_days, day=covered_day) + "*",
         "",
         T["totals"].format(**summary),
         "",

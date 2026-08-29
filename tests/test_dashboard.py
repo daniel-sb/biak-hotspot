@@ -10,6 +10,8 @@ or directly:
 import codecs
 import json
 import re
+import shutil
+import tempfile
 from pathlib import Path
 
 import pandas as pd
@@ -108,6 +110,128 @@ def test_simplified_boundaries_under_budget():
     assert DESA.stat().st_size < 300 * 1024
     geo = json.loads(DESA.read_text(encoding="utf-8"))
     assert len(geo["features"]) == 306
+
+
+def test_page_script_structural_integrity():
+    """Task 07b item 4: structural inspection catches the fault class that
+    only breaks at runtime - unknown library globals, getElementById targets
+    missing from the markup, and fetch paths that do not exist under docs/.
+    No browser, no JS execution."""
+    import re
+    html = INDEX.read_text(encoding="utf-8")
+    m = re.search(r"<script>\n(.*)\n</script>", html, re.S)
+    assert m, "inline script block not found"
+    script = m.group(1)
+
+    # the map initialises with the inline fallback style, not a remote URL,
+    # and an error handler surfaces basemap/tile failures
+    assert 'style: FALLBACK_STYLE' in script
+    assert not re.search(r'style:\s*"http', script)
+    assert 'map.on("error"' in script
+
+    # every maplibregl global used is one the pinned library defines
+    used = set(re.findall(r"new maplibregl\.(\w+)", script))
+    used |= set(re.findall(r"maplibregl\.(\w+)\(", script))
+    known = {"Map", "Popup", "NavigationControl"}
+    assert used <= known, f"unknown maplibregl members: {used - known}"
+
+    # every $()/getElementById target exists in the markup
+    ids_used = set(re.findall(r'\$\("([^"]+)"\)', script))
+    ids_used |= set(re.findall(r'getElementById\("([^"]+)"\)', script))
+    ids_defined = set(re.findall(r'id="([^"]+)"', html))
+    assert ids_used <= ids_defined, f"missing ids: {ids_used - ids_defined}"
+
+    # every literal fetch path exists under docs/
+    paths = re.findall(r'(?:loadJSON|loadText)\("([^"]+)"\)', script)
+    assert paths, "no literal data paths found"
+    for p in paths:
+        assert (ROOT / "docs" / p).exists(), f"fetch path missing: {p}"
+    assert (ROOT / "docs" / "briefs").is_dir(), "dynamic briefs/ path"
+
+
+def test_minimarkdown_renders_via_node():
+    """06b checks 5+6: execute the page's ACTUAL miniMarkdown function (via
+    node, no browser) - underscores inside identifiers survive, and table
+    rows with an empty cell or a lone '-' land in the right columns.
+    Skipped where node is unavailable; everything else runs regardless."""
+    import shutil
+    import subprocess
+    import tempfile
+    node = shutil.which("node")
+    if not node:
+        print("SKIP: node not on PATH - converter not executed")
+        return
+    harness = Path(tempfile.mkdtemp()) / "md_harness.js"
+    harness.write_text(
+        'const fs = require("fs");\n'
+        'const html = fs.readFileSync(process.argv[2], "utf8");\n'
+        'const m = html.match(/function miniMarkdown\\([\\s\\S]*?\\n\\}/);\n'
+        'if (!m) { console.error("miniMarkdown not found"); process.exit(100); }\n'
+        '(0, eval)(m[0]);\n'
+        'const inputs = JSON.parse(fs.readFileSync(0, "utf8"));\n'
+        'console.log(JSON.stringify(inputs.map((md) => miniMarkdown(md))));\n',
+        encoding="utf-8")
+    header = "| source | detections |"
+    separator = "|---|---|"
+    rows = [
+        "| VIIRS_SNPP_NRT | 3 |",                      # underscores survive
+        "|  | x |",                                    # empty first cell
+        "| a | - |",                                   # lone '-' cell
+    ]
+    md = header + "\n" + separator + "\n" + "\n".join(rows) + "\n"
+    r = subprocess.run(
+        [node, str(harness), str(INDEX)],
+        input=json.dumps([md]), capture_output=True, text=True,
+        encoding="utf-8", timeout=60)
+    assert r.returncode == 0, r.stderr
+    rendered = json.loads(r.stdout)[0]
+    # identifiers keep every underscore
+    assert "VIIRS_SNPP_NRT" in rendered
+    # header row rendered as th...
+    assert "<tr><th>source</th><th>detections</th></tr>" in rendered
+    # ...and each body row lands in the right columns
+    assert "<tr><td></td><td>x</td></tr>" in rendered
+    assert "<tr><td>a</td><td>-</td></tr>" in rendered
+    # no underscore was eaten anywhere in the table
+    assert "VIIRS SNPP NRT" not in rendered
+
+
+def test_minimarkdown_real_brief_tables():
+    """The real latest brief renders as two well-formed tables: the sources
+    table keeps its four body rows as td (the 'observed, no detections' row
+    included), and the district table keeps all 24 distrik rows."""
+    import shutil
+    import subprocess
+    node = shutil.which("node")
+    if not node:
+        print("SKIP: node not on PATH - converter not executed")
+        return
+    briefs = sorted((ROOT / "docs" / "briefs").glob("*.md"),
+                    key=lambda p: p.stat().st_mtime)
+    assert briefs, "no brief files under docs/briefs/"
+    harness = Path(tempfile.mkdtemp()) / "md_harness.js"
+    harness.write_text(
+        'const fs = require("fs");\n'
+        'const html = fs.readFileSync(process.argv[2], "utf8");\n'
+        'const m = html.match(/function miniMarkdown\\([\\s\\S]*?\\n\\}/);\n'
+        'if (!m) { console.error("miniMarkdown not found"); process.exit(100); }\n'
+        '(0, eval)(m[0]);\n'
+        'const inputs = JSON.parse(fs.readFileSync(0, "utf8"));\n'
+        'console.log(JSON.stringify(inputs.map((md) => miniMarkdown(md))));\n',
+        encoding="utf-8")
+    latest = briefs[-1]
+    r = subprocess.run(
+        [node, str(harness), str(INDEX)],
+        input=json.dumps([latest.read_text(encoding="utf-8")]),
+        capture_output=True, text=True, encoding="utf-8", timeout=60)
+    assert r.returncode == 0, r.stderr
+    rendered = json.loads(r.stdout)[0]
+    assert rendered.count("<table>") == 2, "tables fragmented"
+    assert "<tr><td>MODIS_NRT</td>" in rendered, \
+        "a sources-table body row rendered as something else"
+    assert "<th>MODIS_NRT</th>" not in rendered
+    district_rows = rendered.count("<tr><td>")
+    assert district_rows >= 24, "district body rows lost"
 
 
 def test_page_text_is_not_mojibake():

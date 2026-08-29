@@ -127,20 +127,34 @@ function dataError(name, message) {
 }
 
 async function loadJSON(url) {
-  const r = await fetch(url);
+  const r = await fetch(url, { cache: "no-cache" });
   if (!r.ok) throw new Error(url + ": HTTP " + r.status);
   return r.json();
 }
 async function loadText(url) {
-  const r = await fetch(url);
+  const r = await fetch(url, { cache: "no-cache" });
   if (!r.ok) throw new Error(url + ": HTTP " + r.status);
   return r.text();
 }
 
-/* ---------- map ---------- */
+/* ---------- map ----------
+   The map initialises with an INLINE fallback style, so "load" fires without
+   any network and the local GeoJSON layers (same origin as the page) are
+   never hostage to a CDN. The OpenFreeMap basemap is fetched separately as
+   an upgrade; if it fails, a banner says so and the data still draws. */
+const BASEMAP_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
+const FALLBACK_STYLE = {
+  version: 8,
+  // glyphs come from the same basemap provider as the tiles, so the
+  // recurrent-location label renders even before the basemap upgrade
+  glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+  sources: {},
+  layers: [{ id: "background", type: "background",
+             paint: { "background-color": "#dfe7ee" } }],
+};
 const map = new maplibregl.Map({
   container: "map",
-  style: "https://tiles.openfreemap.org/styles/liberty",
+  style: FALLBACK_STYLE,
   center: [135.5, -0.2],
   zoom: 7.4,
   attributionControl: { compact: false },
@@ -148,98 +162,167 @@ const map = new maplibregl.Map({
 map.addControl(new maplibregl.NavigationControl({ showCompass: false }));
 map.fitBounds([[134.25, -1.45], [136.76, 1.0]], { padding: 24, duration: 0 });
 
-map.on("load", async () => {
-  let desaOk = false;
-  try {
-    const desa = await loadJSON("data/biak_desa.geojson");
-    map.addSource("desa", { type: "geojson", data: desa });
-    map.addLayer({
-      id: "desa-lines", type: "line", source: "desa",
-      paint: { "line-color": "#8a8a8a", "line-width": 0.7, "line-opacity": 0.8 },
-    });
-    desaOk = true;
-  } catch (e) {
-    dataError("desa", "District boundaries (biak_desa.geojson) failed to load — " +
-      "desa boundaries are not drawn. " + e.message);
-  }
-
-  try {
-    const hot = await loadJSON("data/hotspots_latest.geojson");
-    map.addSource("hotspots", { type: "geojson", data: hot });
-    map.addLayer({
-      id: "hotspots", type: "circle", source: "hotspots",
-      paint: {
-        // sized and coloured by FRP (MW); confidence is never an encoding
-        "circle-radius": ["interpolate", ["linear"], ["to-number", ["get", "frp"], 0],
-          0, 3, 10, 5, 50, 9, 200, 14],
-        "circle-color": ["interpolate", ["linear"], ["to-number", ["get", "frp"], 0],
-          0, "#ffb14a", 10, "#f2762b", 50, "#e05515", 200, "#c22e12"],
-        "circle-stroke-color": "#5a1408", "circle-stroke-width": 1,
-        "circle-opacity": 0.85,
-      },
-    });
-    map.on("click", "hotspots", (e) => {
-      const p = e.features[0].properties;
-      const distrik = p.distrik ? p.distrik : "outside mapped desa (offshore/water)";
-      new maplibregl.Popup()
-        .setLngLat(e.lngLat)
-        .setHTML(
-          "<strong>" + esc(p.acq_date) + "</strong> — " +
-          esc((p.datetime_wit || "").slice(11, 16)) + " WIT<br>" +
-          "Satellite: " + esc(p.satellite) + "<br>" +
-          "Confidence: " + esc(p.confidence) + " (raw instrument code)<br>" +
-          "FRP: " + esc(p.frp) + " MW<br>" +
-          "Distrik: " + esc(distrik))
-        .addTo(map);
-    });
-    map.on("mouseenter", "hotspots", () => map.getCanvas().style.cursor = "pointer");
-    map.on("mouseleave", "hotspots", () => map.getCanvas().style.cursor = "");
-  } catch (e) {
-    dataError("hotspots", "Hotspot data (hotspots_latest.geojson) failed to load — " +
-      "the map shows boundaries only. " + e.message);
-  }
-
-  try {
-    const rec = await loadJSON("data/recurrent_sites.json");
-    const sites = {
-      type: "FeatureCollection",
-      features: rec.sites.map((s) => ({
-        type: "Feature",
-        geometry: { type: "Point",
-                    coordinates: [s.centroid_lon, s.centroid_lat] },
-        properties: { days: s.distinct_days,
-                      first: s.first_date, last: s.last_date },
-      })),
-    };
-    map.addSource("recurrent", { type: "geojson", data: sites });
-    map.addLayer({
-      id: "recurrent-ring", type: "circle", source: "recurrent",
-      paint: { "circle-radius": 13, "circle-color": "transparent",
-               "circle-stroke-color": "#5b3fa8", "circle-stroke-width": 2.5 },
-    });
-    map.addLayer({
-      id: "recurrent-label", type: "symbol", source: "recurrent",
-      layout: { "text-field": "recurrent location", "text-font": ["Noto Sans Regular"],
-                "text-offset": [0, 1.6], "text-size": 11 },
-      paint: { "text-color": "#4a2f8f" },
-    });
-    map.on("click", "recurrent-ring", (e) => {
-      const p = e.features[0].properties;
-      new maplibregl.Popup().setLngLat(e.lngLat).setHTML(
-        "<strong>Recurrent location</strong><br>" +
-        "Hotspots on " + esc(p.days) + " distinct days, " +
-        esc(p.first) + " to " + esc(p.last) +
-        ".<br><em>Recurrent location</em> describes how often hotspots have " +
-        "appeared here. It does not say what is here.").addTo(map);
-    });
-  } catch (e) {
-    dataError("recurrent", "Recurrent sites (recurrent_sites.json) failed to load — " +
-      "the recurrent-location layer is unavailable. " + e.message);
-  }
-  if (!desaOk) {
-    // boundaries failed but the notice above already says so
-  }
+const mapErrorsShown = new Set();
+map.on("error", (e) => {
+  const where = e && e.sourceId ? " (" + e.sourceId + ")" : "";
+  const msg = e && e.error ? e.error.message : "unknown map error";
+  const full = "Map error" + where + ": " + msg;
+  if (mapErrorsShown.has(full)) return;
+  mapErrorsShown.add(full);
+  dataError("map", full);
 });
+
+/* Local data is fetched once and (re)added to whatever style is current.
+   addLocalLayers is idempotent: after a basemap upgrade replaces the style
+   (setStyle drops everything the page added), the layers are rebuilt from
+   the cached GeoJSON objects. */
+const localData = { desa: null, hotspots: null, recurrent: null };
+
+function addLocalLayers() {
+  if (localData.desa) {
+    if (!map.getSource("desa"))
+      map.addSource("desa", { type: "geojson", data: localData.desa });
+    if (!map.getLayer("desa-lines"))
+      map.addLayer({
+        id: "desa-lines", type: "line", source: "desa",
+        paint: { "line-color": "#8a8a8a", "line-width": 0.7,
+                 "line-opacity": 0.8 },
+      });
+  }
+  if (localData.hotspots) {
+    if (!map.getSource("hotspots"))
+      map.addSource("hotspots", { type: "geojson", data: localData.hotspots });
+    if (!map.getLayer("hotspots"))
+      map.addLayer({
+        id: "hotspots", type: "circle", source: "hotspots",
+        paint: {
+          // sized and coloured by FRP (MW); confidence is never an encoding
+          "circle-radius": ["interpolate", ["linear"],
+            ["to-number", ["get", "frp"], 0], 0, 3, 10, 5, 50, 9, 200, 14],
+          "circle-color": ["interpolate", ["linear"],
+            ["to-number", ["get", "frp"], 0], 0, "#ffb14a", 10, "#f2762b",
+            50, "#e05515", 200, "#c22e12"],
+          "circle-stroke-color": "#5a1408", "circle-stroke-width": 1,
+          "circle-opacity": 0.85,
+        },
+      });
+  }
+  if (localData.recurrent) {
+    if (!map.getSource("recurrent"))
+      map.addSource("recurrent", { type: "geojson",
+                                   data: localData.recurrent });
+    if (!map.getLayer("recurrent-ring"))
+      map.addLayer({
+        id: "recurrent-ring", type: "circle", source: "recurrent",
+        paint: { "circle-radius": 13, "circle-color": "transparent",
+                 "circle-stroke-color": "#5b3fa8", "circle-stroke-width": 2.5 },
+      });
+    if (!map.getLayer("recurrent-label"))
+      map.addLayer({
+        id: "recurrent-label", type: "symbol", source: "recurrent",
+        layout: { "text-field": "recurrent location",
+                  "text-font": ["Noto Sans Regular"],
+                  "text-offset": [0, 1.6], "text-size": 11 },
+        paint: { "text-color": "#4a2f8f" },
+      });
+  }
+}
+
+/* Layer-aware click/hover handlers are registered once: they fire whenever
+   the layers exist, including after a basemap upgrade re-adds them. */
+map.on("click", "hotspots", (e) => {
+  const p = e.features[0].properties;
+  const distrik = p.distrik ? p.distrik : "outside mapped desa (offshore/water)";
+  new maplibregl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML(
+      "<strong>" + esc(p.acq_date) + "</strong> — " +
+      esc((p.datetime_wit || "").slice(11, 16)) + " WIT<br>" +
+      "Satellite: " + esc(p.satellite) + "<br>" +
+      "Confidence: " + esc(p.confidence) + " (raw instrument code)<br>" +
+      "FRP: " + esc(p.frp) + " MW<br>" +
+      "Distrik: " + esc(distrik))
+    .addTo(map);
+});
+map.on("mouseenter", "hotspots", () => map.getCanvas().style.cursor = "pointer");
+map.on("mouseleave", "hotspots", () => map.getCanvas().style.cursor = "");
+map.on("click", "recurrent-ring", (e) => {
+  const p = e.features[0].properties;
+  new maplibregl.Popup().setLngLat(e.lngLat).setHTML(
+    "<strong>Recurrent location</strong><br>" +
+    "Hotspots on " + esc(p.days) + " distinct days, " +
+    esc(p.first) + " to " + esc(p.last) +
+    ".<br><em>Recurrent location</em> describes how often hotspots have " +
+    "appeared here. It does not say what is here.").addTo(map);
+});
+
+map.on("load", async () => {
+  const fetches = [
+    ["desa", "data/biak_desa.geojson",
+     "District boundaries (biak_desa.geojson) failed to load — desa " +
+     "boundaries are not drawn."],
+    ["hotspots", "data/hotspots_latest.geojson",
+     "Hotspot data (hotspots_latest.geojson) failed to load — the map shows " +
+     "boundaries only."],
+    ["recurrentRaw", "data/recurrent_sites.json",
+     "Recurrent sites (recurrent_sites.json) failed to load — the " +
+     "recurrent-location layer is unavailable."],
+  ];
+  await Promise.all(fetches.map(async ([key, url, errText]) => {
+    try {
+      const json = await loadJSON(url);
+      if (key === "recurrentRaw") {
+        // recurrent_sites.json is not GeoJSON: build the site features here
+        localData.recurrent = {
+          type: "FeatureCollection",
+          features: json.sites.map((s) => ({
+            type: "Feature",
+            geometry: { type: "Point",
+                        coordinates: [s.centroid_lon, s.centroid_lat] },
+            properties: { days: s.distinct_days,
+                          first: s.first_date, last: s.last_date },
+          })),
+        };
+      } else {
+        localData[key] = json;
+      }
+    } catch (e) {
+      dataError(key, errText + " " + e.message);
+    }
+  }));
+  addLocalLayers();
+});
+
+/* Basemap upgrade: applied only if the style really loads; setStyle
+   replaces everything, so the local layers are re-added afterwards. There
+   is no single reliable event for "new style fully loaded" (styledata can
+   fire before isStyleLoaded() turns true), so reapply runs on styledata
+   AND on a bounded timer, stopping as soon as the local sources exist. */
+(async () => {
+  const reapply = () => {
+    if (!map.isStyleLoaded() || !localData.desa) return;
+    addLocalLayers();
+    if (map.getSource("desa") && map.getSource("hotspots")
+        && map.getSource("recurrent")) {
+      clearInterval(reapplyTimer);
+      map.off("styledata", reapply);
+    }
+  };
+  const reapplyTimer = setInterval(reapply, 400);
+  try {
+    const r = await fetch(BASEMAP_STYLE_URL);
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const style = await r.json();
+    map.on("styledata", reapply);
+    map.setStyle(style);
+    reapply();
+    setTimeout(() => clearInterval(reapplyTimer), 120000);
+  } catch (e) {
+    clearInterval(reapplyTimer);
+    dataError("basemap", "Basemap (OpenFreeMap) unavailable — showing local " +
+      "data on a plain background. " + e.message);
+  }
+})();
 
 /* ---------- summary, evening, brief, timeline ---------- */
 (async () => {
@@ -326,14 +409,16 @@ map.on("load", async () => {
   }
 })();
 
-/* hand-rolled markdown subset: headings, bold, italics, lists, tables,
-   blockquotes. No library (Task 07). */
+/* hand-rolled markdown subset: headings, bold, lists, tables, blockquotes.
+   No library (Task 07). Underscore is deliberately NOT an emphasis marker:
+   it appears inside satellite names and filenames (VIIRS_SNPP_NRT,
+   hotspots_latest.geojson) and eating it corrupts exactly the strings a
+   reader needs to be exact (Task 07b). The briefs use * for emphasis. */
 function miniMarkdown(md) {
   const esc = (s) => String(s).replace(/[&<>]/g,
     (c) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;" }[c]));
   const inline = (s) => esc(s)
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/_([^_]+)_/g, "<em>$1</em>");
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   const lines = md.split(/\r?\n/);
   const out = [];
   let list = null, table = null, quote = null;
@@ -347,11 +432,16 @@ function miniMarkdown(md) {
     if (/^\|/.test(line)) {
       const cells = line.split("|").slice(1, -1).map((c) => c.trim());
       if (cells.every((c) => /^:?-{2,}:?$/.test(c))) continue;   // separator
-      flush();
-      if (!table) table = { html: "<table><tr>" +
-        cells.map((c) => "<th>" + inline(c) + "</th>").join("") + "</tr>" };
-      else table.html += "<tr>" +
-        cells.map((c) => "<td>" + inline(c) + "</td>").join("") + "</tr>";
+      // First pipe row of a block is its header; the rest are body rows.
+      // (flush() must NOT run here — it used to close the table after the
+      // header, turning every body row into a header of its own table.)
+      if (!table) {
+        table = { html: "<table><tr>" +
+          cells.map((c) => "<th>" + inline(c) + "</th>").join("") + "</tr>" };
+      } else {
+        table.html += "<tr>" +
+          cells.map((c) => "<td>" + inline(c) + "</td>").join("") + "</tr>";
+      }
       continue;
     }
     flush();
