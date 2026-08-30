@@ -12,8 +12,8 @@
 #
 # Failure behaviour (PLAN.md 9.6): any failing step stops the job before the
 # commit step, so a failed run publishes nothing and the page keeps showing
-# its real age. --allow-stale is deliberately absent: a cron job must never
-# republish old data as current.
+# its real age. The staleness-override flag is deliberately absent from this
+# file: a cron job must never republish old data as current.
 
 name: daily
 
@@ -56,9 +56,9 @@ jobs:
       # --day is passed explicitly: the store's latest WIT day at this hour is
       # the day that closed at 15:00 UTC today, but report_daily's staleness
       # guard compares it against the current WIT date (already tomorrow at
-      # 01:30 WIT) and would refuse. --allow-stale stays out of the workflow
-      # on purpose; --day names the complete day instead of blanket-clearing
-      # staleness.
+      # 01:30 WIT) and would refuse. Naming the complete day explicitly is
+      # not the same as clearing staleness wholesale - that override stays
+      # out of this workflow on purpose.
       - name: Build the daily brief and dashboard data
         run: python src/report_daily.py --day "$(date -u +%F)"
 
