@@ -74,6 +74,9 @@ jobs:
                   data/processed/run_manifest.json \
                   data/processed/recurrent_sites.json \
                   docs
+          # refresh the index stat cache before the change test: on a fresh
+          # checkout the stat info can be racy right after git add
+          git update-index --refresh -q || true
           if git diff --cached --quiet; then
             echo "Nothing changed; nothing to commit."
           else
