@@ -9,8 +9,19 @@ built under. Nothing here should be implemented without it.
 
 ## Status
 
-Planning. No pipeline code yet. Phase 1 (FIRMS ingest, clip, daily brief) is the next build —
-see PLAN.md §3.
+Phases 1 to 6 are built and tested. The daily job runs on GitHub Actions; the page is served
+by GitHub Pages from `docs/`.
+
+- **Ingest** — FIRMS VIIRS (S-NPP, NOAA-20, NOAA-21) and MODIS, with a three-year backfill.
+  Raw responses are persisted before parsing; a failed fetch is never recorded as a zero.
+- **Store** — 1,078 detections across 180 WIT days, 2023-09-01 to 2026-08-27.
+- **Recurrence** — leader clustering at 750 m against a registry that keeps site IDs stable
+  between runs (R001 to R003).
+- **Evening** — Himawari-9 AHI read directly from the public AWS bucket, covering the
+  15:00 to 01:00 WIT window that no polar orbiter observes.
+- **Dashboard** — one static MapLibre page. No framework, no build step, no trackers.
+
+Next: Sentinel-2 burn-area delineation (Phase 3) and precipitation context (Phase 4).
 
 ## Verified so far
 
@@ -18,6 +29,10 @@ see PLAN.md §3.
 - METAR from WABB is public, half-hourly, unauthenticated, and independently corroborates a
   burning event on 19–25 August 2026 (PLAN.md §10.2).
 - No ground air-quality station exists on Biak or anywhere in Papua (PLAN.md §9.5).
+- August 2026 runs at 65 times the 2023-2025 baseline: 2.68 detections per week
+  across 1,065 days, against 174 per week through August (PLAN.md §11.1).
+- Himawari-9 shows thermal decay continuing past sunset and dropping below the VIIRS
+  detection floor by about 20:00 WIT (PLAN.md §13.5).
 
 ## Setup
 
@@ -34,3 +49,9 @@ credentials from being committed — this repository is public.
 A satellite hotspot is a thermal anomaly. It is not a confirmed fire, and it can never
 identify who lit one. Small-scale shifting cultivation is lawful and long-established in
 Papua. See PLAN.md §8 before publishing anything derived from this data.
+
+## Licence
+
+Code is MIT (see `LICENSE`). The datasets are not ours: NASA FIRMS, JMA Himawari-9 via the
+NOAA public bucket, and administrative boundaries from BIG each keep their own terms. Cite
+the source, not this repository, when reusing the data.

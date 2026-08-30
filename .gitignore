@@ -57,3 +57,13 @@ desktop.ini
 # section 4).
 data/raw/himawari/
 data/processed/himawari_evening_*.parquet
+
+# --- reference material, not ours to redistribute ---
+# NASA ARSET training slides and the Mandum Rimba white paper are third-party
+# documents kept locally for reference. Cite them; do not republish them.
+ARSET_NASA/
+mandum_rimba/
+mandum_rimba-*.zip
+
+# Boundaries for a different kabupaten, kept for unrelated work.
+data/boundaries/yahukimo_desa.geojson
