@@ -1,0 +1,82 @@
+# Daily Phase 1 job: FIRMS ingest, brief, dashboard data, tests, publish.
+# PLAN.md section 9.6. Scheduled only - never on push (this job's own commit
+# would retrigger it), and the concurrency group keeps two runs from
+# overlapping or racing on the push.
+#
+# The store (detections.parquet), run provenance (run_manifest.json), the
+# site registry (recurrent_sites.json) and the FIRMS raw responses are
+# TRACKED in the repository (Task 08): a run starts from a fresh checkout
+# and still has the three-year history, the published site IDs and the
+# provenance record. Himawari is deliberately NOT here (Task 08 section 4):
+# its window closes at 01:00 WIT and it downloads ~200 MB per evening.
+#
+# Failure behaviour (PLAN.md 9.6): any failing step stops the job before the
+# commit step, so a failed run publishes nothing and the page keeps showing
+# its real age. --allow-stale is deliberately absent: a cron job must never
+# republish old data as current.
+
+name: daily
+
+on:
+  schedule:
+    - cron: "30 16 * * *"   # 16:30 UTC - WIT day D closed at 15:00 UTC D; last
+                            # VIIRS overpass ~04:30 UTC D + ~3 h FIRMS latency
+                            # leaves hours of margin for late cron fires
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily
+  cancel-in-progress: false
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (fresh clone carries the tracked store and registry)
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: pip install "pandas>=3" pyarrow requests pyyaml "shapely>=2.1" pytest
+
+      - name: Ingest FIRMS (store, raw responses, run provenance)
+        run: python src/ingest_firms.py
+        env:
+          # the value is an Actions-secrets reference, not a credential:
+          # the pre-commit allowlist pragma applies (hook documentation)
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}  # pragma: allowlist secret
+
+      # --day is passed explicitly: the store's latest WIT day at this hour is
+      # the day that closed at 15:00 UTC today, but report_daily's staleness
+      # guard compares it against the current WIT date (already tomorrow at
+      # 01:30 WIT) and would refuse. --allow-stale stays out of the workflow
+      # on purpose; --day names the complete day instead of blanket-clearing
+      # staleness.
+      - name: Build the daily brief and dashboard data
+        run: python src/report_daily.py --day "$(date -u +%F)"
+
+      - name: Run the test suite
+        run: python -m pytest tests -q
+
+      - name: Commit and push generated outputs (only when they changed)
+        run: |
+          git config core.hooksPath .githooks
+          git config user.name "biak-hotspot-daily"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/raw data/processed/detections.parquet \
+                  data/processed/run_manifest.json \
+                  data/processed/recurrent_sites.json \
+                  docs
+          if git diff --cached --quiet; then
+            echo "Nothing changed; nothing to commit."
+          else
+            git commit -m "daily run: FIRMS ingest, brief and dashboard data for $(date -u +%F)"
+            git push
+          fi

@@ -11,10 +11,18 @@ secrets.yaml
 config.local.yaml
 
 # --- generated data ---
-# Operational API responses, written fresh by every run. Test inputs live in
-# tests/fixtures/ and are tracked; nothing under data/ ever should be.
-data/raw/
-data/processed/
+# The detection store, run provenance, the site registry and the FIRMS raw
+# responses are TRACKED (Task 08): a CI/cron run starts from a fresh
+# checkout, and without them the published site IDs renumber, the three-
+# year history is unrecoverable from NRT alone, and a failed fetch turns
+# into a silent zero (AGENTS.md rule 2). Everything else under data/ is
+# per-run output that a fresh run rewrites.
+data/raw/*
+!data/raw/*.csv
+data/processed/*
+!data/processed/detections.parquet
+!data/processed/run_manifest.json
+!data/processed/recurrent_sites.json
 data/cache/
 *.pmtiles
 *.tif
@@ -44,5 +52,8 @@ desktop.ini
 *.gdb/
 *.gdb.zip
 
-# Himawari raw band-segments (~100 MB/day) - never commit
+# Himawari raw band-segments (~100 MB/day) and evening products - never
+# commit; the producer is manual and closes on a different schedule (Task 08
+# section 4).
 data/raw/himawari/
+data/processed/himawari_evening_*.parquet

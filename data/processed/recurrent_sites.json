@@ -1,0 +1,46 @@
+{
+ "history_days": 1091,
+ "next_number": 4,
+ "notes": [],
+ "params": {
+  "min_days": 10,
+  "min_history_days": 365,
+  "min_span_days": 90,
+  "radius_m": 750.0
+ },
+ "reason": null,
+ "registry_version": 1,
+ "sites": [
+  {
+   "centroid_lat": -1.144697,
+   "centroid_lon": 136.034663,
+   "detections": 120,
+   "distinct_days": 74,
+   "distrik": "Yendidori",
+   "first_date": "2023-09-01",
+   "id": "R001",
+   "last_date": "2026-08-21"
+  },
+  {
+   "centroid_lat": -1.133593,
+   "centroid_lon": 136.033909,
+   "detections": 24,
+   "distinct_days": 12,
+   "distrik": "Yendidori",
+   "first_date": "2023-10-28",
+   "id": "R002",
+   "last_date": "2026-08-27"
+  },
+  {
+   "centroid_lat": -1.126828,
+   "centroid_lon": 136.036254,
+   "detections": 31,
+   "distinct_days": 10,
+   "distrik": "Yendidori",
+   "first_date": "2023-11-16",
+   "id": "R003",
+   "last_date": "2026-08-25"
+  }
+ ],
+ "status": "ok"
+}
