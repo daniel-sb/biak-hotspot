@@ -61,6 +61,25 @@ log = logging.getLogger("ingest_firms")
 MANIFEST_FILENAME = "run_manifest.json"
 
 
+def load_env_file(path: Path = ROOT / ".env") -> None:
+    """Populate os.environ from a .env file, if one exists.
+
+    README and .env.example both tell the reader to put FIRMS_MAP_KEY in
+    .env, but nothing read it, so following the documented setup produced a
+    file with no effect. A real environment variable always wins over the
+    file: CI passes the key through Actions secrets and must not be
+    overridden by a stray local .env.
+    """
+    if not path.exists():
+        return
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        name, _, value = line.partition("=")
+        os.environ.setdefault(name.strip(), value.strip().strip("\"'"))
+
+
 def utc_stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -429,11 +448,13 @@ def main(argv=None) -> int:
                          "older chunks reuse cached raw responses)")
     args = ap.parse_args(argv)
 
+    load_env_file()
     key = os.environ.get("FIRMS_MAP_KEY")
     if not key:
         sys.exit("FIRMS_MAP_KEY environment variable is not set. Get a free "
                  "map key at https://firms.modaps.eosdis.nasa.gov/api/map_key/"
-                 " and export it in .env.")
+                 " and put it in .env at the repository root, or export it "
+                 "in the environment.")
 
     cfg = yaml.safe_load((ROOT / "config.yaml").read_text())
     bbox = [float(v) for v in cfg["aoi_bbox_wsen"]]

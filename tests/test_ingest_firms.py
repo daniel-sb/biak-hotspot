@@ -434,6 +434,45 @@ def test_tiling_exact_bounded_gapless():
     assert grown[:len(base)] == base and len(grown) == 2
 
 
+def test_env_file_is_read_but_never_overrides_the_environment():
+    """A .env is read when present; a real environment variable still wins.
+
+    The precedence matters more than the parsing: CI supplies the key from
+    Actions secrets, and a .env left in a checkout must not shadow it.
+    """
+    import os
+
+    names = ("FIRMS_TEST_QUOTED", "FIRMS_TEST_PLAIN", "FIRMS_TEST_WINS")
+    with tempfile.TemporaryDirectory() as td:
+        env = Path(td) / ".env"
+        ing.load_env_file(env)          # an absent file is not an error
+
+        env.write_text(chr(10).join([
+            "# a comment",
+            "",
+            'FIRMS_TEST_QUOTED="quoted-value"',
+            "FIRMS_TEST_PLAIN = plain-value ",
+            "NOT_AN_ASSIGNMENT",
+        ]), encoding="utf-8")
+
+        for name in names:
+            os.environ.pop(name, None)
+        os.environ["FIRMS_TEST_WINS"] = "from-environment"
+        try:
+            ing.load_env_file(env)
+            assert os.environ["FIRMS_TEST_QUOTED"] == "quoted-value"
+            assert os.environ["FIRMS_TEST_PLAIN"] == "plain-value"
+            # a line with no "=" is skipped rather than crashing the run
+            assert "NOT_AN_ASSIGNMENT" not in os.environ
+
+            # the environment wins over the file
+            env.write_text("FIRMS_TEST_WINS=from-file", encoding="utf-8")
+            ing.load_env_file(env)
+            assert os.environ["FIRMS_TEST_WINS"] == "from-environment"
+        finally:
+            for name in names:
+                os.environ.pop(name, None)
+
 if __name__ == "__main__":
     fns = [(name, obj) for name, obj in sorted(globals().items())
            if name.startswith("test_") and callable(obj)]
