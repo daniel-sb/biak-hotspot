@@ -1,5 +1,5 @@
 {
- "covered_wit_date": "2026-08-30",
+ "covered_wit_date": "2026-08-31",
  "districts": [
   {
    "detections": 0,
@@ -51,11 +51,11 @@
    "total_frp": null
   },
   {
-   "detections": 0,
+   "detections": 1,
    "distrik": "Bruyadori",
    "kabupaten": "Biak Numfor",
-   "max_frp": null,
-   "total_frp": null
+   "max_frp": 4.0,
+   "total_frp": 4.0
   },
   {
    "detections": 0,
@@ -86,11 +86,11 @@
    "total_frp": null
   },
   {
-   "detections": 0,
+   "detections": 1,
    "distrik": "Orkeri",
    "kabupaten": "Biak Numfor",
-   "max_frp": null,
-   "total_frp": null
+   "max_frp": 5.6,
+   "total_frp": 5.6
   },
   {
    "detections": 0,
@@ -174,7 +174,7 @@
   "closest_after_dark": null,
   "daylight_flags": 0,
   "daylight_summary": null,
-  "evening_date": "2026-08-29",
+  "evening_date": "2026-08-30",
   "flags": [],
   "night_flags": 0,
   "ocean_bt14_median_k": null,
@@ -184,15 +184,15 @@
   "state": "unavailable",
   "window_utc": "06:00-16:00"
  },
- "generated_utc": "2026-08-31T09:33:30Z",
+ "generated_utc": "2026-08-31T21:31:57Z",
  "geojson_window_days": 7,
  "manifest_found": true,
  "recurrent_today": [],
  "sources": [
   {
-   "detections": 0,
+   "detections": 1,
    "source": "VIIRS_SNPP_NRT",
-   "status": "empty"
+   "status": "observed"
   },
   {
    "detections": 0,
@@ -200,9 +200,9 @@
    "status": "empty"
   },
   {
-   "detections": 0,
+   "detections": 1,
    "source": "VIIRS_NOAA21_NRT",
-   "status": "empty"
+   "status": "observed"
   },
   {
    "detections": 0,
@@ -211,8 +211,8 @@
   }
  ],
  "totals": {
-  "detections": 0,
+  "detections": 2,
   "offshore": 0,
-  "on_land": 0
+  "on_land": 2
  }
 }
