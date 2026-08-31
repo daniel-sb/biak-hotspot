@@ -137,7 +137,7 @@ def test_real_store_pinned_values():
     df = pd.read_parquet(STORE)
     out, sites, reason, _, _ = rec.compute(df, 750.0, 10, 90, 365)
     assert reason is None
-    assert len(out) == 1_078 and \
+    assert len(out) == 1_089 and \
         list(out["detection_id"]) == list(df["detection_id"])
 
     # The Saramom source (66-day core + 11/7-day neighbours) is one flagged

@@ -591,6 +591,34 @@ def build(cfg: dict, root: Path, now_utc: datetime | None = None,
     return summary, [brief_path, geo_path, sum_path]
 
 
+def provenance_refusal(runs, sources, brief_day):
+    """Task 08b guard: did successful fetches cover `brief_day`?
+
+    A WIT day with genuinely zero detections is normal here (the 2023-2025
+    baseline is 2.68 detections per week), so detection counts are the wrong
+    freshness signal - the question is whether a successful fetch covered the
+    day, and the run manifest records exactly that in three states. Returns
+    None when at least one successful (fetched or cached) chunk covered the
+    day; otherwise a refusal message that names the coverage gap, so it can
+    never be confused with a quiet-day observation."""
+    covering = [e for e in runs
+                if e.get("source") in sources and _covers(e, brief_day)]
+    ok = [e for e in covering if e.get("outcome") in ("fetched", "cached")]
+    if ok:
+        return None
+    if not covering:
+        return (f"No fetch covered WIT day {brief_day} - the provenance "
+                f"record has no observation of it. Refusing to publish it "
+                f"as a quiet day. Pass --allow-stale to override "
+                f"deliberately.")
+    failed = sum(1 for e in covering if e.get("outcome") == "failed")
+    unavail = len(covering) - failed
+    return (f"No successful fetch covered WIT day {brief_day}: {failed} "
+            f"chunk(s) failed, {unavail} were outside a source's available "
+            f"window. The day was not observed - refusing to publish it as "
+            f"a quiet day. Pass --allow-stale to override deliberately.")
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Write the daily hotspot brief.")
     ap.add_argument("--day", help="WIT day to cover, YYYY-MM-DD "
@@ -599,8 +627,8 @@ def main(argv=None) -> int:
                                   "YYYY-MM-DD HH:MM:SS treated as UTC "
                                   "(testing/backfill use)")
     ap.add_argument("--allow-stale", action="store_true",
-                    help="publish even when the store's latest WIT day is "
-                         "not today (planned regeneration)")
+                    help="publish even when the provenance guard refuses "
+                         "(deliberate human override)")
     args = ap.parse_args(argv)
 
     root = Path(__file__).resolve().parents[1]
@@ -615,17 +643,24 @@ def main(argv=None) -> int:
     if not store.exists():
         sys.exit(f"detections store not found: {store}\n"
                  "Run src/ingest_firms.py first.")
-    latest = pd.read_parquet(store)["date_wit"].max()
-    if args.day:
-        covered = args.day
-    else:
-        covered = latest
-        today_wit = now_utc.astimezone(WIT).date().isoformat()
-        if covered != today_wit and not args.allow_stale:
-            sys.exit(f"store covers up to WIT day {covered} but today is "
-                     f"{today_wit}. Refusing to republish old data as "
-                     "current. Re-run src/ingest_firms.py, or pass "
-                     "--allow-stale if regenerating deliberately.")
+    covered = str(args.day or pd.read_parquet(store)["date_wit"].max())
+
+    # Provenance guard (Task 08b): applies with or without --day. A WIT day
+    # the manifest shows as successfully fetched is publishable even when it
+    # has zero detections (quiet days are the norm here); a day no successful
+    # fetch covered is a gap in the record and must not be published as one.
+    # --allow-stale remains the single deliberate human override.
+    manifest_path = store.parent / MANIFEST_FILENAME
+    runs = []
+    if manifest_path.exists():
+        try:
+            runs = json.loads(
+                manifest_path.read_text(encoding="utf-8"))["runs"]
+        except (json.JSONDecodeError, KeyError) as exc:
+            sys.exit(f"unreadable run manifest {manifest_path}: {exc}")
+    refusal = provenance_refusal(runs, cfg["sources"], covered)
+    if refusal and not args.allow_stale:
+        sys.exit(refusal)
 
     summary, paths = build(cfg, root, now_utc=now_utc, day=covered)
     for p in paths:

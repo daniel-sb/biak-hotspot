@@ -46,6 +46,28 @@ jobs:
       - name: Install dependencies
         run: pip install "pandas>=3" pyarrow requests pyyaml "shapely>=2.1" pytest
 
+      # FIRMS publishes an AAAA record alongside its A record, and GitHub's
+      # Ubuntu runners have no IPv6 route: getaddrinfo returns the AAAA
+      # first, the kernel answers Errno 101 (Network is unreachable) before
+      # any packet leaves, and every FIRMS chunk fails identically
+      # (workflow run 33346219378). Preferring IPv4 in gai.conf fixes the
+      # runner environment without touching the ingest, which is correct on
+      # any network that has a working IPv6 route or none at all.
+      - name: Prefer IPv4 for FIRMS (runner has no IPv6 route)
+        run: |
+          # glibc reads only /etc/gai.conf (no drop-in directory); the stock
+          # file on the runners has this line commented out
+          echo 'precedence ::ffff:0:0/96  100' | sudo tee -a /etc/gai.conf
+          python - <<'PY'
+          import socket
+          families = [i[0].name for i in
+                      socket.getaddrinfo("firms.modaps.eosdis.nasa.gov", 443)]
+          print("resolved families:", families)
+          assert families[0] == "AF_INET", (
+              "FIRMS still resolves to IPv6 first - the gai.conf "
+              "preference did not take effect")
+          PY
+
       - name: Ingest FIRMS (store, raw responses, run provenance)
         run: python src/ingest_firms.py
         env:
@@ -53,14 +75,13 @@ jobs:
           # the pre-commit allowlist pragma applies (hook documentation)
           FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}  # pragma: allowlist secret
 
-      # --day is passed explicitly: the store's latest WIT day at this hour is
-      # the day that closed at 15:00 UTC today, but report_daily's staleness
-      # guard compares it against the current WIT date (already tomorrow at
-      # 01:30 WIT) and would refuse. Naming the complete day explicitly is
-      # not the same as clearing staleness wholesale - that override stays
-      # out of this workflow on purpose.
+      # The provenance guard (Task 08b) lives in report_daily.py: it checks
+      # the run manifest for successful fetch coverage of the brief's WIT day
+      # and refuses otherwise. At this hour the ingest step has just recorded
+      # that coverage for the day that closed at 15:00 UTC, so no --day
+      # override is needed and none may be used to skip the guard.
       - name: Build the daily brief and dashboard data
-        run: python src/report_daily.py --day "$(date -u +%F)"
+        run: python src/report_daily.py
 
       - name: Run the test suite
         run: python -m pytest tests -q

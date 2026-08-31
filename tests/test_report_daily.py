@@ -555,6 +555,120 @@ def test_evening_section_deterministic():
         assert lines1 == lines2
 
 
+def _manifest_entries(brief_day, outcome="fetched"):
+    """Manifest entries from all four configured sources covering brief_day
+    (chunk interval 23-27 intersects [day-1, day] for any day in 24-27)."""
+    return [{"source": s, "chunk_start": "2026-08-23", "days": 4,
+             "outcome": outcome,
+             "rows": 0 if outcome == "failed" else 5,
+             "utc": "2026-08-27T16:30:00Z"}
+            for s in ("VIIRS_SNPP_NRT", "VIIRS_NOAA20_NRT",
+                      "VIIRS_NOAA21_NRT", "MODIS_NRT")]
+
+
+def test_provenance_guard_refuses_uncovered_day():
+    """08b check 1: no fetch covered the day -> refusal whose wording names
+    the coverage gap and never mentions detection counts."""
+    refusal = rep.provenance_refusal(_manifest_entries("2026-08-25"),
+                                     ["VIIRS_SNPP_NRT", "VIIRS_NOAA20_NRT",
+                                      "VIIRS_NOAA21_NRT", "MODIS_NRT"],
+                                     "2026-08-30")
+    assert refusal is not None
+    assert "No fetch covered WIT day 2026-08-30" in refusal
+    assert "detection" not in refusal.lower()
+    assert "Refusing to publish it as a quiet day" in refusal
+
+
+def test_provenance_guard_all_failed_wording():
+    """08b: covering chunks that all FAILED are a different refusal from
+    'never fetched' - both are coverage gaps, neither may read as a zero."""
+    runs = [{"source": s, "chunk_start": "2026-08-23", "days": 4,
+             "outcome": "failed", "rows": None,
+             "utc": "2026-08-27T06:00:00Z"}
+            for s in ("VIIRS_SNPP_NRT", "VIIRS_NOAA20_NRT")]
+    refusal = rep.provenance_refusal(runs, ["VIIRS_SNPP_NRT", "VIIRS_NOAA20_NRT"],
+                                     "2026-08-25")
+    assert refusal is not None
+    assert "No successful fetch covered" in refusal
+    assert "detection" not in refusal.lower()
+
+
+def test_provenance_guard_observed_quiet_day_publishes():
+    """08b check 2: a day the manifest says was observed, with zero
+    detections, publishes - and reads as an observation of a quiet day."""
+    with tempfile.TemporaryDirectory() as td:
+        cfg = make_cfg(Path(td))
+        _write_evening(td, "2026-08-25", [
+            _evening_row("2026-08-25T19:30:00+09:00", -1.14, 136.03,
+                         False, True, ocean=True),
+        ])
+        (Path(td) / "processed" / "run_manifest.json").write_text(
+            json.dumps({"runs": _manifest_entries("2026-08-25")}),
+            encoding="utf-8")
+        summary, [brief_path, _, _] = build_in(td, NOW, day="2026-08-25")
+        assert summary["detections"] == 0
+        text = brief_path.read_text(encoding="utf-8")
+        assert "**0 thermal anomaly detections**" in text
+        assert "observed, no detections" in text
+        assert "No fetch covered" not in text
+
+
+def test_provenance_guard_partial_failure_still_publishes():
+    """Some sources failed, others observed the day: the brief publishes
+    with the per-source three-state warnings carrying the gap (06b)."""
+    with tempfile.TemporaryDirectory() as td:
+        cfg = make_cfg(Path(td))
+        runs = [{"source": "MODIS_NRT", "chunk_start": "2026-08-23",
+                 "days": 4, "outcome": "failed", "rows": None,
+                 "utc": "2026-08-27T06:00:00Z"}]
+        (Path(td) / "processed" / "run_manifest.json").write_text(
+            json.dumps({"runs": runs}), encoding="utf-8")
+        summary, [brief_path, _, _] = build_in(td, NOW)
+        by_src = {s["source"]: s["status"] for s in summary["sources"]}
+        assert by_src["MODIS_NRT"] == "failed"
+        assert by_src["VIIRS_SNPP_NRT"] == "observed"
+        text = brief_path.read_text(encoding="utf-8")
+        assert "not observed (fetch failed)" in text
+
+
+def test_provenance_guard_refuses_beyond_coverage():
+    """08b check 3, adapted: the live cron has covered dates through
+    2026-08-31 (08-27+5d chunks), so the current date publishes. A date
+    beyond all recorded coverage refuses - same code path, same wording."""
+    refusal = rep.provenance_refusal(
+        json.loads((ROOT / "data" / "processed" / "run_manifest.json")
+                   .read_text(encoding="utf-8"))["runs"],
+        ["VIIRS_SNPP_NRT", "VIIRS_NOAA20_NRT", "VIIRS_NOAA21_NRT",
+         "MODIS_NRT"],
+        "2026-09-30")
+    assert refusal is not None
+    assert "detection" not in refusal.lower()
+
+
+def test_allow_stale_override_wiring():
+    """08b: --allow-stale remains the single override and gates the refusal
+    in main; the guard applies with --day given (an explicit day is not a
+    way past it)."""
+    import inspect
+    src = inspect.getsource(rep.main)
+    assert "provenance_refusal" in src
+    assert "not args.allow_stale" in src
+    assert 'args.day or' in src
+
+
+def test_cli_refuses_uncovered_day():
+    """08b check 1 end to end: --day for a date no fetch covered refuses
+    at the CLI with the coverage-gap wording. The guard fires before any
+    file is written, so this is read-only."""
+    import subprocess
+    r = subprocess.run(
+        [sys.executable, str(ROOT / "src" / "report_daily.py"),
+         "--day", "2026-09-30"],
+        capture_output=True, text=True, timeout=120, cwd=str(ROOT))
+    assert r.returncode != 0
+    assert "No fetch covered WIT day 2026-09-30" in r.stderr
+
+
 if __name__ == "__main__":
     fns = [(name, obj) for name, obj in sorted(globals().items())
            if name.startswith("test_") and callable(obj)]
