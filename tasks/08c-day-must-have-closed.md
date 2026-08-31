@@ -61,17 +61,49 @@ is how guards get quietly disabled.
 
 `--allow-stale` stays the single deliberate override and stays out of `.github/`.
 
+## Part 2 — max(date_wit) is still choosing the day
+
+Task 08b removed `max(date_wit)` as the *freshness signal*, correctly and for exactly the
+right reason. It survives as the *day selector*:
+
+```python
+covered = str(args.day or pd.read_parquet(store)["date_wit"].max())
+```
+
+The first fully successful scheduled run (33360172837, 05:20 UTC on 2026-08-31) published:
+
+```
+covered 2026-08-28: 11 detections, 0 offshore
+```
+
+2026-08-29 and 2026-08-30 were both observed and both quiet, and the manifest records that.
+The page therefore shows 08-28 as its latest day while the record actually reaches 08-30.
+
+The consequence is the argument 08b already made, one layer over: on a quiet stretch the brief
+freezes on the last day something burned and the page looks stale while the pipeline is working
+perfectly. In the 2023-2025 baseline, at 2.68 detections per week, it would sit still for days
+at a time.
+
+**Default to the newest WIT day that provenance says was observed and has closed**, not the
+newest day carrying a detection. That is the same predicate Part 1 defines, so both should come
+from one function rather than two that can drift apart. An explicit `--day` still wins.
+
+A day selected this way with zero detections publishes as an observed quiet day — that is the
+point, and check 3 below already covers the wording.
+
 ## The checks
 
-1. Asking for a WIT day that has not closed refuses, with a message saying so, and exits 1.
-2. A day whose only covering fetches ran before it closed refuses, and the message says that
+1. With no --day, the brief covers the newest observed, closed WIT day, even when that day
+   has zero detections and an older day has some.
+2. Asking for a WIT day that has not closed refuses, with a message saying so, and exits 1.
+3. A day whose only covering fetches ran before it closed refuses, and the message says that
    rather than claiming no fetch covered it.
-3. A day whose covering fetch ran after it closed still publishes, including when it had zero
+4. A day whose covering fetch ran after it closed still publishes, including when it had zero
    detections.
-4. A run at the cron's own hour and date publishes the just-closed WIT day — the scheduled path
+5. A run at the cron's own hour and date publishes the just-closed WIT day — the scheduled path
    is unchanged.
-5. `--allow-stale` still overrides all of it, and appears nowhere in `.github/`.
-6. The existing 83 tests still pass.
+6. `--allow-stale` still overrides all of it, and appears nowhere in `.github/`.
+7. The existing 83 tests still pass.
 
 ## Out of scope
 
