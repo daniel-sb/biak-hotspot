@@ -99,6 +99,42 @@ def main() -> int:
             check("timeline drawn (detection days present)", tl >= 150,
                   f"{tl} bars")
 
+            # --- task 09: GIBS imagery, including past its zoom ceiling ---
+            gibs = []
+            page.on("response", lambda r: gibs.append(
+                (r.status, r.url)) if "gibs.earthdata.nasa.gov" in r.url
+                else None)
+
+            page.check('input[name="imagery"][value="truecolor"]')
+            page.wait_for_timeout(6000)
+            served = [s for s, u in gibs if s == 200]
+            check("GIBS imagery tiles served", bool(served),
+                  f"{len(served)} of {len(gibs)} responses ok")
+
+            note = page.inner_text("#imagery-note")
+            check("imagery labelled with product and date",
+                  "Corrected Reflectance" in note and "2026-" in note,
+                  note[:120].encode("ascii", "replace").decode())
+            check("imagery carries the not-an-all-clear caveat",
+                  "absence of visible smoke is not an absence" in note)
+
+            # GIBS tops out at zoom 9; MapLibre must overzoom rather than
+            # blank out, and the resulting tile errors must not raise the
+            # honest-degradation banner (task 09).
+            for _ in range(5):
+                page.click(".maplibregl-ctrl-zoom-in")
+                page.wait_for_timeout(400)
+            page.wait_for_timeout(4000)
+            over = page.inner_text("#data-errors").strip()
+            check("no error banner after zooming past the GIBS z9 ceiling",
+                  over == "", over[:200])
+
+            page.check('input[name="imagery"][value="swir"]')
+            page.wait_for_timeout(5000)
+            swir = page.inner_text("#imagery-note")
+            check("false colour is never called a fire detection",
+                  "not a fire detection" in swir and "fires" not in swir.lower())
+
             console_real = [c for c in console_errors
                             if "favicon" not in c.lower()]
             check("no console errors", not console_real,

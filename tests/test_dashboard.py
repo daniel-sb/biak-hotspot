@@ -63,11 +63,19 @@ def test_confidence_not_used_for_encoding():
 
 
 def test_pinned_cdn_only():
+    """The page talks to three hosts and no others.
+
+    gibs.earthdata.nasa.gov was added deliberately for task 09 imagery.
+    The point of this list is that a new host is a decision someone made,
+    not something that arrived with a copied snippet: extend it only
+    alongside the reason, in the same commit.
+    """
     html = INDEX.read_text(encoding="utf-8")
     assert "maplibre-gl@4.7.1" in html
+    allowed = ("maplibre-gl@4.7.1", "openfreemap", "gibs.earthdata.nasa.gov",
+               "worldview.earthdata.nasa.gov")
     srcs = [l for l in html.split('"') if l.startswith("http")]
-    assert srcs == [s for s in srcs if "maplibre-gl@4.7.1" in s or
-                    "openfreemap" in s]
+    assert srcs == [s for s in srcs if any(a in s for a in allowed)]
 
 
 def test_data_files_referenced_with_error_handling():

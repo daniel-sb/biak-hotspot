@@ -39,6 +39,13 @@ h1 { font-size:1.35rem; margin:0 0 2px; }
 .warn { background:#fdeeee; border-left:3px solid #c06060; padding:4px 8px; }
 .muted { color:var(--muted); font-size:.8rem; }
 footer { padding:12px 16px 20px; font-size:.78rem; color:var(--muted); line-height:1.5; }
+#imagery { margin:6px 0 0; padding:6px 9px; border:1px solid var(--line); background:#fff;
+  font-size:.82rem; line-height:1.5; }
+#imagery .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+#imagery label { cursor:pointer; }
+#imagery input { margin-right:4px; vertical-align:-1px; }
+#imagery-note { display:block; margin-top:5px; color:var(--muted); }
+#imagery-note.unavailable { color:#7a1010; }
 .legend { position:absolute; bottom:8px; left:8px; background:rgba(255,255,255,.92);
   padding:6px 9px; font-size:.75rem; border:1px solid var(--line); z-index:2; }
 .legend .sw { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:4px; }
@@ -83,6 +90,15 @@ observation, never a reassurance.</p>
         <span class="sw" style="background:#f2762b"></span>moderate
         <span class="sw" style="background:#c22e12"></span>high
       </div>
+    </div>
+    <div id="imagery">
+      <div class="row">
+        <strong>Satellite imagery:</strong>
+        <label><input type="radio" name="imagery" value="" checked> None</label>
+        <label><input type="radio" name="imagery" value="truecolor"> True colour</label>
+        <label><input type="radio" name="imagery" value="swir"> False colour (M11-I2-I1)</label>
+      </div>
+      <span id="imagery-note"></span>
     </div>
   </div>
   <div id="panel">
@@ -164,6 +180,14 @@ map.fitBounds([[134.25, -1.45], [136.76, 1.0]], { padding: 24, duration: 0 });
 
 const mapErrorsShown = new Set();
 map.on("error", (e) => {
+  /* GIBS tops out at zoom 9 (z10 returns HTTP 400), so panning or zooming
+     in produces tile errors that are not failures of the page. Whether the
+     imagery exists at all is settled once, by probe, before a layer is
+     added — see setImagery. Letting overzoom raise the banner would turn
+     the honest-degradation mechanism into noise, and the next person would
+     mute it. */
+  if (e && typeof e.sourceId === "string" && e.sourceId.startsWith("gibs-"))
+    return;
   const where = e && e.sourceId ? " (" + e.sourceId + ")" : "";
   const msg = e && e.error ? e.error.message : "unknown map error";
   const full = "Map error" + where + ": " + msg;
@@ -178,7 +202,116 @@ map.on("error", (e) => {
    the cached GeoJSON objects. */
 const localData = { desa: null, hotspots: null, recurrent: null };
 
+/* ---------- NASA GIBS imagery ----------
+   Google's tile terms forbid use outside Google's own APIs and Esri's
+   expect an ArcGIS account for production, so neither belongs on a public
+   page. GIBS is free, keyless and documented for reuse.
+
+   Note the axis order: {z}/{y}/{x}, not the {z}/{x}/{y} most XYZ templates
+   use. GoogleMapsCompatible_Level9 is the only matrix set these layers
+   publish, so maxzoom is 9 and MapLibre overzooms beyond it; at level 9 the
+   world is 131,072 px wide, about 300 m per pixel. */
+const GIBS_URL = "https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/" +
+  "{LAYER}/default/{DATE}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg";
+const GIBS_ATTRIB = '<a href="https://worldview.earthdata.nasa.gov/" ' +
+  'target="_blank" rel="noopener">NASA GIBS/Worldview</a>';
+const IMAGERY = {
+  truecolor: {
+    layer: "VIIRS_NOAA20_CorrectedReflectance_TrueColor",
+    label: "Corrected Reflectance (True Color, VIIRS, NOAA-20)",
+    note: "Smoke appears as grey-brown haze. One image per day, served to " +
+          "about 300 m per pixel, and cloud hides what is beneath it — an " +
+          "absence of visible smoke is not an absence of smoke.",
+  },
+  swir: {
+    layer: "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1",
+    label: "Corrected Reflectance (M11-I2-I1, VIIRS, Suomi NPP)",
+    note: "A band combination, not a fire detection: red is reflectance in " +
+          "the shortwave infrared, which burned ground and active flame " +
+          "both raise. It confirms nothing on its own.",
+  },
+};
+let imageryDate = null;      // set from the brief's covered WIT day
+let imageryChoice = "";      // "" | "truecolor" | "swir"
+const imageryProbed = new Map();
+
+const gibsUrl = (key, date) => GIBS_URL
+  .replace("{LAYER}", IMAGERY[key].layer).replace("{DATE}", date);
+
+/* One probe per layer/date settles availability, so runtime tile errors can
+   be ignored without hiding a genuinely missing date. */
+async function imageryAvailable(key, date) {
+  const cacheKey = key + "|" + date;
+  if (imageryProbed.has(cacheKey)) return imageryProbed.get(cacheKey);
+  const probe = gibsUrl(key, date)
+    .replace("{z}", "5").replace("{y}", "16").replace("{x}", "25");
+  let ok = false;
+  try { ok = (await fetch(probe, { method: "GET" })).ok; } catch (e) { ok = false; }
+  imageryProbed.set(cacheKey, ok);
+  return ok;
+}
+
+function imageryNote(text, unavailable) {
+  const el = $("imagery-note");
+  el.textContent = text;
+  el.className = unavailable ? "unavailable" : "";
+}
+
+/* Rebuilt with the vector layers so the imagery survives the basemap
+   upgrade, and added first so it always sits beneath them. */
+function addImagery() {
+  for (const key of Object.keys(IMAGERY)) {
+    const id = "gibs-" + key;
+    if (key === imageryChoice) continue;
+    if (map.getLayer(id)) map.removeLayer(id);
+    if (map.getSource(id)) map.removeSource(id);
+  }
+  if (!imageryChoice || !imageryDate) return;
+  const id = "gibs-" + imageryChoice;
+  if (!map.getSource(id))
+    map.addSource(id, {
+      type: "raster", tileSize: 256, maxzoom: 9,
+      tiles: [gibsUrl(imageryChoice, imageryDate)],
+      attribution: GIBS_ATTRIB,
+    });
+  if (!map.getLayer(id))
+    map.addLayer({ id, type: "raster", source: id,
+                   paint: { "raster-opacity": 0.85 } },
+                 map.getLayer("desa-lines") ? "desa-lines" : undefined);
+}
+
+async function setImagery(key) {
+  if (!key) {
+    imageryChoice = "";
+    addImagery();
+    imageryNote("");
+    return;
+  }
+  if (!imageryDate) {
+    imageryNote("Imagery needs the brief's date, which has not loaded.", true);
+    return;
+  }
+  imageryNote("Loading " + IMAGERY[key].label + "…");
+  if (!await imageryAvailable(key, imageryDate)) {
+    imageryChoice = "";
+    addImagery();
+    imageryNote("Imagery unavailable for " + imageryDate + " (" +
+                IMAGERY[key].label + "). This is a gap in the imagery " +
+                "record, not an observation.", true);
+    return;
+  }
+  imageryChoice = key;
+  addImagery();
+  imageryNote(IMAGERY[key].label + " — " + imageryDate + " (WIT day of the " +
+              "brief). " + IMAGERY[key].note);
+}
+
+document.querySelectorAll('input[name="imagery"]').forEach((el) => {
+  el.addEventListener("change", () => setImagery(el.value));
+});
+
 function addLocalLayers() {
+  addImagery();
   if (localData.desa) {
     if (!map.getSource("desa"))
       map.addSource("desa", { type: "geojson", data: localData.desa });
@@ -340,6 +473,13 @@ map.on("load", async () => {
   }
   $("generated").textContent = "Data generated: " + summary.generated_utc +
     " UTC. Brief day covered: " + summary.covered_wit_date + " (WIT).";
+
+  /* The imagery follows the day the page is describing, never the client
+     clock. The daytime VIIRS overpass for a WIT day falls near 04:30 UTC on
+     the same calendar date at this longitude, so the GIBS granule date and
+     the WIT date coincide here; that is a property of 136E, not a general
+     rule. */
+  imageryDate = summary.covered_wit_date;
 
   /* evening — after-dark result first; never a reassurance (PLAN.md 13.2) */
   try {
