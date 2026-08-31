@@ -6911,6 +6911,102 @@
    "rows": 1,
    "utc": "2026-08-31T02:30:04Z",
    "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-08-17",
+   "days": 5,
+   "rows": 106,
+   "utc": "2026-08-31T05:20:26Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-08-22",
+   "days": 5,
+   "rows": 111,
+   "utc": "2026-08-31T05:20:27Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-08-27",
+   "days": 5,
+   "rows": 7,
+   "utc": "2026-08-31T05:20:28Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-08-17",
+   "days": 5,
+   "rows": 77,
+   "utc": "2026-08-31T05:20:29Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-08-22",
+   "days": 5,
+   "rows": 180,
+   "utc": "2026-08-31T05:20:30Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-08-27",
+   "days": 5,
+   "rows": 11,
+   "utc": "2026-08-31T05:20:31Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-08-17",
+   "days": 5,
+   "rows": 52,
+   "utc": "2026-08-31T05:20:33Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-08-22",
+   "days": 5,
+   "rows": 113,
+   "utc": "2026-08-31T05:20:34Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-08-27",
+   "days": 5,
+   "rows": 3,
+   "utc": "2026-08-31T05:20:35Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-08-17",
+   "days": 5,
+   "rows": 4,
+   "utc": "2026-08-31T05:20:36Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-08-22",
+   "days": 5,
+   "rows": 7,
+   "utc": "2026-08-31T05:20:37Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-08-27",
+   "days": 5,
+   "rows": 1,
+   "utc": "2026-08-31T05:20:38Z",
+   "outcome": "fetched"
   }
  ]
 }
