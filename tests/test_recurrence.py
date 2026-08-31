@@ -137,7 +137,13 @@ def test_real_store_pinned_values():
     df = pd.read_parquet(STORE)
     out, sites, reason, _, _ = rec.compute(df, 750.0, 10, 90, 365)
     assert reason is None
-    assert len(out) == 1_089 and \
+    # Pin the invariant, not the row count: recurrence annotates and never
+    # adds or drops a row (AGENTS rule 5). An absolute count would fail on
+    # every day the daily job finds a new detection -- inside the daily job
+    # itself, gating the publish step, so the pipeline would break precisely
+    # when there is something to report. It already had to be hand-edited
+    # from 1,078 to 1,089, and CI then hit 1,091.
+    assert len(out) == len(df) and \
         list(out["detection_id"]) == list(df["detection_id"])
 
     # The Saramom source (66-day core + 11/7-day neighbours) is one flagged
@@ -152,11 +158,15 @@ def test_real_store_pinned_values():
     site = next(s for s in sites if s["id"] == site_ids.pop())
     assert site["distinct_days"] == days and site["distrik"] == "Yendidori"
 
-    # The airport cluster is NOT flagged: 39 detections over 10 distinct
-    # days, and the August burst's short span keeps every one of them clear.
+    # The airport cluster is NOT flagged. PLAN.md 11.4: the day-span
+    # condition does not protect it -- 10 distinct days spanning 1,018 days
+    # meets both thresholds. Only the 750 m radius does, by keeping any one
+    # cluster below min_days. Widening radius_m publishes Frans Kaisiepo as
+    # a recurrent location, so this assertion is the guard on that.
+    # Counts are lower bounds: the daily job adds detections continuously.
     dists = df.apply(lambda r: _hav_m(r["latitude"], r["longitude"]), axis=1)
     air = out[dists <= 3_000]
-    assert len(air) == 39 and air["date_wit"].nunique() == 10
+    assert len(air) >= 39 and air["date_wit"].nunique() >= 10
     assert not air["recurrent_site"].any()
 
 
