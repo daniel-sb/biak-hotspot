@@ -1,5 +1,5 @@
 {
- "history_days": 1091,
+ "history_days": 1092,
  "next_number": 4,
  "notes": [],
  "params": {
@@ -22,14 +22,14 @@
    "last_date": "2026-08-21"
   },
   {
-   "centroid_lat": -1.133593,
-   "centroid_lon": 136.033909,
-   "detections": 24,
-   "distinct_days": 12,
+   "centroid_lat": -1.133709,
+   "centroid_lon": 136.034094,
+   "detections": 25,
+   "distinct_days": 13,
    "distrik": "Yendidori",
    "first_date": "2023-10-28",
    "id": "R002",
-   "last_date": "2026-08-27"
+   "last_date": "2026-08-28"
   },
   {
    "centroid_lat": -1.126828,

@@ -1,5 +1,5 @@
 {
- "covered_wit_date": "2026-08-27",
+ "covered_wit_date": "2026-08-30",
  "districts": [
   {
    "detections": 0,
@@ -30,11 +30,11 @@
    "total_frp": null
   },
   {
-   "detections": 3,
+   "detections": 0,
    "distrik": "Biak Timur",
    "kabupaten": "Biak Numfor",
-   "max_frp": 9.4,
-   "total_frp": 19.5
+   "max_frp": null,
+   "total_frp": null
   },
   {
    "detections": 0,
@@ -65,11 +65,11 @@
    "total_frp": null
   },
   {
-   "detections": 1,
+   "detections": 0,
    "distrik": "Numfor Barat",
    "kabupaten": "Biak Numfor",
-   "max_frp": 3.1,
-   "total_frp": 3.1
+   "max_frp": null,
+   "total_frp": null
   },
   {
    "detections": 0,
@@ -107,11 +107,11 @@
    "total_frp": null
   },
   {
-   "detections": 3,
+   "detections": 0,
    "distrik": "Samofa",
    "kabupaten": "Biak Numfor",
-   "max_frp": 12.8,
-   "total_frp": 22.5
+   "max_frp": null,
+   "total_frp": null
   },
   {
    "detections": 0,
@@ -163,18 +163,18 @@
    "total_frp": null
   },
   {
-   "detections": 4,
+   "detections": 0,
    "distrik": "Yendidori",
    "kabupaten": "Biak Numfor",
-   "max_frp": 7.4,
-   "total_frp": 18.3
+   "max_frp": null,
+   "total_frp": null
   }
  ],
  "evening": {
   "closest_after_dark": null,
   "daylight_flags": 0,
   "daylight_summary": null,
-  "evening_date": "2026-08-26",
+  "evening_date": "2026-08-29",
   "flags": [],
   "night_flags": 0,
   "ocean_bt14_median_k": null,
@@ -184,27 +184,20 @@
   "state": "unavailable",
   "window_utc": "06:00-16:00"
  },
- "generated_utc": "2026-08-29T03:18:31Z",
+ "generated_utc": "2026-08-31T02:37:20Z",
  "geojson_window_days": 7,
  "manifest_found": true,
- "recurrent_today": [
-  {
-   "days_total": 12,
-   "detections_today": 1,
-   "distrik": "Yendidori",
-   "site_id": "R002"
-  }
- ],
+ "recurrent_today": [],
  "sources": [
   {
-   "detections": 3,
+   "detections": 0,
    "source": "VIIRS_SNPP_NRT",
-   "status": "observed"
+   "status": "empty"
   },
   {
-   "detections": 7,
+   "detections": 0,
    "source": "VIIRS_NOAA20_NRT",
-   "status": "observed"
+   "status": "empty"
   },
   {
    "detections": 0,
@@ -212,14 +205,14 @@
    "status": "empty"
   },
   {
-   "detections": 1,
+   "detections": 0,
    "source": "MODIS_NRT",
-   "status": "observed"
+   "status": "empty"
   }
  ],
  "totals": {
-  "detections": 11,
+  "detections": 0,
   "offshore": 0,
-  "on_land": 11
+  "on_land": 0
  }
 }

@@ -67,3 +67,6 @@ mandum_rimba-*.zip
 
 # Boundaries for a different kabupaten, kept for unrelated work.
 data/boundaries/yahukimo_desa.geojson
+
+# Own published paper, kept for reference; the publisher holds the typeset PDF.
+Analyisis_of_Drought_in_*.pdf
