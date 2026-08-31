@@ -10,7 +10,7 @@ import json
 import re
 import sys
 import tempfile
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -646,14 +646,15 @@ def test_provenance_guard_refuses_beyond_coverage():
 
 
 def test_allow_stale_override_wiring():
-    """08b: --allow-stale remains the single override and gates the refusal
-    in main; the guard applies with --day given (an explicit day is not a
-    way past it)."""
+    """08b/08c: --allow-stale gates the refusal; the day selector runs when
+    --day is absent; an explicit --day still wins over the selector; the
+    guard applies in both paths."""
     import inspect
     src = inspect.getsource(rep.main)
     assert "provenance_refusal" in src
     assert "not args.allow_stale" in src
-    assert 'args.day or' in src
+    assert "newest_observed_closed_day" in src
+    assert "args.day" in src
 
 
 def test_cli_refuses_uncovered_day():
@@ -667,6 +668,103 @@ def test_cli_refuses_uncovered_day():
         capture_output=True, text=True, timeout=120, cwd=str(ROOT))
     assert r.returncode != 0
     assert "No fetch covered WIT day 2026-09-30" in r.stderr
+
+
+def test_day_selector_picks_newest_observed_closed():
+    """08c check 1: the selector returns the newest observed, closed WIT
+    day — even when it has zero detections and an older day has some; and
+    build(day=that day) renders the brief correctly."""
+    with tempfile.TemporaryDirectory() as td:
+        cfg = make_cfg(Path(td))
+        # Rebuild the store: detections only on WIT 08-20 (older day with
+        # some); 08-25 is an observed quiet day (no detections, manifest
+        # covers it with a post-close fetch)
+        old = ing.prepare(HEADER + "\n" + DAY_ROWS.replace(
+            "2026-08-25", "2026-08-20").replace("2026-08-26", "2026-08-20"),
+            BBOX, BOUNDARIES)
+        path = Path(td) / "processed" / "detections.parquet"
+        old.to_parquet(path, index=False)
+        runs = [{"source": s, "chunk_start": "2026-08-21", "days": 5,
+                 "outcome": "fetched", "rows": 3,
+                 "utc": "2026-08-26T16:00:00Z"}          # after 08-25 close
+                for s in ("VIIRS_SNPP_NRT", "VIIRS_NOAA20_NRT",
+                          "VIIRS_NOAA21_NRT", "MODIS_NRT")]
+        (Path(td) / "processed" / "run_manifest.json").write_text(
+            json.dumps({"runs": runs}), encoding="utf-8")
+
+        # the selector picks 08-26 (newest observed+closed WIT day: the
+        # chunk covers its morning via [D-1, D] and ran at 16:00 UTC 08-26,
+        # after the 15:00 UTC close on 08-26)
+        covered = rep.newest_observed_closed_day(runs, cfg["sources"])
+        assert covered == "2026-08-26"
+
+        # the brief for that day renders as an observed quiet day
+        summary, [brief_path, _, _] = build_in(td, NOW, day=covered,
+                                               build_store=False)
+        assert summary["detections"] == 0
+        text = brief_path.read_text(encoding="utf-8")
+        assert "**0 thermal anomaly detections**" in text
+        assert "observed, no detections" in text
+
+
+def test_provenance_refuses_day_not_closed():
+    """08c check 2: asking for a WIT day that has not closed refuses with
+    the 'has not closed yet' wording."""
+    brief_day = "2026-08-31"
+    runs = [{"source": "VIIRS_SNPP_NRT", "chunk_start": "2026-08-27",
+             "days": 5, "outcome": "fetched", "rows": 5,
+             "utc": "2026-08-31T02:30:00Z"}]
+    now = datetime(2026, 8, 31, 5, 14, tzinfo=timezone.utc)  # 14:14 WIT
+    refusal = rep.provenance_refusal(runs, ["VIIRS_SNPP_NRT"], brief_day,
+                                     now_utc=now)
+    assert refusal is not None
+    assert "has not closed yet" in refusal
+    assert "15:00 UTC" in refusal
+
+
+def test_provenance_refuses_fetch_predates_close():
+    """08c check 3: a day whose only covering fetches ran before it closed
+    refuses, and the message says that rather than claiming no fetch
+    covered it."""
+    brief_day = "2026-08-25"
+    runs = [{"source": "VIIRS_SNPP_NRT", "chunk_start": "2026-08-23",
+             "days": 4, "outcome": "fetched", "rows": 5,
+             "utc": "2026-08-24T06:00:00Z"}]          # before 08-25 close
+    now = datetime(2026, 8, 28, 7, 0, tzinfo=timezone.utc)
+    refusal = rep.provenance_refusal(runs, ["VIIRS_SNPP_NRT"], brief_day,
+                                     now_utc=now)
+    assert refusal is not None
+    assert "ran before the day" in refusal
+    assert "15:00 UTC" in refusal
+    # it does NOT use the 'no fetch covered' wording (fetches exist)
+    assert "No fetch covered" not in refusal
+
+
+def test_provenance_post_close_fetch_publishes():
+    """08c check 4: a day whose covering fetch ran after it closed
+    publishes, even with zero detections."""
+    brief_day = "2026-08-25"
+    runs = [{"source": "VIIRS_SNPP_NRT", "chunk_start": "2026-08-23",
+             "days": 4, "outcome": "fetched", "rows": 0,
+             "utc": "2026-08-26T16:00:00Z"}]           # after 08-25 close
+    now = datetime(2026, 8, 28, 7, 0, tzinfo=timezone.utc)
+    refusal = rep.provenance_refusal(runs, ["VIIRS_SNPP_NRT"], brief_day,
+                                     now_utc=now)
+    assert refusal is None
+
+
+def test_cron_hour_publishes_just_closed_day():
+    """08c check 5: a run at the cron's own hour (16:30 UTC) publishes the
+    just-closed WIT day — the scheduled path is unchanged by the new
+    close-time check."""
+    day = date(2026, 8, 25)   # cron fires 16:30 UTC on 08-25
+    runs = [{"source": "VIIRS_SNPP_NRT", "chunk_start": "2026-08-21",
+             "days": 5, "outcome": "fetched", "rows": 3,
+             "utc": "2026-08-25T16:00:00Z"}]           # 16:00 UTC, after close
+    now = datetime(2026, 8, 25, 16, 30, tzinfo=timezone.utc)
+    refusal = rep.provenance_refusal(runs, ["VIIRS_SNPP_NRT"], "2026-08-25",
+                                     now_utc=now)
+    assert refusal is None
 
 
 if __name__ == "__main__":

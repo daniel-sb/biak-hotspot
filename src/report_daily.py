@@ -4,8 +4,9 @@ Reads data/processed/detections.parquet - never fetches anything - and writes
 the published outputs under docs/: a rolling-window GeoJSON point layer, a
 machine-readable summary JSON, and one Markdown brief per covered WIT day.
 
-The brief covers exactly one WIT local day (the most recent one in the store
-by default). Three per-source states are kept strictly apart, because they are
+The brief covers exactly one WIT local day: by default the most recent one the
+run manifest shows was successfully fetched after it closed, which is not the
+same as the most recent day carrying a detection (Task 08c). Three per-source states are kept strictly apart, because they are
 different facts (AGENTS rule 2): a detection count; "observed, no detections"
 (the run manifest shows the AOI was successfully queried for that day); and
 "not observed" (the query failed or there is no record). The third is never
@@ -170,6 +171,46 @@ def _covers(entry: dict, wit_day: str) -> bool:
     s = date.fromisoformat(entry["chunk_start"])
     e = s + timedelta(days=int(entry["days"]) - 1)
     return max(s, lo) <= min(e, hi)
+
+
+def _is_observed_closed(day: date, runs: list[dict], sources) -> bool:
+    """True if a successful fetch covered `day` AND ran after its 15:00 UTC
+    close. Shared predicate for the provenance guard and the day selector —
+    one definition, not two that can drift apart (Task 08c)."""
+    close = datetime(day.year, day.month, day.day, 15, 0, 0,
+                     tzinfo=timezone.utc)
+    for e in runs:
+        if e.get("source") not in sources:
+            continue
+        if e.get("outcome") not in ("fetched", "cached"):
+            continue
+        utc = datetime.fromisoformat(e["utc"].replace("Z", "+00:00"))
+        start = date.fromisoformat(e["chunk_start"])
+        end = start + timedelta(days=int(e["days"]) - 1)
+        if utc >= close and start <= day and end >= day - timedelta(days=1):
+            return True
+    return False
+
+
+def newest_observed_closed_day(runs: list[dict], sources) -> str | None:
+    """The newest WIT day that _is_observed_closed returns True for.
+
+    Candidate days come from the successful chunks themselves (the chunk's
+    own dates plus the next morning). The newest one where the shared
+    predicate holds is the brief's default day (Task 08c part 2)."""
+    candidates = set()
+    for e in runs:
+        if e.get("source") not in sources:
+            continue
+        if e.get("outcome") not in ("fetched", "cached"):
+            continue
+        start = date.fromisoformat(e["chunk_start"])
+        days = int(e["days"])
+        for offset in range(-1, days + 1):
+            candidates.add(start + timedelta(days=offset))
+    closed = [d for d in sorted(candidates, reverse=True)
+              if _is_observed_closed(d, runs, sources)]
+    return closed[0].isoformat() if closed else None
 
 
 def _source_status(src: str, sats: set | None, day_df: pd.DataFrame,
@@ -591,38 +632,64 @@ def build(cfg: dict, root: Path, now_utc: datetime | None = None,
     return summary, [brief_path, geo_path, sum_path]
 
 
-def provenance_refusal(runs, sources, brief_day):
-    """Task 08b guard: did successful fetches cover `brief_day`?
+def provenance_refusal(runs, sources, brief_day, now_utc=None):
+    """Task 08b/08c guard: did successful fetches cover `brief_day` AND run
+    after the day's 15:00 UTC close?
 
     A WIT day with genuinely zero detections is normal here (the 2023-2025
     baseline is 2.68 detections per week), so detection counts are the wrong
     freshness signal - the question is whether a successful fetch covered the
-    day, and the run manifest records exactly that in three states. Returns
-    None when at least one successful (fetched or cached) chunk covered the
-    day; otherwise a refusal message that names the coverage gap, so it can
-    never be confused with a quiet-day observation."""
+    day AFTER it closed, and the run manifest records exactly that. Returns
+    None when properly observed; otherwise a refusal that names the coverage
+    gap. Three refusal states (08b added two, 08c added the third):
+      1. No fetch covered the day at all.
+      2. Covering fetches exist but none succeeded.
+      3. Covering fetches succeeded but every one ran before the day's
+         15:00 UTC close - the day was not fully observed when they ran.
+    Never mentions detection counts."""
     covering = [e for e in runs
                 if e.get("source") in sources and _covers(e, brief_day)]
     ok = [e for e in covering if e.get("outcome") in ("fetched", "cached")]
-    if ok:
-        return None
     if not covering:
         return (f"No fetch covered WIT day {brief_day} - the provenance "
                 f"record has no observation of it. Refusing to publish it "
                 f"as a quiet day. Pass --allow-stale to override "
                 f"deliberately.")
-    failed = sum(1 for e in covering if e.get("outcome") == "failed")
-    unavail = len(covering) - failed
-    return (f"No successful fetch covered WIT day {brief_day}: {failed} "
-            f"chunk(s) failed, {unavail} were outside a source's available "
-            f"window. The day was not observed - refusing to publish it as "
-            f"a quiet day. Pass --allow-stale to override deliberately.")
+    if not ok:
+        failed = sum(1 for e in covering if e.get("outcome") == "failed")
+        unavail = len(covering) - failed
+        return (f"No successful fetch covered WIT day {brief_day}: {failed} "
+                f"chunk(s) failed, {unavail} were outside a source's "
+                f"available window. The day was not observed - refusing to "
+                f"publish it as a quiet day. Pass --allow-stale to "
+                f"override deliberately.")
+
+    # Covering chunks succeeded, but did any run after the day's close?
+    d = date.fromisoformat(brief_day)
+    close = datetime(d.year, d.month, d.day, 15, 0, 0, tzinfo=timezone.utc)
+    ok_after = [e for e in ok
+                if datetime.fromisoformat(
+                    e["utc"].replace("Z", "+00:00")) >= close]
+    if ok_after:
+        return None
+
+    if now_utc and now_utc < close:
+        return (f"WIT day {brief_day} has not closed yet (closes at "
+                f"15:00 UTC, now {now_utc.strftime('%H:%M')} UTC) - "
+                f"refusing to publish an incomplete day as an "
+                f"observation. Pass --allow-stale to override "
+                f"deliberately.")
+    return (f"Every fetch covering WIT day {brief_day} ran before the "
+            f"day's 15:00 UTC close - the day was not fully observed "
+            f"when they ran. Refusing to publish it as an observation. "
+            f"Pass --allow-stale to override deliberately.")
 
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Write the daily hotspot brief.")
-    ap.add_argument("--day", help="WIT day to cover, YYYY-MM-DD "
-                                  "(default: latest day in the store)")
+    ap.add_argument("--day", help="WIT day to cover, YYYY-MM-DD (default: "
+                                  "the newest day provenance shows was "
+                                  "observed and has closed)")
     ap.add_argument("--now", help="override generation time, "
                                   "YYYY-MM-DD HH:MM:SS treated as UTC "
                                   "(testing/backfill use)")
@@ -643,13 +710,8 @@ def main(argv=None) -> int:
     if not store.exists():
         sys.exit(f"detections store not found: {store}\n"
                  "Run src/ingest_firms.py first.")
-    covered = str(args.day or pd.read_parquet(store)["date_wit"].max())
 
-    # Provenance guard (Task 08b): applies with or without --day. A WIT day
-    # the manifest shows as successfully fetched is publishable even when it
-    # has zero detections (quiet days are the norm here); a day no successful
-    # fetch covered is a gap in the record and must not be published as one.
-    # --allow-stale remains the single deliberate human override.
+    # Provenance guard (Task 08b/08c): applies with or without --day.
     manifest_path = store.parent / MANIFEST_FILENAME
     runs = []
     if manifest_path.exists():
@@ -658,7 +720,21 @@ def main(argv=None) -> int:
                 manifest_path.read_text(encoding="utf-8"))["runs"]
         except (json.JSONDecodeError, KeyError) as exc:
             sys.exit(f"unreadable run manifest {manifest_path}: {exc}")
-    refusal = provenance_refusal(runs, cfg["sources"], covered)
+
+    # Day selector (Task 08c part 2): the newest WIT day that provenance
+    # says was observed and has closed, NOT the newest day carrying a
+    # detection. On a quiet stretch this advances daily (the point);
+    # max(date_wit) would freeze on the last fire.
+    if args.day:
+        covered = str(args.day)
+    else:
+        covered = newest_observed_closed_day(runs, cfg["sources"])
+        if covered is None:
+            sys.exit("No WIT day in the provenance record has been "
+                     "observed and closed. Run src/ingest_firms.py first.")
+
+    refusal = provenance_refusal(runs, cfg["sources"], covered,
+                                 now_utc=now_utc)
     if refusal and not args.allow_stale:
         sys.exit(refusal)
 

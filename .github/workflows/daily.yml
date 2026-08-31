@@ -75,11 +75,12 @@ jobs:
           # the pre-commit allowlist pragma applies (hook documentation)
           FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}  # pragma: allowlist secret
 
-      # The provenance guard (Task 08b) lives in report_daily.py: it checks
-      # the run manifest for successful fetch coverage of the brief's WIT day
-      # and refuses otherwise. At this hour the ingest step has just recorded
-      # that coverage for the day that closed at 15:00 UTC, so no --day
-      # override is needed and none may be used to skip the guard.
+      # The provenance guard (Task 08b/08c) lives in report_daily.py: it
+      # checks the run manifest for successful fetch coverage of the brief's
+      # WIT day, including that the covering fetch ran after the day's
+      # 15:00 UTC close. At this hour the ingest step has just recorded that
+      # coverage, so no --day override is needed and none may be used to
+      # skip the guard.
       - name: Build the daily brief and dashboard data
         run: python src/report_daily.py
 
