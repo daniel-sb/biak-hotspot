@@ -112,8 +112,14 @@ def test_firms_crosscheck_numbers():
     """Check 6: the FIRMS cross-check against the real store, using the real
     committed slot (offline - the fixture IS the real downloaded file).
     The anomaly must be present; the numbers are the report."""
-    if not STORE.exists() or not B07.exists() or not B14.exists():
-        print("SKIP: store or fixture missing")
+    # firms_crosscheck picks its own slot from the brightest detection and
+    # fetches it, so the committed fixture does not cover it: on a machine
+    # without the raw archive this test would download from AWS, which
+    # AGENTS.md rule 4 forbids and which broke the CI run of 2026-08-31.
+    # It is a check against the real local archive, so it skips without one.
+    raw_himawari = ROOT / "data" / "raw" / "himawari"
+    if not STORE.exists() or not raw_himawari.is_dir():
+        print("SKIP: needs the local Himawari raw archive (not committed)")
         return
     res = hw.firms_crosscheck(CFG, ROOT, STORE)
     assert res["detection"]["frp_mw"] == 90.55
