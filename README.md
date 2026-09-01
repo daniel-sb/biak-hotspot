@@ -20,8 +20,11 @@ by GitHub Pages from `docs/`.
 - **Evening** — Himawari-9 AHI read directly from the public AWS bucket, covering the
   15:00 to 01:00 WIT window that no polar orbiter observes.
 - **Dashboard** — one static MapLibre page. No framework, no build step, no trackers.
+- **Drought context** — CHIRPS precipitation against the 1981–2025 climatology and the
+  monthly water balance against MOD16A2 evapotranspiration, refreshed by hand rather than
+  by the cron because CHIRPS lags real time by about a month.
 
-Next: Sentinel-2 burn-area delineation (Phase 3) and precipitation context (Phase 4).
+Next: event clustering and Sentinel-2 burn-area delineation (Phases 3 and 4).
 
 ## Verified so far
 
@@ -43,6 +46,13 @@ git config core.hooksPath .githooks
 
 The second command is required after cloning. It enables the pre-commit hook that blocks
 credentials from being committed — this repository is public.
+
+The drought panel is refreshed separately, from an environment with Earth Engine
+credentials, and only when CHIRPS has published a new complete month:
+
+```sh
+python src/drought_gee.py <google-cloud-project-id>   # writes docs/data/drought.json
+```
 
 ## A note on what this publishes
 

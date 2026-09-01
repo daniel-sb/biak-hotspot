@@ -99,6 +99,20 @@ def main() -> int:
             check("timeline drawn (detection days present)", tl >= 150,
                   f"{tl} bars")
 
+            # --- task 10: drought panel ---
+            dr = page.evaluate("document.querySelectorAll("
+                               "'#drought rect, #drought polyline').length")
+            check("drought panel drawn", dr >= 60, f"{dr} elements")
+            check("no error banner from the drought panel",
+                  page.inner_text("#drought-error").strip() == "")
+            lag = page.inner_text("#drought-lag")
+            check("drought panel names its CHIRPS date and states the lag",
+                  "CHIRPS precipitation runs to" in lag and "-" in lag
+                  and "before the day the brief above covers" in lag,
+                  lag[:140])
+            check("drought panel does not read as a cause",
+                  "does not start a fire" in page.inner_text("#drought-wrap"))
+
             # --- task 09: GIBS imagery, including past its zoom ceiling ---
             gibs = []
             page.on("response", lambda r: gibs.append(

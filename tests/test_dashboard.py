@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 INDEX = ROOT / "docs" / "index.html"
 DAILY = ROOT / "docs" / "data" / "daily_counts.json"
 DESA = ROOT / "docs" / "data" / "biak_desa.geojson"
+DROUGHT = ROOT / "docs" / "data" / "drought.json"
 STORE = ROOT / "data" / "processed" / "detections.parquet"
 
 ETHICS = "A hotspot is a thermal anomaly detected by a satellite sensor"
@@ -84,7 +85,7 @@ def test_data_files_referenced_with_error_handling():
     html = INDEX.read_text(encoding="utf-8")
     for name in ("hotspots_latest.geojson", "summary_latest.json",
                  "recurrent_sites.json", "daily_counts.json",
-                 "biak_desa.geojson"):
+                 "biak_desa.geojson", "drought.json"):
         assert name in html, name
     assert html.count("dataError(") >= 4
     assert "failed to load" in html
@@ -261,6 +262,39 @@ def test_map_global_name_is_correct():
     assert "maplibregl.Map(" in text
     stray = re.search(r"(?<!g)\bmaplibre\.", text)
     assert stray is None, "bare maplibre. reference; the global is maplibregl"
+
+
+def test_drought_json_internally_consistent():
+    """Task 10: the panel is drawn straight from this file, so its arithmetic
+    and its density are the only things standing between a plotting bug and a
+    published number. Months dense and sorted, the balance equal to its two
+    terms, a climatology for all twelve calendar months, and a current month
+    that is the last row rather than a separately computed one."""
+    assert DROUGHT.exists()
+    doc = json.loads(DROUGHT.read_text(encoding="utf-8"))
+    months = [r["month"] for r in doc["monthly"]]
+    assert months == sorted(months) and len(months) == len(set(months))
+    for a, b in zip(months, months[1:]):
+        y, m = int(a[:4]), int(a[5:7])
+        assert b == (f"{y + 1:04d}-01" if m == 12 else f"{y:04d}-{m + 1:02d}")
+    for r in doc["monthly"]:
+        if r["precip_mm"] is None or r["et_mm"] is None:
+            assert r["p_minus_et_mm"] is None, r["month"]
+            continue
+        assert abs(r["p_minus_et_mm"] - (r["precip_mm"] - r["et_mm"])) < 0.051,             r["month"]
+    clim = doc["climatology"]
+    assert sorted(clim) == [f"{m:02d}" for m in range(1, 13)]
+    for k, c in clim.items():
+        assert c["years"] > 0 and c["mean_mm"] > 0 and c["sd_mm"] >= 0, k
+    cur, last = doc["current"], doc["monthly"][-1]
+    assert cur["month"] == last["month"] ==         doc["coverage"]["chirps_last_complete_month"]
+    assert cur["precip_mm"] == last["precip_mm"]
+    assert cur["p_minus_et_mm"] == last["p_minus_et_mm"]
+    assert 1 <= cur["rank_driest"] <= cur["rank_of"]
+    # the published month must be complete: CHIRPS has to hold its last day
+    from calendar import monthrange
+    y, m = int(cur["month"][:4]), int(cur["month"][5:7])
+    assert doc["coverage"]["chirps_last_date"] >=         f"{cur['month']}-{monthrange(y, m)[1]:02d}"
 
 
 if __name__ == "__main__":

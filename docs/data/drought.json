@@ -1,0 +1,489 @@
+{
+ "monthly": [
+  {
+   "month": "2021-01",
+   "precip_mm": 242.5,
+   "et_mm": 109.0,
+   "p_minus_et_mm": 133.5
+  },
+  {
+   "month": "2021-02",
+   "precip_mm": 379.9,
+   "et_mm": 101.6,
+   "p_minus_et_mm": 278.3
+  },
+  {
+   "month": "2021-03",
+   "precip_mm": 248.1,
+   "et_mm": 118.0,
+   "p_minus_et_mm": 130.1
+  },
+  {
+   "month": "2021-04",
+   "precip_mm": 300.5,
+   "et_mm": 90.2,
+   "p_minus_et_mm": 210.3
+  },
+  {
+   "month": "2021-05",
+   "precip_mm": 357.6,
+   "et_mm": 112.9,
+   "p_minus_et_mm": 244.7
+  },
+  {
+   "month": "2021-06",
+   "precip_mm": 181.7,
+   "et_mm": 106.9,
+   "p_minus_et_mm": 74.8
+  },
+  {
+   "month": "2021-07",
+   "precip_mm": 264.2,
+   "et_mm": 114.2,
+   "p_minus_et_mm": 150.0
+  },
+  {
+   "month": "2021-08",
+   "precip_mm": 332.1,
+   "et_mm": 120.2,
+   "p_minus_et_mm": 211.9
+  },
+  {
+   "month": "2021-09",
+   "precip_mm": 271.1,
+   "et_mm": 118.2,
+   "p_minus_et_mm": 152.9
+  },
+  {
+   "month": "2021-10",
+   "precip_mm": 196.6,
+   "et_mm": 96.1,
+   "p_minus_et_mm": 100.5
+  },
+  {
+   "month": "2021-11",
+   "precip_mm": 184.9,
+   "et_mm": 131.1,
+   "p_minus_et_mm": 53.8
+  },
+  {
+   "month": "2021-12",
+   "precip_mm": 394.0,
+   "et_mm": 91.7,
+   "p_minus_et_mm": 302.3
+  },
+  {
+   "month": "2022-01",
+   "precip_mm": 248.5,
+   "et_mm": 106.6,
+   "p_minus_et_mm": 141.9
+  },
+  {
+   "month": "2022-02",
+   "precip_mm": 393.3,
+   "et_mm": 103.9,
+   "p_minus_et_mm": 289.4
+  },
+  {
+   "month": "2022-03",
+   "precip_mm": 271.3,
+   "et_mm": 111.1,
+   "p_minus_et_mm": 160.2
+  },
+  {
+   "month": "2022-04",
+   "precip_mm": 254.8,
+   "et_mm": 92.0,
+   "p_minus_et_mm": 162.8
+  },
+  {
+   "month": "2022-05",
+   "precip_mm": 261.6,
+   "et_mm": 124.6,
+   "p_minus_et_mm": 137.0
+  },
+  {
+   "month": "2022-06",
+   "precip_mm": 139.5,
+   "et_mm": 123.8,
+   "p_minus_et_mm": 15.7
+  },
+  {
+   "month": "2022-07",
+   "precip_mm": 323.0,
+   "et_mm": 114.6,
+   "p_minus_et_mm": 208.4
+  },
+  {
+   "month": "2022-08",
+   "precip_mm": 257.1,
+   "et_mm": 132.9,
+   "p_minus_et_mm": 124.2
+  },
+  {
+   "month": "2022-09",
+   "precip_mm": 202.7,
+   "et_mm": 130.9,
+   "p_minus_et_mm": 71.8
+  },
+  {
+   "month": "2022-10",
+   "precip_mm": 155.6,
+   "et_mm": 61.6,
+   "p_minus_et_mm": 94.0
+  },
+  {
+   "month": "2022-11",
+   "precip_mm": 153.7,
+   "et_mm": 112.8,
+   "p_minus_et_mm": 40.9
+  },
+  {
+   "month": "2022-12",
+   "precip_mm": 316.0,
+   "et_mm": 82.5,
+   "p_minus_et_mm": 233.5
+  },
+  {
+   "month": "2023-01",
+   "precip_mm": 192.9,
+   "et_mm": 105.6,
+   "p_minus_et_mm": 87.3
+  },
+  {
+   "month": "2023-02",
+   "precip_mm": 359.2,
+   "et_mm": 107.0,
+   "p_minus_et_mm": 252.2
+  },
+  {
+   "month": "2023-03",
+   "precip_mm": 354.1,
+   "et_mm": 110.2,
+   "p_minus_et_mm": 243.9
+  },
+  {
+   "month": "2023-04",
+   "precip_mm": 264.4,
+   "et_mm": 87.7,
+   "p_minus_et_mm": 176.7
+  },
+  {
+   "month": "2023-05",
+   "precip_mm": 271.7,
+   "et_mm": 116.6,
+   "p_minus_et_mm": 155.1
+  },
+  {
+   "month": "2023-06",
+   "precip_mm": 190.4,
+   "et_mm": 107.7,
+   "p_minus_et_mm": 82.7
+  },
+  {
+   "month": "2023-07",
+   "precip_mm": 244.9,
+   "et_mm": 107.7,
+   "p_minus_et_mm": 137.2
+  },
+  {
+   "month": "2023-08",
+   "precip_mm": 190.3,
+   "et_mm": 114.0,
+   "p_minus_et_mm": 76.3
+  },
+  {
+   "month": "2023-09",
+   "precip_mm": 223.6,
+   "et_mm": 114.8,
+   "p_minus_et_mm": 108.8
+  },
+  {
+   "month": "2023-10",
+   "precip_mm": 147.8,
+   "et_mm": 85.0,
+   "p_minus_et_mm": 62.8
+  },
+  {
+   "month": "2023-11",
+   "precip_mm": 124.1,
+   "et_mm": 120.0,
+   "p_minus_et_mm": 4.1
+  },
+  {
+   "month": "2023-12",
+   "precip_mm": 222.5,
+   "et_mm": 99.6,
+   "p_minus_et_mm": 122.9
+  },
+  {
+   "month": "2024-01",
+   "precip_mm": 318.4,
+   "et_mm": 110.1,
+   "p_minus_et_mm": 208.3
+  },
+  {
+   "month": "2024-02",
+   "precip_mm": 204.8,
+   "et_mm": 131.3,
+   "p_minus_et_mm": 73.5
+  },
+  {
+   "month": "2024-03",
+   "precip_mm": 299.5,
+   "et_mm": 128.4,
+   "p_minus_et_mm": 171.1
+  },
+  {
+   "month": "2024-04",
+   "precip_mm": 279.2,
+   "et_mm": 120.8,
+   "p_minus_et_mm": 158.4
+  },
+  {
+   "month": "2024-05",
+   "precip_mm": 506.7,
+   "et_mm": 89.4,
+   "p_minus_et_mm": 417.3
+  },
+  {
+   "month": "2024-06",
+   "precip_mm": 181.8,
+   "et_mm": 105.1,
+   "p_minus_et_mm": 76.7
+  },
+  {
+   "month": "2024-07",
+   "precip_mm": 232.4,
+   "et_mm": 107.6,
+   "p_minus_et_mm": 124.8
+  },
+  {
+   "month": "2024-08",
+   "precip_mm": 213.0,
+   "et_mm": 117.4,
+   "p_minus_et_mm": 95.6
+  },
+  {
+   "month": "2024-09",
+   "precip_mm": 130.8,
+   "et_mm": 128.0,
+   "p_minus_et_mm": 2.8
+  },
+  {
+   "month": "2024-10",
+   "precip_mm": 185.3,
+   "et_mm": 110.8,
+   "p_minus_et_mm": 74.5
+  },
+  {
+   "month": "2024-11",
+   "precip_mm": 204.2,
+   "et_mm": 97.6,
+   "p_minus_et_mm": 106.6
+  },
+  {
+   "month": "2024-12",
+   "precip_mm": 345.9,
+   "et_mm": 106.3,
+   "p_minus_et_mm": 239.6
+  },
+  {
+   "month": "2025-01",
+   "precip_mm": 149.8,
+   "et_mm": 119.2,
+   "p_minus_et_mm": 30.6
+  },
+  {
+   "month": "2025-02",
+   "precip_mm": 336.9,
+   "et_mm": 111.4,
+   "p_minus_et_mm": 225.5
+  },
+  {
+   "month": "2025-03",
+   "precip_mm": 296.5,
+   "et_mm": 125.3,
+   "p_minus_et_mm": 171.2
+  },
+  {
+   "month": "2025-04",
+   "precip_mm": 278.8,
+   "et_mm": 86.3,
+   "p_minus_et_mm": 192.5
+  },
+  {
+   "month": "2025-05",
+   "precip_mm": 330.6,
+   "et_mm": 116.0,
+   "p_minus_et_mm": 214.6
+  },
+  {
+   "month": "2025-06",
+   "precip_mm": 267.9,
+   "et_mm": 112.6,
+   "p_minus_et_mm": 155.3
+  },
+  {
+   "month": "2025-07",
+   "precip_mm": 393.0,
+   "et_mm": 114.8,
+   "p_minus_et_mm": 278.2
+  },
+  {
+   "month": "2025-08",
+   "precip_mm": 286.9,
+   "et_mm": 110.1,
+   "p_minus_et_mm": 176.8
+  },
+  {
+   "month": "2025-09",
+   "precip_mm": 275.7,
+   "et_mm": 123.2,
+   "p_minus_et_mm": 152.5
+  },
+  {
+   "month": "2025-10",
+   "precip_mm": 386.3,
+   "et_mm": 85.7,
+   "p_minus_et_mm": 300.6
+  },
+  {
+   "month": "2025-11",
+   "precip_mm": 309.0,
+   "et_mm": 101.6,
+   "p_minus_et_mm": 207.4
+  },
+  {
+   "month": "2025-12",
+   "precip_mm": 224.8,
+   "et_mm": 102.3,
+   "p_minus_et_mm": 122.5
+  },
+  {
+   "month": "2026-01",
+   "precip_mm": 222.9,
+   "et_mm": 112.1,
+   "p_minus_et_mm": 110.8
+  },
+  {
+   "month": "2026-02",
+   "precip_mm": 270.3,
+   "et_mm": 105.6,
+   "p_minus_et_mm": 164.7
+  },
+  {
+   "month": "2026-03",
+   "precip_mm": 275.6,
+   "et_mm": 111.3,
+   "p_minus_et_mm": 164.3
+  },
+  {
+   "month": "2026-04",
+   "precip_mm": 335.0,
+   "et_mm": 101.9,
+   "p_minus_et_mm": 233.1
+  },
+  {
+   "month": "2026-05",
+   "precip_mm": 251.5,
+   "et_mm": 116.0,
+   "p_minus_et_mm": 135.5
+  },
+  {
+   "month": "2026-06",
+   "precip_mm": 187.2,
+   "et_mm": 113.4,
+   "p_minus_et_mm": 73.8
+  },
+  {
+   "month": "2026-07",
+   "precip_mm": 115.6,
+   "et_mm": 139.6,
+   "p_minus_et_mm": -24.0
+  }
+ ],
+ "climatology": {
+  "01": {
+   "mean_mm": 248.9,
+   "sd_mm": 63.8,
+   "years": 45
+  },
+  "02": {
+   "mean_mm": 275.8,
+   "sd_mm": 91.7,
+   "years": 45
+  },
+  "03": {
+   "mean_mm": 299.8,
+   "sd_mm": 102.6,
+   "years": 45
+  },
+  "04": {
+   "mean_mm": 274.0,
+   "sd_mm": 68.8,
+   "years": 45
+  },
+  "05": {
+   "mean_mm": 281.5,
+   "sd_mm": 79.4,
+   "years": 45
+  },
+  "06": {
+   "mean_mm": 208.6,
+   "sd_mm": 52.5,
+   "years": 45
+  },
+  "07": {
+   "mean_mm": 245.9,
+   "sd_mm": 85.4,
+   "years": 45
+  },
+  "08": {
+   "mean_mm": 215.1,
+   "sd_mm": 75.3,
+   "years": 45
+  },
+  "09": {
+   "mean_mm": 204.0,
+   "sd_mm": 79.0,
+   "years": 45
+  },
+  "10": {
+   "mean_mm": 221.1,
+   "sd_mm": 87.3,
+   "years": 45
+  },
+  "11": {
+   "mean_mm": 188.0,
+   "sd_mm": 57.8,
+   "years": 45
+  },
+  "12": {
+   "mean_mm": 282.5,
+   "sd_mm": 84.5,
+   "years": 45
+  }
+ },
+ "current": {
+  "month": "2026-07",
+  "precip_mm": 115.6,
+  "et_mm": 139.6,
+  "p_minus_et_mm": -24.0,
+  "climatology_mean_mm": 245.9,
+  "z": -1.53,
+  "rank_driest": 4,
+  "rank_of": 46
+ },
+ "coverage": {
+  "chirps_last_date": "2026-07-31",
+  "chirps_last_complete_month": "2026-07",
+  "et_last_date": "2026-08-13",
+  "generated_utc": "2026-09-01T05:00:30Z"
+ },
+ "sources": {
+  "precipitation": "UCSB-CHG/CHIRPS/DAILY",
+  "evapotranspiration": "MODIS/061/MOD16A2",
+  "land_mask": "ESA/WorldCover/v200 (class 80 = permanent water)"
+ }
+}

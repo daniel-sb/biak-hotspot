@@ -26,10 +26,13 @@ h1 { font-size:1.5rem; margin:0 0 2px; }
 #panel { border:1px solid var(--line); background:#fff; padding:10px 12px; overflow-wrap:anywhere; }
 #panel h2 { font-size:1.12rem; margin:2px 0 6px; }
 #panel h3 { font-size:.96rem; margin:10px 0 4px; }
-#timeline-wrap { margin:12px 16px; border:1px solid var(--line); background:#fff; padding:8px 10px; }
-#timeline-wrap h2 { font-size:1.12rem; margin:2px 0 4px; }
-#timeline-wrap p { font-size:.82rem; color:var(--muted); margin:2px 0 6px; }
-#timeline { width:100%; height:auto; display:block; }
+#timeline-wrap, #drought-wrap { margin:12px 16px; border:1px solid var(--line);
+  background:#fff; padding:8px 10px; }
+#timeline-wrap h2, #drought-wrap h2 { font-size:1.12rem; margin:2px 0 4px; }
+#timeline-wrap p, #drought-wrap p { font-size:.82rem; color:var(--muted); margin:2px 0 6px; }
+#timeline, #drought { width:100%; height:auto; display:block; }
+#drought-wrap .lag { background:#eef2f6; border:1px solid #c9d4de; padding:6px 9px;
+  color:var(--ink); }
 #brief { background:#fff; }
 #brief table { border-collapse:collapse; font-size:.8rem; margin:4px 0; width:100%; }
 #brief th, #brief td { border:1px solid var(--line); padding:2px 5px; text-align:left; }
@@ -40,6 +43,8 @@ h1 { font-size:1.5rem; margin:0 0 2px; }
    a tinted panel inside a full 1px border. .warn alone used a left bar. */
 .warn { background:#fdeeee; border:1px solid #d9a2a2; padding:5px 9px; }
 .muted { color:var(--muted); font-size:.8rem; }
+/* used by the timeline and drought blocks when their data file does not load */
+.error { color:#7a1010; font-size:.85rem; margin:4px 0; }
 footer { padding:12px 16px 20px; font-size:.78rem; color:var(--muted); line-height:1.5; }
 #imagery { margin:6px 0 0; padding:6px 9px; border:1px solid var(--line); background:#fff;
   font-size:.82rem; line-height:1.5; }
@@ -118,6 +123,27 @@ observation, never a reassurance.</p>
   rule.</p>
   <div id="timeline-error"></div>
   <svg id="timeline" viewBox="0 0 1000 200" role="img" aria-label="Daily hotspot counts, linear scale"></svg>
+</div>
+
+<div id="drought-wrap">
+  <h2>Drought context — monthly water balance <span class="muted" id="drought-coverage"></span></h2>
+  <p>Rainfall alone does not describe drying. The upper panel is precipitation minus
+  evapotranspiration: how much water the land actually gained or lost each month. The lower
+  panel puts the rainfall against the 1981&ndash;2025 average for the same calendar month, so
+  the reader can judge whether it was unusual rather than take the word for it.</p>
+  <div id="drought-error"></div>
+  <svg id="drought" viewBox="0 0 1000 274" role="img"
+       aria-label="Monthly water balance and precipitation against climatology"></svg>
+  <p class="lag" id="drought-lag"></p>
+  <p>Dry fuel makes burning easier. It does not start a fire, and this panel is not an
+  explanation of why Biak burned &mdash; the hotspots above it were lit by someone. Wet months
+  in this record contain hotspots too.</p>
+  <p>Vegetation indices are deliberately absent. MODIS NDVI and NDMI for this area track
+  composite quality rather than moisture: a dry month is also a less cloudy month, so its
+  composite is built from more and better observations, and residual cloud depresses the wet
+  months it would be compared against. Across 2001&ndash;2026 the share of good pixels
+  correlates with July NDVI at r&nbsp;=&nbsp;+0.883. Those indices cannot carry a drought
+  claim here.</p>
 </div>
 
 <footer>
@@ -549,7 +575,128 @@ map.on("load", async () => {
     $("timeline-error").innerHTML = "<p class='error'>daily_counts.json failed " +
       "to load — the detection timeline is unavailable. " + esc(e.message) + "</p>";
   }
+
+  /* drought — monthly water balance and precipitation vs climatology */
+  try {
+    drawDrought(await loadJSON("data/drought.json"));
+  } catch (e) {
+    $("drought-error").innerHTML = "<p class='error'>drought.json failed to load — " +
+      "the drought context is unavailable, which is not a statement about the " +
+      "weather. " + esc(e.message) + "</p>";
+  }
 })();
+
+function drawDrought(doc) {
+  const rows = doc.monthly;
+  const W = 1000, padL = 44, padR = 12;
+  const topY = 18, topH = 92, botY = 154, botH = 92;
+  const iw = W - padL - padR, bw = iw / rows.length;
+  const x = (i) => padL + i * bw;
+  const parts = [];
+  const text = (xx, yy, s, extra) => "<text x='" + xx.toFixed(1) + "' y='" +
+    yy.toFixed(1) + "' font-size='10' " + (extra || "") + ">" + s + "</text>";
+
+  /* upper panel: water balance, diverging about zero */
+  const bal = rows.map((r) => r.p_minus_et_mm).filter((v) => v !== null);
+  const vmax = Math.max(0, ...bal), vmin = Math.min(0, ...bal);
+  const yT = (v) => topY + topH * (vmax - v) / (vmax - vmin || 1);
+  parts.push(text(padL, topY - 5, "Water balance P &#8722; ET (mm per month)",
+                  "fill='#333'"));
+  rows.forEach((r, i) => {
+    if (r.p_minus_et_mm === null) return;
+    const v = r.p_minus_et_mm, y0 = yT(0), y1 = yT(v);
+    parts.push("<rect x='" + x(i).toFixed(2) + "' y='" + Math.min(y0, y1).toFixed(2) +
+      "' width='" + Math.max(bw - 1, 0.6).toFixed(2) + "' height='" +
+      Math.max(Math.abs(y1 - y0), 0.6).toFixed(2) + "' fill='" +
+      (v < 0 ? "#b03a2e" : "#4b7f9c") + "'/>");
+  });
+  parts.push("<line x1='" + padL + "' y1='" + yT(0).toFixed(1) + "' x2='" + (W - padR) +
+             "' y2='" + yT(0).toFixed(1) + "' stroke='#6a6a6a'/>");
+  parts.push(text(padL - 4, yT(vmax) + 3, Math.round(vmax),
+                  "text-anchor='end' fill='#777'"));
+  parts.push(text(padL - 4, yT(0) + 3, "0", "text-anchor='end' fill='#777'"));
+  // the deficit is small in millimetres next to a 400 mm surplus, so its tick
+  // can land on top of the zero tick. Drop it rather than nudge it: the
+  // callout below states the number, and a shifted tick would misplace it.
+  if (vmin < 0 && yT(vmin) - yT(0) > 11)
+    parts.push(text(padL - 4, yT(vmin) + 3, Math.round(vmin),
+                    "text-anchor='end' fill='#777'"));
+
+  /* lower panel: precipitation against the calendar-month climatology */
+  const clim = (r) => doc.climatology[r.month.slice(5, 7)];
+  const pmax = Math.max(...rows.map((r) => Math.max(
+    r.precip_mm === null ? 0 : r.precip_mm, clim(r).mean_mm + clim(r).sd_mm)));
+  const yB = (v) => botY + botH * (1 - v / (pmax || 1));
+  const cx = (i) => x(i) + bw / 2;
+  parts.push(text(padL, botY - 5,
+    "Precipitation (mm), band = 1981&#8211;2025 mean &#177;1 s.d.", "fill='#333'"));
+  const upper = rows.map((r, i) => cx(i).toFixed(1) + "," +
+    yB(clim(r).mean_mm + clim(r).sd_mm).toFixed(1));
+  const lower = rows.map((r, i) => cx(i).toFixed(1) + "," +
+    yB(Math.max(0, clim(r).mean_mm - clim(r).sd_mm)).toFixed(1)).reverse();
+  parts.push("<polygon points='" + upper.concat(lower).join(" ") +
+             "' fill='#d9e2e8'/>");
+  parts.push("<polyline fill='none' stroke='#8fa6b2' points='" +
+    rows.map((r, i) => cx(i).toFixed(1) + "," + yB(clim(r).mean_mm).toFixed(1))
+        .join(" ") + "'/>");
+  parts.push("<polyline fill='none' stroke='#1f4e63' stroke-width='1.4' points='" +
+    rows.filter((r) => r.precip_mm !== null)
+        .map((r) => cx(rows.indexOf(r)).toFixed(1) + "," + yB(r.precip_mm).toFixed(1))
+        .join(" ") + "'/>");
+  [pmax, pmax / 2].forEach((v) => parts.push(
+    text(padL - 4, yB(v) + 3, Math.round(v), "text-anchor='end' fill='#777'")));
+  parts.push("<line x1='" + padL + "' y1='" + yB(0).toFixed(1) + "' x2='" + (W - padR) +
+             "' y2='" + yB(0).toFixed(1) + "' stroke='#9a9a9a'/>");
+
+  /* year ticks, and the driest month called out where it sits */
+  let lastYear = "";
+  rows.forEach((r, i) => {
+    const yr = r.month.slice(0, 4);
+    if (yr !== lastYear) {
+      parts.push(text(x(i) + 1, 268, yr, "fill='#777'"));
+      parts.push("<line x1='" + x(i).toFixed(1) + "' y1='" + topY + "' x2='" +
+                 x(i).toFixed(1) + "' y2='246' stroke='#ececec'/>");
+      lastYear = yr;
+    }
+  });
+  /* A 24 mm deficit is a sliver beside a 400 mm surplus, and on a linear
+     axis it looks like nothing. The axis stays linear - the callout carries
+     what the pixels cannot, which is that it is the only month here that
+     went negative at all. */
+  const cur = doc.current;
+  const negatives = rows.filter((r) => r.p_minus_et_mm !== null &&
+                                       r.p_minus_et_mm < 0).length;
+  const ci = rows.findIndex((r) => r.month === cur.month);
+  if (ci >= 0) {
+    const label = cur.month + ": " + cur.p_minus_et_mm + " mm" +
+      (negatives === 1 ? ", the only month here that lost water" : "") +
+      " — " + cur.precip_mm + " mm rain, z " + cur.z + ", " +
+      cur.rank_driest + " driest of " + cur.rank_of;
+    parts.push(text(Math.max(padL, Math.min(cx(ci) + 4, W - 6 * label.length)),
+      yT(Math.min(cur.p_minus_et_mm, 0)) + 13, label, "fill='#7a1010'"));
+  }
+
+  /* one hover target per month, carrying the numbers behind the drawing */
+  rows.forEach((r, i) => {
+    const c = clim(r);
+    parts.push("<rect x='" + x(i).toFixed(2) + "' y='" + topY + "' width='" +
+      bw.toFixed(2) + "' height='" + (246 - topY) + "' fill='transparent'><title>" +
+      r.month + " — precipitation " + r.precip_mm + " mm (mean " + c.mean_mm +
+      " mm over " + c.years + " years), evapotranspiration " + r.et_mm +
+      " mm, balance " + r.p_minus_et_mm + " mm</title></rect>");
+  });
+  $("drought").innerHTML = parts.join("");
+
+  const cov = doc.coverage;
+  $("drought-coverage").textContent =
+    rows[0].month + " to " + cov.chirps_last_complete_month;
+  $("drought-lag").textContent =
+    "Coverage lag. CHIRPS precipitation runs to " + cov.chirps_last_date +
+    ", so the last complete month here is " + cov.chirps_last_complete_month +
+    "; evapotranspiration (MOD16A2) runs to " + cov.et_last_date + ". Both end " +
+    "before the day the brief above covers. This panel describes the season the " +
+    "hotspots occurred in, not the week they occurred in.";
+}
 
 /* hand-rolled markdown subset: headings, bold, lists, tables, blockquotes.
    No library (Task 07). Underscore is deliberately NOT an emphasis marker:
