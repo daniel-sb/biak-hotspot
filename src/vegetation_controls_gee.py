@@ -195,8 +195,7 @@ def ols(rows, predictors, target):
 # The July residual analysis
 # ---------------------------------------------------------------------------
 MODELS = [
-    ("base: ndmi on its own good-pixel share (reproduces task 11)",
-     ["ndmi_good_share"]),
+    ("base: ndmi on its own good-pixel share", ["ndmi_good_share"]),
     ("+ aerosol_high_share", ["ndmi_good_share", "aerosol_high_share"]),
     ("+ aerosol_climatology_share",
      ["ndmi_good_share", "aerosol_climatology_share"]),
@@ -222,7 +221,7 @@ def july_rows(veg_monthly, ctrl_monthly):
     return rows
 
 
-def report(rows, focus="2026-07"):
+def report(rows, focus="2026-07", base_note="reproduces task 11"):
     print("\nNDMI July residuals under observation-quality controls")
     print("(each control added one at a time, then all four together; "
           "residual sd = sqrt(SSR/n), the convention behind the task 11 "
@@ -248,7 +247,8 @@ def report(rows, focus="2026-07"):
         rank = 1 + sum(1 for v in res if v < r26)
         mean_h = len(fit["names"]) / n
         h = fit["leverage"][jul]
-        print(f"\nmodel: {label}")
+        print(f"\nmodel: {label}"
+              + (f" ({base_note})" if label.startswith("base") else ""))
         print("  ndmi ~ " + " + ".join(fit["names"][1:]))
         print("  coefficients: " + "  ".join(
             f"{nm} {b:+.4f}" for nm, b in zip(fit["names"], fit["coef"])))
