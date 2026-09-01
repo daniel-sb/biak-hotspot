@@ -49,7 +49,8 @@ def main() -> int:
                 return 0
             page = browser.new_page(viewport={"width": 360, "height": 800})
             console_errors = []
-            page.on("console", lambda m: console_errors.append(m.text)
+            page.on("console", lambda m: console_errors.append(
+                m.text + " @ " + (m.location or {}).get("url", ""))
                     if m.type == "error" else None)
             page.on("pageerror", lambda e: failures.append(
                 f"pageerror: {e}"))
@@ -98,6 +99,31 @@ def main() -> int:
                 "document.querySelectorAll('#timeline rect').length")
             check("timeline drawn (detection days present)", tl >= 150,
                   f"{tl} bars")
+
+            # vegetation panel (Task 11): both index anomaly and
+            # ndvi_good_share / ndmi_good_share series drawn, plus
+            # qa_correlation text with a number.
+            # vegetation.json is written by an interactive Earth Engine run,
+            # so it is legitimately absent on a fresh clone. Absent, the panel
+            # must say so; it must never draw invented numbers under a MODIS
+            # label.
+            if (DOCS / "data" / "vegetation.json").exists():
+                veg_svg = page.evaluate(
+                    "!!document.querySelector('#veg polyline')")
+                check("vegetation panel draws NDVI/NDMI anomalies and "
+                      "ndvi_good_share + ndmi_good_share series", veg_svg)
+                veg_corr = page.inner_text("#veg-corr")
+                import re as _re
+                has_num = bool(_re.search(r"r\s*=\s*[-+]?[\d.]+", veg_corr))
+                check("vegetation qa_correlation text has a number", has_num,
+                      veg_corr[:200])
+            else:
+                check("vegetation panel states its data is unavailable",
+                      "unavailable" in page.inner_text("#veg-error"),
+                      page.inner_text("#veg-error")[:200])
+                check("vegetation panel draws nothing without data",
+                      not page.evaluate(
+                          "!!document.querySelector('#veg polyline')"))
 
             # --- task 10: drought panel ---
             dr = page.evaluate("document.querySelectorAll("
@@ -149,8 +175,12 @@ def main() -> int:
             check("false colour is never called a fire detection",
                   "not a fire detection" in swir and "fires" not in swir.lower())
 
+            # A 404 on vegetation.json is the expected state before anyone
+            # has run src/vegetation_gee.py, and the panel says so on the page.
+            # Every other console error is still a failure.
+            expected_absent = ("favicon", "data/vegetation.json")
             console_real = [c for c in console_errors
-                            if "favicon" not in c.lower()]
+                            if not any(x in c.lower() for x in expected_absent)]
             check("no console errors", not console_real,
                   "; ".join(console_real[:3]))
 

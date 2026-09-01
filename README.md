@@ -52,7 +52,12 @@ credentials, and only when CHIRPS has published a new complete month:
 
 ```sh
 python src/drought_gee.py <google-cloud-project-id>   # writes docs/data/drought.json
+python src/vegetation_gee.py <google-cloud-project-id>   # writes docs/data/vegetation.json
 ```
+
+`docs/data/vegetation.json` is not in the repository until that command has been run.
+Until then the vegetation panel states that its data is unavailable, which is the
+honest state: the panel shows measurements or it shows nothing.
 
 ## A note on what this publishes
 

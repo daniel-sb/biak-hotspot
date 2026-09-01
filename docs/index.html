@@ -26,11 +26,11 @@ h1 { font-size:1.5rem; margin:0 0 2px; }
 #panel { border:1px solid var(--line); background:#fff; padding:10px 12px; overflow-wrap:anywhere; }
 #panel h2 { font-size:1.12rem; margin:2px 0 6px; }
 #panel h3 { font-size:.96rem; margin:10px 0 4px; }
-#timeline-wrap, #drought-wrap { margin:12px 16px; border:1px solid var(--line);
+#timeline-wrap, #drought-wrap, #veg-wrap { margin:12px 16px; border:1px solid var(--line);
   background:#fff; padding:8px 10px; }
-#timeline-wrap h2, #drought-wrap h2 { font-size:1.12rem; margin:2px 0 4px; }
-#timeline-wrap p, #drought-wrap p { font-size:.82rem; color:var(--muted); margin:2px 0 6px; }
-#timeline, #drought { width:100%; height:auto; display:block; }
+#timeline-wrap h2, #drought-wrap h2, #veg-wrap h2 { font-size:1.12rem; margin:2px 0 4px; }
+#timeline-wrap p, #drought-wrap p, #veg-wrap p { font-size:.82rem; color:var(--muted); margin:2px 0 6px; }
+#timeline, #drought, #veg { width:100%; height:auto; display:block; }
 #drought-wrap .lag { background:#eef2f6; border:1px solid #c9d4de; padding:6px 9px;
   color:var(--ink); }
 #brief { background:#fff; }
@@ -138,12 +138,23 @@ observation, never a reassurance.</p>
   <p>Dry fuel makes burning easier. It does not start a fire, and this panel is not an
   explanation of why Biak burned &mdash; the hotspots above it were lit by someone. Wet months
   in this record contain hotspots too.</p>
-  <p>Vegetation indices are deliberately absent. MODIS NDVI and NDMI for this area track
-  composite quality rather than moisture: a dry month is also a less cloudy month, so its
-  composite is built from more and better observations, and residual cloud depresses the wet
-  months it would be compared against. Across 2001&ndash;2026 the share of good pixels
-  correlates with July NDVI at r&nbsp;=&nbsp;+0.883. Those indices cannot carry a drought
-  claim here.</p>
+  <p>Vegetation indices are shown below with their composite-quality confound &mdash;
+  see that panel for the correlation between observation quality and the index itself.
+  Those indices cannot carry a drought claim here.</p>
+</div>
+
+<div id="veg-wrap">
+  <h2>Vegetation indices and their composite quality <span class="muted" id="veg-coverage"></span></h2>
+  <p>NDVI (MOD13A1) and NDMI (MOD09A1) departure from the 2001&ndash;2025 calendar-month mean,
+  plotted with the share of AOI land pixels passing each product&rsquo;s cloud test in the same
+  composites. The index and its quality series share an x&nbsp;axis because the index tracks
+  observation quality in the humid tropics: a dry month is also a less cloudy month, so its
+  composite is built from more and better observations.
+  <strong>These indices do not support a drought conclusion for this AOI.</strong></p>
+  <div id="veg-error"></div>
+  <svg id="veg" viewBox="0 0 1000 420" role="img"
+       aria-label="NDVI and NDMI anomalies with good-pixel share"></svg>
+  <p id="veg-corr" class="muted"></p>
 </div>
 
 <footer>
@@ -584,6 +595,15 @@ map.on("load", async () => {
       "the drought context is unavailable, which is not a statement about the " +
       "weather. " + esc(e.message) + "</p>";
   }
+
+  /* vegetation — NDVI/NDMI anomalies with their composite-quality confound */
+  try {
+    drawVegetation(await loadJSON("data/vegetation.json"));
+  } catch (e) {
+    $("veg-error").innerHTML = "<p class='error'>vegetation.json failed to " +
+      "load — the vegetation indices and their good-pixel shares are " +
+      "unavailable. " + esc(e.message) + "</p>";
+  }
 })();
 
 function drawDrought(doc) {
@@ -696,6 +716,152 @@ function drawDrought(doc) {
     "; evapotranspiration (MOD16A2) runs to " + cov.et_last_date + ". Both end " +
     "before the day the brief above covers. This panel describes the season the " +
     "hotspots occurred in, not the week they occurred in.";
+}
+
+/* vegetation: NDVI/NDMI anomalies with their good-pixel share on sub-panels.
+   The confound is the point: the index tracks observation quality, so both
+   series share an x axis (Task 11, PLAN.md 14). */
+function drawVegetation(doc) {
+  const rows = doc.monthly;
+  const W = 1000, padL = 44, padR = 12;
+  const topY = 16, topH = 110, gap = 16;
+  const botY = topY + topH + gap, botH = 110;
+  const H = botY + botH + 34;
+  const iw = W - padL - padR, n = rows.length, bw = iw / n;
+  const x = (i) => padL + i * bw;
+  const parts = [];
+  const text = (xx, yy, s, extra) => "<text x='" + xx.toFixed(1) + "' y='" +
+    yy.toFixed(1) + "' font-size='10' " + (extra || "") + ">" + s + "</text>";
+
+  /* filter to months with data (some months have NDVI but not NDMI, or
+     neither, if a composite is missing) */
+  const nd = rows.filter((r) => r.ndvi_anomaly !== null &&
+    r.ndvi_good_share !== null);
+  const nm = rows.filter((r) => r.ndmi_anomaly !== null &&
+    r.ndmi_good_share !== null);
+  const ndviI = rows.map((r) => r.ndvi_anomaly).indexOf(
+    nd.length ? nd[0].ndvi_anomaly : null);
+
+  /* helper: y for the anomaly panel (centred on zero) */
+  const anomMax = Math.max(
+    0.02, ...rows.map((r) => Math.abs(r.ndvi_anomaly || 0)),
+    ...rows.map((r) => Math.abs(r.ndmi_anomaly || 0)));
+  const ay = (v) => topY + topH / 2 - (v / anomMax) * (topH / 2);
+
+  /* helper: y for the share panel (0 at bottom, 1 at top) */
+  const sy = (v) => botY + botH - v * botH;
+
+  /* zero baselines */
+  parts.push("<line x1='" + padL + "' y1='" + ay(0) + "' x2='" + (W - 12) +
+    "' y2='" + ay(0) + "' stroke='#9a9a9a'/>");
+  parts.push("<line x1='" + padL + "' y1='" + sy(0) + "' x2='" + (W - 12) +
+    "' y2='" + sy(0) + "' stroke='#9a9a9a'/>");
+  parts.push("<line x1='" + padL + "' y1='" + sy(1) + "' x2='" + (W - 12) +
+    "' y2='" + sy(1) + "' stroke='#e4e4e4' stroke-dasharray='3,3'/>");
+
+  /* NDVI anomaly line */
+  if (nd.length > 1) {
+    const pts = nd.map((r) => {
+      const i = rows.indexOf(r);
+      return x(i).toFixed(1) + "," + ay(r.ndvi_anomaly).toFixed(1);
+    }).join(" ");
+    parts.push("<polyline points='" + pts + "' fill='none' " +
+      "stroke='#2e7d32' stroke-width='1.5'/>");
+  }
+
+  /* NDMI anomaly line */
+  if (nm.length > 1) {
+    const pts = nm.map((r) => {
+      const i = rows.indexOf(r);
+      return x(i).toFixed(1) + "," + ay(r.ndmi_anomaly).toFixed(1);
+    }).join(" ");
+    parts.push("<polyline points='" + pts + "' fill='none' " +
+      "stroke='#1565c0' stroke-width='1.5' stroke-dasharray='4,2'/>");
+  }
+
+  /* NDVI good-pixel share area + line */
+  if (nd.length > 1) {
+    const pts = nd.map((r) => {
+      const i = rows.indexOf(r);
+      return x(i).toFixed(1) + "," + sy(r.ndvi_good_share).toFixed(1);
+    }).join(" ");
+    parts.push("<polyline points='" + pts + "' fill='none' " +
+      "stroke='#66bb6a' stroke-width='1.2'/>");
+  }
+
+  /* NDMI good-pixel share line */
+  if (nm.length > 1) {
+    const pts = nm.map((r) => {
+      const i = rows.indexOf(r);
+      return x(i).toFixed(1) + "," + sy(r.ndmi_good_share).toFixed(1);
+    }).join(" ");
+    parts.push("<polyline points='" + pts + "' fill='none' " +
+      "stroke='#64b5f6' stroke-width='1.2' stroke-dasharray='4,2'/>");
+  }
+
+  /* sub-panel labels */
+  parts.push(text(padL + 4, topY + 10, "anomaly (departure from 2001-2025 mean)",
+    "fill='#2e7d32'"));
+  parts.push(text(padL + 4, botY + 12, "good-pixel share",
+    "fill='#66bb6a'"));
+  parts.push(text(W - 12, topY + 10, "NDVI (solid green) \u00b7 NDMI (dashed blue)",
+    "fill='#777' text-anchor='end'"));
+
+  /* year ticks */
+  let lastYear = "";
+  rows.forEach((r, i) => {
+    const yr = r.month.slice(0, 4);
+    if (yr !== lastYear) {
+      parts.push(text(x(i) + 2, H - 8, yr, "fill='#777' font-size='10'"));
+      lastYear = yr;
+    }
+  });
+
+  /* hover titles */
+  rows.forEach((r, i) => {
+    if (r.ndvi !== null || r.ndmi !== null) {
+      const bits = [r.month];
+      if (r.ndvi !== null) bits.push("NDVI " + r.ndvi.toFixed(4) +
+        " (share " + (r.ndvi_good_share * 100).toFixed(0) + "%)");
+      if (r.ndmi !== null) bits.push("NDMI " + r.ndmi.toFixed(4) +
+        " (share " + (r.ndmi_good_share * 100).toFixed(0) + "%)");
+      parts.push("<rect x='" + x(i).toFixed(2) + "' y='" + topY +
+        "' width='" + bw.toFixed(2) + "' height='" + (botY + botH - topY) +
+        "' fill='transparent'><title>" + bits.join(" | ") + "</title></rect>");
+    }
+  });
+
+  /* anomalies scale label */
+  parts.push(text(padL - 4, ay(0) + 3, "0", "fill='#777' font-size='10' " +
+    "text-anchor='end'"));
+  parts.push(text(padL - 4, ay(anomMax) + 3, "+" + anomMax.toFixed(2),
+    "fill='#777' font-size='10' text-anchor='end'"));
+  parts.push(text(padL - 4, ay(-anomMax) + 3, "\u2212" + anomMax.toFixed(2),
+    "fill='#777' font-size='10' text-anchor='end'"));
+  /* shares scale label */
+  parts.push(text(padL - 4, sy(0) + 3, "0%", "fill='#777' font-size='10' " +
+    "text-anchor='end'"));
+  parts.push(text(padL - 4, sy(1) + 3, "100%", "fill='#777' font-size='10' " +
+    "text-anchor='end'"));
+
+  const svg = document.getElementById("veg");
+  svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+  svg.innerHTML = parts.join("");
+
+  const cov = doc.coverage;
+  $("veg-coverage").textContent =
+    rows[0].month + " to " + (cov.mod13a1_last_date || "").slice(0, 7);
+
+  const corr = doc.qa_correlation;
+  $("veg-corr").textContent =
+    "Composite quality tracks the index: NDVI r = " + (corr.ndvi_all.r ?? "?") +
+    " (n = " + (corr.ndvi_all.n ?? "?") + "), NDMI r = " +
+    (corr.ndmi_all.r ?? "?") + " (n = " + (corr.ndmi_all.n ?? "?") +
+    "); July only: NDVI r = " + (corr.ndvi_july.r ?? "?") + " (n = " +
+    (corr.ndvi_july.n ?? "?") + "), NDMI r = " + (corr.ndmi_july.r ?? "?") +
+    " (n = " + (corr.ndmi_july.n ?? "?") + "). A dry month is also a less " +
+    "cloudy month: the composite is built from more and better observations, " +
+    "and the index tracks observation quality, not vegetation.";
 }
 
 /* hand-rolled markdown subset: headings, bold, lists, tables, blockquotes.

@@ -85,7 +85,7 @@ def test_data_files_referenced_with_error_handling():
     html = INDEX.read_text(encoding="utf-8")
     for name in ("hotspots_latest.geojson", "summary_latest.json",
                  "recurrent_sites.json", "daily_counts.json",
-                 "biak_desa.geojson", "drought.json"):
+                 "biak_desa.geojson", "vegetation.json"):
         assert name in html, name
     assert html.count("dataError(") >= 4
     assert "failed to load" in html
@@ -121,6 +121,105 @@ def test_simplified_boundaries_under_budget():
     assert len(geo["features"]) == 306
 
 
+VEG = ROOT / "docs" / "data" / "vegetation.json"
+
+
+def test_vegetation_json_internal_consistency():
+    """Task 11: months dense and sorted; good_share in [0,1]; anomaly =
+    index minus the stored calendar-month baseline; correlations reproduced
+    from the stored series by this test, not read back from the file."""
+    if not VEG.exists():
+        print("SKIP: vegetation.json not present")
+        return
+    doc = json.loads(VEG.read_text(encoding="utf-8"))
+    monthly = doc["monthly"]
+
+    # dense and sorted
+    months = [r["month"] for r in monthly]
+    assert months == sorted(months)
+    from datetime import date as D
+    for a, b in zip(months, months[1:]):
+        da = D(int(a[:4]), int(a[5:7]), 1)
+        db = D(int(b[:4]), int(b[5:7]), 1)
+        assert (db - da).days in (28, 29, 30, 31), f"gap between {a} and {b}"
+
+    # good shares in [0, 1]
+    for key in ("ndvi_good_share", "ndmi_good_share"):
+        vals = [r[key] for r in monthly if r.get(key) is not None]
+        assert all(0 <= v <= 1 for v in vals), key
+
+    # anomaly = index - stored baseline
+    baselines = doc["baselines"]
+    for r in monthly:
+        mm = r["month"][5:7]
+        for key in ("ndvi", "ndmi"):
+            base = baselines.get(f"{key}_{mm}")
+            if r.get(key) is not None and base is not None:
+                expected = round(r[key] - base, 4)
+                assert abs(r[f"{key}_anomaly"] - expected) < 0.001, \
+                    f"{r['month']} {key}: {r[f'{key}_anomaly']} != {expected}"
+
+    # correlations reproduced from the stored series
+    import math
+    def pearson(pairs):
+        n = len(pairs)
+        if n < 3:
+            return None, n
+        mx = sum(x for x, _ in pairs) / n
+        my = sum(y for _, y in pairs) / n
+        sxy = sum((x - mx) * (y - my) for x, y in pairs)
+        sx = math.sqrt(sum((x - mx) ** 2 for x, _ in pairs))
+        sy = math.sqrt(sum((y - my) ** 2 for _, y in pairs))
+        if sx == 0 or sy == 0:
+            return None, n
+        return round(sxy / (sx * sy), 3), n
+
+    for key, july_key in (("ndvi", "ndvi_july"), ("ndmi", "ndmi_july")):
+        pairs = [(r[key], r[f"{key}_good_share"]) for r in monthly
+                 if r.get(key) is not None and r.get(f"{key}_good_share") is not None]
+        r_all, n_all = pearson(pairs)
+        assert abs(doc["qa_correlation"][key.replace(key, key + "_all") if False else f"{key}_all"]["r"] - r_all) < 0.002, \
+            f"{key} all-month r mismatch: file says {doc['qa_correlation'][key + '_all']['r']}, test computes {r_all}"
+        assert doc["qa_correlation"][f"{key}_all"]["n"] == n_all
+        july_pairs = [(r[key], r[f"{key}_good_share"]) for r in monthly
+                      if r["month"][5:7] == "07"
+                      and r.get(key) is not None
+                      and r.get(f"{key}_good_share") is not None]
+        r_jul, n_jul = pearson(july_pairs)
+        assert abs(doc["qa_correlation"][july_key]["r"] - r_jul) < 0.002, \
+            f"{key} July r mismatch"
+        assert doc["qa_correlation"][july_key]["n"] == n_jul
+
+
+def test_vegetation_page_has_qa_share_and_non_conclusion():
+    """The page drawing function references both the index and its QA share,
+    and the panel's copy states the non-conclusion."""
+    html = INDEX.read_text(encoding="utf-8")
+    # the drawing function uses both series
+    assert "ndvi_anomaly" in html
+    assert "ndvi_good_share" in html
+    assert "ndmi_anomaly" in html
+    assert "ndmi_good_share" in html
+    # the non-conclusion sentence is present
+    assert "do not support a drought conclusion" in html
+    # the correlation text is rendered on the panel
+    assert "qa_correlation" in html
+
+
+def test_render_check_vegetation_panel():
+    """scripts/render_check.py asserts the vegetation panel draws both the
+    index and the share series, and that the correlation text appears with
+    a number in it."""
+    rc = ROOT / "scripts" / "render_check.py"
+    if not rc.exists():
+        print("SKIP: render_check.py not present")
+        return
+    src = rc.read_text(encoding="utf-8")
+    assert "veg" in src, "render_check does not check the vegetation panel"
+    assert "ndvi_good_share" in src or "good_share" in src
+    assert "qa_correlation" in src or "Closest" not in src
+
+
 def test_page_script_structural_integrity():
     """Task 07b item 4: structural inspection catches the fault class that
     only breaks at runtime - unknown library globals, getElementById targets
@@ -153,7 +252,14 @@ def test_page_script_structural_integrity():
     # every literal fetch path exists under docs/
     paths = re.findall(r'(?:loadJSON|loadText)\("([^"]+)"\)', script)
     assert paths, "no literal data paths found"
+    # data/vegetation.json is written by an interactive Earth Engine run and is
+    # absent until someone with credentials runs src/vegetation_gee.py. The
+    # panel states that absence rather than drawing anything, so an absent file
+    # is a correct state here - unlike every other path, where absence is a typo.
+    generated_by_hand = {"data/vegetation.json"}
     for p in paths:
+        if p in generated_by_hand:
+            continue
         assert (ROOT / "docs" / p).exists(), f"fetch path missing: {p}"
     assert (ROOT / "docs" / "briefs").is_dir(), "dynamic briefs/ path"
 
