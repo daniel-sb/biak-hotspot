@@ -7,6 +7,11 @@ Biak, Supiori and Numfor — Papua, Indonesia.
 acceptance criteria, verified API access notes, and the publication ethics this project is
 built under. Nothing here should be implemented without it.
 
+[FINDINGS.md](FINDINGS.md) is the other half: what the data turned out to say, with the
+numbers, the caveats and the commit behind each one. It is append-only — a figure that
+turns out to be wrong is corrected by a later entry naming what it supersedes, rather than
+edited in place.
+
 ## Status
 
 Phases 1 to 6 are built and tested. The daily job runs on GitHub Actions; the page is served

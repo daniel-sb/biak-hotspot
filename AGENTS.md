@@ -18,7 +18,11 @@ that needs doing, write one line about it in your final message; do not build it
    the analytical value.
 5. **Never delete rows during quality control.** Add a boolean flag column instead. Filters
    must be reversible and auditable.
-6. **Never edit `PLAN.md`.** It is the human-maintained spec.
+6. **Never edit `PLAN.md`.** It is the human-maintained spec: what we intend to build, and
+   the product rules that follow. An agent that may edit the spec can quietly move it to
+   match whatever it built, and the gap between what was asked and what was made disappears.
+   Results go in `FINDINGS.md` instead (always-6). If `PLAN.md` itself needs changing, say so
+   in your final message.
 7. **Never add a dependency for what the standard library does.** Ask in your final message
    if you think one is genuinely needed.
 
@@ -34,6 +38,10 @@ that needs doing, write one line about it in your final message; do not build it
 4. **Use the committed fixtures in `data/raw/` for tests.** They are real FIRMS responses from
    2026-08-13 to 2026-08-27. Tests must not hit the network.
 5. **Read values from `config.yaml`.** No hard-coded coordinates, dates, thresholds, or paths.
+6. **Record what the data turned out to say in `FINDINGS.md`.** Append a dated entry at the
+   end naming the script and the commit behind it; never rewrite or delete an earlier one. A
+   figure that turns out to be wrong is corrected by a new entry that says what it supersedes,
+   so the superseded number stays visible. This is the one document you may add to.
 
 ## Style
 

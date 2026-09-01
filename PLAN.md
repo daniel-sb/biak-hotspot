@@ -1028,69 +1028,25 @@ smoke problem is real and simply unobservable at this resolution.
 - The evening remains covered only by Himawari, subject to the 2 km floor established above.
 
 ---
+## 14. Product rules that came out of the 2026 dry season (2026-09-01)
 
-## 14. Drought context, and why NDVI is not a drought signal here (2026-09-01)
+The findings themselves — the water balance, the composite-quality confound, the NDMI
+residual, the Terra orbit drift — live in `FINDINGS.md`, which is append-only and which
+agents may write to. This section keeps only what is a decision about the product, which
+is what a spec is for.
 
-Recorded at the owner's instruction after task 10. Numbers computed by `src/drought_gee.py`
-and published in `docs/data/drought.json`; every figure is an AOI **land** mean, masked with
-`ESA/WorldCover/v200` class 80 (permanent water), because the AOI box is mostly ocean.
-
-### 14.1 The 2026 dry season was extreme, and the water balance says so more clearly than rainfall
-
-July 2026 received **115.6 mm** against a 1981-2025 July mean of **245.9 mm**
-(s.d. 85.4, 45 years): **z = -1.53**, the **4th driest July of 46**.
-
-Rainfall alone understates it. Against MOD16A2 evapotranspiration the monthly water balance
-P-ET collapses through the season:
-
-| 2026 | Apr | May | Jun | Jul |
-|---|---|---|---|---|
-| precipitation, mm | 335.0 | 251.5 | 187.2 | 115.6 |
-| evapotranspiration, mm | 101.9 | 116.0 | 113.4 | 139.6 |
-| **P - ET, mm** | **+233.1** | **+135.5** | **+73.8** | **-24.0** |
-
-July 2026 is the **only month with a negative water balance in the entire MOD16A2 record for
-this AOI** (2021-01 onward, 67 months). Evapotranspiration did not fall with the rain, it rose
-to its highest value in the record - fewer clouds means more incoming radiation means higher
-evaporative demand. The land lost water in a month it normally gains 100 mm or more.
-
-That is the honest statement of the season: the burning of August 2026 (section 11.1) happened
-in meteorologically extreme conditions. It is **not** a statement of cause. Dry fuel makes
-burning easier; it does not ignite. Section 8 applies in full.
-
-### 14.2 MODIS NDVI and NDMI cannot carry that claim, and the reason is instructive
-
-The obvious next move is a vegetation index, and it produces a result that looks like a finding
-and is not one: **NDVI and NDMI reached record highs in the driest July on record.**
-
-The cause is compositing. Across 2001-2026, the share of AOI land pixels passing MOD13
-`SummaryQA <= 1` in July correlates with July NDVI at **r = +0.883**; for NDMI computed from
-MOD09A1 the correlation is **+0.591**. A dry month is a less cloudy month, so its 16-day
-composite is assembled from more and better observations, while residual cloud and haze
-depress the wet-year values it is being compared against. The index is tracking observation
-quality, not vegetation.
-
-This is a general hazard in the humid tropics, not a quirk of this AOI, and it is the kind of
-result that gets published by accident. Section 2.4 already warns that absolute NDVI is
-uninformative here and only the day-of-year anomaly is worth computing. Section 14.2 adds the
-second condition: **an anomaly computed from composites of unequal quality is not an anomaly**.
-
-### 14.3 What this means for the product
-
-- No drought conclusion may rest on NDVI, NDMI, or any other MODIS composite index for this
-  AOI unless the composite-quality confound is measured and shown to be absent.
-- Where a vegetation index is published at all, the **per-composite good-pixel share must be
-  published beside it**, on the same axis, so a reader can see the confound rather than take
-  a sentence's word for it. An index without its QA series is not publishable here.
-- The drought panel on the dashboard therefore carries precipitation and water balance only,
-  and states in one sentence why the indices are absent.
-- The negative result is worth publishing in its own right (paper 1). It is cheap for another
-  Papua study to repeat this mistake, and the correlation coefficient is the whole argument.
-
-### 14.4 Coverage lag is part of the finding
-
-CHIRPS lags real time by roughly a month (latest 2026-07-31 as of 2026-09-01); MOD16A2 runs to
-2026-08-13. `MOD16A2GF` is gap-filled and held no 2026 data at all - do not substitute it.
-Any panel showing these series describes **the season the hotspots occurred in, not the week**,
-and must say so where the reader sees the numbers. The Earth Engine call is therefore run by
-hand when a new complete month appears, never from the daily cron.
+- **No drought conclusion may rest on NDVI, NDMI, or any other MODIS composite index for
+  this AOI** unless the composite-quality confound is measured and shown to be absent.
+  `FINDINGS.md` F2 is why.
+- **Where a vegetation index is published at all, the per-composite good-pixel share is
+  published beside it**, on the same axis, so a reader can see the confound rather than
+  take a sentence's word for it. An index without its QA series is not publishable here.
+- **A panel built on a lagging series states its coverage dates where the reader sees the
+  numbers.** CHIRPS and MOD16A2 describe the season the hotspots occurred in, not the
+  week. Their Earth Engine calls run by hand when a new complete month appears, never
+  from the daily cron.
+- **Drought is context, never cause.** Dry fuel makes burning easier; it does not ignite.
+  Section 8 applies in full to every panel that puts weather next to hotspots.
+- **The negative result is a deliverable.** The composite-quality confound is worth
+  publishing in its own right (paper 1). It is cheap for another Papua study to repeat
+  this mistake, and the correlation coefficient is the whole argument.
