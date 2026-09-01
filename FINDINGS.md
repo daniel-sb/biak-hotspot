@@ -172,3 +172,50 @@ rather than a collinearity argument is what settles it.
 
 Aqua carries the same instrument on an orbit whose drift runs the other way, which is what
 `tasks/13-aqua-cross-check.md` exploits.
+
+---
+
+## F5 - The July 2026 NDMI excess appears on Aqua too, so Terra's drift is out (2026-09-01)
+
+`src/vegetation_aqua_gee.py` -> `docs/data/vegetation_aqua.json`, commit `ac42529`. MYD09A1
+and MYD13A1 over the same land mask, at the same 500 m scale and monthly-mean reducer as
+F2/F3, with the bit layouts verified against the catalog as identical to the Terra products.
+289 months (2002-07 to 2026-07), 25 Julys. The reading of each outcome was pre-registered in
+the script and printed before the numbers, because deciding after seeing them is how a result
+gets talked into existence.
+
+Fitted entirely within Aqua (Aqua NDMI on Aqua's good-pixel share and Aqua's own aerosol and
+geometry controls), the leave-2026-out prediction of July 2026:
+
+| model                    | Aqua out of sample | Terra out of sample (F3) |
+|---|---|---|
+| base (quality only)      | **+2.41 sd** | +2.86 sd |
+| + view zenith            | **+2.57 sd** | +2.80 sd |
+| + solar zenith           | **+3.65 sd** | +1.76 sd |
+| all four controls        | **+4.35 sd** | +1.64 sd |
+
+Same direction, comparable or larger magnitude, on an independent instrument on an
+independent orbit. The pre-registered informative outcome fired: **a Terra-specific artifact
+cannot be the explanation. What remains is that the canopy did not dry, and the water balance
+(P-ET, F1) describes the surface rather than the tree crowns.**
+
+Three things the numbers added beyond the registration:
+
+- **F4's expectation that Aqua's drift runs the other way is not what this AOI shows.** Aqua's
+  July solar zenith rose 30.2 -> 56.5 deg over the same years Terra's rose 31.0 -> 54.6. So
+  the cross-check does not oppose the two drifts; it rules out any *Terra-specific* artifact,
+  and what rules out a geometry artifact generally is quantitative: the solar-zenith control
+  fails out of sample on both sensors and only absorbs 2026 in sample, through leverage (July
+  2026 h = 0.68 on Terra, 0.82 on Aqua, always at 100% of the predictor range).
+- On Aqua too the in-sample z under solar controls looks small (+0.84) and means nothing; the
+  out-of-sample row is the one to read, on either sensor.
+- The free second opinion: Aqua July NDVI correlates with its own good-pixel share at
+  **r = 0.953** (Terra: 0.965, F2) and July 2026's NDVI residual ranks **4 of 25** - the F2
+  dissolution of NDVI reproduces on the second sensor as well.
+
+**What this is not:** still not a causal claim about the hotspots, and still not a result in
+the strong sense - two sensors, one year, n = 24-25 fitted per fit. It is the agreement branch
+of a pre-registered test, which is the strong branch of that test, and it makes the canopy
+finding the leading remaining explanation rather than a loose end. If a disagreement had come
+back instead, it would have meant only that the sensors observe at different hours and could
+not be reconciled by this design.
