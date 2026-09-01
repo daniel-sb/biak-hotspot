@@ -1,0 +1,2822 @@
+{
+ "monthly": [
+  {
+   "month": "2001-01",
+   "ndvi": 0.6414,
+   "ndvi_good_share": 0.2737,
+   "ndmi": 0.3258,
+   "ndmi_good_share": 0.233,
+   "ndvi_anomaly": -0.0241,
+   "ndmi_anomaly": 0.0015
+  },
+  {
+   "month": "2001-02",
+   "ndvi": 0.6624,
+   "ndvi_good_share": 0.2972,
+   "ndmi": 0.2946,
+   "ndmi_good_share": 0.2817,
+   "ndvi_anomaly": 0.0023,
+   "ndmi_anomaly": -0.02
+  },
+  {
+   "month": "2001-03",
+   "ndvi": 0.6219,
+   "ndvi_good_share": 0.2457,
+   "ndmi": 0.3,
+   "ndmi_good_share": 0.2568,
+   "ndvi_anomaly": -0.0564,
+   "ndmi_anomaly": -0.0201
+  },
+  {
+   "month": "2001-04",
+   "ndvi": 0.7031,
+   "ndvi_good_share": 0.3694,
+   "ndmi": 0.3309,
+   "ndmi_good_share": 0.2822,
+   "ndvi_anomaly": -0.0059,
+   "ndmi_anomaly": -0.0012
+  },
+  {
+   "month": "2001-05",
+   "ndvi": 0.7722,
+   "ndvi_good_share": 0.6069,
+   "ndmi": 0.3336,
+   "ndmi_good_share": 0.6009,
+   "ndvi_anomaly": 0.0284,
+   "ndmi_anomaly": -0.0082
+  },
+  {
+   "month": "2001-06",
+   "ndvi": 0.6907,
+   "ndvi_good_share": 0.4893,
+   "ndmi": 0.3641,
+   "ndmi_good_share": 0.6887,
+   "ndvi_anomaly": -0.0259,
+   "ndmi_anomaly": 0.0224
+  },
+  {
+   "month": "2001-07",
+   "ndvi": 0.7405,
+   "ndvi_good_share": 0.5467,
+   "ndmi": 0.3411,
+   "ndmi_good_share": 0.6049,
+   "ndvi_anomaly": 0.0174,
+   "ndmi_anomaly": 0.0137
+  },
+  {
+   "month": "2001-08",
+   "ndvi": 0.7699,
+   "ndvi_good_share": 0.6428,
+   "ndmi": 0.3053,
+   "ndmi_good_share": 0.5236,
+   "ndvi_anomaly": 0.059,
+   "ndmi_anomaly": -0.0196
+  },
+  {
+   "month": "2001-09",
+   "ndvi": 0.7178,
+   "ndvi_good_share": 0.5036,
+   "ndmi": 0.3043,
+   "ndmi_good_share": 0.5126,
+   "ndvi_anomaly": -0.009,
+   "ndmi_anomaly": -0.0135
+  },
+  {
+   "month": "2001-10",
+   "ndvi": 0.7895,
+   "ndvi_good_share": 0.7312,
+   "ndmi": 0.3242,
+   "ndmi_good_share": 0.5581,
+   "ndvi_anomaly": 0.0831,
+   "ndmi_anomaly": 0.0065
+  },
+  {
+   "month": "2001-11",
+   "ndvi": 0.6909,
+   "ndvi_good_share": 0.3765,
+   "ndmi": 0.3196,
+   "ndmi_good_share": 0.3539,
+   "ndvi_anomaly": 0.0119,
+   "ndmi_anomaly": -0.0074
+  },
+  {
+   "month": "2001-12",
+   "ndvi": 0.5682,
+   "ndvi_good_share": 0.2147,
+   "ndmi": 0.3176,
+   "ndmi_good_share": 0.2641,
+   "ndvi_anomaly": -0.1098,
+   "ndmi_anomaly": -0.0076
+  },
+  {
+   "month": "2002-01",
+   "ndvi": 0.7016,
+   "ndvi_good_share": 0.412,
+   "ndmi": 0.3142,
+   "ndmi_good_share": 0.4361,
+   "ndvi_anomaly": 0.0361,
+   "ndmi_anomaly": -0.0101
+  },
+  {
+   "month": "2002-02",
+   "ndvi": 0.6706,
+   "ndvi_good_share": 0.3282,
+   "ndmi": 0.3073,
+   "ndmi_good_share": 0.3869,
+   "ndvi_anomaly": 0.0105,
+   "ndmi_anomaly": -0.0073
+  },
+  {
+   "month": "2002-03",
+   "ndvi": 0.6161,
+   "ndvi_good_share": 0.3402,
+   "ndmi": 0.3197,
+   "ndmi_good_share": 0.3193,
+   "ndvi_anomaly": -0.0622,
+   "ndmi_anomaly": -0.0004
+  },
+  {
+   "month": "2002-04",
+   "ndvi": 0.6999,
+   "ndvi_good_share": 0.381,
+   "ndmi": 0.3295,
+   "ndmi_good_share": 0.4238,
+   "ndvi_anomaly": -0.0091,
+   "ndmi_anomaly": -0.0026
+  },
+  {
+   "month": "2002-05",
+   "ndvi": 0.8324,
+   "ndvi_good_share": 0.8354,
+   "ndmi": 0.3587,
+   "ndmi_good_share": 0.6426,
+   "ndvi_anomaly": 0.0886,
+   "ndmi_anomaly": 0.0169
+  },
+  {
+   "month": "2002-06",
+   "ndvi": 0.6854,
+   "ndvi_good_share": 0.45,
+   "ndmi": 0.3216,
+   "ndmi_good_share": 0.4732,
+   "ndvi_anomaly": -0.0312,
+   "ndmi_anomaly": -0.0201
+  },
+  {
+   "month": "2002-07",
+   "ndvi": 0.7901,
+   "ndvi_good_share": 0.7067,
+   "ndmi": 0.3375,
+   "ndmi_good_share": 0.7036,
+   "ndvi_anomaly": 0.067,
+   "ndmi_anomaly": 0.0101
+  },
+  {
+   "month": "2002-08",
+   "ndvi": 0.7853,
+   "ndvi_good_share": 0.7416,
+   "ndmi": 0.3272,
+   "ndmi_good_share": 0.7247,
+   "ndvi_anomaly": 0.0744,
+   "ndmi_anomaly": 0.0023
+  },
+  {
+   "month": "2002-09",
+   "ndvi": 0.8015,
+   "ndvi_good_share": 0.8187,
+   "ndmi": 0.3056,
+   "ndmi_good_share": 0.726,
+   "ndvi_anomaly": 0.0747,
+   "ndmi_anomaly": -0.0122
+  },
+  {
+   "month": "2002-10",
+   "ndvi": 0.7679,
+   "ndvi_good_share": 0.6524,
+   "ndmi": 0.2984,
+   "ndmi_good_share": 0.6934,
+   "ndvi_anomaly": 0.0615,
+   "ndmi_anomaly": -0.0193
+  },
+  {
+   "month": "2002-11",
+   "ndvi": 0.6805,
+   "ndvi_good_share": 0.4178,
+   "ndmi": 0.3104,
+   "ndmi_good_share": 0.3967,
+   "ndvi_anomaly": 0.0015,
+   "ndmi_anomaly": -0.0166
+  },
+  {
+   "month": "2002-12",
+   "ndvi": 0.7345,
+   "ndvi_good_share": 0.5532,
+   "ndmi": 0.3267,
+   "ndmi_good_share": 0.5348,
+   "ndvi_anomaly": 0.0565,
+   "ndmi_anomaly": 0.0015
+  },
+  {
+   "month": "2003-01",
+   "ndvi": 0.653,
+   "ndvi_good_share": 0.3141,
+   "ndmi": 0.3184,
+   "ndmi_good_share": 0.37,
+   "ndvi_anomaly": -0.0125,
+   "ndmi_anomaly": -0.0059
+  },
+  {
+   "month": "2003-02",
+   "ndvi": 0.6264,
+   "ndvi_good_share": 0.2969,
+   "ndmi": 0.2945,
+   "ndmi_good_share": 0.2935,
+   "ndvi_anomaly": -0.0337,
+   "ndmi_anomaly": -0.0201
+  },
+  {
+   "month": "2003-03",
+   "ndvi": 0.7008,
+   "ndvi_good_share": 0.4056,
+   "ndmi": 0.3127,
+   "ndmi_good_share": 0.3926,
+   "ndvi_anomaly": 0.0225,
+   "ndmi_anomaly": -0.0074
+  },
+  {
+   "month": "2003-04",
+   "ndvi": 0.7148,
+   "ndvi_good_share": 0.4744,
+   "ndmi": 0.3331,
+   "ndmi_good_share": 0.3985,
+   "ndvi_anomaly": 0.0058,
+   "ndmi_anomaly": 0.001
+  },
+  {
+   "month": "2003-05",
+   "ndvi": 0.7891,
+   "ndvi_good_share": 0.6955,
+   "ndmi": 0.335,
+   "ndmi_good_share": 0.5911,
+   "ndvi_anomaly": 0.0453,
+   "ndmi_anomaly": -0.0068
+  },
+  {
+   "month": "2003-06",
+   "ndvi": 0.7678,
+   "ndvi_good_share": 0.6097,
+   "ndmi": 0.336,
+   "ndmi_good_share": 0.6543,
+   "ndvi_anomaly": 0.0512,
+   "ndmi_anomaly": -0.0057
+  },
+  {
+   "month": "2003-07",
+   "ndvi": 0.7343,
+   "ndvi_good_share": 0.5579,
+   "ndmi": 0.3074,
+   "ndmi_good_share": 0.4123,
+   "ndvi_anomaly": 0.0112,
+   "ndmi_anomaly": -0.02
+  },
+  {
+   "month": "2003-08",
+   "ndvi": 0.7045,
+   "ndvi_good_share": 0.4252,
+   "ndmi": 0.3277,
+   "ndmi_good_share": 0.5083,
+   "ndvi_anomaly": -0.0064,
+   "ndmi_anomaly": 0.0028
+  },
+  {
+   "month": "2003-09",
+   "ndvi": 0.6572,
+   "ndvi_good_share": 0.328,
+   "ndmi": 0.3146,
+   "ndmi_good_share": 0.3091,
+   "ndvi_anomaly": -0.0696,
+   "ndmi_anomaly": -0.0032
+  },
+  {
+   "month": "2003-10",
+   "ndvi": 0.7612,
+   "ndvi_good_share": 0.6264,
+   "ndmi": 0.3197,
+   "ndmi_good_share": 0.5021,
+   "ndvi_anomaly": 0.0548,
+   "ndmi_anomaly": 0.002
+  },
+  {
+   "month": "2003-11",
+   "ndvi": 0.7024,
+   "ndvi_good_share": 0.4145,
+   "ndmi": 0.3221,
+   "ndmi_good_share": 0.415,
+   "ndvi_anomaly": 0.0234,
+   "ndmi_anomaly": -0.0049
+  },
+  {
+   "month": "2003-12",
+   "ndvi": 0.6117,
+   "ndvi_good_share": 0.2571,
+   "ndmi": 0.3215,
+   "ndmi_good_share": 0.2493,
+   "ndvi_anomaly": -0.0663,
+   "ndmi_anomaly": -0.0037
+  },
+  {
+   "month": "2004-01",
+   "ndvi": 0.7223,
+   "ndvi_good_share": 0.3898,
+   "ndmi": 0.3396,
+   "ndmi_good_share": 0.4267,
+   "ndvi_anomaly": 0.0568,
+   "ndmi_anomaly": 0.0153
+  },
+  {
+   "month": "2004-02",
+   "ndvi": 0.6288,
+   "ndvi_good_share": 0.2379,
+   "ndmi": 0.3154,
+   "ndmi_good_share": 0.2829,
+   "ndvi_anomaly": -0.0313,
+   "ndmi_anomaly": 0.0008
+  },
+  {
+   "month": "2004-03",
+   "ndvi": 0.7323,
+   "ndvi_good_share": 0.409,
+   "ndmi": 0.3012,
+   "ndmi_good_share": 0.3937,
+   "ndvi_anomaly": 0.054,
+   "ndmi_anomaly": -0.0189
+  },
+  {
+   "month": "2004-04",
+   "ndvi": 0.7518,
+   "ndvi_good_share": 0.5256,
+   "ndmi": 0.3286,
+   "ndmi_good_share": 0.5418,
+   "ndvi_anomaly": 0.0428,
+   "ndmi_anomaly": -0.0035
+  },
+  {
+   "month": "2004-05",
+   "ndvi": 0.7988,
+   "ndvi_good_share": 0.6976,
+   "ndmi": 0.3351,
+   "ndmi_good_share": 0.5471,
+   "ndvi_anomaly": 0.055,
+   "ndmi_anomaly": -0.0067
+  },
+  {
+   "month": "2004-06",
+   "ndvi": 0.7898,
+   "ndvi_good_share": 0.7479,
+   "ndmi": 0.3557,
+   "ndmi_good_share": 0.7098,
+   "ndvi_anomaly": 0.0732,
+   "ndmi_anomaly": 0.014
+  },
+  {
+   "month": "2004-07",
+   "ndvi": 0.6916,
+   "ndvi_good_share": 0.4521,
+   "ndmi": 0.3272,
+   "ndmi_good_share": 0.3985,
+   "ndvi_anomaly": -0.0315,
+   "ndmi_anomaly": -0.0002
+  },
+  {
+   "month": "2004-08",
+   "ndvi": 0.7084,
+   "ndvi_good_share": 0.57,
+   "ndmi": 0.3159,
+   "ndmi_good_share": 0.6527,
+   "ndvi_anomaly": -0.0025,
+   "ndmi_anomaly": -0.009
+  },
+  {
+   "month": "2004-09",
+   "ndvi": 0.6975,
+   "ndvi_good_share": 0.4525,
+   "ndmi": 0.3057,
+   "ndmi_good_share": 0.3831,
+   "ndvi_anomaly": -0.0293,
+   "ndmi_anomaly": -0.0121
+  },
+  {
+   "month": "2004-10",
+   "ndvi": 0.7051,
+   "ndvi_good_share": 0.5145,
+   "ndmi": 0.318,
+   "ndmi_good_share": 0.4874,
+   "ndvi_anomaly": -0.0013,
+   "ndmi_anomaly": 0.0003
+  },
+  {
+   "month": "2004-11",
+   "ndvi": 0.587,
+   "ndvi_good_share": 0.1069,
+   "ndmi": 0.3085,
+   "ndmi_good_share": 0.2173,
+   "ndvi_anomaly": -0.092,
+   "ndmi_anomaly": -0.0185
+  },
+  {
+   "month": "2004-12",
+   "ndvi": 0.6632,
+   "ndvi_good_share": 0.3644,
+   "ndmi": 0.3164,
+   "ndmi_good_share": 0.3289,
+   "ndvi_anomaly": -0.0148,
+   "ndmi_anomaly": -0.0088
+  },
+  {
+   "month": "2005-01",
+   "ndvi": 0.5892,
+   "ndvi_good_share": 0.1918,
+   "ndmi": 0.281,
+   "ndmi_good_share": 0.2179,
+   "ndvi_anomaly": -0.0763,
+   "ndmi_anomaly": -0.0433
+  },
+  {
+   "month": "2005-02",
+   "ndvi": 0.6729,
+   "ndvi_good_share": 0.3636,
+   "ndmi": 0.3201,
+   "ndmi_good_share": 0.4198,
+   "ndvi_anomaly": 0.0128,
+   "ndmi_anomaly": 0.0055
+  },
+  {
+   "month": "2005-03",
+   "ndvi": 0.6613,
+   "ndvi_good_share": 0.3652,
+   "ndmi": 0.3084,
+   "ndmi_good_share": 0.3749,
+   "ndvi_anomaly": -0.017,
+   "ndmi_anomaly": -0.0117
+  },
+  {
+   "month": "2005-04",
+   "ndvi": 0.7223,
+   "ndvi_good_share": 0.5544,
+   "ndmi": 0.3266,
+   "ndmi_good_share": 0.5282,
+   "ndvi_anomaly": 0.0133,
+   "ndmi_anomaly": -0.0055
+  },
+  {
+   "month": "2005-05",
+   "ndvi": 0.6807,
+   "ndvi_good_share": 0.3721,
+   "ndmi": 0.32,
+   "ndmi_good_share": 0.397,
+   "ndvi_anomaly": -0.0631,
+   "ndmi_anomaly": -0.0218
+  },
+  {
+   "month": "2005-06",
+   "ndvi": 0.7092,
+   "ndvi_good_share": 0.4534,
+   "ndmi": 0.3335,
+   "ndmi_good_share": 0.4121,
+   "ndvi_anomaly": -0.0074,
+   "ndmi_anomaly": -0.0082
+  },
+  {
+   "month": "2005-07",
+   "ndvi": 0.7241,
+   "ndvi_good_share": 0.4577,
+   "ndmi": 0.3246,
+   "ndmi_good_share": 0.4937,
+   "ndvi_anomaly": 0.001,
+   "ndmi_anomaly": -0.0028
+  },
+  {
+   "month": "2005-08",
+   "ndvi": 0.6735,
+   "ndvi_good_share": 0.4244,
+   "ndmi": 0.3176,
+   "ndmi_good_share": 0.4022,
+   "ndvi_anomaly": -0.0374,
+   "ndmi_anomaly": -0.0073
+  },
+  {
+   "month": "2005-09",
+   "ndvi": 0.76,
+   "ndvi_good_share": 0.5771,
+   "ndmi": 0.3139,
+   "ndmi_good_share": 0.5527,
+   "ndvi_anomaly": 0.0332,
+   "ndmi_anomaly": -0.0039
+  },
+  {
+   "month": "2005-10",
+   "ndvi": 0.6837,
+   "ndvi_good_share": 0.3573,
+   "ndmi": 0.3215,
+   "ndmi_good_share": 0.4066,
+   "ndvi_anomaly": -0.0227,
+   "ndmi_anomaly": 0.0038
+  },
+  {
+   "month": "2005-11",
+   "ndvi": 0.7061,
+   "ndvi_good_share": 0.5091,
+   "ndmi": 0.327,
+   "ndmi_good_share": 0.4215,
+   "ndvi_anomaly": 0.0271,
+   "ndmi_anomaly": -0.0
+  },
+  {
+   "month": "2005-12",
+   "ndvi": 0.5933,
+   "ndvi_good_share": 0.2431,
+   "ndmi": 0.2956,
+   "ndmi_good_share": 0.2394,
+   "ndvi_anomaly": -0.0847,
+   "ndmi_anomaly": -0.0296
+  },
+  {
+   "month": "2006-01",
+   "ndvi": 0.565,
+   "ndvi_good_share": 0.2072,
+   "ndmi": 0.3176,
+   "ndmi_good_share": 0.2122,
+   "ndvi_anomaly": -0.1005,
+   "ndmi_anomaly": -0.0067
+  },
+  {
+   "month": "2006-02",
+   "ndvi": 0.6726,
+   "ndvi_good_share": 0.3358,
+   "ndmi": 0.3142,
+   "ndmi_good_share": 0.3496,
+   "ndvi_anomaly": 0.0125,
+   "ndmi_anomaly": -0.0004
+  },
+  {
+   "month": "2006-03",
+   "ndvi": 0.715,
+   "ndvi_good_share": 0.4212,
+   "ndmi": 0.3333,
+   "ndmi_good_share": 0.4113,
+   "ndvi_anomaly": 0.0367,
+   "ndmi_anomaly": 0.0132
+  },
+  {
+   "month": "2006-04",
+   "ndvi": 0.6092,
+   "ndvi_good_share": 0.2187,
+   "ndmi": 0.3505,
+   "ndmi_good_share": 0.2101,
+   "ndvi_anomaly": -0.0998,
+   "ndmi_anomaly": 0.0184
+  },
+  {
+   "month": "2006-05",
+   "ndvi": 0.7844,
+   "ndvi_good_share": 0.6674,
+   "ndmi": 0.3446,
+   "ndmi_good_share": 0.554,
+   "ndvi_anomaly": 0.0406,
+   "ndmi_anomaly": 0.0028
+  },
+  {
+   "month": "2006-06",
+   "ndvi": 0.7345,
+   "ndvi_good_share": 0.5379,
+   "ndmi": 0.3454,
+   "ndmi_good_share": 0.4469,
+   "ndvi_anomaly": 0.0179,
+   "ndmi_anomaly": 0.0037
+  },
+  {
+   "month": "2006-07",
+   "ndvi": 0.8268,
+   "ndvi_good_share": 0.8333,
+   "ndmi": 0.3579,
+   "ndmi_good_share": 0.762,
+   "ndvi_anomaly": 0.1037,
+   "ndmi_anomaly": 0.0305
+  },
+  {
+   "month": "2006-08",
+   "ndvi": 0.7478,
+   "ndvi_good_share": 0.5812,
+   "ndmi": 0.3265,
+   "ndmi_good_share": 0.6395,
+   "ndvi_anomaly": 0.0369,
+   "ndmi_anomaly": 0.0016
+  },
+  {
+   "month": "2006-09",
+   "ndvi": 0.729,
+   "ndvi_good_share": 0.581,
+   "ndmi": 0.3054,
+   "ndmi_good_share": 0.5369,
+   "ndvi_anomaly": 0.0022,
+   "ndmi_anomaly": -0.0124
+  },
+  {
+   "month": "2006-10",
+   "ndvi": 0.7147,
+   "ndvi_good_share": 0.4596,
+   "ndmi": 0.3098,
+   "ndmi_good_share": 0.4967,
+   "ndvi_anomaly": 0.0083,
+   "ndmi_anomaly": -0.0079
+  },
+  {
+   "month": "2006-11",
+   "ndvi": 0.6823,
+   "ndvi_good_share": 0.4634,
+   "ndmi": 0.3197,
+   "ndmi_good_share": 0.5029,
+   "ndvi_anomaly": 0.0033,
+   "ndmi_anomaly": -0.0073
+  },
+  {
+   "month": "2006-12",
+   "ndvi": 0.6947,
+   "ndvi_good_share": 0.4562,
+   "ndmi": 0.3331,
+   "ndmi_good_share": 0.46,
+   "ndvi_anomaly": 0.0167,
+   "ndmi_anomaly": 0.0079
+  },
+  {
+   "month": "2007-01",
+   "ndvi": 0.6593,
+   "ndvi_good_share": 0.378,
+   "ndmi": 0.3139,
+   "ndmi_good_share": 0.3538,
+   "ndvi_anomaly": -0.0062,
+   "ndmi_anomaly": -0.0104
+  },
+  {
+   "month": "2007-02",
+   "ndvi": 0.7272,
+   "ndvi_good_share": 0.5091,
+   "ndmi": 0.3202,
+   "ndmi_good_share": 0.4664,
+   "ndvi_anomaly": 0.0671,
+   "ndmi_anomaly": 0.0056
+  },
+  {
+   "month": "2007-03",
+   "ndvi": 0.6583,
+   "ndvi_good_share": 0.2693,
+   "ndmi": 0.3224,
+   "ndmi_good_share": 0.2951,
+   "ndvi_anomaly": -0.02,
+   "ndmi_anomaly": 0.0023
+  },
+  {
+   "month": "2007-04",
+   "ndvi": 0.7012,
+   "ndvi_good_share": 0.4012,
+   "ndmi": 0.3304,
+   "ndmi_good_share": 0.4453,
+   "ndvi_anomaly": -0.0078,
+   "ndmi_anomaly": -0.0017
+  },
+  {
+   "month": "2007-05",
+   "ndvi": 0.7253,
+   "ndvi_good_share": 0.5215,
+   "ndmi": 0.3453,
+   "ndmi_good_share": 0.5479,
+   "ndvi_anomaly": -0.0185,
+   "ndmi_anomaly": 0.0035
+  },
+  {
+   "month": "2007-06",
+   "ndvi": 0.6921,
+   "ndvi_good_share": 0.4356,
+   "ndmi": 0.3273,
+   "ndmi_good_share": 0.3234,
+   "ndvi_anomaly": -0.0245,
+   "ndmi_anomaly": -0.0144
+  },
+  {
+   "month": "2007-07",
+   "ndvi": 0.7089,
+   "ndvi_good_share": 0.4342,
+   "ndmi": 0.3189,
+   "ndmi_good_share": 0.4482,
+   "ndvi_anomaly": -0.0142,
+   "ndmi_anomaly": -0.0085
+  },
+  {
+   "month": "2007-08",
+   "ndvi": 0.6908,
+   "ndvi_good_share": 0.3934,
+   "ndmi": 0.3224,
+   "ndmi_good_share": 0.4496,
+   "ndvi_anomaly": -0.0201,
+   "ndmi_anomaly": -0.0025
+  },
+  {
+   "month": "2007-09",
+   "ndvi": 0.7644,
+   "ndvi_good_share": 0.6404,
+   "ndmi": 0.3196,
+   "ndmi_good_share": 0.6053,
+   "ndvi_anomaly": 0.0376,
+   "ndmi_anomaly": 0.0018
+  },
+  {
+   "month": "2007-10",
+   "ndvi": 0.636,
+   "ndvi_good_share": 0.2751,
+   "ndmi": 0.3336,
+   "ndmi_good_share": 0.3662,
+   "ndvi_anomaly": -0.0704,
+   "ndmi_anomaly": 0.0159
+  },
+  {
+   "month": "2007-11",
+   "ndvi": 0.6377,
+   "ndvi_good_share": 0.3243,
+   "ndmi": 0.3058,
+   "ndmi_good_share": 0.3014,
+   "ndvi_anomaly": -0.0413,
+   "ndmi_anomaly": -0.0212
+  },
+  {
+   "month": "2007-12",
+   "ndvi": 0.7131,
+   "ndvi_good_share": 0.4672,
+   "ndmi": 0.321,
+   "ndmi_good_share": 0.4261,
+   "ndvi_anomaly": 0.0351,
+   "ndmi_anomaly": -0.0042
+  },
+  {
+   "month": "2008-01",
+   "ndvi": 0.6915,
+   "ndvi_good_share": 0.4301,
+   "ndmi": 0.3044,
+   "ndmi_good_share": 0.3726,
+   "ndvi_anomaly": 0.026,
+   "ndmi_anomaly": -0.0199
+  },
+  {
+   "month": "2008-02",
+   "ndvi": 0.5891,
+   "ndvi_good_share": 0.2253,
+   "ndmi": 0.3021,
+   "ndmi_good_share": 0.2666,
+   "ndvi_anomaly": -0.071,
+   "ndmi_anomaly": -0.0125
+  },
+  {
+   "month": "2008-03",
+   "ndvi": 0.631,
+   "ndvi_good_share": 0.2766,
+   "ndmi": 0.3246,
+   "ndmi_good_share": 0.3293,
+   "ndvi_anomaly": -0.0473,
+   "ndmi_anomaly": 0.0045
+  },
+  {
+   "month": "2008-04",
+   "ndvi": 0.5958,
+   "ndvi_good_share": 0.2195,
+   "ndmi": 0.311,
+   "ndmi_good_share": 0.2188,
+   "ndvi_anomaly": -0.1132,
+   "ndmi_anomaly": -0.0211
+  },
+  {
+   "month": "2008-05",
+   "ndvi": 0.704,
+   "ndvi_good_share": 0.4712,
+   "ndmi": 0.348,
+   "ndmi_good_share": 0.4817,
+   "ndvi_anomaly": -0.0398,
+   "ndmi_anomaly": 0.0062
+  },
+  {
+   "month": "2008-06",
+   "ndvi": 0.6761,
+   "ndvi_good_share": 0.3955,
+   "ndmi": 0.3407,
+   "ndmi_good_share": 0.3098,
+   "ndvi_anomaly": -0.0405,
+   "ndmi_anomaly": -0.001
+  },
+  {
+   "month": "2008-07",
+   "ndvi": 0.6773,
+   "ndvi_good_share": 0.3989,
+   "ndmi": 0.3251,
+   "ndmi_good_share": 0.5115,
+   "ndvi_anomaly": -0.0458,
+   "ndmi_anomaly": -0.0023
+  },
+  {
+   "month": "2008-08",
+   "ndvi": 0.5882,
+   "ndvi_good_share": 0.2785,
+   "ndmi": 0.3184,
+   "ndmi_good_share": 0.2986,
+   "ndvi_anomaly": -0.1227,
+   "ndmi_anomaly": -0.0065
+  },
+  {
+   "month": "2008-09",
+   "ndvi": 0.7826,
+   "ndvi_good_share": 0.7297,
+   "ndmi": 0.3188,
+   "ndmi_good_share": 0.6105,
+   "ndvi_anomaly": 0.0558,
+   "ndmi_anomaly": 0.001
+  },
+  {
+   "month": "2008-10",
+   "ndvi": 0.6739,
+   "ndvi_good_share": 0.3706,
+   "ndmi": 0.3237,
+   "ndmi_good_share": 0.2851,
+   "ndvi_anomaly": -0.0325,
+   "ndmi_anomaly": 0.006
+  },
+  {
+   "month": "2008-11",
+   "ndvi": 0.6004,
+   "ndvi_good_share": 0.2212,
+   "ndmi": 0.3086,
+   "ndmi_good_share": 0.2796,
+   "ndvi_anomaly": -0.0786,
+   "ndmi_anomaly": -0.0184
+  },
+  {
+   "month": "2008-12",
+   "ndvi": 0.6186,
+   "ndvi_good_share": 0.1999,
+   "ndmi": 0.3234,
+   "ndmi_good_share": 0.179,
+   "ndvi_anomaly": -0.0594,
+   "ndmi_anomaly": -0.0018
+  },
+  {
+   "month": "2009-01",
+   "ndvi": 0.6658,
+   "ndvi_good_share": 0.281,
+   "ndmi": 0.3272,
+   "ndmi_good_share": 0.3116,
+   "ndvi_anomaly": 0.0003,
+   "ndmi_anomaly": 0.0029
+  },
+  {
+   "month": "2009-02",
+   "ndvi": 0.577,
+   "ndvi_good_share": 0.2587,
+   "ndmi": 0.3078,
+   "ndmi_good_share": 0.264,
+   "ndvi_anomaly": -0.0831,
+   "ndmi_anomaly": -0.0068
+  },
+  {
+   "month": "2009-03",
+   "ndvi": 0.6295,
+   "ndvi_good_share": 0.3642,
+   "ndmi": 0.3303,
+   "ndmi_good_share": 0.3799,
+   "ndvi_anomaly": -0.0488,
+   "ndmi_anomaly": 0.0102
+  },
+  {
+   "month": "2009-04",
+   "ndvi": 0.7799,
+   "ndvi_good_share": 0.6333,
+   "ndmi": 0.3354,
+   "ndmi_good_share": 0.591,
+   "ndvi_anomaly": 0.0709,
+   "ndmi_anomaly": 0.0033
+  },
+  {
+   "month": "2009-05",
+   "ndvi": 0.75,
+   "ndvi_good_share": 0.5642,
+   "ndmi": 0.3547,
+   "ndmi_good_share": 0.5406,
+   "ndvi_anomaly": 0.0062,
+   "ndmi_anomaly": 0.0129
+  },
+  {
+   "month": "2009-06",
+   "ndvi": 0.7706,
+   "ndvi_good_share": 0.6089,
+   "ndmi": 0.3451,
+   "ndmi_good_share": 0.5487,
+   "ndvi_anomaly": 0.054,
+   "ndmi_anomaly": 0.0034
+  },
+  {
+   "month": "2009-07",
+   "ndvi": 0.6815,
+   "ndvi_good_share": 0.5326,
+   "ndmi": 0.3164,
+   "ndmi_good_share": 0.4008,
+   "ndvi_anomaly": -0.0416,
+   "ndmi_anomaly": -0.011
+  },
+  {
+   "month": "2009-08",
+   "ndvi": 0.7274,
+   "ndvi_good_share": 0.5098,
+   "ndmi": 0.3319,
+   "ndmi_good_share": 0.6149,
+   "ndvi_anomaly": 0.0165,
+   "ndmi_anomaly": 0.007
+  },
+  {
+   "month": "2009-09",
+   "ndvi": 0.7409,
+   "ndvi_good_share": 0.5579,
+   "ndmi": 0.3223,
+   "ndmi_good_share": 0.5432,
+   "ndvi_anomaly": 0.0141,
+   "ndmi_anomaly": 0.0045
+  },
+  {
+   "month": "2009-10",
+   "ndvi": 0.7536,
+   "ndvi_good_share": 0.5965,
+   "ndmi": 0.3055,
+   "ndmi_good_share": 0.5153,
+   "ndvi_anomaly": 0.0472,
+   "ndmi_anomaly": -0.0122
+  },
+  {
+   "month": "2009-11",
+   "ndvi": 0.6802,
+   "ndvi_good_share": 0.36,
+   "ndmi": 0.3173,
+   "ndmi_good_share": 0.3697,
+   "ndvi_anomaly": 0.0012,
+   "ndmi_anomaly": -0.0097
+  },
+  {
+   "month": "2009-12",
+   "ndvi": 0.6988,
+   "ndvi_good_share": 0.3973,
+   "ndmi": 0.3252,
+   "ndmi_good_share": 0.4185,
+   "ndvi_anomaly": 0.0208,
+   "ndmi_anomaly": -0.0
+  },
+  {
+   "month": "2010-01",
+   "ndvi": 0.6426,
+   "ndvi_good_share": 0.2285,
+   "ndmi": 0.3169,
+   "ndmi_good_share": 0.2813,
+   "ndvi_anomaly": -0.0229,
+   "ndmi_anomaly": -0.0074
+  },
+  {
+   "month": "2010-02",
+   "ndvi": 0.7629,
+   "ndvi_good_share": 0.6171,
+   "ndmi": 0.3213,
+   "ndmi_good_share": 0.5929,
+   "ndvi_anomaly": 0.1028,
+   "ndmi_anomaly": 0.0067
+  },
+  {
+   "month": "2010-03",
+   "ndvi": 0.5601,
+   "ndvi_good_share": 0.1935,
+   "ndmi": 0.2817,
+   "ndmi_good_share": 0.2238,
+   "ndvi_anomaly": -0.1182,
+   "ndmi_anomaly": -0.0384
+  },
+  {
+   "month": "2010-04",
+   "ndvi": 0.7477,
+   "ndvi_good_share": 0.5321,
+   "ndmi": 0.3451,
+   "ndmi_good_share": 0.5238,
+   "ndvi_anomaly": 0.0387,
+   "ndmi_anomaly": 0.013
+  },
+  {
+   "month": "2010-05",
+   "ndvi": 0.7622,
+   "ndvi_good_share": 0.5966,
+   "ndmi": 0.3434,
+   "ndmi_good_share": 0.5613,
+   "ndvi_anomaly": 0.0184,
+   "ndmi_anomaly": 0.0016
+  },
+  {
+   "month": "2010-06",
+   "ndvi": 0.7422,
+   "ndvi_good_share": 0.5795,
+   "ndmi": 0.3311,
+   "ndmi_good_share": 0.5781,
+   "ndvi_anomaly": 0.0256,
+   "ndmi_anomaly": -0.0106
+  },
+  {
+   "month": "2010-07",
+   "ndvi": 0.7042,
+   "ndvi_good_share": 0.4333,
+   "ndmi": 0.3388,
+   "ndmi_good_share": 0.4478,
+   "ndvi_anomaly": -0.0189,
+   "ndmi_anomaly": 0.0114
+  },
+  {
+   "month": "2010-08",
+   "ndvi": 0.6857,
+   "ndvi_good_share": 0.3706,
+   "ndmi": 0.3324,
+   "ndmi_good_share": 0.4847,
+   "ndvi_anomaly": -0.0252,
+   "ndmi_anomaly": 0.0075
+  },
+  {
+   "month": "2010-09",
+   "ndvi": 0.7613,
+   "ndvi_good_share": 0.6176,
+   "ndmi": 0.3281,
+   "ndmi_good_share": 0.4525,
+   "ndvi_anomaly": 0.0345,
+   "ndmi_anomaly": 0.0103
+  },
+  {
+   "month": "2010-10",
+   "ndvi": 0.7502,
+   "ndvi_good_share": 0.5745,
+   "ndmi": 0.3385,
+   "ndmi_good_share": 0.6175,
+   "ndvi_anomaly": 0.0438,
+   "ndmi_anomaly": 0.0208
+  },
+  {
+   "month": "2010-11",
+   "ndvi": 0.7283,
+   "ndvi_good_share": 0.4804,
+   "ndmi": 0.3469,
+   "ndmi_good_share": 0.5254,
+   "ndvi_anomaly": 0.0493,
+   "ndmi_anomaly": 0.0199
+  },
+  {
+   "month": "2010-12",
+   "ndvi": 0.7169,
+   "ndvi_good_share": 0.4754,
+   "ndmi": 0.3369,
+   "ndmi_good_share": 0.5016,
+   "ndvi_anomaly": 0.0389,
+   "ndmi_anomaly": 0.0117
+  },
+  {
+   "month": "2011-01",
+   "ndvi": 0.7585,
+   "ndvi_good_share": 0.6031,
+   "ndmi": 0.3632,
+   "ndmi_good_share": 0.6101,
+   "ndvi_anomaly": 0.093,
+   "ndmi_anomaly": 0.0389
+  },
+  {
+   "month": "2011-02",
+   "ndvi": 0.7502,
+   "ndvi_good_share": 0.5457,
+   "ndmi": 0.3695,
+   "ndmi_good_share": 0.448,
+   "ndvi_anomaly": 0.0901,
+   "ndmi_anomaly": 0.0549
+  },
+  {
+   "month": "2011-03",
+   "ndvi": 0.7126,
+   "ndvi_good_share": 0.4753,
+   "ndmi": 0.329,
+   "ndmi_good_share": 0.4049,
+   "ndvi_anomaly": 0.0343,
+   "ndmi_anomaly": 0.0089
+  },
+  {
+   "month": "2011-04",
+   "ndvi": 0.6787,
+   "ndvi_good_share": 0.3862,
+   "ndmi": 0.3467,
+   "ndmi_good_share": 0.3253,
+   "ndvi_anomaly": -0.0303,
+   "ndmi_anomaly": 0.0146
+  },
+  {
+   "month": "2011-05",
+   "ndvi": 0.7214,
+   "ndvi_good_share": 0.4683,
+   "ndmi": 0.3437,
+   "ndmi_good_share": 0.3873,
+   "ndvi_anomaly": -0.0224,
+   "ndmi_anomaly": 0.0019
+  },
+  {
+   "month": "2011-06",
+   "ndvi": 0.6803,
+   "ndvi_good_share": 0.4023,
+   "ndmi": 0.3391,
+   "ndmi_good_share": 0.3786,
+   "ndvi_anomaly": -0.0363,
+   "ndmi_anomaly": -0.0026
+  },
+  {
+   "month": "2011-07",
+   "ndvi": 0.6731,
+   "ndvi_good_share": 0.3597,
+   "ndmi": 0.3222,
+   "ndmi_good_share": 0.3562,
+   "ndvi_anomaly": -0.05,
+   "ndmi_anomaly": -0.0052
+  },
+  {
+   "month": "2011-08",
+   "ndvi": 0.6807,
+   "ndvi_good_share": 0.3626,
+   "ndmi": 0.3233,
+   "ndmi_good_share": 0.4386,
+   "ndvi_anomaly": -0.0302,
+   "ndmi_anomaly": -0.0016
+  },
+  {
+   "month": "2011-09",
+   "ndvi": 0.7473,
+   "ndvi_good_share": 0.5392,
+   "ndmi": 0.3385,
+   "ndmi_good_share": 0.4929,
+   "ndvi_anomaly": 0.0205,
+   "ndmi_anomaly": 0.0207
+  },
+  {
+   "month": "2011-10",
+   "ndvi": 0.6733,
+   "ndvi_good_share": 0.336,
+   "ndmi": 0.3064,
+   "ndmi_good_share": 0.4578,
+   "ndvi_anomaly": -0.0331,
+   "ndmi_anomaly": -0.0113
+  },
+  {
+   "month": "2011-11",
+   "ndvi": 0.7754,
+   "ndvi_good_share": 0.6154,
+   "ndmi": 0.3303,
+   "ndmi_good_share": 0.5822,
+   "ndvi_anomaly": 0.0964,
+   "ndmi_anomaly": 0.0033
+  },
+  {
+   "month": "2011-12",
+   "ndvi": 0.6249,
+   "ndvi_good_share": 0.2922,
+   "ndmi": 0.3266,
+   "ndmi_good_share": 0.2391,
+   "ndvi_anomaly": -0.0531,
+   "ndmi_anomaly": 0.0014
+  },
+  {
+   "month": "2012-01",
+   "ndvi": 0.7008,
+   "ndvi_good_share": 0.4982,
+   "ndmi": 0.3331,
+   "ndmi_good_share": 0.3795,
+   "ndvi_anomaly": 0.0353,
+   "ndmi_anomaly": 0.0088
+  },
+  {
+   "month": "2012-02",
+   "ndvi": 0.685,
+   "ndvi_good_share": 0.3133,
+   "ndmi": 0.3301,
+   "ndmi_good_share": 0.3349,
+   "ndvi_anomaly": 0.0249,
+   "ndmi_anomaly": 0.0155
+  },
+  {
+   "month": "2012-03",
+   "ndvi": 0.5888,
+   "ndvi_good_share": 0.2297,
+   "ndmi": 0.3261,
+   "ndmi_good_share": 0.2188,
+   "ndvi_anomaly": -0.0895,
+   "ndmi_anomaly": 0.006
+  },
+  {
+   "month": "2012-04",
+   "ndvi": 0.7424,
+   "ndvi_good_share": 0.5077,
+   "ndmi": 0.3361,
+   "ndmi_good_share": 0.493,
+   "ndvi_anomaly": 0.0334,
+   "ndmi_anomaly": 0.004
+  },
+  {
+   "month": "2012-05",
+   "ndvi": 0.7237,
+   "ndvi_good_share": 0.4594,
+   "ndmi": 0.3439,
+   "ndmi_good_share": 0.4936,
+   "ndvi_anomaly": -0.0201,
+   "ndmi_anomaly": 0.0021
+  },
+  {
+   "month": "2012-06",
+   "ndvi": 0.7697,
+   "ndvi_good_share": 0.603,
+   "ndmi": 0.3473,
+   "ndmi_good_share": 0.5577,
+   "ndvi_anomaly": 0.0531,
+   "ndmi_anomaly": 0.0056
+  },
+  {
+   "month": "2012-07",
+   "ndvi": 0.6504,
+   "ndvi_good_share": 0.3607,
+   "ndmi": 0.311,
+   "ndmi_good_share": 0.299,
+   "ndvi_anomaly": -0.0727,
+   "ndmi_anomaly": -0.0164
+  },
+  {
+   "month": "2012-08",
+   "ndvi": 0.7127,
+   "ndvi_good_share": 0.4732,
+   "ndmi": 0.3205,
+   "ndmi_good_share": 0.5088,
+   "ndvi_anomaly": 0.0018,
+   "ndmi_anomaly": -0.0044
+  },
+  {
+   "month": "2012-09",
+   "ndvi": 0.8035,
+   "ndvi_good_share": 0.7846,
+   "ndmi": 0.3302,
+   "ndmi_good_share": 0.5981,
+   "ndvi_anomaly": 0.0767,
+   "ndmi_anomaly": 0.0124
+  },
+  {
+   "month": "2012-10",
+   "ndvi": 0.6046,
+   "ndvi_good_share": 0.3243,
+   "ndmi": 0.3236,
+   "ndmi_good_share": 0.4429,
+   "ndvi_anomaly": -0.1018,
+   "ndmi_anomaly": 0.0059
+  },
+  {
+   "month": "2012-11",
+   "ndvi": 0.5566,
+   "ndvi_good_share": 0.1167,
+   "ndmi": 0.3183,
+   "ndmi_good_share": 0.1797,
+   "ndvi_anomaly": -0.1224,
+   "ndmi_anomaly": -0.0087
+  },
+  {
+   "month": "2012-12",
+   "ndvi": 0.7593,
+   "ndvi_good_share": 0.5794,
+   "ndmi": 0.3381,
+   "ndmi_good_share": 0.5248,
+   "ndvi_anomaly": 0.0813,
+   "ndmi_anomaly": 0.0129
+  },
+  {
+   "month": "2013-01",
+   "ndvi": 0.6814,
+   "ndvi_good_share": 0.2773,
+   "ndmi": 0.3345,
+   "ndmi_good_share": 0.3227,
+   "ndvi_anomaly": 0.0159,
+   "ndmi_anomaly": 0.0102
+  },
+  {
+   "month": "2013-02",
+   "ndvi": 0.6052,
+   "ndvi_good_share": 0.1986,
+   "ndmi": 0.3021,
+   "ndmi_good_share": 0.2332,
+   "ndvi_anomaly": -0.0549,
+   "ndmi_anomaly": -0.0125
+  },
+  {
+   "month": "2013-03",
+   "ndvi": 0.6901,
+   "ndvi_good_share": 0.4296,
+   "ndmi": 0.3275,
+   "ndmi_good_share": 0.3982,
+   "ndvi_anomaly": 0.0118,
+   "ndmi_anomaly": 0.0074
+  },
+  {
+   "month": "2013-04",
+   "ndvi": 0.7027,
+   "ndvi_good_share": 0.4259,
+   "ndmi": 0.333,
+   "ndmi_good_share": 0.4197,
+   "ndvi_anomaly": -0.0063,
+   "ndmi_anomaly": 0.0009
+  },
+  {
+   "month": "2013-05",
+   "ndvi": 0.6955,
+   "ndvi_good_share": 0.3944,
+   "ndmi": 0.3398,
+   "ndmi_good_share": 0.4475,
+   "ndvi_anomaly": -0.0483,
+   "ndmi_anomaly": -0.002
+  },
+  {
+   "month": "2013-06",
+   "ndvi": 0.667,
+   "ndvi_good_share": 0.3331,
+   "ndmi": 0.3442,
+   "ndmi_good_share": 0.3217,
+   "ndvi_anomaly": -0.0496,
+   "ndmi_anomaly": 0.0025
+  },
+  {
+   "month": "2013-07",
+   "ndvi": 0.6576,
+   "ndvi_good_share": 0.3869,
+   "ndmi": 0.3277,
+   "ndmi_good_share": 0.3576,
+   "ndvi_anomaly": -0.0655,
+   "ndmi_anomaly": 0.0003
+  },
+  {
+   "month": "2013-08",
+   "ndvi": 0.7576,
+   "ndvi_good_share": 0.5779,
+   "ndmi": 0.3357,
+   "ndmi_good_share": 0.5086,
+   "ndvi_anomaly": 0.0467,
+   "ndmi_anomaly": 0.0108
+  },
+  {
+   "month": "2013-09",
+   "ndvi": 0.7407,
+   "ndvi_good_share": 0.5741,
+   "ndmi": 0.317,
+   "ndmi_good_share": 0.5047,
+   "ndvi_anomaly": 0.0139,
+   "ndmi_anomaly": -0.0008
+  },
+  {
+   "month": "2013-10",
+   "ndvi": 0.71,
+   "ndvi_good_share": 0.3568,
+   "ndmi": 0.3186,
+   "ndmi_good_share": 0.4457,
+   "ndvi_anomaly": 0.0036,
+   "ndmi_anomaly": 0.0009
+  },
+  {
+   "month": "2013-11",
+   "ndvi": 0.6403,
+   "ndvi_good_share": 0.2171,
+   "ndmi": 0.3263,
+   "ndmi_good_share": 0.2429,
+   "ndvi_anomaly": -0.0387,
+   "ndmi_anomaly": -0.0007
+  },
+  {
+   "month": "2013-12",
+   "ndvi": 0.6615,
+   "ndvi_good_share": 0.2876,
+   "ndmi": 0.3263,
+   "ndmi_good_share": 0.3106,
+   "ndvi_anomaly": -0.0165,
+   "ndmi_anomaly": 0.0011
+  },
+  {
+   "month": "2014-01",
+   "ndvi": 0.6505,
+   "ndvi_good_share": 0.1989,
+   "ndmi": 0.3292,
+   "ndmi_good_share": 0.2272,
+   "ndvi_anomaly": -0.015,
+   "ndmi_anomaly": 0.0049
+  },
+  {
+   "month": "2014-02",
+   "ndvi": 0.7169,
+   "ndvi_good_share": 0.515,
+   "ndmi": 0.3304,
+   "ndmi_good_share": 0.5032,
+   "ndvi_anomaly": 0.0568,
+   "ndmi_anomaly": 0.0158
+  },
+  {
+   "month": "2014-03",
+   "ndvi": 0.7441,
+   "ndvi_good_share": 0.5499,
+   "ndmi": 0.3278,
+   "ndmi_good_share": 0.5429,
+   "ndvi_anomaly": 0.0658,
+   "ndmi_anomaly": 0.0077
+  },
+  {
+   "month": "2014-04",
+   "ndvi": 0.7175,
+   "ndvi_good_share": 0.4808,
+   "ndmi": 0.3292,
+   "ndmi_good_share": 0.4218,
+   "ndvi_anomaly": 0.0085,
+   "ndmi_anomaly": -0.0029
+  },
+  {
+   "month": "2014-05",
+   "ndvi": 0.7566,
+   "ndvi_good_share": 0.5833,
+   "ndmi": 0.3468,
+   "ndmi_good_share": 0.5377,
+   "ndvi_anomaly": 0.0128,
+   "ndmi_anomaly": 0.005
+  },
+  {
+   "month": "2014-06",
+   "ndvi": 0.707,
+   "ndvi_good_share": 0.5042,
+   "ndmi": 0.3527,
+   "ndmi_good_share": 0.501,
+   "ndvi_anomaly": -0.0096,
+   "ndmi_anomaly": 0.011
+  },
+  {
+   "month": "2014-07",
+   "ndvi": 0.8017,
+   "ndvi_good_share": 0.7405,
+   "ndmi": 0.35,
+   "ndmi_good_share": 0.6272,
+   "ndvi_anomaly": 0.0786,
+   "ndmi_anomaly": 0.0226
+  },
+  {
+   "month": "2014-08",
+   "ndvi": 0.6849,
+   "ndvi_good_share": 0.4261,
+   "ndmi": 0.3211,
+   "ndmi_good_share": 0.4374,
+   "ndvi_anomaly": -0.026,
+   "ndmi_anomaly": -0.0038
+  },
+  {
+   "month": "2014-09",
+   "ndvi": 0.7419,
+   "ndvi_good_share": 0.5754,
+   "ndmi": 0.3141,
+   "ndmi_good_share": 0.6383,
+   "ndvi_anomaly": 0.0151,
+   "ndmi_anomaly": -0.0037
+  },
+  {
+   "month": "2014-10",
+   "ndvi": 0.7392,
+   "ndvi_good_share": 0.5159,
+   "ndmi": 0.3119,
+   "ndmi_good_share": 0.4343,
+   "ndvi_anomaly": 0.0328,
+   "ndmi_anomaly": -0.0058
+  },
+  {
+   "month": "2014-11",
+   "ndvi": 0.6376,
+   "ndvi_good_share": 0.3203,
+   "ndmi": 0.3295,
+   "ndmi_good_share": 0.3464,
+   "ndvi_anomaly": -0.0414,
+   "ndmi_anomaly": 0.0025
+  },
+  {
+   "month": "2014-12",
+   "ndvi": 0.7084,
+   "ndvi_good_share": 0.3694,
+   "ndmi": 0.3288,
+   "ndmi_good_share": 0.4009,
+   "ndvi_anomaly": 0.0304,
+   "ndmi_anomaly": 0.0036
+  },
+  {
+   "month": "2015-01",
+   "ndvi": 0.6272,
+   "ndvi_good_share": 0.3234,
+   "ndmi": 0.3232,
+   "ndmi_good_share": 0.3216,
+   "ndvi_anomaly": -0.0383,
+   "ndmi_anomaly": -0.0011
+  },
+  {
+   "month": "2015-02",
+   "ndvi": 0.6654,
+   "ndvi_good_share": 0.3416,
+   "ndmi": 0.3149,
+   "ndmi_good_share": 0.3072,
+   "ndvi_anomaly": 0.0053,
+   "ndmi_anomaly": 0.0003
+  },
+  {
+   "month": "2015-03",
+   "ndvi": 0.7633,
+   "ndvi_good_share": 0.6391,
+   "ndmi": 0.3241,
+   "ndmi_good_share": 0.596,
+   "ndvi_anomaly": 0.085,
+   "ndmi_anomaly": 0.004
+  },
+  {
+   "month": "2015-04",
+   "ndvi": 0.7343,
+   "ndvi_good_share": 0.5172,
+   "ndmi": 0.3167,
+   "ndmi_good_share": 0.4375,
+   "ndvi_anomaly": 0.0253,
+   "ndmi_anomaly": -0.0154
+  },
+  {
+   "month": "2015-05",
+   "ndvi": 0.8047,
+   "ndvi_good_share": 0.7441,
+   "ndmi": 0.3556,
+   "ndmi_good_share": 0.7038,
+   "ndvi_anomaly": 0.0609,
+   "ndmi_anomaly": 0.0138
+  },
+  {
+   "month": "2015-06",
+   "ndvi": 0.7646,
+   "ndvi_good_share": 0.6711,
+   "ndmi": 0.3381,
+   "ndmi_good_share": 0.5847,
+   "ndvi_anomaly": 0.048,
+   "ndmi_anomaly": -0.0036
+  },
+  {
+   "month": "2015-07",
+   "ndvi": 0.7538,
+   "ndvi_good_share": 0.5992,
+   "ndmi": 0.3273,
+   "ndmi_good_share": 0.6139,
+   "ndvi_anomaly": 0.0307,
+   "ndmi_anomaly": -0.0001
+  },
+  {
+   "month": "2015-08",
+   "ndvi": 0.7477,
+   "ndvi_good_share": 0.5531,
+   "ndmi": 0.3149,
+   "ndmi_good_share": 0.6261,
+   "ndvi_anomaly": 0.0368,
+   "ndmi_anomaly": -0.01
+  },
+  {
+   "month": "2015-09",
+   "ndvi": 0.7403,
+   "ndvi_good_share": 0.5293,
+   "ndmi": 0.2989,
+   "ndmi_good_share": 0.5828,
+   "ndvi_anomaly": 0.0135,
+   "ndmi_anomaly": -0.0189
+  },
+  {
+   "month": "2015-10",
+   "ndvi": 0.7177,
+   "ndvi_good_share": 0.4605,
+   "ndmi": 0.3054,
+   "ndmi_good_share": 0.5766,
+   "ndvi_anomaly": 0.0113,
+   "ndmi_anomaly": -0.0123
+  },
+  {
+   "month": "2015-11",
+   "ndvi": 0.6816,
+   "ndvi_good_share": 0.3869,
+   "ndmi": 0.3261,
+   "ndmi_good_share": 0.4235,
+   "ndvi_anomaly": 0.0026,
+   "ndmi_anomaly": -0.0009
+  },
+  {
+   "month": "2015-12",
+   "ndvi": 0.7177,
+   "ndvi_good_share": 0.4348,
+   "ndmi": 0.3253,
+   "ndmi_good_share": 0.483,
+   "ndvi_anomaly": 0.0397,
+   "ndmi_anomaly": 0.0001
+  },
+  {
+   "month": "2016-01",
+   "ndvi": 0.5952,
+   "ndvi_good_share": 0.2165,
+   "ndmi": 0.3136,
+   "ndmi_good_share": 0.2806,
+   "ndvi_anomaly": -0.0703,
+   "ndmi_anomaly": -0.0107
+  },
+  {
+   "month": "2016-02",
+   "ndvi": 0.5466,
+   "ndvi_good_share": 0.1241,
+   "ndmi": 0.294,
+   "ndmi_good_share": 0.1962,
+   "ndvi_anomaly": -0.1135,
+   "ndmi_anomaly": -0.0206
+  },
+  {
+   "month": "2016-03",
+   "ndvi": 0.654,
+   "ndvi_good_share": 0.3995,
+   "ndmi": 0.2863,
+   "ndmi_good_share": 0.3985,
+   "ndvi_anomaly": -0.0243,
+   "ndmi_anomaly": -0.0338
+  },
+  {
+   "month": "2016-04",
+   "ndvi": 0.7359,
+   "ndvi_good_share": 0.4573,
+   "ndmi": 0.3274,
+   "ndmi_good_share": 0.5226,
+   "ndvi_anomaly": 0.0269,
+   "ndmi_anomaly": -0.0047
+  },
+  {
+   "month": "2016-05",
+   "ndvi": 0.7517,
+   "ndvi_good_share": 0.553,
+   "ndmi": 0.3247,
+   "ndmi_good_share": 0.5515,
+   "ndvi_anomaly": 0.0079,
+   "ndmi_anomaly": -0.0171
+  },
+  {
+   "month": "2016-06",
+   "ndvi": 0.6857,
+   "ndvi_good_share": 0.3754,
+   "ndmi": 0.3379,
+   "ndmi_good_share": 0.4713,
+   "ndvi_anomaly": -0.0309,
+   "ndmi_anomaly": -0.0038
+  },
+  {
+   "month": "2016-07",
+   "ndvi": 0.7595,
+   "ndvi_good_share": 0.5633,
+   "ndmi": 0.3345,
+   "ndmi_good_share": 0.3969,
+   "ndvi_anomaly": 0.0364,
+   "ndmi_anomaly": 0.0071
+  },
+  {
+   "month": "2016-08",
+   "ndvi": 0.8019,
+   "ndvi_good_share": 0.7148,
+   "ndmi": 0.3415,
+   "ndmi_good_share": 0.727,
+   "ndvi_anomaly": 0.091,
+   "ndmi_anomaly": 0.0166
+  },
+  {
+   "month": "2016-09",
+   "ndvi": 0.7143,
+   "ndvi_good_share": 0.3903,
+   "ndmi": 0.3333,
+   "ndmi_good_share": 0.4589,
+   "ndvi_anomaly": -0.0125,
+   "ndmi_anomaly": 0.0155
+  },
+  {
+   "month": "2016-10",
+   "ndvi": 0.7598,
+   "ndvi_good_share": 0.6264,
+   "ndmi": 0.3278,
+   "ndmi_good_share": 0.466,
+   "ndvi_anomaly": 0.0534,
+   "ndmi_anomaly": 0.0101
+  },
+  {
+   "month": "2016-11",
+   "ndvi": 0.707,
+   "ndvi_good_share": 0.337,
+   "ndmi": 0.3284,
+   "ndmi_good_share": 0.3493,
+   "ndvi_anomaly": 0.028,
+   "ndmi_anomaly": 0.0014
+  },
+  {
+   "month": "2016-12",
+   "ndvi": 0.7633,
+   "ndvi_good_share": 0.5702,
+   "ndmi": 0.33,
+   "ndmi_good_share": 0.4949,
+   "ndvi_anomaly": 0.0853,
+   "ndmi_anomaly": 0.0048
+  },
+  {
+   "month": "2017-01",
+   "ndvi": 0.6723,
+   "ndvi_good_share": 0.301,
+   "ndmi": 0.3176,
+   "ndmi_good_share": 0.3295,
+   "ndvi_anomaly": 0.0068,
+   "ndmi_anomaly": -0.0067
+  },
+  {
+   "month": "2017-02",
+   "ndvi": 0.61,
+   "ndvi_good_share": 0.2387,
+   "ndmi": 0.2944,
+   "ndmi_good_share": 0.2784,
+   "ndvi_anomaly": -0.0501,
+   "ndmi_anomaly": -0.0202
+  },
+  {
+   "month": "2017-03",
+   "ndvi": 0.6377,
+   "ndvi_good_share": 0.2676,
+   "ndmi": 0.3159,
+   "ndmi_good_share": 0.2596,
+   "ndvi_anomaly": -0.0406,
+   "ndmi_anomaly": -0.0042
+  },
+  {
+   "month": "2017-04",
+   "ndvi": 0.6483,
+   "ndvi_good_share": 0.2549,
+   "ndmi": 0.3178,
+   "ndmi_good_share": 0.2771,
+   "ndvi_anomaly": -0.0607,
+   "ndmi_anomaly": -0.0143
+  },
+  {
+   "month": "2017-05",
+   "ndvi": 0.6851,
+   "ndvi_good_share": 0.4049,
+   "ndmi": 0.3287,
+   "ndmi_good_share": 0.4543,
+   "ndvi_anomaly": -0.0587,
+   "ndmi_anomaly": -0.0131
+  },
+  {
+   "month": "2017-06",
+   "ndvi": 0.647,
+   "ndvi_good_share": 0.3047,
+   "ndmi": 0.3279,
+   "ndmi_good_share": 0.3004,
+   "ndvi_anomaly": -0.0696,
+   "ndmi_anomaly": -0.0138
+  },
+  {
+   "month": "2017-07",
+   "ndvi": 0.6126,
+   "ndvi_good_share": 0.2773,
+   "ndmi": 0.3193,
+   "ndmi_good_share": 0.3158,
+   "ndvi_anomaly": -0.1105,
+   "ndmi_anomaly": -0.0081
+  },
+  {
+   "month": "2017-08",
+   "ndvi": 0.7584,
+   "ndvi_good_share": 0.5704,
+   "ndmi": 0.3209,
+   "ndmi_good_share": 0.5101,
+   "ndvi_anomaly": 0.0475,
+   "ndmi_anomaly": -0.004
+  },
+  {
+   "month": "2017-09",
+   "ndvi": 0.5924,
+   "ndvi_good_share": 0.2204,
+   "ndmi": 0.3081,
+   "ndmi_good_share": 0.3501,
+   "ndvi_anomaly": -0.1344,
+   "ndmi_anomaly": -0.0097
+  },
+  {
+   "month": "2017-10",
+   "ndvi": 0.7428,
+   "ndvi_good_share": 0.4714,
+   "ndmi": 0.3115,
+   "ndmi_good_share": 0.3922,
+   "ndvi_anomaly": 0.0364,
+   "ndmi_anomaly": -0.0062
+  },
+  {
+   "month": "2017-11",
+   "ndvi": 0.7087,
+   "ndvi_good_share": 0.3712,
+   "ndmi": 0.334,
+   "ndmi_good_share": 0.3855,
+   "ndvi_anomaly": 0.0297,
+   "ndmi_anomaly": 0.007
+  },
+  {
+   "month": "2017-12",
+   "ndvi": 0.6326,
+   "ndvi_good_share": 0.3485,
+   "ndmi": 0.3303,
+   "ndmi_good_share": 0.394,
+   "ndvi_anomaly": -0.0454,
+   "ndmi_anomaly": 0.0051
+  },
+  {
+   "month": "2018-01",
+   "ndvi": 0.712,
+   "ndvi_good_share": 0.4029,
+   "ndmi": 0.3207,
+   "ndmi_good_share": 0.4004,
+   "ndvi_anomaly": 0.0465,
+   "ndmi_anomaly": -0.0036
+  },
+  {
+   "month": "2018-02",
+   "ndvi": 0.7889,
+   "ndvi_good_share": 0.7346,
+   "ndmi": 0.3296,
+   "ndmi_good_share": 0.5807,
+   "ndvi_anomaly": 0.1288,
+   "ndmi_anomaly": 0.015
+  },
+  {
+   "month": "2018-03",
+   "ndvi": 0.637,
+   "ndvi_good_share": 0.2577,
+   "ndmi": 0.3249,
+   "ndmi_good_share": 0.2876,
+   "ndvi_anomaly": -0.0413,
+   "ndmi_anomaly": 0.0048
+  },
+  {
+   "month": "2018-04",
+   "ndvi": 0.7144,
+   "ndvi_good_share": 0.4594,
+   "ndmi": 0.3318,
+   "ndmi_good_share": 0.4536,
+   "ndvi_anomaly": 0.0054,
+   "ndmi_anomaly": -0.0003
+  },
+  {
+   "month": "2018-05",
+   "ndvi": 0.7206,
+   "ndvi_good_share": 0.5034,
+   "ndmi": 0.35,
+   "ndmi_good_share": 0.4339,
+   "ndvi_anomaly": -0.0232,
+   "ndmi_anomaly": 0.0082
+  },
+  {
+   "month": "2018-06",
+   "ndvi": 0.6929,
+   "ndvi_good_share": 0.4049,
+   "ndmi": 0.3333,
+   "ndmi_good_share": 0.494,
+   "ndvi_anomaly": -0.0237,
+   "ndmi_anomaly": -0.0084
+  },
+  {
+   "month": "2018-07",
+   "ndvi": 0.7594,
+   "ndvi_good_share": 0.5756,
+   "ndmi": 0.3301,
+   "ndmi_good_share": 0.5293,
+   "ndvi_anomaly": 0.0363,
+   "ndmi_anomaly": 0.0027
+  },
+  {
+   "month": "2018-08",
+   "ndvi": 0.6798,
+   "ndvi_good_share": 0.3687,
+   "ndmi": 0.3176,
+   "ndmi_good_share": 0.3947,
+   "ndvi_anomaly": -0.0311,
+   "ndmi_anomaly": -0.0073
+  },
+  {
+   "month": "2018-09",
+   "ndvi": 0.6777,
+   "ndvi_good_share": 0.3825,
+   "ndmi": 0.3139,
+   "ndmi_good_share": 0.4157,
+   "ndvi_anomaly": -0.0491,
+   "ndmi_anomaly": -0.0039
+  },
+  {
+   "month": "2018-10",
+   "ndvi": 0.5824,
+   "ndvi_good_share": 0.2067,
+   "ndmi": 0.3202,
+   "ndmi_good_share": 0.2356,
+   "ndvi_anomaly": -0.124,
+   "ndmi_anomaly": 0.0025
+  },
+  {
+   "month": "2018-11",
+   "ndvi": 0.6833,
+   "ndvi_good_share": 0.4104,
+   "ndmi": 0.34,
+   "ndmi_good_share": 0.3516,
+   "ndvi_anomaly": 0.0043,
+   "ndmi_anomaly": 0.013
+  },
+  {
+   "month": "2018-12",
+   "ndvi": 0.6712,
+   "ndvi_good_share": 0.3953,
+   "ndmi": 0.3239,
+   "ndmi_good_share": 0.3637,
+   "ndvi_anomaly": -0.0068,
+   "ndmi_anomaly": -0.0013
+  },
+  {
+   "month": "2019-01",
+   "ndvi": 0.7247,
+   "ndvi_good_share": 0.5184,
+   "ndmi": 0.333,
+   "ndmi_good_share": 0.409,
+   "ndvi_anomaly": 0.0592,
+   "ndmi_anomaly": 0.0087
+  },
+  {
+   "month": "2019-02",
+   "ndvi": 0.6504,
+   "ndvi_good_share": 0.2667,
+   "ndmi": 0.3124,
+   "ndmi_good_share": 0.3454,
+   "ndvi_anomaly": -0.0097,
+   "ndmi_anomaly": -0.0022
+  },
+  {
+   "month": "2019-03",
+   "ndvi": 0.6244,
+   "ndvi_good_share": 0.3182,
+   "ndmi": 0.2978,
+   "ndmi_good_share": 0.3139,
+   "ndvi_anomaly": -0.0539,
+   "ndmi_anomaly": -0.0223
+  },
+  {
+   "month": "2019-04",
+   "ndvi": 0.6592,
+   "ndvi_good_share": 0.364,
+   "ndmi": 0.3112,
+   "ndmi_good_share": 0.3741,
+   "ndvi_anomaly": -0.0498,
+   "ndmi_anomaly": -0.0209
+  },
+  {
+   "month": "2019-05",
+   "ndvi": 0.7163,
+   "ndvi_good_share": 0.4698,
+   "ndmi": 0.3197,
+   "ndmi_good_share": 0.4568,
+   "ndvi_anomaly": -0.0275,
+   "ndmi_anomaly": -0.0221
+  },
+  {
+   "month": "2019-06",
+   "ndvi": 0.695,
+   "ndvi_good_share": 0.4007,
+   "ndmi": 0.3095,
+   "ndmi_good_share": 0.2945,
+   "ndvi_anomaly": -0.0216,
+   "ndmi_anomaly": -0.0322
+  },
+  {
+   "month": "2019-07",
+   "ndvi": 0.7108,
+   "ndvi_good_share": 0.4894,
+   "ndmi": 0.3031,
+   "ndmi_good_share": 0.4648,
+   "ndvi_anomaly": -0.0123,
+   "ndmi_anomaly": -0.0243
+  },
+  {
+   "month": "2019-08",
+   "ndvi": 0.739,
+   "ndvi_good_share": 0.5283,
+   "ndmi": 0.3112,
+   "ndmi_good_share": 0.5209,
+   "ndvi_anomaly": 0.0281,
+   "ndmi_anomaly": -0.0137
+  },
+  {
+   "month": "2019-09",
+   "ndvi": 0.7025,
+   "ndvi_good_share": 0.4612,
+   "ndmi": 0.2996,
+   "ndmi_good_share": 0.5689,
+   "ndvi_anomaly": -0.0243,
+   "ndmi_anomaly": -0.0182
+  },
+  {
+   "month": "2019-10",
+   "ndvi": 0.7049,
+   "ndvi_good_share": 0.3821,
+   "ndmi": 0.3212,
+   "ndmi_good_share": 0.3176,
+   "ndvi_anomaly": -0.0015,
+   "ndmi_anomaly": 0.0035
+  },
+  {
+   "month": "2019-11",
+   "ndvi": 0.8238,
+   "ndvi_good_share": 0.8013,
+   "ndmi": 0.3374,
+   "ndmi_good_share": 0.7659,
+   "ndvi_anomaly": 0.1448,
+   "ndmi_anomaly": 0.0104
+  },
+  {
+   "month": "2019-12",
+   "ndvi": 0.7292,
+   "ndvi_good_share": 0.4624,
+   "ndmi": 0.3208,
+   "ndmi_good_share": 0.4977,
+   "ndvi_anomaly": 0.0512,
+   "ndmi_anomaly": -0.0044
+  },
+  {
+   "month": "2020-01",
+   "ndvi": 0.6664,
+   "ndvi_good_share": 0.3168,
+   "ndmi": 0.3083,
+   "ndmi_good_share": 0.3875,
+   "ndvi_anomaly": 0.0009,
+   "ndmi_anomaly": -0.016
+  },
+  {
+   "month": "2020-02",
+   "ndvi": 0.7335,
+   "ndvi_good_share": 0.4722,
+   "ndmi": 0.3223,
+   "ndmi_good_share": 0.5167,
+   "ndvi_anomaly": 0.0734,
+   "ndmi_anomaly": 0.0077
+  },
+  {
+   "month": "2020-03",
+   "ndvi": 0.7307,
+   "ndvi_good_share": 0.4853,
+   "ndmi": 0.339,
+   "ndmi_good_share": 0.461,
+   "ndvi_anomaly": 0.0524,
+   "ndmi_anomaly": 0.0189
+  },
+  {
+   "month": "2020-04",
+   "ndvi": 0.8261,
+   "ndvi_good_share": 0.8445,
+   "ndmi": 0.3456,
+   "ndmi_good_share": 0.7705,
+   "ndvi_anomaly": 0.1171,
+   "ndmi_anomaly": 0.0135
+  },
+  {
+   "month": "2020-05",
+   "ndvi": 0.7079,
+   "ndvi_good_share": 0.4019,
+   "ndmi": 0.3381,
+   "ndmi_good_share": 0.5085,
+   "ndvi_anomaly": -0.0359,
+   "ndmi_anomaly": -0.0037
+  },
+  {
+   "month": "2020-06",
+   "ndvi": 0.7016,
+   "ndvi_good_share": 0.4104,
+   "ndmi": 0.3419,
+   "ndmi_good_share": 0.4851,
+   "ndvi_anomaly": -0.015,
+   "ndmi_anomaly": 0.0002
+  },
+  {
+   "month": "2020-07",
+   "ndvi": 0.7143,
+   "ndvi_good_share": 0.4573,
+   "ndmi": 0.3145,
+   "ndmi_good_share": 0.3916,
+   "ndvi_anomaly": -0.0088,
+   "ndmi_anomaly": -0.0129
+  },
+  {
+   "month": "2020-08",
+   "ndvi": 0.6788,
+   "ndvi_good_share": 0.4076,
+   "ndmi": 0.3182,
+   "ndmi_good_share": 0.4181,
+   "ndvi_anomaly": -0.0321,
+   "ndmi_anomaly": -0.0067
+  },
+  {
+   "month": "2020-09",
+   "ndvi": 0.6596,
+   "ndvi_good_share": 0.314,
+   "ndmi": 0.3151,
+   "ndmi_good_share": 0.4478,
+   "ndvi_anomaly": -0.0672,
+   "ndmi_anomaly": -0.0027
+  },
+  {
+   "month": "2020-10",
+   "ndvi": 0.716,
+   "ndvi_good_share": 0.4067,
+   "ndmi": 0.3139,
+   "ndmi_good_share": 0.4256,
+   "ndvi_anomaly": 0.0096,
+   "ndmi_anomaly": -0.0038
+  },
+  {
+   "month": "2020-11",
+   "ndvi": 0.6953,
+   "ndvi_good_share": 0.4182,
+   "ndmi": 0.3208,
+   "ndmi_good_share": 0.4252,
+   "ndvi_anomaly": 0.0163,
+   "ndmi_anomaly": -0.0062
+  },
+  {
+   "month": "2020-12",
+   "ndvi": 0.6902,
+   "ndvi_good_share": 0.352,
+   "ndmi": 0.3231,
+   "ndmi_good_share": 0.3244,
+   "ndvi_anomaly": 0.0122,
+   "ndmi_anomaly": -0.0021
+  },
+  {
+   "month": "2021-01",
+   "ndvi": 0.5946,
+   "ndvi_good_share": 0.1013,
+   "ndmi": 0.3132,
+   "ndmi_good_share": 0.1643,
+   "ndvi_anomaly": -0.0709,
+   "ndmi_anomaly": -0.0111
+  },
+  {
+   "month": "2021-02",
+   "ndvi": 0.6265,
+   "ndvi_good_share": 0.2265,
+   "ndmi": 0.3123,
+   "ndmi_good_share": 0.2352,
+   "ndvi_anomaly": -0.0336,
+   "ndmi_anomaly": -0.0023
+  },
+  {
+   "month": "2021-03",
+   "ndvi": 0.7514,
+   "ndvi_good_share": 0.5113,
+   "ndmi": 0.3308,
+   "ndmi_good_share": 0.4705,
+   "ndvi_anomaly": 0.0731,
+   "ndmi_anomaly": 0.0107
+  },
+  {
+   "month": "2021-04",
+   "ndvi": 0.7636,
+   "ndvi_good_share": 0.5883,
+   "ndmi": 0.3299,
+   "ndmi_good_share": 0.5844,
+   "ndvi_anomaly": 0.0546,
+   "ndmi_anomaly": -0.0022
+  },
+  {
+   "month": "2021-05",
+   "ndvi": 0.6701,
+   "ndvi_good_share": 0.2802,
+   "ndmi": 0.3404,
+   "ndmi_good_share": 0.3639,
+   "ndvi_anomaly": -0.0737,
+   "ndmi_anomaly": -0.0014
+  },
+  {
+   "month": "2021-06",
+   "ndvi": 0.7305,
+   "ndvi_good_share": 0.466,
+   "ndmi": 0.3492,
+   "ndmi_good_share": 0.4423,
+   "ndvi_anomaly": 0.0139,
+   "ndmi_anomaly": 0.0075
+  },
+  {
+   "month": "2021-07",
+   "ndvi": 0.7452,
+   "ndvi_good_share": 0.5724,
+   "ndmi": 0.3177,
+   "ndmi_good_share": 0.4632,
+   "ndvi_anomaly": 0.0221,
+   "ndmi_anomaly": -0.0097
+  },
+  {
+   "month": "2021-08",
+   "ndvi": 0.6551,
+   "ndvi_good_share": 0.3295,
+   "ndmi": 0.3278,
+   "ndmi_good_share": 0.3694,
+   "ndvi_anomaly": -0.0558,
+   "ndmi_anomaly": 0.0029
+  },
+  {
+   "month": "2021-09",
+   "ndvi": 0.8078,
+   "ndvi_good_share": 0.7265,
+   "ndmi": 0.3369,
+   "ndmi_good_share": 0.5607,
+   "ndvi_anomaly": 0.081,
+   "ndmi_anomaly": 0.0191
+  },
+  {
+   "month": "2021-10",
+   "ndvi": 0.7454,
+   "ndvi_good_share": 0.5245,
+   "ndmi": 0.3318,
+   "ndmi_good_share": 0.6485,
+   "ndvi_anomaly": 0.039,
+   "ndmi_anomaly": 0.0141
+  },
+  {
+   "month": "2021-11",
+   "ndvi": 0.6496,
+   "ndvi_good_share": 0.2712,
+   "ndmi": 0.3236,
+   "ndmi_good_share": 0.3088,
+   "ndvi_anomaly": -0.0294,
+   "ndmi_anomaly": -0.0034
+  },
+  {
+   "month": "2021-12",
+   "ndvi": 0.5744,
+   "ndvi_good_share": 0.2727,
+   "ndmi": 0.3003,
+   "ndmi_good_share": 0.2026,
+   "ndvi_anomaly": -0.1036,
+   "ndmi_anomaly": -0.0249
+  },
+  {
+   "month": "2022-01",
+   "ndvi": 0.7049,
+   "ndvi_good_share": 0.3464,
+   "ndmi": 0.3455,
+   "ndmi_good_share": 0.4472,
+   "ndvi_anomaly": 0.0394,
+   "ndmi_anomaly": 0.0212
+  },
+  {
+   "month": "2022-02",
+   "ndvi": 0.5323,
+   "ndvi_good_share": 0.1199,
+   "ndmi": 0.2901,
+   "ndmi_good_share": 0.1601,
+   "ndvi_anomaly": -0.1278,
+   "ndmi_anomaly": -0.0245
+  },
+  {
+   "month": "2022-03",
+   "ndvi": 0.7172,
+   "ndvi_good_share": 0.4298,
+   "ndmi": 0.3224,
+   "ndmi_good_share": 0.4067,
+   "ndvi_anomaly": 0.0389,
+   "ndmi_anomaly": 0.0023
+  },
+  {
+   "month": "2022-04",
+   "ndvi": 0.6868,
+   "ndvi_good_share": 0.3401,
+   "ndmi": 0.3259,
+   "ndmi_good_share": 0.2869,
+   "ndvi_anomaly": -0.0222,
+   "ndmi_anomaly": -0.0062
+  },
+  {
+   "month": "2022-05",
+   "ndvi": 0.7715,
+   "ndvi_good_share": 0.6107,
+   "ndmi": 0.3484,
+   "ndmi_good_share": 0.5887,
+   "ndvi_anomaly": 0.0277,
+   "ndmi_anomaly": 0.0066
+  },
+  {
+   "month": "2022-06",
+   "ndvi": 0.7372,
+   "ndvi_good_share": 0.496,
+   "ndmi": 0.3474,
+   "ndmi_good_share": 0.5831,
+   "ndvi_anomaly": 0.0206,
+   "ndmi_anomaly": 0.0057
+  },
+  {
+   "month": "2022-07",
+   "ndvi": 0.7718,
+   "ndvi_good_share": 0.6246,
+   "ndmi": 0.3422,
+   "ndmi_good_share": 0.5727,
+   "ndvi_anomaly": 0.0487,
+   "ndmi_anomaly": 0.0148
+  },
+  {
+   "month": "2022-08",
+   "ndvi": 0.6994,
+   "ndvi_good_share": 0.4226,
+   "ndmi": 0.3334,
+   "ndmi_good_share": 0.5612,
+   "ndvi_anomaly": -0.0115,
+   "ndmi_anomaly": 0.0085
+  },
+  {
+   "month": "2022-09",
+   "ndvi": 0.6945,
+   "ndvi_good_share": 0.4818,
+   "ndmi": 0.3124,
+   "ndmi_good_share": 0.4585,
+   "ndvi_anomaly": -0.0323,
+   "ndmi_anomaly": -0.0054
+  },
+  {
+   "month": "2022-10",
+   "ndvi": 0.5267,
+   "ndvi_good_share": 0.0409,
+   "ndmi": 0.297,
+   "ndmi_good_share": 0.2183,
+   "ndvi_anomaly": -0.1797,
+   "ndmi_anomaly": -0.0207
+  },
+  {
+   "month": "2022-11",
+   "ndvi": 0.6915,
+   "ndvi_good_share": 0.4506,
+   "ndmi": 0.3374,
+   "ndmi_good_share": 0.3883,
+   "ndvi_anomaly": 0.0125,
+   "ndmi_anomaly": 0.0104
+  },
+  {
+   "month": "2022-12",
+   "ndvi": 0.5907,
+   "ndvi_good_share": 0.274,
+   "ndmi": 0.3111,
+   "ndmi_good_share": 0.2468,
+   "ndvi_anomaly": -0.0873,
+   "ndmi_anomaly": -0.0141
+  },
+  {
+   "month": "2023-01",
+   "ndvi": 0.598,
+   "ndvi_good_share": 0.2284,
+   "ndmi": 0.3238,
+   "ndmi_good_share": 0.2371,
+   "ndvi_anomaly": -0.0675,
+   "ndmi_anomaly": -0.0005
+  },
+  {
+   "month": "2023-02",
+   "ndvi": 0.5079,
+   "ndvi_good_share": 0.078,
+   "ndmi": 0.3018,
+   "ndmi_good_share": 0.1097,
+   "ndvi_anomaly": -0.1522,
+   "ndmi_anomaly": -0.0128
+  },
+  {
+   "month": "2023-03",
+   "ndvi": 0.6785,
+   "ndvi_good_share": 0.3213,
+   "ndmi": 0.336,
+   "ndmi_good_share": 0.3054,
+   "ndvi_anomaly": 0.0002,
+   "ndmi_anomaly": 0.0159
+  },
+  {
+   "month": "2023-04",
+   "ndvi": 0.7623,
+   "ndvi_good_share": 0.5751,
+   "ndmi": 0.3437,
+   "ndmi_good_share": 0.6515,
+   "ndvi_anomaly": 0.0533,
+   "ndmi_anomaly": 0.0116
+  },
+  {
+   "month": "2023-05",
+   "ndvi": 0.7699,
+   "ndvi_good_share": 0.6554,
+   "ndmi": 0.3389,
+   "ndmi_good_share": 0.5385,
+   "ndvi_anomaly": 0.0261,
+   "ndmi_anomaly": -0.0029
+  },
+  {
+   "month": "2023-06",
+   "ndvi": 0.6643,
+   "ndvi_good_share": 0.4018,
+   "ndmi": 0.347,
+   "ndmi_good_share": 0.4706,
+   "ndvi_anomaly": -0.0523,
+   "ndmi_anomaly": 0.0053
+  },
+  {
+   "month": "2023-07",
+   "ndvi": 0.799,
+   "ndvi_good_share": 0.7011,
+   "ndmi": 0.3587,
+   "ndmi_good_share": 0.5904,
+   "ndvi_anomaly": 0.0759,
+   "ndmi_anomaly": 0.0313
+  },
+  {
+   "month": "2023-08",
+   "ndvi": 0.679,
+   "ndvi_good_share": 0.3549,
+   "ndmi": 0.334,
+   "ndmi_good_share": 0.5497,
+   "ndvi_anomaly": -0.0319,
+   "ndmi_anomaly": 0.0091
+  },
+  {
+   "month": "2023-09",
+   "ndvi": 0.5911,
+   "ndvi_good_share": 0.2584,
+   "ndmi": 0.3077,
+   "ndmi_good_share": 0.232,
+   "ndvi_anomaly": -0.1357,
+   "ndmi_anomaly": -0.0101
+  },
+  {
+   "month": "2023-10",
+   "ndvi": 0.7012,
+   "ndvi_good_share": 0.4288,
+   "ndmi": 0.3214,
+   "ndmi_good_share": 0.4823,
+   "ndvi_anomaly": -0.0052,
+   "ndmi_anomaly": 0.0037
+  },
+  {
+   "month": "2023-11",
+   "ndvi": 0.7349,
+   "ndvi_good_share": 0.5265,
+   "ndmi": 0.3328,
+   "ndmi_good_share": 0.5642,
+   "ndvi_anomaly": 0.0559,
+   "ndmi_anomaly": 0.0058
+  },
+  {
+   "month": "2023-12",
+   "ndvi": 0.7457,
+   "ndvi_good_share": 0.4874,
+   "ndmi": 0.3468,
+   "ndmi_good_share": 0.5248,
+   "ndvi_anomaly": 0.0677,
+   "ndmi_anomaly": 0.0216
+  },
+  {
+   "month": "2024-01",
+   "ndvi": 0.6608,
+   "ndvi_good_share": 0.2671,
+   "ndmi": 0.3366,
+   "ndmi_good_share": 0.2877,
+   "ndvi_anomaly": -0.0047,
+   "ndmi_anomaly": 0.0123
+  },
+  {
+   "month": "2024-02",
+   "ndvi": 0.7472,
+   "ndvi_good_share": 0.5843,
+   "ndmi": 0.3228,
+   "ndmi_good_share": 0.5653,
+   "ndvi_anomaly": 0.0871,
+   "ndmi_anomaly": 0.0082
+  },
+  {
+   "month": "2024-03",
+   "ndvi": 0.742,
+   "ndvi_good_share": 0.5266,
+   "ndmi": 0.3349,
+   "ndmi_good_share": 0.5164,
+   "ndvi_anomaly": 0.0637,
+   "ndmi_anomaly": 0.0148
+  },
+  {
+   "month": "2024-04",
+   "ndvi": 0.7354,
+   "ndvi_good_share": 0.4644,
+   "ndmi": 0.3458,
+   "ndmi_good_share": 0.4576,
+   "ndvi_anomaly": 0.0264,
+   "ndmi_anomaly": 0.0137
+  },
+  {
+   "month": "2024-05",
+   "ndvi": 0.695,
+   "ndvi_good_share": 0.4429,
+   "ndmi": 0.3385,
+   "ndmi_good_share": 0.2904,
+   "ndvi_anomaly": -0.0488,
+   "ndmi_anomaly": -0.0033
+  },
+  {
+   "month": "2024-06",
+   "ndvi": 0.7444,
+   "ndvi_good_share": 0.5198,
+   "ndmi": 0.3508,
+   "ndmi_good_share": 0.5787,
+   "ndvi_anomaly": 0.0278,
+   "ndmi_anomaly": 0.0091
+  },
+  {
+   "month": "2024-07",
+   "ndvi": 0.6351,
+   "ndvi_good_share": 0.3324,
+   "ndmi": 0.3121,
+   "ndmi_good_share": 0.3419,
+   "ndvi_anomaly": -0.088,
+   "ndmi_anomaly": -0.0153
+  },
+  {
+   "month": "2024-08",
+   "ndvi": 0.7231,
+   "ndvi_good_share": 0.4851,
+   "ndmi": 0.3461,
+   "ndmi_good_share": 0.4712,
+   "ndvi_anomaly": 0.0122,
+   "ndmi_anomaly": 0.0212
+  },
+  {
+   "month": "2024-09",
+   "ndvi": 0.7584,
+   "ndvi_good_share": 0.5154,
+   "ndmi": 0.3309,
+   "ndmi_good_share": 0.5022,
+   "ndvi_anomaly": 0.0316,
+   "ndmi_anomaly": 0.0131
+  },
+  {
+   "month": "2024-10",
+   "ndvi": 0.7249,
+   "ndvi_good_share": 0.4654,
+   "ndmi": 0.3164,
+   "ndmi_good_share": 0.4897,
+   "ndvi_anomaly": 0.0185,
+   "ndmi_anomaly": -0.0013
+  },
+  {
+   "month": "2024-11",
+   "ndvi": 0.6417,
+   "ndvi_good_share": 0.2372,
+   "ndmi": 0.3416,
+   "ndmi_good_share": 0.4123,
+   "ndvi_anomaly": -0.0373,
+   "ndmi_anomaly": 0.0146
+  },
+  {
+   "month": "2024-12",
+   "ndvi": 0.6675,
+   "ndvi_good_share": 0.3376,
+   "ndmi": 0.3253,
+   "ndmi_good_share": 0.3367,
+   "ndvi_anomaly": -0.0105,
+   "ndmi_anomaly": 0.0001
+  },
+  {
+   "month": "2025-01",
+   "ndvi": 0.759,
+   "ndvi_good_share": 0.5068,
+   "ndmi": 0.3533,
+   "ndmi_good_share": 0.5203,
+   "ndvi_anomaly": 0.0935,
+   "ndmi_anomaly": 0.029
+  },
+  {
+   "month": "2025-02",
+   "ndvi": 0.7471,
+   "ndvi_good_share": 0.5471,
+   "ndmi": 0.3409,
+   "ndmi_good_share": 0.5224,
+   "ndvi_anomaly": 0.087,
+   "ndmi_anomaly": 0.0263
+  },
+  {
+   "month": "2025-03",
+   "ndvi": 0.7598,
+   "ndvi_good_share": 0.5973,
+   "ndmi": 0.3459,
+   "ndmi_good_share": 0.4785,
+   "ndvi_anomaly": 0.0815,
+   "ndmi_anomaly": 0.0258
+  },
+  {
+   "month": "2025-04",
+   "ndvi": 0.5925,
+   "ndvi_good_share": 0.2023,
+   "ndmi": 0.3407,
+   "ndmi_good_share": 0.271,
+   "ndvi_anomaly": -0.1165,
+   "ndmi_anomaly": 0.0086
+  },
+  {
+   "month": "2025-05",
+   "ndvi": 0.8054,
+   "ndvi_good_share": 0.769,
+   "ndmi": 0.3703,
+   "ndmi_good_share": 0.5422,
+   "ndvi_anomaly": 0.0616,
+   "ndmi_anomaly": 0.0285
+  },
+  {
+   "month": "2025-06",
+   "ndvi": 0.7689,
+   "ndvi_good_share": 0.6154,
+   "ndmi": 0.3757,
+   "ndmi_good_share": 0.6875,
+   "ndvi_anomaly": 0.0523,
+   "ndmi_anomaly": 0.034
+  },
+  {
+   "month": "2025-07",
+   "ndvi": 0.7541,
+   "ndvi_good_share": 0.5867,
+   "ndmi": 0.3205,
+   "ndmi_good_share": 0.327,
+   "ndvi_anomaly": 0.031,
+   "ndmi_anomaly": -0.0069
+  },
+  {
+   "month": "2025-08",
+   "ndvi": 0.6933,
+   "ndvi_good_share": 0.4341,
+   "ndmi": 0.3304,
+   "ndmi_good_share": 0.385,
+   "ndvi_anomaly": -0.0176,
+   "ndmi_anomaly": 0.0055
+  },
+  {
+   "month": "2025-09",
+   "ndvi": 0.7861,
+   "ndvi_good_share": 0.6909,
+   "ndmi": 0.3507,
+   "ndmi_good_share": 0.6939,
+   "ndvi_anomaly": 0.0593,
+   "ndmi_anomaly": 0.0329
+  },
+  {
+   "month": "2025-10",
+   "ndvi": 0.7743,
+   "ndvi_good_share": 0.63,
+   "ndmi": 0.3214,
+   "ndmi_good_share": 0.6357,
+   "ndvi_anomaly": 0.0679,
+   "ndmi_anomaly": 0.0037
+  },
+  {
+   "month": "2025-11",
+   "ndvi": 0.6531,
+   "ndvi_good_share": 0.2367,
+   "ndmi": 0.3633,
+   "ndmi_good_share": 0.2517,
+   "ndvi_anomaly": -0.0259,
+   "ndmi_anomaly": 0.0363
+  },
+  {
+   "month": "2025-12",
+   "ndvi": 0.8013,
+   "ndvi_good_share": 0.7201,
+   "ndmi": 0.3569,
+   "ndmi_good_share": 0.6386,
+   "ndvi_anomaly": 0.1233,
+   "ndmi_anomaly": 0.0317
+  },
+  {
+   "month": "2026-01",
+   "ndvi": 0.8164,
+   "ndvi_good_share": 0.7546,
+   "ndmi": 0.3809,
+   "ndmi_good_share": 0.6641,
+   "ndvi_anomaly": 0.1509,
+   "ndmi_anomaly": 0.0566
+  },
+  {
+   "month": "2026-02",
+   "ndvi": 0.6438,
+   "ndvi_good_share": 0.2584,
+   "ndmi": 0.351,
+   "ndmi_good_share": 0.2491,
+   "ndvi_anomaly": -0.0163,
+   "ndmi_anomaly": 0.0364
+  },
+  {
+   "month": "2026-03",
+   "ndvi": 0.7472,
+   "ndvi_good_share": 0.5507,
+   "ndmi": 0.3539,
+   "ndmi_good_share": 0.513,
+   "ndvi_anomaly": 0.0689,
+   "ndmi_anomaly": 0.0338
+  },
+  {
+   "month": "2026-04",
+   "ndvi": 0.7885,
+   "ndvi_good_share": 0.7372,
+   "ndmi": 0.3573,
+   "ndmi_good_share": 0.6368,
+   "ndvi_anomaly": 0.0795,
+   "ndmi_anomaly": 0.0252
+  },
+  {
+   "month": "2026-05",
+   "ndvi": 0.7874,
+   "ndvi_good_share": 0.6473,
+   "ndmi": 0.3618,
+   "ndmi_good_share": 0.5721,
+   "ndvi_anomaly": 0.0436,
+   "ndmi_anomaly": 0.02
+  },
+  {
+   "month": "2026-06",
+   "ndvi": 0.8403,
+   "ndvi_good_share": 0.8647,
+   "ndmi": 0.3936,
+   "ndmi_good_share": 0.8044,
+   "ndvi_anomaly": 0.1237,
+   "ndmi_anomaly": 0.0519
+  },
+  {
+   "month": "2026-07",
+   "ndvi": 0.8375,
+   "ndvi_good_share": 0.8242,
+   "ndmi": 0.3866,
+   "ndmi_good_share": 0.8323,
+   "ndvi_anomaly": 0.1144,
+   "ndmi_anomaly": 0.0592
+  }
+ ],
+ "baselines": {
+  "ndvi_01": 0.6655,
+  "ndmi_01": 0.3243,
+  "ndvi_02": 0.6601,
+  "ndmi_02": 0.3146,
+  "ndvi_03": 0.6783,
+  "ndmi_03": 0.3201,
+  "ndvi_04": 0.709,
+  "ndmi_04": 0.3321,
+  "ndvi_05": 0.7438,
+  "ndmi_05": 0.3418,
+  "ndvi_06": 0.7166,
+  "ndmi_06": 0.3417,
+  "ndvi_07": 0.7231,
+  "ndmi_07": 0.3274,
+  "ndvi_08": 0.7109,
+  "ndmi_08": 0.3249,
+  "ndvi_09": 0.7268,
+  "ndmi_09": 0.3178,
+  "ndvi_10": 0.7064,
+  "ndmi_10": 0.3177,
+  "ndvi_11": 0.679,
+  "ndmi_11": 0.327,
+  "ndvi_12": 0.678,
+  "ndmi_12": 0.3252
+ },
+ "qa_correlation": {
+  "ndvi_all": {
+   "r": 0.948,
+   "n": 307
+  },
+  "ndvi_july": {
+   "r": 0.965,
+   "n": 26
+  },
+  "ndmi_all": {
+   "r": 0.489,
+   "n": 307
+  },
+  "ndmi_july": {
+   "r": 0.802,
+   "n": 26
+  }
+ },
+ "coverage": {
+  "mod13a1_last_date": "2026-08-13",
+  "mod09a1_last_date": "2026-08-21",
+  "generated_utc": "2026-09-01T10:09:22Z"
+ },
+ "sources": {
+  "ndvi": "MODIS/061/MOD13A1 (NDVI band, scale 1e-4; SummaryQA <= 1 = good pixel)",
+  "ndmi": "MODIS/061/MOD09A1 (sur_refl_b02/b06 normalised difference; StateQA bits 0-1 == 0 = not cloudy)",
+  "land_mask": "ESA/WorldCover/v200 (class 80 = permanent water)",
+  "baseline_period": "2001-01 to 2025-12"
+ }
+}
