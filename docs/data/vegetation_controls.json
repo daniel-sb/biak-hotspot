@@ -1,0 +1,2165 @@
+{
+ "monthly": [
+  {
+   "month": "2001-01",
+   "aerosol_high_share": 0.0125,
+   "aerosol_climatology_share": 0.8791,
+   "view_zenith_deg": 24.312,
+   "solar_zenith_deg": 28.5774
+  },
+  {
+   "month": "2001-02",
+   "aerosol_high_share": 0.0182,
+   "aerosol_climatology_share": 0.8418,
+   "view_zenith_deg": 22.0835,
+   "solar_zenith_deg": 26.1446
+  },
+  {
+   "month": "2001-03",
+   "aerosol_high_share": 0.0143,
+   "aerosol_climatology_share": 0.8828,
+   "view_zenith_deg": 24.0363,
+   "solar_zenith_deg": 22.3795
+  },
+  {
+   "month": "2001-04",
+   "aerosol_high_share": 0.0155,
+   "aerosol_climatology_share": 0.8482,
+   "view_zenith_deg": 28.4384,
+   "solar_zenith_deg": 24.799
+  },
+  {
+   "month": "2001-05",
+   "aerosol_high_share": 0.015,
+   "aerosol_climatology_share": 0.693,
+   "view_zenith_deg": 26.735,
+   "solar_zenith_deg": 29.2088
+  },
+  {
+   "month": "2001-06",
+   "aerosol_high_share": 0.0105,
+   "aerosol_climatology_share": 0.5738,
+   "view_zenith_deg": 28.3655,
+   "solar_zenith_deg": 31.4553
+  },
+  {
+   "month": "2001-07",
+   "aerosol_high_share": 0.0218,
+   "aerosol_climatology_share": 0.6547,
+   "view_zenith_deg": 26.9777,
+   "solar_zenith_deg": 29.5884
+  },
+  {
+   "month": "2001-08",
+   "aerosol_high_share": 0.015,
+   "aerosol_climatology_share": 0.6572,
+   "view_zenith_deg": 28.3517,
+   "solar_zenith_deg": 23.7155
+  },
+  {
+   "month": "2001-09",
+   "aerosol_high_share": 0.0193,
+   "aerosol_climatology_share": 0.7448,
+   "view_zenith_deg": 25.9314,
+   "solar_zenith_deg": 19.198
+  },
+  {
+   "month": "2001-10",
+   "aerosol_high_share": 0.0125,
+   "aerosol_climatology_share": 0.6766,
+   "view_zenith_deg": 39.8228,
+   "solar_zenith_deg": 22.2905
+  },
+  {
+   "month": "2001-11",
+   "aerosol_high_share": 0.0177,
+   "aerosol_climatology_share": 0.8216,
+   "view_zenith_deg": 31.2661,
+   "solar_zenith_deg": 26.9898
+  },
+  {
+   "month": "2001-12",
+   "aerosol_high_share": 0.0079,
+   "aerosol_climatology_share": 0.9091,
+   "view_zenith_deg": 27.7632,
+   "solar_zenith_deg": 30.3584
+  },
+  {
+   "month": "2002-01",
+   "aerosol_high_share": 0.028,
+   "aerosol_climatology_share": 0.8045,
+   "view_zenith_deg": 25.6844,
+   "solar_zenith_deg": 31.9061
+  },
+  {
+   "month": "2002-02",
+   "aerosol_high_share": 0.0308,
+   "aerosol_climatology_share": 0.8403,
+   "view_zenith_deg": 35.3739,
+   "solar_zenith_deg": 29.5282
+  },
+  {
+   "month": "2002-03",
+   "aerosol_high_share": 0.0309,
+   "aerosol_climatology_share": 0.7914,
+   "view_zenith_deg": 31.8203,
+   "solar_zenith_deg": 23.9398
+  },
+  {
+   "month": "2002-04",
+   "aerosol_high_share": 0.0197,
+   "aerosol_climatology_share": 0.8057,
+   "view_zenith_deg": 33.5408,
+   "solar_zenith_deg": 25.8752
+  },
+  {
+   "month": "2002-05",
+   "aerosol_high_share": 0.0129,
+   "aerosol_climatology_share": 0.5469,
+   "view_zenith_deg": 13.1235,
+   "solar_zenith_deg": 30.1081
+  },
+  {
+   "month": "2002-06",
+   "aerosol_high_share": 0.0124,
+   "aerosol_climatology_share": 0.7492,
+   "view_zenith_deg": 23.7182,
+   "solar_zenith_deg": 33.9339
+  },
+  {
+   "month": "2002-07",
+   "aerosol_high_share": 0.0139,
+   "aerosol_climatology_share": 0.5642,
+   "view_zenith_deg": 30.2714,
+   "solar_zenith_deg": 30.9965
+  },
+  {
+   "month": "2002-08",
+   "aerosol_high_share": 0.0133,
+   "aerosol_climatology_share": 0.507,
+   "view_zenith_deg": 27.8215,
+   "solar_zenith_deg": 26.1328
+  },
+  {
+   "month": "2002-09",
+   "aerosol_high_share": 0.013,
+   "aerosol_climatology_share": 0.4958,
+   "view_zenith_deg": 27.2153,
+   "solar_zenith_deg": 21.1417
+  },
+  {
+   "month": "2002-10",
+   "aerosol_high_share": 0.0296,
+   "aerosol_climatology_share": 0.6232,
+   "view_zenith_deg": 27.8835,
+   "solar_zenith_deg": 22.5721
+  },
+  {
+   "month": "2002-11",
+   "aerosol_high_share": 0.0216,
+   "aerosol_climatology_share": 0.793,
+   "view_zenith_deg": 30.0115,
+   "solar_zenith_deg": 25.9614
+  },
+  {
+   "month": "2002-12",
+   "aerosol_high_share": 0.0273,
+   "aerosol_climatology_share": 0.7302,
+   "view_zenith_deg": 24.112,
+   "solar_zenith_deg": 30.2828
+  },
+  {
+   "month": "2003-01",
+   "aerosol_high_share": 0.0217,
+   "aerosol_climatology_share": 0.861,
+   "view_zenith_deg": 30.2883,
+   "solar_zenith_deg": 31.2718
+  },
+  {
+   "month": "2003-02",
+   "aerosol_high_share": 0.0201,
+   "aerosol_climatology_share": 0.8726,
+   "view_zenith_deg": 34.6193,
+   "solar_zenith_deg": 27.3581
+  },
+  {
+   "month": "2003-03",
+   "aerosol_high_share": 0.0337,
+   "aerosol_climatology_share": 0.7483,
+   "view_zenith_deg": 27.0918,
+   "solar_zenith_deg": 25.6821
+  },
+  {
+   "month": "2003-04",
+   "aerosol_high_share": 0.0164,
+   "aerosol_climatology_share": 0.7491,
+   "view_zenith_deg": 28.3795,
+   "solar_zenith_deg": 26.6484
+  },
+  {
+   "month": "2003-05",
+   "aerosol_high_share": 0.016,
+   "aerosol_climatology_share": 0.6353,
+   "view_zenith_deg": 25.0465,
+   "solar_zenith_deg": 30.0454
+  },
+  {
+   "month": "2003-06",
+   "aerosol_high_share": 0.0106,
+   "aerosol_climatology_share": 0.6405,
+   "view_zenith_deg": 26.0672,
+   "solar_zenith_deg": 33.0382
+  },
+  {
+   "month": "2003-07",
+   "aerosol_high_share": 0.0145,
+   "aerosol_climatology_share": 0.7642,
+   "view_zenith_deg": 18.7328,
+   "solar_zenith_deg": 31.8801
+  },
+  {
+   "month": "2003-08",
+   "aerosol_high_share": 0.0244,
+   "aerosol_climatology_share": 0.7065,
+   "view_zenith_deg": 36.8179,
+   "solar_zenith_deg": 26.1596
+  },
+  {
+   "month": "2003-09",
+   "aerosol_high_share": 0.0196,
+   "aerosol_climatology_share": 0.8841,
+   "view_zenith_deg": 24.3326,
+   "solar_zenith_deg": 19.6859
+  },
+  {
+   "month": "2003-10",
+   "aerosol_high_share": 0.0205,
+   "aerosol_climatology_share": 0.7539,
+   "view_zenith_deg": 34.732,
+   "solar_zenith_deg": 22.9693
+  },
+  {
+   "month": "2003-11",
+   "aerosol_high_share": 0.0251,
+   "aerosol_climatology_share": 0.7782,
+   "view_zenith_deg": 29.3974,
+   "solar_zenith_deg": 26.2034
+  },
+  {
+   "month": "2003-12",
+   "aerosol_high_share": 0.0226,
+   "aerosol_climatology_share": 0.8839,
+   "view_zenith_deg": 35.1435,
+   "solar_zenith_deg": 31.1276
+  },
+  {
+   "month": "2004-01",
+   "aerosol_high_share": 0.0201,
+   "aerosol_climatology_share": 0.8224,
+   "view_zenith_deg": 34.6847,
+   "solar_zenith_deg": 30.2889
+  },
+  {
+   "month": "2004-02",
+   "aerosol_high_share": 0.0178,
+   "aerosol_climatology_share": 0.8842,
+   "view_zenith_deg": 33.5008,
+   "solar_zenith_deg": 26.9207
+  },
+  {
+   "month": "2004-03",
+   "aerosol_high_share": 0.0215,
+   "aerosol_climatology_share": 0.7645,
+   "view_zenith_deg": 32.0892,
+   "solar_zenith_deg": 26.6574
+  },
+  {
+   "month": "2004-04",
+   "aerosol_high_share": 0.0165,
+   "aerosol_climatology_share": 0.7269,
+   "view_zenith_deg": 32.0218,
+   "solar_zenith_deg": 27.4203
+  },
+  {
+   "month": "2004-05",
+   "aerosol_high_share": 0.0053,
+   "aerosol_climatology_share": 0.6472,
+   "view_zenith_deg": 19.3899,
+   "solar_zenith_deg": 30.6638
+  },
+  {
+   "month": "2004-06",
+   "aerosol_high_share": 0.0089,
+   "aerosol_climatology_share": 0.4669,
+   "view_zenith_deg": 31.9921,
+   "solar_zenith_deg": 33.4031
+  },
+  {
+   "month": "2004-07",
+   "aerosol_high_share": 0.0148,
+   "aerosol_climatology_share": 0.8298,
+   "view_zenith_deg": 27.9874,
+   "solar_zenith_deg": 31.0407
+  },
+  {
+   "month": "2004-08",
+   "aerosol_high_share": 0.0147,
+   "aerosol_climatology_share": 0.5425,
+   "view_zenith_deg": 33.3813,
+   "solar_zenith_deg": 26.0657
+  },
+  {
+   "month": "2004-09",
+   "aerosol_high_share": 0.023,
+   "aerosol_climatology_share": 0.8428,
+   "view_zenith_deg": 34.8377,
+   "solar_zenith_deg": 20.326
+  },
+  {
+   "month": "2004-10",
+   "aerosol_high_share": 0.0565,
+   "aerosol_climatology_share": 0.7039,
+   "view_zenith_deg": 32.5845,
+   "solar_zenith_deg": 21.5808
+  },
+  {
+   "month": "2004-11",
+   "aerosol_high_share": 0.0203,
+   "aerosol_climatology_share": 0.9139,
+   "view_zenith_deg": 35.6938,
+   "solar_zenith_deg": 27.9911
+  },
+  {
+   "month": "2004-12",
+   "aerosol_high_share": 0.0132,
+   "aerosol_climatology_share": 0.8346,
+   "view_zenith_deg": 25.9603,
+   "solar_zenith_deg": 31.3445
+  },
+  {
+   "month": "2005-01",
+   "aerosol_high_share": 0.03,
+   "aerosol_climatology_share": 0.9017,
+   "view_zenith_deg": 35.7379,
+   "solar_zenith_deg": 33.7945
+  },
+  {
+   "month": "2005-02",
+   "aerosol_high_share": 0.0229,
+   "aerosol_climatology_share": 0.8208,
+   "view_zenith_deg": 31.2009,
+   "solar_zenith_deg": 27.7376
+  },
+  {
+   "month": "2005-03",
+   "aerosol_high_share": 0.027,
+   "aerosol_climatology_share": 0.8299,
+   "view_zenith_deg": 25.7844,
+   "solar_zenith_deg": 24.2644
+  },
+  {
+   "month": "2005-04",
+   "aerosol_high_share": 0.026,
+   "aerosol_climatology_share": 0.6971,
+   "view_zenith_deg": 25.1444,
+   "solar_zenith_deg": 25.1577
+  },
+  {
+   "month": "2005-05",
+   "aerosol_high_share": 0.021,
+   "aerosol_climatology_share": 0.8003,
+   "view_zenith_deg": 29.229,
+   "solar_zenith_deg": 30.4563
+  },
+  {
+   "month": "2005-06",
+   "aerosol_high_share": 0.043,
+   "aerosol_climatology_share": 0.8001,
+   "view_zenith_deg": 25.2751,
+   "solar_zenith_deg": 32.8842
+  },
+  {
+   "month": "2005-07",
+   "aerosol_high_share": 0.0181,
+   "aerosol_climatology_share": 0.7351,
+   "view_zenith_deg": 29.5993,
+   "solar_zenith_deg": 32.1337
+  },
+  {
+   "month": "2005-08",
+   "aerosol_high_share": 0.0258,
+   "aerosol_climatology_share": 0.7825,
+   "view_zenith_deg": 30.4678,
+   "solar_zenith_deg": 26.8603
+  },
+  {
+   "month": "2005-09",
+   "aerosol_high_share": 0.0234,
+   "aerosol_climatology_share": 0.7093,
+   "view_zenith_deg": 33.3127,
+   "solar_zenith_deg": 18.244
+  },
+  {
+   "month": "2005-10",
+   "aerosol_high_share": 0.0223,
+   "aerosol_climatology_share": 0.8243,
+   "view_zenith_deg": 25.8188,
+   "solar_zenith_deg": 22.279
+  },
+  {
+   "month": "2005-11",
+   "aerosol_high_share": 0.0207,
+   "aerosol_climatology_share": 0.7376,
+   "view_zenith_deg": 30.6456,
+   "solar_zenith_deg": 25.6654
+  },
+  {
+   "month": "2005-12",
+   "aerosol_high_share": 0.025,
+   "aerosol_climatology_share": 0.8775,
+   "view_zenith_deg": 29.1936,
+   "solar_zenith_deg": 30.8263
+  },
+  {
+   "month": "2006-01",
+   "aerosol_high_share": 0.0231,
+   "aerosol_climatology_share": 0.8984,
+   "view_zenith_deg": 32.3465,
+   "solar_zenith_deg": 29.9289
+  },
+  {
+   "month": "2006-02",
+   "aerosol_high_share": 0.0241,
+   "aerosol_climatology_share": 0.8425,
+   "view_zenith_deg": 37.8065,
+   "solar_zenith_deg": 28.9617
+  },
+  {
+   "month": "2006-03",
+   "aerosol_high_share": 0.0112,
+   "aerosol_climatology_share": 0.8004,
+   "view_zenith_deg": 32.0663,
+   "solar_zenith_deg": 24.9969
+  },
+  {
+   "month": "2006-04",
+   "aerosol_high_share": 0.0174,
+   "aerosol_climatology_share": 0.9024,
+   "view_zenith_deg": 27.2765,
+   "solar_zenith_deg": 25.103
+  },
+  {
+   "month": "2006-05",
+   "aerosol_high_share": 0.0148,
+   "aerosol_climatology_share": 0.6636,
+   "view_zenith_deg": 30.0307,
+   "solar_zenith_deg": 31.0668
+  },
+  {
+   "month": "2006-06",
+   "aerosol_high_share": 0.014,
+   "aerosol_climatology_share": 0.7898,
+   "view_zenith_deg": 34.2983,
+   "solar_zenith_deg": 34.3416
+  },
+  {
+   "month": "2006-07",
+   "aerosol_high_share": 0.0088,
+   "aerosol_climatology_share": 0.4841,
+   "view_zenith_deg": 23.4119,
+   "solar_zenith_deg": 31.2557
+  },
+  {
+   "month": "2006-08",
+   "aerosol_high_share": 0.0107,
+   "aerosol_climatology_share": 0.647,
+   "view_zenith_deg": 25.4258,
+   "solar_zenith_deg": 25.4806
+  },
+  {
+   "month": "2006-09",
+   "aerosol_high_share": 0.0136,
+   "aerosol_climatology_share": 0.6939,
+   "view_zenith_deg": 27.2949,
+   "solar_zenith_deg": 20.2922
+  },
+  {
+   "month": "2006-10",
+   "aerosol_high_share": 0.048,
+   "aerosol_climatology_share": 0.7431,
+   "view_zenith_deg": 32.5889,
+   "solar_zenith_deg": 20.9288
+  },
+  {
+   "month": "2006-11",
+   "aerosol_high_share": 0.0429,
+   "aerosol_climatology_share": 0.7714,
+   "view_zenith_deg": 34.7133,
+   "solar_zenith_deg": 25.9095
+  },
+  {
+   "month": "2006-12",
+   "aerosol_high_share": 0.0215,
+   "aerosol_climatology_share": 0.7504,
+   "view_zenith_deg": 29.834,
+   "solar_zenith_deg": 29.356
+  },
+  {
+   "month": "2007-01",
+   "aerosol_high_share": 0.0505,
+   "aerosol_climatology_share": 0.8006,
+   "view_zenith_deg": 22.0601,
+   "solar_zenith_deg": 30.8985
+  },
+  {
+   "month": "2007-02",
+   "aerosol_high_share": 0.0267,
+   "aerosol_climatology_share": 0.7266,
+   "view_zenith_deg": 22.3156,
+   "solar_zenith_deg": 26.9942
+  },
+  {
+   "month": "2007-03",
+   "aerosol_high_share": 0.0244,
+   "aerosol_climatology_share": 0.8752,
+   "view_zenith_deg": 38.6286,
+   "solar_zenith_deg": 23.9716
+  },
+  {
+   "month": "2007-04",
+   "aerosol_high_share": 0.0262,
+   "aerosol_climatology_share": 0.7915,
+   "view_zenith_deg": 28.9637,
+   "solar_zenith_deg": 25.5609
+  },
+  {
+   "month": "2007-05",
+   "aerosol_high_share": 0.0247,
+   "aerosol_climatology_share": 0.6643,
+   "view_zenith_deg": 25.6722,
+   "solar_zenith_deg": 29.9921
+  },
+  {
+   "month": "2007-06",
+   "aerosol_high_share": 0.0272,
+   "aerosol_climatology_share": 0.8525,
+   "view_zenith_deg": 27.9675,
+   "solar_zenith_deg": 33.221
+  },
+  {
+   "month": "2007-07",
+   "aerosol_high_share": 0.0288,
+   "aerosol_climatology_share": 0.7123,
+   "view_zenith_deg": 18.7797,
+   "solar_zenith_deg": 30.5354
+  },
+  {
+   "month": "2007-08",
+   "aerosol_high_share": 0.0107,
+   "aerosol_climatology_share": 0.8152,
+   "view_zenith_deg": 33.6524,
+   "solar_zenith_deg": 25.7745
+  },
+  {
+   "month": "2007-09",
+   "aerosol_high_share": 0.0174,
+   "aerosol_climatology_share": 0.6443,
+   "view_zenith_deg": 28.4217,
+   "solar_zenith_deg": 21.725
+  },
+  {
+   "month": "2007-10",
+   "aerosol_high_share": 0.0142,
+   "aerosol_climatology_share": 0.8253,
+   "view_zenith_deg": 21.677,
+   "solar_zenith_deg": 21.5753
+  },
+  {
+   "month": "2007-11",
+   "aerosol_high_share": 0.0138,
+   "aerosol_climatology_share": 0.8371,
+   "view_zenith_deg": 24.3689,
+   "solar_zenith_deg": 27.2925
+  },
+  {
+   "month": "2007-12",
+   "aerosol_high_share": 0.017,
+   "aerosol_climatology_share": 0.7899,
+   "view_zenith_deg": 30.2839,
+   "solar_zenith_deg": 31.7522
+  },
+  {
+   "month": "2008-01",
+   "aerosol_high_share": 0.0139,
+   "aerosol_climatology_share": 0.8113,
+   "view_zenith_deg": 19.0778,
+   "solar_zenith_deg": 31.7609
+  },
+  {
+   "month": "2008-02",
+   "aerosol_high_share": 0.021,
+   "aerosol_climatology_share": 0.9114,
+   "view_zenith_deg": 25.8041,
+   "solar_zenith_deg": 27.3732
+  },
+  {
+   "month": "2008-03",
+   "aerosol_high_share": 0.0157,
+   "aerosol_climatology_share": 0.8907,
+   "view_zenith_deg": 34.7866,
+   "solar_zenith_deg": 22.7796
+  },
+  {
+   "month": "2008-04",
+   "aerosol_high_share": 0.0109,
+   "aerosol_climatology_share": 0.9087,
+   "view_zenith_deg": 25.7513,
+   "solar_zenith_deg": 25.8588
+  },
+  {
+   "month": "2008-05",
+   "aerosol_high_share": 0.0246,
+   "aerosol_climatology_share": 0.7078,
+   "view_zenith_deg": 28.9558,
+   "solar_zenith_deg": 29.6918
+  },
+  {
+   "month": "2008-06",
+   "aerosol_high_share": 0.0245,
+   "aerosol_climatology_share": 0.8601,
+   "view_zenith_deg": 37.1277,
+   "solar_zenith_deg": 32.6614
+  },
+  {
+   "month": "2008-07",
+   "aerosol_high_share": 0.0286,
+   "aerosol_climatology_share": 0.7643,
+   "view_zenith_deg": 24.1457,
+   "solar_zenith_deg": 31.2605
+  },
+  {
+   "month": "2008-08",
+   "aerosol_high_share": 0.0205,
+   "aerosol_climatology_share": 0.8701,
+   "view_zenith_deg": 29.4302,
+   "solar_zenith_deg": 25.6508
+  },
+  {
+   "month": "2008-09",
+   "aerosol_high_share": 0.0115,
+   "aerosol_climatology_share": 0.6093,
+   "view_zenith_deg": 25.51,
+   "solar_zenith_deg": 22.0315
+  },
+  {
+   "month": "2008-10",
+   "aerosol_high_share": 0.0144,
+   "aerosol_climatology_share": 0.8528,
+   "view_zenith_deg": 27.7614,
+   "solar_zenith_deg": 23.0147
+  },
+  {
+   "month": "2008-11",
+   "aerosol_high_share": 0.0155,
+   "aerosol_climatology_share": 0.8508,
+   "view_zenith_deg": 24.596,
+   "solar_zenith_deg": 28.0896
+  },
+  {
+   "month": "2008-12",
+   "aerosol_high_share": 0.0172,
+   "aerosol_climatology_share": 0.9033,
+   "view_zenith_deg": 25.1808,
+   "solar_zenith_deg": 30.2861
+  },
+  {
+   "month": "2009-01",
+   "aerosol_high_share": 0.0134,
+   "aerosol_climatology_share": 0.8702,
+   "view_zenith_deg": 23.4013,
+   "solar_zenith_deg": 31.7747
+  },
+  {
+   "month": "2009-02",
+   "aerosol_high_share": 0.0134,
+   "aerosol_climatology_share": 0.8602,
+   "view_zenith_deg": 36.2072,
+   "solar_zenith_deg": 28.352
+  },
+  {
+   "month": "2009-03",
+   "aerosol_high_share": 0.0148,
+   "aerosol_climatology_share": 0.815,
+   "view_zenith_deg": 30.13,
+   "solar_zenith_deg": 23.5048
+  },
+  {
+   "month": "2009-04",
+   "aerosol_high_share": 0.0112,
+   "aerosol_climatology_share": 0.6222,
+   "view_zenith_deg": 25.288,
+   "solar_zenith_deg": 26.7294
+  },
+  {
+   "month": "2009-05",
+   "aerosol_high_share": 0.0126,
+   "aerosol_climatology_share": 0.7287,
+   "view_zenith_deg": 28.4513,
+   "solar_zenith_deg": 29.9222
+  },
+  {
+   "month": "2009-06",
+   "aerosol_high_share": 0.014,
+   "aerosol_climatology_share": 0.7079,
+   "view_zenith_deg": 36.011,
+   "solar_zenith_deg": 32.8362
+  },
+  {
+   "month": "2009-07",
+   "aerosol_high_share": 0.0251,
+   "aerosol_climatology_share": 0.7758,
+   "view_zenith_deg": 36.8886,
+   "solar_zenith_deg": 31.44
+  },
+  {
+   "month": "2009-08",
+   "aerosol_high_share": 0.014,
+   "aerosol_climatology_share": 0.6063,
+   "view_zenith_deg": 23.2758,
+   "solar_zenith_deg": 25.3344
+  },
+  {
+   "month": "2009-09",
+   "aerosol_high_share": 0.0325,
+   "aerosol_climatology_share": 0.702,
+   "view_zenith_deg": 29.0483,
+   "solar_zenith_deg": 21.4622
+  },
+  {
+   "month": "2009-10",
+   "aerosol_high_share": 0.021,
+   "aerosol_climatology_share": 0.7562,
+   "view_zenith_deg": 20.4069,
+   "solar_zenith_deg": 21.6859
+  },
+  {
+   "month": "2009-11",
+   "aerosol_high_share": 0.019,
+   "aerosol_climatology_share": 0.8331,
+   "view_zenith_deg": 30.7887,
+   "solar_zenith_deg": 25.3882
+  },
+  {
+   "month": "2009-12",
+   "aerosol_high_share": 0.0226,
+   "aerosol_climatology_share": 0.7866,
+   "view_zenith_deg": 34.4246,
+   "solar_zenith_deg": 31.7833
+  },
+  {
+   "month": "2010-01",
+   "aerosol_high_share": 0.0282,
+   "aerosol_climatology_share": 0.8886,
+   "view_zenith_deg": 30.6229,
+   "solar_zenith_deg": 32.4266
+  },
+  {
+   "month": "2010-02",
+   "aerosol_high_share": 0.0358,
+   "aerosol_climatology_share": 0.6914,
+   "view_zenith_deg": 24.2226,
+   "solar_zenith_deg": 28.0093
+  },
+  {
+   "month": "2010-03",
+   "aerosol_high_share": 0.0176,
+   "aerosol_climatology_share": 0.9051,
+   "view_zenith_deg": 28.5149,
+   "solar_zenith_deg": 26.3171
+  },
+  {
+   "month": "2010-04",
+   "aerosol_high_share": 0.0146,
+   "aerosol_climatology_share": 0.7049,
+   "view_zenith_deg": 25.2001,
+   "solar_zenith_deg": 25.5903
+  },
+  {
+   "month": "2010-05",
+   "aerosol_high_share": 0.0136,
+   "aerosol_climatology_share": 0.7147,
+   "view_zenith_deg": 22.8042,
+   "solar_zenith_deg": 30.3771
+  },
+  {
+   "month": "2010-06",
+   "aerosol_high_share": 0.0219,
+   "aerosol_climatology_share": 0.6689,
+   "view_zenith_deg": 18.882,
+   "solar_zenith_deg": 33.584
+  },
+  {
+   "month": "2010-07",
+   "aerosol_high_share": 0.0254,
+   "aerosol_climatology_share": 0.8209,
+   "view_zenith_deg": 23.1319,
+   "solar_zenith_deg": 31.5893
+  },
+  {
+   "month": "2010-08",
+   "aerosol_high_share": 0.017,
+   "aerosol_climatology_share": 0.7548,
+   "view_zenith_deg": 30.7822,
+   "solar_zenith_deg": 25.0697
+  },
+  {
+   "month": "2010-09",
+   "aerosol_high_share": 0.0227,
+   "aerosol_climatology_share": 0.7813,
+   "view_zenith_deg": 21.8173,
+   "solar_zenith_deg": 20.4974
+  },
+  {
+   "month": "2010-10",
+   "aerosol_high_share": 0.0164,
+   "aerosol_climatology_share": 0.6407,
+   "view_zenith_deg": 28.1733,
+   "solar_zenith_deg": 22.3552
+  },
+  {
+   "month": "2010-11",
+   "aerosol_high_share": 0.0164,
+   "aerosol_climatology_share": 0.7516,
+   "view_zenith_deg": 26.9772,
+   "solar_zenith_deg": 26.3769
+  },
+  {
+   "month": "2010-12",
+   "aerosol_high_share": 0.0178,
+   "aerosol_climatology_share": 0.7811,
+   "view_zenith_deg": 23.4952,
+   "solar_zenith_deg": 31.5007
+  },
+  {
+   "month": "2011-01",
+   "aerosol_high_share": 0.0223,
+   "aerosol_climatology_share": 0.6494,
+   "view_zenith_deg": 29.2508,
+   "solar_zenith_deg": 29.9283
+  },
+  {
+   "month": "2011-02",
+   "aerosol_high_share": 0.0118,
+   "aerosol_climatology_share": 0.7617,
+   "view_zenith_deg": 27.4338,
+   "solar_zenith_deg": 28.139
+  },
+  {
+   "month": "2011-03",
+   "aerosol_high_share": 0.0181,
+   "aerosol_climatology_share": 0.7871,
+   "view_zenith_deg": 31.6879,
+   "solar_zenith_deg": 24.0841
+  },
+  {
+   "month": "2011-04",
+   "aerosol_high_share": 0.0245,
+   "aerosol_climatology_share": 0.8106,
+   "view_zenith_deg": 32.631,
+   "solar_zenith_deg": 24.7289
+  },
+  {
+   "month": "2011-05",
+   "aerosol_high_share": 0.0139,
+   "aerosol_climatology_share": 0.8024,
+   "view_zenith_deg": 22.3378,
+   "solar_zenith_deg": 31.0674
+  },
+  {
+   "month": "2011-06",
+   "aerosol_high_share": 0.0152,
+   "aerosol_climatology_share": 0.7787,
+   "view_zenith_deg": 36.2444,
+   "solar_zenith_deg": 35.0653
+  },
+  {
+   "month": "2011-07",
+   "aerosol_high_share": 0.0172,
+   "aerosol_climatology_share": 0.8485,
+   "view_zenith_deg": 32.1462,
+   "solar_zenith_deg": 30.4189
+  },
+  {
+   "month": "2011-08",
+   "aerosol_high_share": 0.0426,
+   "aerosol_climatology_share": 0.7953,
+   "view_zenith_deg": 34.2888,
+   "solar_zenith_deg": 23.4858
+  },
+  {
+   "month": "2011-09",
+   "aerosol_high_share": 0.0284,
+   "aerosol_climatology_share": 0.7295,
+   "view_zenith_deg": 39.1871,
+   "solar_zenith_deg": 19.421
+  },
+  {
+   "month": "2011-10",
+   "aerosol_high_share": 0.0209,
+   "aerosol_climatology_share": 0.8431,
+   "view_zenith_deg": 26.7002,
+   "solar_zenith_deg": 23.0752
+  },
+  {
+   "month": "2011-11",
+   "aerosol_high_share": 0.0166,
+   "aerosol_climatology_share": 0.687,
+   "view_zenith_deg": 23.6673,
+   "solar_zenith_deg": 25.7886
+  },
+  {
+   "month": "2011-12",
+   "aerosol_high_share": 0.0077,
+   "aerosol_climatology_share": 0.8715,
+   "view_zenith_deg": 14.0735,
+   "solar_zenith_deg": 30.2376
+  },
+  {
+   "month": "2012-01",
+   "aerosol_high_share": 0.0174,
+   "aerosol_climatology_share": 0.7802,
+   "view_zenith_deg": 26.9535,
+   "solar_zenith_deg": 31.5318
+  },
+  {
+   "month": "2012-02",
+   "aerosol_high_share": 0.029,
+   "aerosol_climatology_share": 0.854,
+   "view_zenith_deg": 30.4183,
+   "solar_zenith_deg": 28.3037
+  },
+  {
+   "month": "2012-03",
+   "aerosol_high_share": 0.0316,
+   "aerosol_climatology_share": 0.8726,
+   "view_zenith_deg": 28.9173,
+   "solar_zenith_deg": 25.7902
+  },
+  {
+   "month": "2012-04",
+   "aerosol_high_share": 0.02,
+   "aerosol_climatology_share": 0.732,
+   "view_zenith_deg": 26.5735,
+   "solar_zenith_deg": 27.7063
+  },
+  {
+   "month": "2012-05",
+   "aerosol_high_share": 0.0199,
+   "aerosol_climatology_share": 0.7565,
+   "view_zenith_deg": 35.9106,
+   "solar_zenith_deg": 31.6511
+  },
+  {
+   "month": "2012-06",
+   "aerosol_high_share": 0.0204,
+   "aerosol_climatology_share": 0.6749,
+   "view_zenith_deg": 32.1289,
+   "solar_zenith_deg": 34.0651
+  },
+  {
+   "month": "2012-07",
+   "aerosol_high_share": 0.0208,
+   "aerosol_climatology_share": 0.8516,
+   "view_zenith_deg": 28.4067,
+   "solar_zenith_deg": 30.3277
+  },
+  {
+   "month": "2012-08",
+   "aerosol_high_share": 0.0287,
+   "aerosol_climatology_share": 0.6772,
+   "view_zenith_deg": 20.739,
+   "solar_zenith_deg": 25.9276
+  },
+  {
+   "month": "2012-09",
+   "aerosol_high_share": 0.0124,
+   "aerosol_climatology_share": 0.6099,
+   "view_zenith_deg": 24.2022,
+   "solar_zenith_deg": 22.6524
+  },
+  {
+   "month": "2012-10",
+   "aerosol_high_share": 0.0111,
+   "aerosol_climatology_share": 0.7764,
+   "view_zenith_deg": 30.1052,
+   "solar_zenith_deg": 22.3119
+  },
+  {
+   "month": "2012-11",
+   "aerosol_high_share": 0.01,
+   "aerosol_climatology_share": 0.9358,
+   "view_zenith_deg": 31.1707,
+   "solar_zenith_deg": 27.7435
+  },
+  {
+   "month": "2012-12",
+   "aerosol_high_share": 0.0183,
+   "aerosol_climatology_share": 0.7033,
+   "view_zenith_deg": 27.3636,
+   "solar_zenith_deg": 30.0996
+  },
+  {
+   "month": "2013-01",
+   "aerosol_high_share": 0.0474,
+   "aerosol_climatology_share": 0.7831,
+   "view_zenith_deg": 26.3367,
+   "solar_zenith_deg": 30.5514
+  },
+  {
+   "month": "2013-02",
+   "aerosol_high_share": 0.0162,
+   "aerosol_climatology_share": 0.9044,
+   "view_zenith_deg": 28.2649,
+   "solar_zenith_deg": 26.8472
+  },
+  {
+   "month": "2013-03",
+   "aerosol_high_share": 0.0164,
+   "aerosol_climatology_share": 0.779,
+   "view_zenith_deg": 34.2475,
+   "solar_zenith_deg": 26.8278
+  },
+  {
+   "month": "2013-04",
+   "aerosol_high_share": 0.0131,
+   "aerosol_climatology_share": 0.8112,
+   "view_zenith_deg": 38.8176,
+   "solar_zenith_deg": 24.5971
+  },
+  {
+   "month": "2013-05",
+   "aerosol_high_share": 0.0103,
+   "aerosol_climatology_share": 0.783,
+   "view_zenith_deg": 26.9513,
+   "solar_zenith_deg": 30.4151
+  },
+  {
+   "month": "2013-06",
+   "aerosol_high_share": 0.0262,
+   "aerosol_climatology_share": 0.8475,
+   "view_zenith_deg": 27.4774,
+   "solar_zenith_deg": 32.7967
+  },
+  {
+   "month": "2013-07",
+   "aerosol_high_share": 0.0374,
+   "aerosol_climatology_share": 0.8015,
+   "view_zenith_deg": 28.876,
+   "solar_zenith_deg": 30.3287
+  },
+  {
+   "month": "2013-08",
+   "aerosol_high_share": 0.0189,
+   "aerosol_climatology_share": 0.735,
+   "view_zenith_deg": 24.5328,
+   "solar_zenith_deg": 24.9643
+  },
+  {
+   "month": "2013-09",
+   "aerosol_high_share": 0.0229,
+   "aerosol_climatology_share": 0.7177,
+   "view_zenith_deg": 26.9632,
+   "solar_zenith_deg": 19.9436
+  },
+  {
+   "month": "2013-10",
+   "aerosol_high_share": 0.0279,
+   "aerosol_climatology_share": 0.7412,
+   "view_zenith_deg": 27.3248,
+   "solar_zenith_deg": 22.6485
+  },
+  {
+   "month": "2013-11",
+   "aerosol_high_share": 0.0236,
+   "aerosol_climatology_share": 0.8857,
+   "view_zenith_deg": 27.0912,
+   "solar_zenith_deg": 26.0684
+  },
+  {
+   "month": "2013-12",
+   "aerosol_high_share": 0.0108,
+   "aerosol_climatology_share": 0.8796,
+   "view_zenith_deg": 29.8404,
+   "solar_zenith_deg": 31.971
+  },
+  {
+   "month": "2014-01",
+   "aerosol_high_share": 0.0227,
+   "aerosol_climatology_share": 0.9149,
+   "view_zenith_deg": 45.6815,
+   "solar_zenith_deg": 34.2456
+  },
+  {
+   "month": "2014-02",
+   "aerosol_high_share": 0.0119,
+   "aerosol_climatology_share": 0.6868,
+   "view_zenith_deg": 33.0644,
+   "solar_zenith_deg": 29.2449
+  },
+  {
+   "month": "2014-03",
+   "aerosol_high_share": 0.0226,
+   "aerosol_climatology_share": 0.7402,
+   "view_zenith_deg": 34.1431,
+   "solar_zenith_deg": 24.3716
+  },
+  {
+   "month": "2014-04",
+   "aerosol_high_share": 0.0302,
+   "aerosol_climatology_share": 0.8029,
+   "view_zenith_deg": 31.4364,
+   "solar_zenith_deg": 26.3931
+  },
+  {
+   "month": "2014-05",
+   "aerosol_high_share": 0.0117,
+   "aerosol_climatology_share": 0.6815,
+   "view_zenith_deg": 24.6611,
+   "solar_zenith_deg": 31.0377
+  },
+  {
+   "month": "2014-06",
+   "aerosol_high_share": 0.0183,
+   "aerosol_climatology_share": 0.6895,
+   "view_zenith_deg": 35.5569,
+   "solar_zenith_deg": 32.3205
+  },
+  {
+   "month": "2014-07",
+   "aerosol_high_share": 0.0206,
+   "aerosol_climatology_share": 0.5831,
+   "view_zenith_deg": 32.0442,
+   "solar_zenith_deg": 30.2934
+  },
+  {
+   "month": "2014-08",
+   "aerosol_high_share": 0.0141,
+   "aerosol_climatology_share": 0.7956,
+   "view_zenith_deg": 25.3852,
+   "solar_zenith_deg": 25.1514
+  },
+  {
+   "month": "2014-09",
+   "aerosol_high_share": 0.0179,
+   "aerosol_climatology_share": 0.6595,
+   "view_zenith_deg": 32.2935,
+   "solar_zenith_deg": 21.3778
+  },
+  {
+   "month": "2014-10",
+   "aerosol_high_share": 0.0345,
+   "aerosol_climatology_share": 0.8097,
+   "view_zenith_deg": 31.9305,
+   "solar_zenith_deg": 22.1426
+  },
+  {
+   "month": "2014-11",
+   "aerosol_high_share": 0.015,
+   "aerosol_climatology_share": 0.8722,
+   "view_zenith_deg": 30.5681,
+   "solar_zenith_deg": 25.2638
+  },
+  {
+   "month": "2014-12",
+   "aerosol_high_share": 0.026,
+   "aerosol_climatology_share": 0.8066,
+   "view_zenith_deg": 36.7986,
+   "solar_zenith_deg": 30.6934
+  },
+  {
+   "month": "2015-01",
+   "aerosol_high_share": 0.0121,
+   "aerosol_climatology_share": 0.8437,
+   "view_zenith_deg": 28.6008,
+   "solar_zenith_deg": 31.1607
+  },
+  {
+   "month": "2015-02",
+   "aerosol_high_share": 0.0259,
+   "aerosol_climatology_share": 0.8298,
+   "view_zenith_deg": 21.222,
+   "solar_zenith_deg": 28.2774
+  },
+  {
+   "month": "2015-03",
+   "aerosol_high_share": 0.0142,
+   "aerosol_climatology_share": 0.6609,
+   "view_zenith_deg": 30.7384,
+   "solar_zenith_deg": 25.8227
+  },
+  {
+   "month": "2015-04",
+   "aerosol_high_share": 0.0237,
+   "aerosol_climatology_share": 0.7848,
+   "view_zenith_deg": 27.7798,
+   "solar_zenith_deg": 25.7784
+  },
+  {
+   "month": "2015-05",
+   "aerosol_high_share": 0.0102,
+   "aerosol_climatology_share": 0.5679,
+   "view_zenith_deg": 32.7824,
+   "solar_zenith_deg": 30.7182
+  },
+  {
+   "month": "2015-06",
+   "aerosol_high_share": 0.0042,
+   "aerosol_climatology_share": 0.6521,
+   "view_zenith_deg": 26.0085,
+   "solar_zenith_deg": 32.4287
+  },
+  {
+   "month": "2015-07",
+   "aerosol_high_share": 0.013,
+   "aerosol_climatology_share": 0.6052,
+   "view_zenith_deg": 29.1381,
+   "solar_zenith_deg": 31.3922
+  },
+  {
+   "month": "2015-08",
+   "aerosol_high_share": 0.0121,
+   "aerosol_climatology_share": 0.6943,
+   "view_zenith_deg": 25.664,
+   "solar_zenith_deg": 25.8207
+  },
+  {
+   "month": "2015-09",
+   "aerosol_high_share": 0.0401,
+   "aerosol_climatology_share": 0.7353,
+   "view_zenith_deg": 28.8863,
+   "solar_zenith_deg": 21.566
+  },
+  {
+   "month": "2015-10",
+   "aerosol_high_share": 0.0792,
+   "aerosol_climatology_share": 0.7307,
+   "view_zenith_deg": 23.5272,
+   "solar_zenith_deg": 20.7255
+  },
+  {
+   "month": "2015-11",
+   "aerosol_high_share": 0.0158,
+   "aerosol_climatology_share": 0.8254,
+   "view_zenith_deg": 31.3353,
+   "solar_zenith_deg": 26.022
+  },
+  {
+   "month": "2015-12",
+   "aerosol_high_share": 0.0242,
+   "aerosol_climatology_share": 0.7844,
+   "view_zenith_deg": 30.9793,
+   "solar_zenith_deg": 30.7878
+  },
+  {
+   "month": "2016-01",
+   "aerosol_high_share": 0.0205,
+   "aerosol_climatology_share": 0.9021,
+   "view_zenith_deg": 30.2481,
+   "solar_zenith_deg": 32.037
+  },
+  {
+   "month": "2016-02",
+   "aerosol_high_share": 0.0161,
+   "aerosol_climatology_share": 0.9488,
+   "view_zenith_deg": 37.8865,
+   "solar_zenith_deg": 26.3217
+  },
+  {
+   "month": "2016-03",
+   "aerosol_high_share": 0.0502,
+   "aerosol_climatology_share": 0.7108,
+   "view_zenith_deg": 28.6949,
+   "solar_zenith_deg": 22.8085
+  },
+  {
+   "month": "2016-04",
+   "aerosol_high_share": 0.0227,
+   "aerosol_climatology_share": 0.7645,
+   "view_zenith_deg": 30.8945,
+   "solar_zenith_deg": 25.51
+  },
+  {
+   "month": "2016-05",
+   "aerosol_high_share": 0.0193,
+   "aerosol_climatology_share": 0.7236,
+   "view_zenith_deg": 35.6931,
+   "solar_zenith_deg": 31.7466
+  },
+  {
+   "month": "2016-06",
+   "aerosol_high_share": 0.0211,
+   "aerosol_climatology_share": 0.7744,
+   "view_zenith_deg": 29.6786,
+   "solar_zenith_deg": 32.7451
+  },
+  {
+   "month": "2016-07",
+   "aerosol_high_share": 0.0202,
+   "aerosol_climatology_share": 0.8169,
+   "view_zenith_deg": 25.8092,
+   "solar_zenith_deg": 31.7833
+  },
+  {
+   "month": "2016-08",
+   "aerosol_high_share": 0.0126,
+   "aerosol_climatology_share": 0.5241,
+   "view_zenith_deg": 36.9381,
+   "solar_zenith_deg": 27.0591
+  },
+  {
+   "month": "2016-09",
+   "aerosol_high_share": 0.0223,
+   "aerosol_climatology_share": 0.7138,
+   "view_zenith_deg": 25.2026,
+   "solar_zenith_deg": 20.9316
+  },
+  {
+   "month": "2016-10",
+   "aerosol_high_share": 0.0086,
+   "aerosol_climatology_share": 0.7364,
+   "view_zenith_deg": 19.1287,
+   "solar_zenith_deg": 21.744
+  },
+  {
+   "month": "2016-11",
+   "aerosol_high_share": 0.0203,
+   "aerosol_climatology_share": 0.8316,
+   "view_zenith_deg": 27.2188,
+   "solar_zenith_deg": 27.1804
+  },
+  {
+   "month": "2016-12",
+   "aerosol_high_share": 0.0158,
+   "aerosol_climatology_share": 0.7243,
+   "view_zenith_deg": 22.783,
+   "solar_zenith_deg": 31.3263
+  },
+  {
+   "month": "2017-01",
+   "aerosol_high_share": 0.0132,
+   "aerosol_climatology_share": 0.8825,
+   "view_zenith_deg": 37.1373,
+   "solar_zenith_deg": 32.1118
+  },
+  {
+   "month": "2017-02",
+   "aerosol_high_share": 0.0256,
+   "aerosol_climatology_share": 0.8515,
+   "view_zenith_deg": 30.9399,
+   "solar_zenith_deg": 26.7553
+  },
+  {
+   "month": "2017-03",
+   "aerosol_high_share": 0.0168,
+   "aerosol_climatology_share": 0.8799,
+   "view_zenith_deg": 28.0245,
+   "solar_zenith_deg": 22.3252
+  },
+  {
+   "month": "2017-04",
+   "aerosol_high_share": 0.0312,
+   "aerosol_climatology_share": 0.8802,
+   "view_zenith_deg": 31.0698,
+   "solar_zenith_deg": 25.0197
+  },
+  {
+   "month": "2017-05",
+   "aerosol_high_share": 0.0205,
+   "aerosol_climatology_share": 0.789,
+   "view_zenith_deg": 23.6985,
+   "solar_zenith_deg": 31.327
+  },
+  {
+   "month": "2017-06",
+   "aerosol_high_share": 0.0221,
+   "aerosol_climatology_share": 0.8821,
+   "view_zenith_deg": 25.6656,
+   "solar_zenith_deg": 32.6133
+  },
+  {
+   "month": "2017-07",
+   "aerosol_high_share": 0.0332,
+   "aerosol_climatology_share": 0.865,
+   "view_zenith_deg": 35.1487,
+   "solar_zenith_deg": 30.3635
+  },
+  {
+   "month": "2017-08",
+   "aerosol_high_share": 0.0191,
+   "aerosol_climatology_share": 0.7631,
+   "view_zenith_deg": 25.8959,
+   "solar_zenith_deg": 26.7965
+  },
+  {
+   "month": "2017-09",
+   "aerosol_high_share": 0.0194,
+   "aerosol_climatology_share": 0.8602,
+   "view_zenith_deg": 28.3425,
+   "solar_zenith_deg": 19.8346
+  },
+  {
+   "month": "2017-10",
+   "aerosol_high_share": 0.0184,
+   "aerosol_climatology_share": 0.8143,
+   "view_zenith_deg": 38.3942,
+   "solar_zenith_deg": 21.3809
+  },
+  {
+   "month": "2017-11",
+   "aerosol_high_share": 0.0187,
+   "aerosol_climatology_share": 0.8414,
+   "view_zenith_deg": 33.8944,
+   "solar_zenith_deg": 24.895
+  },
+  {
+   "month": "2017-12",
+   "aerosol_high_share": 0.0204,
+   "aerosol_climatology_share": 0.8226,
+   "view_zenith_deg": 30.0238,
+   "solar_zenith_deg": 30.5727
+  },
+  {
+   "month": "2018-01",
+   "aerosol_high_share": 0.0137,
+   "aerosol_climatology_share": 0.7966,
+   "view_zenith_deg": 30.6786,
+   "solar_zenith_deg": 33.105
+  },
+  {
+   "month": "2018-02",
+   "aerosol_high_share": 0.0153,
+   "aerosol_climatology_share": 0.6116,
+   "view_zenith_deg": 29.8124,
+   "solar_zenith_deg": 29.3505
+  },
+  {
+   "month": "2018-03",
+   "aerosol_high_share": 0.0378,
+   "aerosol_climatology_share": 0.873,
+   "view_zenith_deg": 34.1364,
+   "solar_zenith_deg": 24.6003
+  },
+  {
+   "month": "2018-04",
+   "aerosol_high_share": 0.0184,
+   "aerosol_climatology_share": 0.7771,
+   "view_zenith_deg": 19.1096,
+   "solar_zenith_deg": 24.8985
+  },
+  {
+   "month": "2018-05",
+   "aerosol_high_share": 0.0242,
+   "aerosol_climatology_share": 0.8115,
+   "view_zenith_deg": 29.1602,
+   "solar_zenith_deg": 30.4164
+  },
+  {
+   "month": "2018-06",
+   "aerosol_high_share": 0.0271,
+   "aerosol_climatology_share": 0.6955,
+   "view_zenith_deg": 35.1949,
+   "solar_zenith_deg": 32.9829
+  },
+  {
+   "month": "2018-07",
+   "aerosol_high_share": 0.0229,
+   "aerosol_climatology_share": 0.6935,
+   "view_zenith_deg": 28.0421,
+   "solar_zenith_deg": 31.353
+  },
+  {
+   "month": "2018-08",
+   "aerosol_high_share": 0.0246,
+   "aerosol_climatology_share": 0.8339,
+   "view_zenith_deg": 33.3995,
+   "solar_zenith_deg": 24.6429
+  },
+  {
+   "month": "2018-09",
+   "aerosol_high_share": 0.04,
+   "aerosol_climatology_share": 0.8047,
+   "view_zenith_deg": 31.2824,
+   "solar_zenith_deg": 20.4295
+  },
+  {
+   "month": "2018-10",
+   "aerosol_high_share": 0.0136,
+   "aerosol_climatology_share": 0.9245,
+   "view_zenith_deg": 32.8502,
+   "solar_zenith_deg": 23.5974
+  },
+  {
+   "month": "2018-11",
+   "aerosol_high_share": 0.0231,
+   "aerosol_climatology_share": 0.8021,
+   "view_zenith_deg": 31.0384,
+   "solar_zenith_deg": 23.4816
+  },
+  {
+   "month": "2018-12",
+   "aerosol_high_share": 0.0151,
+   "aerosol_climatology_share": 0.8054,
+   "view_zenith_deg": 29.702,
+   "solar_zenith_deg": 30.4407
+  },
+  {
+   "month": "2019-01",
+   "aerosol_high_share": 0.0205,
+   "aerosol_climatology_share": 0.7466,
+   "view_zenith_deg": 23.3361,
+   "solar_zenith_deg": 30.6776
+  },
+  {
+   "month": "2019-02",
+   "aerosol_high_share": 0.0258,
+   "aerosol_climatology_share": 0.8782,
+   "view_zenith_deg": 32.1813,
+   "solar_zenith_deg": 28.3519
+  },
+  {
+   "month": "2019-03",
+   "aerosol_high_share": 0.0222,
+   "aerosol_climatology_share": 0.8673,
+   "view_zenith_deg": 31.8764,
+   "solar_zenith_deg": 23.2906
+  },
+  {
+   "month": "2019-04",
+   "aerosol_high_share": 0.0146,
+   "aerosol_climatology_share": 0.8069,
+   "view_zenith_deg": 32.53,
+   "solar_zenith_deg": 27.3818
+  },
+  {
+   "month": "2019-05",
+   "aerosol_high_share": 0.02,
+   "aerosol_climatology_share": 0.7696,
+   "view_zenith_deg": 30.2873,
+   "solar_zenith_deg": 31.0144
+  },
+  {
+   "month": "2019-06",
+   "aerosol_high_share": 0.0264,
+   "aerosol_climatology_share": 0.8673,
+   "view_zenith_deg": 34.9672,
+   "solar_zenith_deg": 33.8043
+  },
+  {
+   "month": "2019-07",
+   "aerosol_high_share": 0.024,
+   "aerosol_climatology_share": 0.7316,
+   "view_zenith_deg": 28.0125,
+   "solar_zenith_deg": 30.0228
+  },
+  {
+   "month": "2019-08",
+   "aerosol_high_share": 0.0373,
+   "aerosol_climatology_share": 0.729,
+   "view_zenith_deg": 25.0035,
+   "solar_zenith_deg": 24.0345
+  },
+  {
+   "month": "2019-09",
+   "aerosol_high_share": 0.036,
+   "aerosol_climatology_share": 0.7225,
+   "view_zenith_deg": 31.6521,
+   "solar_zenith_deg": 21.3575
+  },
+  {
+   "month": "2019-10",
+   "aerosol_high_share": 0.0396,
+   "aerosol_climatology_share": 0.8619,
+   "view_zenith_deg": 29.3879,
+   "solar_zenith_deg": 21.3591
+  },
+  {
+   "month": "2019-11",
+   "aerosol_high_share": 0.0079,
+   "aerosol_climatology_share": 0.514,
+   "view_zenith_deg": 23.4914,
+   "solar_zenith_deg": 25.6219
+  },
+  {
+   "month": "2019-12",
+   "aerosol_high_share": 0.0184,
+   "aerosol_climatology_share": 0.7605,
+   "view_zenith_deg": 26.1271,
+   "solar_zenith_deg": 31.0112
+  },
+  {
+   "month": "2020-01",
+   "aerosol_high_share": 0.0229,
+   "aerosol_climatology_share": 0.8642,
+   "view_zenith_deg": 24.4927,
+   "solar_zenith_deg": 31.0678
+  },
+  {
+   "month": "2020-02",
+   "aerosol_high_share": 0.0175,
+   "aerosol_climatology_share": 0.7679,
+   "view_zenith_deg": 25.3533,
+   "solar_zenith_deg": 27.4245
+  },
+  {
+   "month": "2020-03",
+   "aerosol_high_share": 0.0237,
+   "aerosol_climatology_share": 0.7596,
+   "view_zenith_deg": 28.1802,
+   "solar_zenith_deg": 23.619
+  },
+  {
+   "month": "2020-04",
+   "aerosol_high_share": 0.0086,
+   "aerosol_climatology_share": 0.4501,
+   "view_zenith_deg": 31.2108,
+   "solar_zenith_deg": 27.9107
+  },
+  {
+   "month": "2020-05",
+   "aerosol_high_share": 0.0228,
+   "aerosol_climatology_share": 0.8125,
+   "view_zenith_deg": 35.103,
+   "solar_zenith_deg": 30.1671
+  },
+  {
+   "month": "2020-06",
+   "aerosol_high_share": 0.0186,
+   "aerosol_climatology_share": 0.7648,
+   "view_zenith_deg": 31.4831,
+   "solar_zenith_deg": 34.2572
+  },
+  {
+   "month": "2020-07",
+   "aerosol_high_share": 0.0185,
+   "aerosol_climatology_share": 0.8512,
+   "view_zenith_deg": 29.5337,
+   "solar_zenith_deg": 31.7976
+  },
+  {
+   "month": "2020-08",
+   "aerosol_high_share": 0.0223,
+   "aerosol_climatology_share": 0.8124,
+   "view_zenith_deg": 36.3551,
+   "solar_zenith_deg": 25.1109
+  },
+  {
+   "month": "2020-09",
+   "aerosol_high_share": 0.0165,
+   "aerosol_climatology_share": 0.8068,
+   "view_zenith_deg": 34.9003,
+   "solar_zenith_deg": 20.0428
+  },
+  {
+   "month": "2020-10",
+   "aerosol_high_share": 0.015,
+   "aerosol_climatology_share": 0.8224,
+   "view_zenith_deg": 30.128,
+   "solar_zenith_deg": 22.3801
+  },
+  {
+   "month": "2020-11",
+   "aerosol_high_share": 0.0114,
+   "aerosol_climatology_share": 0.843,
+   "view_zenith_deg": 35.6696,
+   "solar_zenith_deg": 27.1247
+  },
+  {
+   "month": "2020-12",
+   "aerosol_high_share": 0.013,
+   "aerosol_climatology_share": 0.845,
+   "view_zenith_deg": 28.1648,
+   "solar_zenith_deg": 32.0113
+  },
+  {
+   "month": "2021-01",
+   "aerosol_high_share": 0.0088,
+   "aerosol_climatology_share": 0.9651,
+   "view_zenith_deg": 32.7733,
+   "solar_zenith_deg": 31.9289
+  },
+  {
+   "month": "2021-02",
+   "aerosol_high_share": 0.0229,
+   "aerosol_climatology_share": 0.8913,
+   "view_zenith_deg": 30.9441,
+   "solar_zenith_deg": 28.543
+  },
+  {
+   "month": "2021-03",
+   "aerosol_high_share": 0.0201,
+   "aerosol_climatology_share": 0.735,
+   "view_zenith_deg": 32.0315,
+   "solar_zenith_deg": 25.8927
+  },
+  {
+   "month": "2021-04",
+   "aerosol_high_share": 0.0092,
+   "aerosol_climatology_share": 0.677,
+   "view_zenith_deg": 34.0422,
+   "solar_zenith_deg": 28.0642
+  },
+  {
+   "month": "2021-05",
+   "aerosol_high_share": 0.018,
+   "aerosol_climatology_share": 0.8542,
+   "view_zenith_deg": 19.986,
+   "solar_zenith_deg": 30.673
+  },
+  {
+   "month": "2021-06",
+   "aerosol_high_share": 0.0181,
+   "aerosol_climatology_share": 0.7968,
+   "view_zenith_deg": 29.4462,
+   "solar_zenith_deg": 31.7489
+  },
+  {
+   "month": "2021-07",
+   "aerosol_high_share": 0.0312,
+   "aerosol_climatology_share": 0.7439,
+   "view_zenith_deg": 34.0964,
+   "solar_zenith_deg": 32.3775
+  },
+  {
+   "month": "2021-08",
+   "aerosol_high_share": 0.0175,
+   "aerosol_climatology_share": 0.8005,
+   "view_zenith_deg": 32.7661,
+   "solar_zenith_deg": 26.2315
+  },
+  {
+   "month": "2021-09",
+   "aerosol_high_share": 0.0173,
+   "aerosol_climatology_share": 0.6984,
+   "view_zenith_deg": 22.4933,
+   "solar_zenith_deg": 20.4544
+  },
+  {
+   "month": "2021-10",
+   "aerosol_high_share": 0.0105,
+   "aerosol_climatology_share": 0.6057,
+   "view_zenith_deg": 28.5574,
+   "solar_zenith_deg": 24.6893
+  },
+  {
+   "month": "2021-11",
+   "aerosol_high_share": 0.0165,
+   "aerosol_climatology_share": 0.8939,
+   "view_zenith_deg": 32.2124,
+   "solar_zenith_deg": 26.4285
+  },
+  {
+   "month": "2021-12",
+   "aerosol_high_share": 0.0043,
+   "aerosol_climatology_share": 0.8754,
+   "view_zenith_deg": 32.736,
+   "solar_zenith_deg": 32.7178
+  },
+  {
+   "month": "2022-01",
+   "aerosol_high_share": 0.0173,
+   "aerosol_climatology_share": 0.8155,
+   "view_zenith_deg": 37.6942,
+   "solar_zenith_deg": 33.0927
+  },
+  {
+   "month": "2022-02",
+   "aerosol_high_share": 0.0116,
+   "aerosol_climatology_share": 0.9468,
+   "view_zenith_deg": 38.1623,
+   "solar_zenith_deg": 33.2754
+  },
+  {
+   "month": "2022-03",
+   "aerosol_high_share": 0.0197,
+   "aerosol_climatology_share": 0.7987,
+   "view_zenith_deg": 15.3731,
+   "solar_zenith_deg": 26.8587
+  },
+  {
+   "month": "2022-04",
+   "aerosol_high_share": 0.0209,
+   "aerosol_climatology_share": 0.8913,
+   "view_zenith_deg": 30.7169,
+   "solar_zenith_deg": 28.4785
+  },
+  {
+   "month": "2022-05",
+   "aerosol_high_share": 0.0176,
+   "aerosol_climatology_share": 0.6768,
+   "view_zenith_deg": 26.6573,
+   "solar_zenith_deg": 32.394
+  },
+  {
+   "month": "2022-06",
+   "aerosol_high_share": 0.0248,
+   "aerosol_climatology_share": 0.7725,
+   "view_zenith_deg": 30.3526,
+   "solar_zenith_deg": 34.9064
+  },
+  {
+   "month": "2022-07",
+   "aerosol_high_share": 0.0204,
+   "aerosol_climatology_share": 0.7131,
+   "view_zenith_deg": 24.1651,
+   "solar_zenith_deg": 32.7846
+  },
+  {
+   "month": "2022-08",
+   "aerosol_high_share": 0.0202,
+   "aerosol_climatology_share": 0.7301,
+   "view_zenith_deg": 25.3582,
+   "solar_zenith_deg": 28.7862
+  },
+  {
+   "month": "2022-09",
+   "aerosol_high_share": 0.0345,
+   "aerosol_climatology_share": 0.7501,
+   "view_zenith_deg": 31.2027,
+   "solar_zenith_deg": 26.2174
+  },
+  {
+   "month": "2022-10",
+   "aerosol_high_share": 0.0201,
+   "aerosol_climatology_share": 0.9619,
+   "view_zenith_deg": 41.8756,
+   "solar_zenith_deg": 24.3503
+  },
+  {
+   "month": "2022-11",
+   "aerosol_high_share": 0.0124,
+   "aerosol_climatology_share": 0.7732,
+   "view_zenith_deg": 29.1181,
+   "solar_zenith_deg": 28.8038
+  },
+  {
+   "month": "2022-12",
+   "aerosol_high_share": 0.0133,
+   "aerosol_climatology_share": 0.8588,
+   "view_zenith_deg": 28.7889,
+   "solar_zenith_deg": 34.6732
+  },
+  {
+   "month": "2023-01",
+   "aerosol_high_share": 0.0097,
+   "aerosol_climatology_share": 0.8841,
+   "view_zenith_deg": 31.5647,
+   "solar_zenith_deg": 33.215
+  },
+  {
+   "month": "2023-02",
+   "aerosol_high_share": 0.0183,
+   "aerosol_climatology_share": 0.9623,
+   "view_zenith_deg": 36.7419,
+   "solar_zenith_deg": 33.8922
+  },
+  {
+   "month": "2023-03",
+   "aerosol_high_share": 0.0136,
+   "aerosol_climatology_share": 0.8493,
+   "view_zenith_deg": 24.7158,
+   "solar_zenith_deg": 31.0017
+  },
+  {
+   "month": "2023-04",
+   "aerosol_high_share": 0.0258,
+   "aerosol_climatology_share": 0.6729,
+   "view_zenith_deg": 31.5437,
+   "solar_zenith_deg": 30.4962
+  },
+  {
+   "month": "2023-05",
+   "aerosol_high_share": 0.0091,
+   "aerosol_climatology_share": 0.706,
+   "view_zenith_deg": 27.076,
+   "solar_zenith_deg": 34.6119
+  },
+  {
+   "month": "2023-06",
+   "aerosol_high_share": 0.0254,
+   "aerosol_climatology_share": 0.7661,
+   "view_zenith_deg": 25.2476,
+   "solar_zenith_deg": 37.2935
+  },
+  {
+   "month": "2023-07",
+   "aerosol_high_share": 0.0154,
+   "aerosol_climatology_share": 0.6372,
+   "view_zenith_deg": 26.695,
+   "solar_zenith_deg": 36.4069
+  },
+  {
+   "month": "2023-08",
+   "aerosol_high_share": 0.0233,
+   "aerosol_climatology_share": 0.7338,
+   "view_zenith_deg": 33.2663,
+   "solar_zenith_deg": 31.1271
+  },
+  {
+   "month": "2023-09",
+   "aerosol_high_share": 0.0366,
+   "aerosol_climatology_share": 0.9075,
+   "view_zenith_deg": 32.1108,
+   "solar_zenith_deg": 28.1099
+  },
+  {
+   "month": "2023-10",
+   "aerosol_high_share": 0.0218,
+   "aerosol_climatology_share": 0.7693,
+   "view_zenith_deg": 27.0005,
+   "solar_zenith_deg": 26.8502
+  },
+  {
+   "month": "2023-11",
+   "aerosol_high_share": 0.031,
+   "aerosol_climatology_share": 0.7317,
+   "view_zenith_deg": 33.1629,
+   "solar_zenith_deg": 31.8223
+  },
+  {
+   "month": "2023-12",
+   "aerosol_high_share": 0.0179,
+   "aerosol_climatology_share": 0.7372,
+   "view_zenith_deg": 30.4311,
+   "solar_zenith_deg": 36.7689
+  },
+  {
+   "month": "2024-01",
+   "aerosol_high_share": 0.0183,
+   "aerosol_climatology_share": 0.8694,
+   "view_zenith_deg": 36.2009,
+   "solar_zenith_deg": 36.8784
+  },
+  {
+   "month": "2024-02",
+   "aerosol_high_share": 0.0257,
+   "aerosol_climatology_share": 0.6884,
+   "view_zenith_deg": 32.0749,
+   "solar_zenith_deg": 37.2965
+  },
+  {
+   "month": "2024-03",
+   "aerosol_high_share": 0.0158,
+   "aerosol_climatology_share": 0.6987,
+   "view_zenith_deg": 31.253,
+   "solar_zenith_deg": 35.0045
+  },
+  {
+   "month": "2024-04",
+   "aerosol_high_share": 0.0144,
+   "aerosol_climatology_share": 0.7568,
+   "view_zenith_deg": 24.0439,
+   "solar_zenith_deg": 36.3841
+  },
+  {
+   "month": "2024-05",
+   "aerosol_high_share": 0.0467,
+   "aerosol_climatology_share": 0.852,
+   "view_zenith_deg": 23.6451,
+   "solar_zenith_deg": 37.8246
+  },
+  {
+   "month": "2024-06",
+   "aerosol_high_share": 0.0163,
+   "aerosol_climatology_share": 0.6591,
+   "view_zenith_deg": 27.8479,
+   "solar_zenith_deg": 41.4855
+  },
+  {
+   "month": "2024-07",
+   "aerosol_high_share": 0.017,
+   "aerosol_climatology_share": 0.8247,
+   "view_zenith_deg": 21.7842,
+   "solar_zenith_deg": 41.043
+  },
+  {
+   "month": "2024-08",
+   "aerosol_high_share": 0.0257,
+   "aerosol_climatology_share": 0.7588,
+   "view_zenith_deg": 30.4732,
+   "solar_zenith_deg": 38.8449
+  },
+  {
+   "month": "2024-09",
+   "aerosol_high_share": 0.0269,
+   "aerosol_climatology_share": 0.7482,
+   "view_zenith_deg": 36.6056,
+   "solar_zenith_deg": 34.1213
+  },
+  {
+   "month": "2024-10",
+   "aerosol_high_share": 0.0251,
+   "aerosol_climatology_share": 0.8263,
+   "view_zenith_deg": 31.5907,
+   "solar_zenith_deg": 34.4351
+  },
+  {
+   "month": "2024-11",
+   "aerosol_high_share": 0.0289,
+   "aerosol_climatology_share": 0.8404,
+   "view_zenith_deg": 29.2674,
+   "solar_zenith_deg": 37.1547
+  },
+  {
+   "month": "2024-12",
+   "aerosol_high_share": 0.0095,
+   "aerosol_climatology_share": 0.7994,
+   "view_zenith_deg": 29.7608,
+   "solar_zenith_deg": 41.6128
+  },
+  {
+   "month": "2025-01",
+   "aerosol_high_share": 0.0091,
+   "aerosol_climatology_share": 0.723,
+   "view_zenith_deg": 28.5732,
+   "solar_zenith_deg": 43.6856
+  },
+  {
+   "month": "2025-02",
+   "aerosol_high_share": 0.0178,
+   "aerosol_climatology_share": 0.6861,
+   "view_zenith_deg": 25.3745,
+   "solar_zenith_deg": 42.6864
+  },
+  {
+   "month": "2025-03",
+   "aerosol_high_share": 0.0132,
+   "aerosol_climatology_share": 0.6789,
+   "view_zenith_deg": 23.0449,
+   "solar_zenith_deg": 40.4039
+  },
+  {
+   "month": "2025-04",
+   "aerosol_high_share": 0.0197,
+   "aerosol_climatology_share": 0.898,
+   "view_zenith_deg": 31.8352,
+   "solar_zenith_deg": 40.4269
+  },
+  {
+   "month": "2025-05",
+   "aerosol_high_share": 0.0283,
+   "aerosol_climatology_share": 0.6203,
+   "view_zenith_deg": 32.9711,
+   "solar_zenith_deg": 44.4591
+  },
+  {
+   "month": "2025-06",
+   "aerosol_high_share": 0.0068,
+   "aerosol_climatology_share": 0.4809,
+   "view_zenith_deg": 21.045,
+   "solar_zenith_deg": 45.082
+  },
+  {
+   "month": "2025-07",
+   "aerosol_high_share": 0.0365,
+   "aerosol_climatology_share": 0.728,
+   "view_zenith_deg": 33.3946,
+   "solar_zenith_deg": 47.6944
+  },
+  {
+   "month": "2025-08",
+   "aerosol_high_share": 0.0111,
+   "aerosol_climatology_share": 0.799,
+   "view_zenith_deg": 30.5603,
+   "solar_zenith_deg": 41.3538
+  },
+  {
+   "month": "2025-09",
+   "aerosol_high_share": 0.0068,
+   "aerosol_climatology_share": 0.5519,
+   "view_zenith_deg": 29.18,
+   "solar_zenith_deg": 42.2906
+  },
+  {
+   "month": "2025-10",
+   "aerosol_high_share": 0.0171,
+   "aerosol_climatology_share": 0.7183,
+   "view_zenith_deg": 28.1973,
+   "solar_zenith_deg": 40.2388
+  },
+  {
+   "month": "2025-11",
+   "aerosol_high_share": 0.0142,
+   "aerosol_climatology_share": 0.9088,
+   "view_zenith_deg": 21.1261,
+   "solar_zenith_deg": 42.5572
+  },
+  {
+   "month": "2025-12",
+   "aerosol_high_share": 0.0129,
+   "aerosol_climatology_share": 0.591,
+   "view_zenith_deg": 24.3696,
+   "solar_zenith_deg": 48.6006
+  },
+  {
+   "month": "2026-01",
+   "aerosol_high_share": 0.0314,
+   "aerosol_climatology_share": 0.5718,
+   "view_zenith_deg": 17.9976,
+   "solar_zenith_deg": 50.1063
+  },
+  {
+   "month": "2026-02",
+   "aerosol_high_share": 0.0082,
+   "aerosol_climatology_share": 0.89,
+   "view_zenith_deg": 18.1604,
+   "solar_zenith_deg": 47.601
+  },
+  {
+   "month": "2026-03",
+   "aerosol_high_share": 0.0362,
+   "aerosol_climatology_share": 0.7113,
+   "view_zenith_deg": 23.2029,
+   "solar_zenith_deg": 49.3711
+  },
+  {
+   "month": "2026-04",
+   "aerosol_high_share": 0.0215,
+   "aerosol_climatology_share": 0.5468,
+   "view_zenith_deg": 31.9447,
+   "solar_zenith_deg": 49.9524
+  },
+  {
+   "month": "2026-05",
+   "aerosol_high_share": 0.0263,
+   "aerosol_climatology_share": 0.6339,
+   "view_zenith_deg": 26.4837,
+   "solar_zenith_deg": 51.2457
+  },
+  {
+   "month": "2026-06",
+   "aerosol_high_share": 0.0178,
+   "aerosol_climatology_share": 0.4432,
+   "view_zenith_deg": 34.2714,
+   "solar_zenith_deg": 53.4719
+  },
+  {
+   "month": "2026-07",
+   "aerosol_high_share": 0.0156,
+   "aerosol_climatology_share": 0.34,
+   "view_zenith_deg": 32.4149,
+   "solar_zenith_deg": 54.5535
+  }
+ ],
+ "coverage": {
+  "mod13a1_last_date": "2026-08-13",
+  "mod09a1_last_date": "2026-08-21",
+  "generated_utc": "2026-09-01T11:20:47Z"
+ },
+ "sources": {
+  "aerosol": "MODIS/061/MOD09A1 StateQA bits 6-7 = aerosol quantity (0 = climatology, 1 = low, 2 = average, 3 = high); aerosol_high_share = land-mean monthly frequency at level 3, aerosol_climatology_share = at level 0 (no retrieval, climatological fallback)",
+  "geometry": "MODIS/061/MOD13A1 ViewZenith and SolarZenith, stored in hundredths of a degree (scale 0.01); land means in degrees",
+  "land_mask": "ESA/WorldCover/v200 (class 80 = permanent water)",
+  "months": "same month strings as docs/data/vegetation.json",
+  "reduction": "500 m, monthly mean of composites, bestEffort=True, same as task 11"
+ }
+}
