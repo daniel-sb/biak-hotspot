@@ -1,5 +1,5 @@
 {
- "covered_wit_date": "2026-08-31",
+ "covered_wit_date": "2026-09-01",
  "districts": [
   {
    "detections": 0,
@@ -51,11 +51,11 @@
    "total_frp": null
   },
   {
-   "detections": 1,
+   "detections": 2,
    "distrik": "Bruyadori",
    "kabupaten": "Biak Numfor",
-   "max_frp": 4.0,
-   "total_frp": 4.0
+   "max_frp": 6.7,
+   "total_frp": 13.1
   },
   {
    "detections": 0,
@@ -65,18 +65,18 @@
    "total_frp": null
   },
   {
-   "detections": 0,
+   "detections": 1,
    "distrik": "Numfor Barat",
    "kabupaten": "Biak Numfor",
-   "max_frp": null,
-   "total_frp": null
+   "max_frp": 5.5,
+   "total_frp": 5.5
   },
   {
-   "detections": 0,
+   "detections": 2,
    "distrik": "Numfor Timur",
    "kabupaten": "Biak Numfor",
-   "max_frp": null,
-   "total_frp": null
+   "max_frp": 6.2,
+   "total_frp": 9.2
   },
   {
    "detections": 0,
@@ -86,11 +86,11 @@
    "total_frp": null
   },
   {
-   "detections": 1,
+   "detections": 0,
    "distrik": "Orkeri",
    "kabupaten": "Biak Numfor",
-   "max_frp": 5.6,
-   "total_frp": 5.6
+   "max_frp": null,
+   "total_frp": null
   },
   {
    "detections": 0,
@@ -163,18 +163,18 @@
    "total_frp": null
   },
   {
-   "detections": 0,
+   "detections": 2,
    "distrik": "Yendidori",
    "kabupaten": "Biak Numfor",
-   "max_frp": null,
-   "total_frp": null
+   "max_frp": 5.0,
+   "total_frp": 9.3
   }
  ],
  "evening": {
   "closest_after_dark": null,
   "daylight_flags": 0,
   "daylight_summary": null,
-  "evening_date": "2026-08-30",
+  "evening_date": "2026-08-31",
   "flags": [],
   "night_flags": 0,
   "ocean_bt14_median_k": null,
@@ -184,20 +184,20 @@
   "state": "unavailable",
   "window_utc": "06:00-16:00"
  },
- "generated_utc": "2026-08-31T21:31:57Z",
+ "generated_utc": "2026-09-01T19:27:34Z",
  "geojson_window_days": 7,
  "manifest_found": true,
  "recurrent_today": [],
  "sources": [
   {
-   "detections": 1,
+   "detections": 3,
    "source": "VIIRS_SNPP_NRT",
    "status": "observed"
   },
   {
-   "detections": 0,
+   "detections": 3,
    "source": "VIIRS_NOAA20_NRT",
-   "status": "empty"
+   "status": "observed"
   },
   {
    "detections": 1,
@@ -211,8 +211,8 @@
   }
  ],
  "totals": {
-  "detections": 2,
+  "detections": 7,
   "offshore": 0,
-  "on_land": 2
+  "on_land": 7
  }
 }
