@@ -29,8 +29,12 @@ and, for July only, refits NDMI on good_share alone (reproducing the task
 11 residual — the check that the two series match), then with each new
 control added one at a time, then all four together, reporting
 coefficients, n, residual sd, July 2026's residual rank and its leverage
-in every model. The least-squares solve is plain arithmetic on the normal
-equations, no statistics package. ee is imported lazily inside main() so
+in every model, and finally refitting each model with July 2026 removed to
+predict it out of sample. That last step is the one that separates a
+control which explains the year from a fit that has bent onto it: with
+h = 0.68, an in-sample residual is partly a measure of the model
+reproducing a point it was built from. The least-squares solve is plain
+arithmetic on the normal equations, no statistics package. ee is imported lazily inside main() so
 the solver can be checked by the tests in an environment without Earth
 Engine.
 
@@ -268,6 +272,32 @@ def report(rows, focus="2026-07"):
         if dropped:
             print("  dropped (constant across July, no information): "
                   + ", ".join(dropped))
+
+        # Leave the focus year out, refit, and predict it. Leverage says a
+        # point could be pulling the fit onto itself; this says whether it
+        # did. An in-sample residual at h = 0.68 partly measures how well the
+        # model reproduces a point it was built from. Out of sample there is
+        # no such circularity: if the controls explain the year, a fit that
+        # has never seen it still predicts it.
+        rest = [r for i, r in enumerate(use) if i != jul]
+        try:
+            loo = ols(rest, preds_eff, "ndmi")
+        except ValueError:
+            print(f"  leave-one-out: singular without {focus}")
+            continue
+        pred = loo["coef"][0] + sum(
+            b * use[jul][pr] for b, pr in zip(loo["coef"][1:], preds_eff))
+        err = use[jul]["ndmi"] - pred
+        sd_loo = math.sqrt(
+            sum(v * v for v in loo["residuals"]) / len(rest))
+        print(f"  leave-{focus}-out: predicted {pred:.4f}   "
+              f"actual {use[jul]['ndmi']:.4f}   error {err:+.4f}   "
+              f"= {err / sd_loo:+.2f} sd of the {len(rest)} it was fitted on")
+        print("  coefficient shift when " + focus + " is removed: "
+              + "   ".join(
+                  f"{nm} {b_in:+.5f} -> {b_out:+.5f}"
+                  for nm, b_in, b_out in zip(fit["names"][1:], fit["coef"][1:],
+                                             loo["coef"][1:])))
 
 
 # ---------------------------------------------------------------------------

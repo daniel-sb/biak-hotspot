@@ -109,6 +109,40 @@ def test_base_model_july2026_residual_reproduced():
     assert abs(fit["residuals"][jul] - 0.0206) < 0.002, fit["residuals"][jul]
 
 
+def test_july2026_survives_the_controls_out_of_sample():
+    """The in-sample residual collapses under solar zenith (z +1.90 to
+    +0.56) but July 2026 carries h = 0.68 there, so the fit is partly
+    reproducing a point it was built from. Refit on the other 25 Julys and
+    predict 2026: it comes back out at +1.7 sd under solar zenith and
+    +1.6 sd under all four controls. This test exists so that a later
+    change which quietly makes the collapse look real has to break it."""
+    if not CTRL.exists() or not VEG.exists():
+        print("SKIP: vegetation_controls.json / vegetation.json not present")
+        return
+    sys.path.insert(0, str(ROOT / "src"))
+    try:
+        import vegetation_controls_gee as vc
+    except ImportError as exc:
+        print(f"SKIP: vegetation_controls_gee not importable ({exc})")
+        return
+    ctrl, veg = _load()
+    all_rows = vc.july_rows(veg["monthly"], ctrl["monthly"])
+    for preds, expected in (
+            (["ndmi_good_share", "solar_zenith_deg"], 1.76),
+            (["ndmi_good_share"] + list(vc.CONTROLS), 1.64)):
+        rows = [r for r in all_rows if r.get("ndmi") is not None
+                and all(r.get(k) is not None for k in preds)]
+        jul = next(i for i, r in enumerate(rows) if r["month"] == "2026-07")
+        rest = [r for i, r in enumerate(rows) if i != jul]
+        loo = vc.ols(rest, preds, "ndmi")
+        pred = loo["coef"][0] + sum(b * rows[jul][k]
+                                    for b, k in zip(loo["coef"][1:], preds))
+        sd = (sum(v * v for v in loo["residuals"]) / len(rest)) ** 0.5
+        z = (rows[jul]["ndmi"] - pred) / sd
+        assert abs(z - expected) < 0.15, (preds, z)
+        assert z > 1.0, ("out-of-sample excess gone", preds, z)
+
+
 if __name__ == "__main__":
     fns = [(name, obj) for name, obj in sorted(globals().items())
            if name.startswith("test_") and callable(obj)]
