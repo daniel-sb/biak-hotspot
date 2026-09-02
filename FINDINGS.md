@@ -219,3 +219,53 @@ of a pre-registered test, which is the strong branch of that test, and it makes 
 finding the leading remaining explanation rather than a loose end. If a disagreement had come
 back instead, it would have meant only that the sensors observe at different hours and could
 not be reconciled by this design.
+
+---
+
+## F6 - The published water balance survives its own instrument question (2026-09-02)
+
+`src/drought_et_check_gee.py` -> `docs/data/drought_et_check.json`, commit `1adf533`. F1
+closed with an open question: its record-high July 2026 ET comes from MOD16A2, a Terra
+product, and F4 shows Terra's overpass drifting - a record high at the end of a drifting
+record is the shape an artifact takes. This entry answers it with the Aqua counterpart of
+the same product, and **F1 stands as published; nothing in it is superseded.**
+
+Record length first, because it decides the method: MOD16A2 v061 and MYD16A2 v061 both begin
+**2021-01-01** (catalog and live collection agree; the MODIS Science Team did not produce
+v061 data before 2021, and the pre-2021 recommendation is the gap-filled GF product F1 bans).
+Six Julys. The task 12/13 regression machinery was **not fitted** - at n = 6 it is not a
+sample - and `drought_gee.py`'s `SERIES_START = 2021-01-01` is correct, not a truncation
+defect. Terra ET was re-fetched by drought_gee.py's exact method and reproduces
+`drought.json` for all 67 months before anything else was allowed to run.
+
+The pre-registered informative outcome fired - both sensors show July 2026 as the extreme ET
+month, against each sensor's own record:
+
+| July, per sensor | 2026 ET | rank of 6 | departure from own July mean |
+|---|---|---|---|
+| Terra (MOD16A2) | **139.6 mm** | **1** | +23.2 mm (+1.96 sd) |
+| Aqua (MYD16A2) | **138.3 mm** | **1** | +21.9 mm (+1.91 sd) |
+
+The two July series agree year by year to within about 2 mm (2023 and 2024 within 0.9 mm),
+and the recomputed water balance under Aqua ET against the same CHIRPS precipitation keeps
+**July 2026 as the only month with P - ET below zero: -22.7 mm** (Terra: -24.0 mm). The
+published headline is about the atmosphere and the land, not about Terra.
+
+Two things published for the first time here, per the rule that an index travels with its
+quality share:
+
+- Each product's own `ET_QC` bit-0 good share (0 = main algorithm, 1 = back-up algorithm or
+  fill). July 2026 has the **highest** July share of each sensor's record (Terra 0.601, Aqua
+  0.669), so the record high is not a masking artifact - and in the other direction, roughly
+  40-55 percent of July pixels run on climatology-driven back-up, so the MOD16 series has
+  always been partly model, and the share now published beside it says how much.
+- The geometry series (copied from the vegetation files, not refetched), so a drift control
+  on ET becomes runnable the day the record is long enough. At six Julys it is not: the
+  question F4 poses *within* the Terra record stays open, and what settles F1 today is the
+  cross-sensor agreement, which is the strong branch of the pre-registered test.
+
+Scope caveat, stated in the script's output and worth keeping: MOD16 is Penman-Monteith on
+daily reanalysis forcing plus MODIS inputs. The forcing does not move with the overpass; the
+MODIS inputs do. ET is a model output, not a band, and this entry claims only that its
+published headline is not a Terra-specific artifact - not that drift is impossible, which
+six Julys cannot test.
