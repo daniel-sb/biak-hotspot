@@ -1,5 +1,5 @@
 {
- "covered_wit_date": "2026-09-01",
+ "covered_wit_date": "2026-09-02",
  "districts": [
   {
    "detections": 0,
@@ -23,18 +23,18 @@
    "total_frp": null
   },
   {
-   "detections": 0,
+   "detections": 1,
    "distrik": "Biak Kota",
    "kabupaten": "Biak Numfor",
-   "max_frp": null,
-   "total_frp": null
+   "max_frp": 5.5,
+   "total_frp": 5.5
   },
   {
-   "detections": 0,
+   "detections": 2,
    "distrik": "Biak Timur",
    "kabupaten": "Biak Numfor",
-   "max_frp": null,
-   "total_frp": null
+   "max_frp": 4.8,
+   "total_frp": 7.8
   },
   {
    "detections": 0,
@@ -51,11 +51,11 @@
    "total_frp": null
   },
   {
-   "detections": 2,
+   "detections": 0,
    "distrik": "Bruyadori",
    "kabupaten": "Biak Numfor",
-   "max_frp": 6.7,
-   "total_frp": 13.1
+   "max_frp": null,
+   "total_frp": null
   },
   {
    "detections": 0,
@@ -65,18 +65,18 @@
    "total_frp": null
   },
   {
-   "detections": 1,
+   "detections": 0,
    "distrik": "Numfor Barat",
    "kabupaten": "Biak Numfor",
-   "max_frp": 5.5,
-   "total_frp": 5.5
+   "max_frp": null,
+   "total_frp": null
   },
   {
-   "detections": 2,
+   "detections": 0,
    "distrik": "Numfor Timur",
    "kabupaten": "Biak Numfor",
-   "max_frp": 6.2,
-   "total_frp": 9.2
+   "max_frp": null,
+   "total_frp": null
   },
   {
    "detections": 0,
@@ -107,11 +107,11 @@
    "total_frp": null
   },
   {
-   "detections": 0,
+   "detections": 1,
    "distrik": "Samofa",
    "kabupaten": "Biak Numfor",
-   "max_frp": null,
-   "total_frp": null
+   "max_frp": 0.7,
+   "total_frp": 0.7
   },
   {
    "detections": 0,
@@ -163,18 +163,18 @@
    "total_frp": null
   },
   {
-   "detections": 2,
+   "detections": 1,
    "distrik": "Yendidori",
    "kabupaten": "Biak Numfor",
-   "max_frp": 5.0,
-   "total_frp": 9.3
+   "max_frp": 1.5,
+   "total_frp": 1.5
   }
  ],
  "evening": {
   "closest_after_dark": null,
   "daylight_flags": 0,
   "daylight_summary": null,
-  "evening_date": "2026-08-31",
+  "evening_date": "2026-09-01",
   "flags": [],
   "night_flags": 0,
   "ocean_bt14_median_k": null,
@@ -184,23 +184,23 @@
   "state": "unavailable",
   "window_utc": "06:00-16:00"
  },
- "generated_utc": "2026-09-01T19:27:34Z",
+ "generated_utc": "2026-09-02T19:26:13Z",
  "geojson_window_days": 7,
  "manifest_found": true,
  "recurrent_today": [],
  "sources": [
   {
-   "detections": 3,
+   "detections": 2,
    "source": "VIIRS_SNPP_NRT",
    "status": "observed"
   },
   {
-   "detections": 3,
+   "detections": 1,
    "source": "VIIRS_NOAA20_NRT",
    "status": "observed"
   },
   {
-   "detections": 1,
+   "detections": 2,
    "source": "VIIRS_NOAA21_NRT",
    "status": "observed"
   },
@@ -211,8 +211,8 @@
   }
  ],
  "totals": {
-  "detections": 7,
+  "detections": 5,
   "offshore": 0,
-  "on_land": 7
+  "on_land": 5
  }
 }

@@ -7295,6 +7295,102 @@
    "rows": 0,
    "utc": "2026-09-01T19:27:33Z",
    "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-08-19",
+   "days": 5,
+   "rows": 203,
+   "utc": "2026-09-02T19:25:58Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-08-24",
+   "days": 5,
+   "rows": 21,
+   "utc": "2026-09-02T19:25:59Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-08-29",
+   "days": 5,
+   "rows": 6,
+   "utc": "2026-09-02T19:26:00Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-08-19",
+   "days": 5,
+   "rows": 244,
+   "utc": "2026-09-02T19:26:02Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-08-24",
+   "days": 5,
+   "rows": 22,
+   "utc": "2026-09-02T19:26:03Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-08-29",
+   "days": 5,
+   "rows": 4,
+   "utc": "2026-09-02T19:26:04Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-08-19",
+   "days": 5,
+   "rows": 131,
+   "utc": "2026-09-02T19:26:06Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-08-24",
+   "days": 5,
+   "rows": 36,
+   "utc": "2026-09-02T19:26:07Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-08-29",
+   "days": 5,
+   "rows": 4,
+   "utc": "2026-09-02T19:26:08Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-08-19",
+   "days": 5,
+   "rows": 10,
+   "utc": "2026-09-02T19:26:10Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-08-24",
+   "days": 5,
+   "rows": 2,
+   "utc": "2026-09-02T19:26:11Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-08-29",
+   "days": 5,
+   "rows": 0,
+   "utc": "2026-09-02T19:26:12Z",
+   "outcome": "fetched"
   }
  ]
 }
