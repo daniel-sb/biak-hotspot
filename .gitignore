@@ -58,12 +58,23 @@ desktop.ini
 data/raw/himawari/
 data/processed/himawari_evening_*.parquet
 
+# --- field survey ---
+# Rebuilt from the tracked store by src/fieldwork_gpkg.py, so the targets are
+# reproducible and need no commit. The survey layer is the reason this is a
+# rule rather than tidiness: it fills with GPS positions and photographs of
+# people's land, and no ethical clearance or consent procedure exists yet.
+# Nothing from here goes near docs/.
+fieldwork/
+
 # --- reference material, not ours to redistribute ---
 # NASA ARSET training slides and the Mandum Rimba white paper are third-party
 # documents kept locally for reference. Cite them; do not republish them.
 ARSET_NASA/
 mandum_rimba/
 mandum_rimba-*.zip
+# Downloaded papers and product user guides (Alcaras et al. 2022 on NBR+,
+# the MOD16 user guide). Cite them; the publishers hold the PDFs.
+References/
 
 # Boundaries for a different kabupaten, kept for unrelated work.
 data/boundaries/yahukimo_desa.geojson
