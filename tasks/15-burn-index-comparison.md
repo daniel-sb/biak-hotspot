@@ -1,5 +1,14 @@
 # Task 15 — Six burned-area indices over Biak, judged by their false alarms
 
+> **Revised 2026-09-03**, after `src/s2_scene_survey.py` measured what Sentinel-2 actually
+> holds over this AOI. The first version of this file told you to pick "the least cloudy
+> scene after 25 August". Doing that would have handed you 29.8% of the corridor and 47 of
+> 74 strong hotspot clusters, while the clearest scene of the whole season — 23 August,
+> 99.96% clear over corridor land — sat unexamined inside the burning window and was
+> excluded by the very rule that was meant to keep the test clean. The scene pair, the cloud
+> stratum and the hotspot-adjacent stratum below are all rewritten because of it. Run the
+> survey script and read its output before you touch this task.
+
 Source: Alcaras, Costantino, Guastaferro, Parente and Pepe, "Normalized Burn Ratio Plus
 (NBR+): A New Index for Sentinel-2 Imagery", *Remote Sensing* 14(8), 1727, 2022 — in
 `References/remotesensing-14-01727-v2.pdf`. Read section 3.1 and 3.2 of that paper before
@@ -37,15 +46,29 @@ burned-area index must not flag, known without any field data:
 
 - **Permanent water** — `ESA/WorldCover/v200/2021` class 80, the same mask every other
   script here uses.
-- **Cloud and cloud shadow** — from the scene's own `SCL` classification.
+- **Cloud and cloud shadow** — from a scene's own `SCL` classification. **Not from the
+  post-event scene of the primary pair.** 23 August is 99.96% clear over corridor land:
+  cloud_medium covers 5 pixels and cloud_high 3, so this stratum would be empty and any
+  false-alarm rate computed over it would be noise reported to four significant figures.
+  Take it from the **28 August scene**, which is 46.4% clear and therefore has cloud to
+  spare, and compute the cloud stratum **uni-temporally on that scene**. Say plainly in the
+  output that the cloud stratum comes from a different date than the burn strata; that is a
+  limitation to state, not a seam to hide.
 - **Land with no hotspot anywhere near it in the whole record** — land pixels beyond a
   generous distance from every FIRMS detection ever stored for this AOI.
 
 And one stratum where burning is plausible, which is **not** ground truth and must never be
 called it:
 
-- **Hotspot-adjacent land** — land within a stated distance of an August 2026 FIRMS
-  detection. A 375 m VIIRS pixel locates a thermal anomaly, not a burn perimeter.
+- **Hotspot-adjacent land** — land within a stated distance of a FIRMS detection **that
+  precedes the post-event scene**. With a 23 August post-image this means detections from
+  19–22 August only: 517 of the 645 on-land detections, 80.2% of the event. The 128
+  detections of 23–25 August mark ground that had not burned yet when the image was taken,
+  and putting them in a "burning plausible" stratum would score an index as a false alarm
+  for correctly seeing unburned ground. The script must derive this cut-off from the scene
+  date rather than hard-coding a date.
+
+  A 375 m VIIRS pixel locates a thermal anomaly, not a burn perimeter.
 
 An index that separates the fourth stratum from the first three is useful here. An index
 that flags open sea is disqualified for this AOI whatever it scored in Sicily.
@@ -62,11 +85,39 @@ Import the AOI read and `land_mask` from the existing scripts. Read the AOI from
 `config.yaml` (AGENTS always-5). Write `docs/data/burn_indices.json` — a **new** file.
 Nothing under `docs/data/` may be modified.
 
-**Scene pair.** `COPERNICUS/S2_SR_HARMONIZED`. One pre-event scene before 19 August 2026 and
-one post-event scene after 25 August 2026, each the least cloudy available over the AOI.
-The August 2026 burning ran 19–25 August, peaking at 283 detections on the 22nd. Record both
-scene identifiers and their cloud percentages in the output; if no usable post-event scene
-exists, say so and write nothing rather than reaching for a distant date.
+**Scene pair — already measured, do not re-choose by eye.** `COPERNICUS/S2_SR_HARMONIZED`,
+MGRS tile **53MPU**, which alone reaches 71.4% of the corridor's land. The corridor spans
+four tiles (53MNU, 53MNV, 53MPU, 53MPV) and no single scene covers it, so every stratum
+count below is a count within one tile's footprint and must be reported as such.
+
+```
+primary   2026-07-19 -> 2026-08-23    57.6% of corridor land clear in BOTH   80.2% captured
+check     2026-07-19 -> 2026-08-28    29.8%                                 100.0% captured
+```
+
+Run both. The primary pair carries the analysis; the check pair exists for one narrow
+purpose, which is the ground that burned on 23–25 August and is therefore absent from the
+primary post-image. Report the six indices on the primary pair, then report — separately,
+never pooled — how the same indices behave over the late-burning clusters using the check
+pair. Two pairs, two tables. Do not average them, do not mosaic them, and do not quietly
+substitute one for the other where the primary has cloud.
+
+Two properties of this pair have to be stated wherever its numbers are:
+
+- **The post-image is mid-event.** 23 August sits inside the 19–25 August burning window, so
+  it shows roughly four fifths of the event and none of its last two days. That is a
+  deliberate trade: it doubles the usable area (57.6% against 29.8%) and raises the strong
+  hotspot clusters on usable ground from 47 to 64 of 74. State the trade; do not describe
+  the image as post-event.
+- **The pre-image is 35 days earlier.** Between 19 July and 23 August the canopy changes for
+  reasons that have nothing to do with fire, and a bi-temporal index cannot separate that
+  from a burn. The nearest usable earlier scene, 8 August, leaves only 13.3% of the corridor
+  and is not a serious alternative. Say what the gap is.
+
+Record both scene identifiers, their `CLOUDY_PIXEL_PERCENTAGE`, and — because the granule
+metadata describes 110 km of mostly ocean and is close to useless here — the measured clear
+share over masked corridor land. If `src/s2_scene_survey.py` no longer reports these dates
+as the best available, say so and stop rather than proceeding on a stale pair.
 
 **Scale reflectance before computing anything.** Sentinel-2 surface reflectance is stored as
 integers; divide by 10000 to get reflectance in 0–1. This is not optional bookkeeping:
@@ -142,8 +193,12 @@ Also print, because they are the specific traps here:
 ## Acceptance criteria
 
 - `python src/burn_indices_gee.py <project>` writes `docs/data/burn_indices.json` and prints
-  the scene pair with cloud percentages, the stratum pixel counts, and the per-index
-  distributions and false-alarm shares.
+  both scene pairs with cloud percentages and measured clear shares, the stratum pixel
+  counts, and the per-index distributions and false-alarm shares.
+- A test asserts the hotspot-adjacent stratum was built only from detections earlier than
+  the post-scene date, and that the cloud stratum records which scene and date it came from.
+  Both are places where a later edit could silently reintroduce the errors this revision
+  exists to remove.
 - A test asserts the four strata are disjoint and non-empty, that every distribution is
   ordered (min ≤ p5 ≤ … ≤ max), and that the recorded reflectance range is consistent with
   scaled surface reflectance rather than raw integers. Skip cleanly when the file is absent,
@@ -157,7 +212,15 @@ Also print, because they are the specific traps here:
 - Maximum-likelihood classification, any supervised classifier, or a burned/not-burned map.
 - Severity classes, burn perimeters, or an area figure in hectares.
 - Any use of the FIRMS record as ground truth.
-- Landsat, VIIRS or MODIS burned-area products as a second opinion. Later, maybe.
+- **HLS (`NASA/HLS/HLSL30/v002`, `NASA/HLS/HLSS30/v002`), Landsat Collection 2, VIIRS or
+  MODIS burned-area products.** Checked on 2026-09-03: every one of them ends before the
+  event's last day, so none can contribute a post-event image at all. Two structural reasons
+  keep HLS out even once it catches up. Its Landsat half has no B8A and no red edge, so
+  BAIS2 cannot be computed on it. And the two HLS collections reuse band names for different
+  wavelengths — `B6` is red edge in HLSS30 and SWIR1 in HLSL30, `B11` is SWIR1 in HLSS30 and
+  thermal in HLSL30 — so one formula written against both runs without error and returns
+  nonsense. A fourth trap for the list above, avoided by staying on native Sentinel-2, where
+  20 m also gives a 1 ha plot 25 pixels instead of 30 m's 11.
 - Changing PLAN Phase 4's choice of index. This task informs that decision; it does not make
   it.
 
@@ -171,3 +234,6 @@ scale you reduced at, and how many pixels each stratum actually contained.
 State plainly which index you would build Phase 4 on, **including the case where the answer
 is that this scene pair cannot separate them.** With one event and one pair of images, that
 is a legitimate outcome, and it is more useful than a ranking the data does not support.
+
+Name explicitly what the mid-event post-image and the 35-day pre-gap prevent this task from
+settling, so that the next person does not read the result as stronger than it is.
