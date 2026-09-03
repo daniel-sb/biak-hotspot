@@ -1,5 +1,5 @@
 {
- "covered_wit_date": "2026-09-02",
+ "covered_wit_date": "2026-09-03",
  "districts": [
   {
    "detections": 0,
@@ -23,18 +23,18 @@
    "total_frp": null
   },
   {
-   "detections": 1,
+   "detections": 0,
    "distrik": "Biak Kota",
    "kabupaten": "Biak Numfor",
-   "max_frp": 5.5,
-   "total_frp": 5.5
+   "max_frp": null,
+   "total_frp": null
   },
   {
-   "detections": 2,
+   "detections": 11,
    "distrik": "Biak Timur",
    "kabupaten": "Biak Numfor",
-   "max_frp": 4.8,
-   "total_frp": 7.8
+   "max_frp": 10.3,
+   "total_frp": 58.1
   },
   {
    "detections": 0,
@@ -107,11 +107,11 @@
    "total_frp": null
   },
   {
-   "detections": 1,
+   "detections": 6,
    "distrik": "Samofa",
    "kabupaten": "Biak Numfor",
-   "max_frp": 0.7,
-   "total_frp": 0.7
+   "max_frp": 9.6,
+   "total_frp": 30.7
   },
   {
    "detections": 0,
@@ -163,18 +163,18 @@
    "total_frp": null
   },
   {
-   "detections": 1,
+   "detections": 5,
    "distrik": "Yendidori",
    "kabupaten": "Biak Numfor",
-   "max_frp": 1.5,
-   "total_frp": 1.5
+   "max_frp": 9.5,
+   "total_frp": 22.7
   }
  ],
  "evening": {
   "closest_after_dark": null,
   "daylight_flags": 0,
   "daylight_summary": null,
-  "evening_date": "2026-09-01",
+  "evening_date": "2026-09-02",
   "flags": [],
   "night_flags": 0,
   "ocean_bt14_median_k": null,
@@ -184,23 +184,23 @@
   "state": "unavailable",
   "window_utc": "06:00-16:00"
  },
- "generated_utc": "2026-09-02T19:26:13Z",
+ "generated_utc": "2026-09-03T19:20:54Z",
  "geojson_window_days": 7,
  "manifest_found": true,
  "recurrent_today": [],
  "sources": [
   {
-   "detections": 2,
+   "detections": 3,
    "source": "VIIRS_SNPP_NRT",
    "status": "observed"
   },
   {
-   "detections": 1,
+   "detections": 14,
    "source": "VIIRS_NOAA20_NRT",
    "status": "observed"
   },
   {
-   "detections": 2,
+   "detections": 5,
    "source": "VIIRS_NOAA21_NRT",
    "status": "observed"
   },
@@ -211,8 +211,8 @@
   }
  ],
  "totals": {
-  "detections": 5,
+  "detections": 22,
   "offshore": 0,
-  "on_land": 5
+  "on_land": 22
  }
 }

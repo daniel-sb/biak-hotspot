@@ -7391,6 +7391,102 @@
    "rows": 0,
    "utc": "2026-09-02T19:26:12Z",
    "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-08-20",
+   "days": 5,
+   "rows": 207,
+   "utc": "2026-09-03T19:20:36Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-08-25",
+   "days": 5,
+   "rows": 13,
+   "utc": "2026-09-03T19:20:37Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-08-30",
+   "days": 5,
+   "rows": 9,
+   "utc": "2026-09-03T19:20:39Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-08-20",
+   "days": 5,
+   "rows": 254,
+   "utc": "2026-09-03T19:20:41Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-08-25",
+   "days": 5,
+   "rows": 11,
+   "utc": "2026-09-03T19:20:42Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-08-30",
+   "days": 5,
+   "rows": 18,
+   "utc": "2026-09-03T19:20:43Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-08-20",
+   "days": 5,
+   "rows": 143,
+   "utc": "2026-09-03T19:20:45Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-08-25",
+   "days": 5,
+   "rows": 14,
+   "utc": "2026-09-03T19:20:46Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-08-30",
+   "days": 5,
+   "rows": 9,
+   "utc": "2026-09-03T19:20:48Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-08-20",
+   "days": 5,
+   "rows": 10,
+   "utc": "2026-09-03T19:20:50Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-08-25",
+   "days": 5,
+   "rows": 1,
+   "utc": "2026-09-03T19:20:52Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-08-30",
+   "days": 5,
+   "rows": 0,
+   "utc": "2026-09-03T19:20:53Z",
+   "outcome": "fetched"
   }
  ]
 }
