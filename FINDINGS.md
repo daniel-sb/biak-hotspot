@@ -269,3 +269,64 @@ daily reanalysis forcing plus MODIS inputs. The forcing does not move with the o
 MODIS inputs do. ET is a model output, not a band, and this entry claims only that its
 published headline is not a Terra-specific artifact - not that drift is impossible, which
 six Julys cannot test.
+
+---
+
+## F7 - Six burned-area indices over Biak: only NBR+ refuses the sea and the cloud (2026-09-03)
+
+`src/burn_indices_gee.py` -> `docs/data/burn_indices.json`, commit `272edb5`. Alcaras et al.
+(Remote Sens. 14(8):1727, 2022) propose NBR+ because water and clouds produce false alarms in
+NBR - and those are the two dominant conditions of this AOI. With no ground truth, the six
+indices were judged by where they are certainly wrong: permanent water (WorldCover 80), cloud
+and cloud shadow (SCL 3/8/9 from the 28 August scene - the primary post-image is 99.96% clear
+over the corridor land it covers and would leave the stratum empty), land beyond 3000 m of
+every hotspot detection ever stored, against one burning-plausible stratum (land within
+1500 m of a detection strictly before the post scene - never truth) at 20 m in MGRS 53MPU.
+The strata are disjoint (six pairwise overlaps, all zero) and every count is within one
+tile's footprint.
+
+The scene pair is the survey's measured one, re-derived from its own shares, not re-chosen:
+53MPU 2026-07-19 -> 2026-08-23, 57.6% of corridor land usable in both, 80.2% of the event
+captured - the post-image is MID-EVENT and the pre-image 35 days earlier, so nothing here is
+a severity figure, an area, or a claim about the burning of 23-25 August. Those last two days
+were checked separately on the full-coverage pair (-> 2026-08-28, 29.8%, 100.0%), never
+pooled with the primary. Reflectance was scaled /10000 before any arithmetic; BAIS2's "+ 1"
+sits outside the fraction per the PDF's equation (5); NBR follows equation (1), so HIGH means
+burned - the paper's own prose states the USGS convention and contradicts its equation, and
+mixing with dNBR literature inverts the scale.
+
+The false-alarm shares (share of a non-burnable stratum above the adjacent stratum's 95th
+percentile; a rate against a weak reference, never an accuracy):
+
+| index | uni, open sea | uni, cloud | bi, open sea (primary) | bi, cloud (check pair) |
+|---|---|---|---|---|
+| NBR | 16.5% | 0.8% | 0.1% | 39.7% |
+| NBRSWIR | 98.3% | 0.6% | 0.4% | 51.2% |
+| NDSWIR | 0.2% | 0.9% | 0.4% | 18.4% |
+| MIRBI | 99.8% | 1.9% | 0.5% | 39.1% |
+| BAIS2 | 99.1% | 0.9% | 0.3% | 19.0% |
+| NBR+ | **0.0%** | 1.0% | 1.5% | **5.1%** |
+
+Uni-temporally, NBRSWIR, MIRBI and BAIS2 flag essentially the entire sea inside the tile
+(97-100%) - disqualified for an AOI that is mostly ocean whatever they scored in Sicily -
+and NBR flags 16.5% of it. NBR+ flags none of it, which is equation (6) doing exactly what
+section 3.2 claims: blue and green subtraction sends water dark. Differencing (post minus
+pre) cancels the static water signature for every index, but the check pair shows where the
+bi-temporal form then breaks: cloud, on a scene with cloud to spare, pushes five of the six
+indices above the reference over 18-51% of cloud pixels - while NBR+ stays at 5.1%, because
+smoke and cloud drive NBR+ negative instead of positive. All six separate the
+burning-plausible stratum from far land in the bi-temporal form (adjacent vs far medians,
+dNBR+ 0.179 vs 0.027), so the separation the indices exist for is present on the scar side
+too; the late-burning clusters of 23-25 August read weaker on 28 August than the 19-22
+ground does on 23 August (dNBR+ median 0.027 vs 0.179) - five extra days of tropical
+regrowth, or the cloudy scene, or both; one number cannot say which.
+
+**The finding for Phase 4:** on this AOI, in both temporal forms, NBR+ is the only index
+whose false alarms stay near zero over the two conditions that dominate every scene here,
+while matching the others on the burning-plausible stratum. If Phase 4 proceeds, it should
+be built on NBR+ computed bi-temporally, with uni-temporal NDSWIR (0.2% sea, 18.4% cloud on
+the cloudy scene) as the cheap second opinion - and with the thresholds still to be chosen
+against the published per-stratum distributions by whoever has reference data this task did
+not have. No threshold is chosen here and no burned-area total exists anywhere in the
+output. This is a comparison of indices, not a map of what burned, and it is not a statement
+about the hotspots beyond the geometry of the strata.
