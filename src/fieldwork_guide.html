@@ -1,0 +1,283 @@
+<meta charset="utf-8">
+<title>Panduan Survei Lapangan — Ground Truth Bekas Bakar Biak</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font: 10.2pt/1.5 "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+         color: #16191d; margin: 0; }
+  h1 { font-size: 20pt; line-height: 1.2; margin: 0 0 4pt; letter-spacing: -.3pt; }
+  h2 { font-size: 13pt; margin: 20pt 0 6pt; padding-bottom: 3pt;
+       border-bottom: 1.5pt solid #16191d; page-break-after: avoid; }
+  h3 { font-size: 10.8pt; margin: 13pt 0 4pt; page-break-after: avoid; }
+  p { margin: 0 0 7pt; }
+  ul, ol { margin: 0 0 8pt; padding-left: 17pt; }
+  li { margin-bottom: 3.5pt; }
+  code, .mono { font-family: "Cascadia Mono", Consolas, monospace; font-size: 9pt;
+                background: #eef0f3; padding: 0.5pt 3pt; border-radius: 2pt; }
+  pre { font-family: "Cascadia Mono", Consolas, monospace; font-size: 8.6pt;
+        line-height: 1.45; background: #f4f6f8; border-left: 2.5pt solid #9aa3ad;
+        padding: 7pt 9pt; margin: 0 0 9pt; white-space: pre-wrap;
+        page-break-inside: avoid; }
+  table { border-collapse: collapse; width: 100%; margin: 0 0 9pt;
+          font-size: 9.3pt; page-break-inside: avoid; }
+  th, td { border: 0.5pt solid #c3c9d0; padding: 4pt 6pt; text-align: left;
+           vertical-align: top; }
+  th { background: #eef0f3; font-weight: 600; }
+  .lead { font-size: 10.6pt; color: #3b424a; margin-bottom: 12pt; }
+  .rule { border: 1pt solid #16191d; padding: 8pt 10pt; margin: 0 0 10pt;
+          page-break-inside: avoid; }
+  .rule b { display: block; margin-bottom: 3pt; }
+  .warn { border-left: 3pt solid #16191d; background: #f4f6f8;
+          padding: 7pt 10pt; margin: 0 0 10pt; page-break-inside: avoid; }
+  .meta { font-size: 8.6pt; color: #6b7480; margin-bottom: 16pt;
+          padding-bottom: 8pt; border-bottom: 0.5pt solid #c3c9d0; }
+  .page { page-break-before: always; }
+  .steps { counter-reset: s; list-style: none; padding-left: 0; }
+  .steps > li { counter-increment: s; position: relative; padding-left: 22pt;
+                margin-bottom: 7pt; }
+  .steps > li::before { content: counter(s); position: absolute; left: 0; top: 0.5pt;
+        width: 15pt; height: 15pt; border-radius: 50%; background: #16191d;
+        color: #fff; font-size: 8.4pt; font-weight: 700; text-align: center;
+        line-height: 15pt; }
+  .sym { display: inline-block; width: 11pt; height: 11pt; vertical-align: -1.5pt;
+         margin-right: 3pt; border: 1pt solid #16191d; }
+  .c-white { background: #fff; border-radius: 50%; }
+  .c-black { background: #16191d; border-radius: 50%; box-shadow: 0 0 0 1pt #fff inset; }
+  .c-dia { background: #fff; transform: rotate(45deg); }
+  .foot { margin-top: 18pt; padding-top: 7pt; border-top: 0.5pt solid #c3c9d0;
+          font-size: 8.4pt; color: #6b7480; }
+  a { color: #16191d; }
+</style>
+
+<h1>Panduan Survei Lapangan</h1>
+<p class="lead">Ground truth bekas bakar — Biak, Supiori, Numfor. Aplikasi Mergin Maps di Android.</p>
+<div class="meta">
+  Proyek <span class="mono">biak_survey.qgz</span> · basemap Sentinel-2 23 Agustus 2026 ·
+  74 target kuat, 60 sedang, 80 titik kontrol · disusun 3 September 2026
+</div>
+
+<h2>1. Empat layer, dan hanya satu yang diisi</h2>
+
+<p>Ini sumber kebingungan yang paling sering. Menekan sebuah target lalu membuka
+form-nya <b>tidak</b> membuka tempat mengisi data survei — target adalah data
+referensi dan memang tidak punya kolom foto.</p>
+
+<table>
+  <tr><th style="width:26%">Layer</th><th style="width:22%">Simbol</th><th>Untuk apa</th></tr>
+  <tr>
+    <td class="mono">target_bakar</td>
+    <td><span class="sym c-white"></span> lingkaran putih (kuat)<br>
+        <span class="sym c-dia"></span> belah ketupat putih (sedang)</td>
+    <td><b>Dibaca saja.</b> Lokasi klaster deteksi satelit. Terkunci — tidak bisa diedit.
+        Dipakai untuk navigasi.</td>
+  </tr>
+  <tr>
+    <td class="mono">target_kontrol</td>
+    <td><span class="sym c-black"></span> lingkaran hitam</td>
+    <td><b>Dibaca saja.</b> Lahan yang tidak pernah tersentuh deteksi. Tujuan untuk
+        titik kelas <span class="mono">tidak_bakar</span>.</td>
+  </tr>
+  <tr>
+    <td class="mono">survei</td>
+    <td>bintang kuning / kotak sian</td>
+    <td><b>Ini yang diisi.</b> Satu titik baru untuk setiap plot yang didatangi.</td>
+  </tr>
+  <tr>
+    <td class="mono">foto</td>
+    <td>—</td>
+    <td>Tabel anak. Satu baris per foto, muncul <b>di dalam</b> form survei.</td>
+  </tr>
+</table>
+
+<div class="rule">
+  <b>Aturan tunggal yang perlu diingat</b>
+  Target adalah <i>ke mana harus berjalan</i>. Survei adalah <i>apa yang ditemukan
+  di sana</i>. Setiap plot menghasilkan satu titik baru di layer <span class="mono">survei</span>,
+  bukan suntingan pada target.
+</div>
+
+<h2>2. Navigasi ke target — tombol “Mengintai”</h2>
+
+<ol class="steps">
+  <li>Tekan target di peta (lingkaran atau belah ketupat putih).</li>
+  <li>Panel bawah muncul menampilkan <span class="mono">target_id</span> dan
+      <span class="mono">prioritas</span>.</li>
+  <li>Tekan <b>Mengintai</b> — itu terjemahan dari <i>Stake out</i>.</li>
+  <li>Panel menunjukkan jarak dan garis dari posisi sekarang ke titik. Berjalan sampai
+      angkanya mengecil.</li>
+  <li>Di bawah 1 meter panel beralih ke mode presisi; di bawah 10 cm ditandai hijau.</li>
+</ol>
+
+<p>Tombol <b>Open form</b> di panel yang sama hanya menampilkan metadata deteksi
+(<span class="mono">n_deteksi</span>, <span class="mono">n_satelit</span>,
+<span class="mono">frp_maks</span>). Itu informasi, bukan isian. Semua kolomnya
+sudah dikunci, jadi sentuhan tak sengaja tidak akan mengubah apa pun.</p>
+
+<h2>3. Urutan kerja di satu plot</h2>
+
+<ol class="steps">
+  <li><b>Sampai di lokasi</b> dengan Mengintai. Berhenti di bagian <b>terbuka</b>
+      plot, bukan di bawah kanopi — sinyal GPS di bawah tajuk bisa meleset 10–20 m.</li>
+  <li><b>Diam 30–60 detik</b> sebelum merekam. Angka akurasi perlu waktu untuk turun
+      dan stabil.</li>
+  <li>Tekan tombol <b>+</b> (rekam titik), pilih layer <span class="mono">survei</span>.</li>
+  <li>Isi form. Urutannya sudah diatur; <span class="mono">uuid</span>,
+      <span class="mono">plot_id</span>, <span class="mono">waktu</span> dan
+      <span class="mono">akurasi_m</span> terisi sendiri.</li>
+  <li><b>Tambahkan foto</b> di bagian Foto pada form yang sama — lihat bagian 4.</li>
+  <li>Simpan. Titik berubah jadi bintang kuning (bakar) atau kotak sian (tidak_bakar).</li>
+</ol>
+
+<h3>Isi form</h3>
+<table>
+  <tr><th style="width:24%">Kolom</th><th style="width:30%">Pilihan</th><th>Catatan</th></tr>
+  <tr><td class="mono">target_id</td><td>daftar 134 target</td>
+      <td>Pilih target yang sedang didatangi. Kosongkan kalau titik ini bukan target
+          (misalnya kontrol atau temuan di jalan).</td></tr>
+  <tr><td class="mono">kelas</td><td>bakar / tidak_bakar</td>
+      <td><b>Wajib.</b> Aplikasi menolak menyimpan tanpa ini.</td></tr>
+  <tr><td class="mono">tingkat_yakin</td><td>pasti / mungkin</td>
+      <td>“pasti” hanya kalau ada bukti fisik yang jelas. Ragu sedikit → “mungkin”.</td></tr>
+  <tr><td class="mono">bukti</td><td>arang, abu, batang hangus,<br>tunggul terbakar, tidak ada</td>
+      <td>Apa yang benar-benar terlihat di tanah.</td></tr>
+  <tr><td class="mono">akurasi_m</td><td>otomatis</td>
+      <td>Jangan diubah. Terekam sekali saat titik dibuat.</td></tr>
+  <tr><td class="mono">catatan</td><td>bebas</td>
+      <td>Apa pun yang tidak muat di kolom lain.</td></tr>
+</table>
+
+<div class="warn">
+  <b>Yang tidak boleh masuk ke catatan:</b> siapa pemilik lahan, siapa yang membakar,
+  atau dugaan sebabnya. Yang dicatat adalah bukti fisik di tanah. Begitu ada kolom
+  berisi tuduhan, datanya berubah dari pengukuran jadi masalah etik, dan tidak bisa
+  ditarik lagi setelah tersinkron.
+</div>
+
+<div class="page"></div>
+<h2>4. Foto — bagian yang paling sering salah</h2>
+
+<p>Foto <b>tidak</b> disimpan sebagai satu kolom di titik survei. Foto adalah baris
+tersendiri di tabel <span class="mono">foto</span>, dan satu titik boleh punya
+sebanyak apa pun. Bagiannya muncul di dalam form survei setelah kolom catatan.</p>
+
+<h3>Cara menambah satu foto</h3>
+<ol class="steps">
+  <li>Gulir form survei ke bawah sampai bagian berjudul <b>Foto</b>.</li>
+  <li>Tekan tanda <b>+</b> di bagian itu. Baris foto baru terbuka.</li>
+  <li>Tekan bidang <b>Foto</b> — aplikasi menawarkan <b>kamera</b> atau <b>galeri</b>.</li>
+  <li>Ambil gambar, lalu konfirmasi.</li>
+  <li>Isi <b>Arah bidik</b>: permukaan, utara, timur, selatan, barat, atau lain.</li>
+  <li>Isi <b>Keterangan</b> bila perlu, lalu simpan baris foto itu.</li>
+  <li>Ulangi dari langkah 2 untuk foto berikutnya.</li>
+</ol>
+
+<h3>Berapa foto per plot</h3>
+<p>Dua sudah cukup untuk sebagian besar plot, dan waktu adalah kendala yang sebenarnya:</p>
+<pre>2 foto per titik   ~3 menit per plot    120 plot  ~6 jam waktu form
+4 foto per titik   ~8 menit per plot    120 plot  ~16 jam waktu form</pre>
+<p>Yang mengikat kualitas statistik survei ini adalah <b>jumlah titik</b>, bukan
+kedalaman per titik. Jadi:</p>
+<ul>
+  <li><b>permukaan</b> — wajib. Tanah dari jarak dekat, memperlihatkan arang/abu/tunggul.
+      Ini bukti kelasnya.</li>
+  <li><b>satu arah pandang</b> — wajib. Memperlihatkan bentang sekitar dan luas plot.</li>
+  <li>arah tambahan — hanya kalau plotnya besar atau batasnya membingungkan.</li>
+</ul>
+
+<h3>Hal teknis yang sudah diatur, jangan diubah</h3>
+<table>
+  <tr><th style="width:34%">Setelan</th><th>Nilai dan alasannya</th></tr>
+  <tr><td>Kualitas foto</td>
+      <td><b>Medium (±1–2 MB)</b>. Diatur di proyek QGIS, bukan di HP — tidak ada
+          setelan ini di aplikasi. Pada kualitas Original, 120 foto = 1,0–1,4 GB dan
+          kuota 500 MB habis sekitar foto ke-50, di lapangan, tanpa sinyal untuk
+          memperbaikinya. Pada Medium ≈180 MB.</td></tr>
+  <tr><td>Path penyimpanan</td>
+      <td><b>Relatif</b> terhadap folder proyek. Path absolut akan rusak begitu proyek
+          berpindah perangkat.</td></tr>
+  <tr><td>Penautan foto ke titik</td>
+      <td>Lewat <span class="mono">uuid</span>, <b>bukan</b> <span class="mono">fid</span>.
+          Sinkronisasi menomori ulang <span class="mono">fid</span>, dan foto yang
+          ditaut lewat fid akan berpindah ke titik lain tanpa peringatan apa pun.
+          Sudah diatur; tidak ada yang perlu dilakukan.</td></tr>
+  <tr><td>Nama berkas</td>
+      <td>Otomatis <span class="mono">uuid_arah</span>, jadi foto yang terlepas dari
+          basis data masih bisa dilacak balik.</td></tr>
+</table>
+
+<h2>5. Berapa titik yang dibutuhkan</h2>
+
+<p>Bukan 50 total. Baca 50 sebagai <b>per kelas</b>:</p>
+<pre>per kelas   selang kepercayaan 95% pada akurasi 90%
+n = 25          plus minus 11,8 poin persen     tidak berguna
+n = 40          plus minus  9,3
+n = 60          plus minus  7,6                 target
+</pre>
+<p><b>Sasaran: 60 titik bakar + 60 titik kontrol.</b> Lantai yang masih layak
+dipublikasikan: 40 + 40.</p>
+<ul>
+  <li><b>Satu titik per klaster.</b> Lima titik di dalam satu bekas bakar yang sama
+      bukan lima sampel — itu satu sampel diukur lima kali.</li>
+  <li><b>Titik kontrol murah.</b> Ambil sambil jalan antar-target; tidak perlu
+      perjalanan khusus. Kelas kontrol yang besar justru yang mengukur false alarm,
+      dan itu seluruh isi analisisnya.</li>
+  <li>Kontrol condong ke utara (Biak Utara, Andey) karena harus ≥1 km dari deteksi
+      mana pun. Ambil yang paling dekat dengan target hari itu, bukan yang paling
+      gampang.</li>
+</ul>
+
+<div class="page"></div>
+<h2>6. Kalau ada yang tidak beres</h2>
+
+<table>
+  <tr><th style="width:38%">Gejala</th><th>Penyebab dan tindakan</th></tr>
+  <tr><td>Form target tidak punya kolom foto</td>
+      <td>Itu memang layer referensi. Rekam titik baru di layer
+          <span class="mono">survei</span>.</td></tr>
+  <tr><td>Tidak bisa menyimpan titik</td>
+      <td><span class="mono">kelas</span> belum diisi. Itu satu-satunya kolom wajib.</td></tr>
+  <tr><td><span class="mono">akurasi_m</span> kosong</td>
+      <td>GPS belum dapat fix. Tunggu di tempat terbuka, jangan rekam dulu.</td></tr>
+  <tr><td>Akurasi &gt; 15 m</td>
+      <td>Tetap rekam, jangan dibuang — tapi tulis di catatan. Titik dengan akurasi
+          buruk disaring belakangan, dan hanya bisa disaring kalau angkanya ada.</td></tr>
+  <tr><td>Basemap kosong / putih</td>
+      <td>Zoom melewati z16, batas tile yang tersedia. Zoom keluar sedikit.</td></tr>
+  <tr><td>Tombol Mengintai tidak muncul</td>
+      <td>Yang ditekan bukan fitur di layer target. Tekan tepat di simbolnya.</td></tr>
+  <tr><td>Sinkronisasi gagal / kuota penuh</td>
+      <td>Jangan hapus foto. Selesaikan hari itu secara offline; sinkron saat dapat
+          wifi. Kalau kuota benar-benar habis, kabari sebelum menghapus apa pun.</td></tr>
+</table>
+
+<h2>7. Sebelum berangkat</h2>
+<p>Uji semuanya di rumah dengan <b>mode pesawat menyala</b>:</p>
+<ul>
+  <li>Basemap tampil sampai z16, tanpa sinyal.</li>
+  <li>Bisa merekam titik baru di layer <span class="mono">survei</span>.</li>
+  <li><span class="mono">akurasi_m</span> terisi sendiri dan angkanya masuk akal.</li>
+  <li>Bagian Foto bisa ditambah, kamera terbuka, gambar tersimpan.</li>
+  <li>Bisa menambah <b>dua</b> foto pada satu titik yang sama.</li>
+  <li>Menyimpan tanpa <span class="mono">kelas</span> memang ditolak.</li>
+  <li>Target tidak bisa digeser atau diubah.</li>
+</ul>
+<p>Kalau ada yang gagal, ketahuannya di rumah. Itu seluruh gunanya uji ini.</p>
+
+<h2>8. Sesudah kembali</h2>
+<ol class="steps">
+  <li>Cari wifi, buka aplikasi, tekan <b>Sync</b>. Foto ikut naik bersama data.</li>
+  <li>Di QGIS, tarik proyeknya, lalu buka tabel atribut <span class="mono">survei</span>.</li>
+  <li>Periksa: setiap baris punya <span class="mono">kelas</span>,
+      <span class="mono">akurasi_m</span> terisi, dan jumlah baris di tabel
+      <span class="mono">foto</span> masuk akal terhadap jumlah titik.</li>
+  <li>Jangan menyunting atau membuang baris apa pun di tahap ini. Titik yang meragukan
+      disaring saat analisis, memakai <span class="mono">tingkat_yakin</span> dan
+      <span class="mono">akurasi_m</span> — bukan dengan menghapusnya.</li>
+</ol>
+
+<div class="foot">
+  Panduan ini dibuat dari dokumentasi Mergin Maps
+  (merginmaps.com/docs/layer/photos, /docs/field/stake-out) dan dari konfigurasi
+  proyek yang sebenarnya di <span class="mono">src/fieldwork_qgis_project.py</span>.
+  Kalau proyeknya dibangun ulang, panduan ini ikut perlu diperiksa.
+</div>

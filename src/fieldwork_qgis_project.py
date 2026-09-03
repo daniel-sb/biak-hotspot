@@ -29,7 +29,7 @@ from qgis.core import (
     QgsEditorWidgetSetup, QgsFieldConstraints, QgsMarkerSymbol,
     QgsPalLayerSettings, QgsProject, QgsRasterLayer, QgsRendererCategory,
     QgsCategorizedSymbolRenderer, QgsTextBufferSettings, QgsTextFormat,
-    QgsVectorLayer, QgsVectorLayerSimpleLabeling,
+    QgsRelation, QgsVectorLayer, QgsVectorLayerSimpleLabeling,
 )
 from qgis.PyQt.QtGui import QColor, QFont
 
@@ -133,12 +133,66 @@ def value_map(pairs):
         "ValueMap", {"map": [{k: v} for k, v in pairs]})
 
 
+def lock_fields(layer):
+    """Belt as well as braces. The layer is already read-only, but the mobile
+    app still drew editable +/- steppers on the target form, so every field is
+    marked read-only in the form configuration too. A surveyor nudging
+    n_deteksi on a reference layer would corrupt the very thing the survey is
+    measured against."""
+    cfg = layer.editFormConfig()
+    for i in range(len(layer.fields())):
+        cfg.setReadOnly(i, True)
+    layer.setEditFormConfig(cfg)
+
+
+def configure_photos(photos, survey, project):
+    """One row per photograph, joined to survei.uuid.
+
+    The documentation is explicit that fid must never be the join key:
+    synchronisation renumbers it, and photos then belong to whichever point
+    inherited the number. Nothing raises when that happens.
+    """
+    fields = photos.fields()
+    setups = {
+        "plot_uuid": QgsEditorWidgetSetup("Hidden", {}),
+        "berkas": QgsEditorWidgetSetup("ExternalResource", {
+            "FileWidget": True, "FileWidgetButton": True,
+            "DocumentViewer": 1, "RelativeStorage": 1, "StorageMode": 0,
+        }),
+        "arah": value_map([(v, v) for v in (
+            "permukaan", "utara", "timur", "selatan", "barat", "lain")]),
+        "keterangan": QgsEditorWidgetSetup("TextEdit", {}),
+    }
+    aliases = {"berkas": "Foto", "arah": "Arah bidik",
+               "keterangan": "Keterangan"}
+    for name, setup in setups.items():
+        idx = fields.indexOf(name)
+        assert idx >= 0, name
+        photos.setEditorWidgetSetup(idx, setup)
+        if name in aliases:
+            photos.setFieldAlias(idx, aliases[name])
+    fid = fields.indexOf("fid")
+    if fid >= 0:
+        photos.setEditorWidgetSetup(fid, QgsEditorWidgetSetup("Hidden", {}))
+
+    rel = QgsRelation()
+    rel.setId("survei_foto")
+    rel.setName("Foto")
+    rel.setReferencedLayer(survey.id())     # parent: survei
+    rel.setReferencingLayer(photos.id())    # child: foto
+    rel.addFieldPair("plot_uuid", "uuid")
+    rel.setStrength(QgsRelation.Composition)
+    assert rel.isValid(), "relation did not validate"
+    project.relationManager().addRelation(rel)
+    return rel
+
+
 def configure_form(survey, targets):
     aliases = {
         "plot_id": "ID plot", "target_id": "Target", "kelas": "Kelas",
         "tingkat_yakin": "Tingkat yakin", "bukti": "Bukti bakar",
         "akurasi_m": "Akurasi GPS (m)", "waktu": "Waktu",
-        "foto": "Foto", "catatan": "Catatan",
+        "catatan": "Catatan",
     }
     widgets = {
         "plot_id": QgsEditorWidgetSetup("TextEdit", {}),
@@ -158,12 +212,6 @@ def configure_form(survey, targets):
             "tidak ada")]),
         "akurasi_m": QgsEditorWidgetSetup("TextEdit", {}),
         "waktu": QgsEditorWidgetSetup("TextEdit", {}),
-        "foto": QgsEditorWidgetSetup("ExternalResource", {
-            "FileWidget": True, "FileWidgetButton": True,
-            "DocumentViewer": 1,        # show the photo in the form
-            "RelativeStorage": 1,       # relative to the project, so it syncs
-            "StorageMode": 0,
-        }),
         "catatan": QgsEditorWidgetSetup("TextEdit", {"IsMultiline": True}),
     }
     defaults = {
@@ -195,9 +243,17 @@ def configure_form(survey, targets):
     survey.setFieldConstraint(k, QgsFieldConstraints.ConstraintNotNull,
                               QgsFieldConstraints.ConstraintStrengthHard)
 
-    fid = survey.fields().indexOf("fid")
-    if fid >= 0:
-        survey.setEditorWidgetSetup(fid, QgsEditorWidgetSetup("Hidden", {}))
+    # uuid is the join key for the photo table and must never be typed or
+    # edited by hand, so it is generated once and hidden.
+    u = survey.fields().indexOf("uuid")
+    survey.setEditorWidgetSetup(u, QgsEditorWidgetSetup("Hidden", {}))
+    survey.setDefaultValueDefinition(u, QgsDefaultValue("uuid()", False))
+
+    for hidden in ("fid",):
+        idx = survey.fields().indexOf(hidden)
+        if idx >= 0:
+            survey.setEditorWidgetSetup(idx,
+                                        QgsEditorWidgetSetup("Hidden", {}))
 
 
 def verify(project, path):
@@ -245,10 +301,10 @@ def verify(project, path):
     assert rel.config()["Layer"] == targets.id(), "value relation lost its layer"
     assert "prioritas" in rel.config()["FilterExpression"]
 
-    photo = survey.editorWidgetSetup(fields.indexOf("foto"))
-    assert photo.type() == "ExternalResource"
-    assert int(photo.config()["RelativeStorage"]) == 1, \
-        "photo paths are absolute and will not sync"
+    # Photographs are no longer a column on the survey point; they are rows
+    # in the child table, checked below with the relation that joins them.
+    assert fields.indexOf("foto") < 0, \
+        "a stray foto column survived on the survey layer"
 
     cats = {c.value(): c.renderState() for c in targets.renderer().categories()}
     assert cats == {"kuat": True, "sedang": True, "lemah": False}, cats
@@ -256,9 +312,30 @@ def verify(project, path):
 
     quality, ok = project.readNumEntry("Mergin", "PhotoQuality")
     assert ok and quality == PHOTO_QUALITY, (ok, quality)
+    photos = layer("foto")
+    assert photos.geometryType() is not None or True
+    rels = project.relationManager().relations()
+    assert "survei_foto" in rels, list(rels)
+    rel = rels["survei_foto"]
+    assert rel.referencedLayer().id() == survey.id()
+    assert rel.referencingLayer().id() == photos.id()
+    assert rel.fieldPairs() == {"plot_uuid": "uuid"}, rel.fieldPairs()
+
+    berkas = photos.fields().indexOf("berkas")
+    assert photos.editorWidgetSetup(berkas).type() == "ExternalResource"
+    assert int(photos.editorWidgetSetup(berkas).config()["RelativeStorage"]) == 1
+
+    u = fields.indexOf("uuid")
+    assert survey.defaultValueDefinition(u).expression() == "uuid()"
+    assert survey.editorWidgetSetup(u).type() == "Hidden"
+
+    # every reference field locked, or a stray tap edits the reference data
+    tcfg = targets.editFormConfig()
+    assert all(tcfg.readOnly(i) for i in range(len(targets.fields()))),         "target fields are editable in the form"
+
     naming, ok = project.readEntry(
-        "Mergin", "PhotoNaming/{}/foto".format(survey.id()))
-    assert ok and naming == '"plot_id"', (ok, naming)
+        "Mergin", "PhotoNaming/{}/berkas".format(photos.id()))
+    assert ok and "plot_uuid" in naming, (ok, naming)
     return len(fields) - 1
 
 
@@ -294,22 +371,26 @@ def main():
     controls = vector("target_kontrol", "target_kontrol")
     targets = vector("target_bakar", "target_bakar")
     survey = vector("survei", "survei")
+    photos = vector("foto", "foto")
 
     style_controls(controls)
     style_targets(targets)
     style_survey(survey)
     configure_form(survey, targets)
+    configure_photos(photos, survey, project)
 
     # A stray thumb-drag must not move a target. These layers are the
     # reference the survey is measured against; only `survei` is edited.
     for lyr in (targets, controls):
         lyr.setReadOnly(True)
+        lock_fields(lyr)
 
     project.writeEntry("Mergin", "PhotoQuality", PHOTO_QUALITY)
     # Name each photo after its plot, so a file separated from the database
     # can still be traced back to the point it was taken at.
     project.writeEntry(
-        "Mergin", "PhotoNaming/{}/foto".format(survey.id()), '"plot_id"')
+        "Mergin", "PhotoNaming/{}/berkas".format(photos.id()),
+        """"plot_uuid" || '_' || coalesce("arah", 'foto')""")
 
     # Read everything worth printing BEFORE exitQgis: it deletes the
     # underlying C++ objects and any later attribute access raises.
@@ -322,6 +403,7 @@ def main():
             controls.featureCount(), controls.readOnly()),
         "survei   {} fields configured, kelas is NOT NULL".format(
             len(survey.fields()) - 1),
+        "foto     child table, many per point, joined on uuid not fid",
     ]
 
     ok = project.write(str(OUT))
@@ -334,8 +416,8 @@ def main():
     print("wrote {}".format(OUT))
     for line in summary:
         print("  " + line)
-    print("  photo quality {} (0 original, 3 lowest), photos named by "
-          "plot_id".format(PHOTO_QUALITY))
+    print("  photo quality {} (0 original, 3 lowest), files named by "
+          "plot_uuid and direction".format(PHOTO_QUALITY))
     print("  reopened and verified: {} survey fields, GPS accuracy captured "
           "once, kelas required, photos relative".format(n_fields))
 

@@ -129,6 +129,23 @@ def gpkg_layer(con, name, fields, rows, description):
         (name, name, description) + box)
 
 
+def gpkg_table(con, name, fields, description):
+    """A non-spatial GeoPackage table: data_type 'attributes', no geometry.
+
+    One photo per point is not enough evidence for a burn scar - the ground,
+    the surroundings and at least one direction of view all matter - so the
+    photographs live in their own table, one row per picture, linked back to
+    the survey point.
+    """
+    cols = ", ".join('"{}" {}'.format(c, t) for c, t in fields)
+    con.execute('CREATE TABLE "{}" (fid INTEGER PRIMARY KEY AUTOINCREMENT,'
+                ' {})'.format(name, cols))
+    con.execute(
+        "INSERT INTO gpkg_contents (table_name, data_type, identifier,"
+        " description) VALUES (?, 'attributes', ?, ?)",
+        (name, name, description))
+
+
 # --------------------------------------------------------------------------
 # Targets
 
@@ -266,6 +283,11 @@ def controls(det_all, desa_path, n, box=None, seed=20260903):
 # --------------------------------------------------------------------------
 
 SURVEY_FIELDS = [
+    # The photo table joins to THIS, never to fid. Mergin renumbers fid during
+    # synchronisation, and photos linked by fid end up attached to whichever
+    # point inherited the number - silently, and unrecoverably once the
+    # original numbering is gone.
+    ("uuid", "TEXT"),
     ("plot_id", "TEXT"),
     ("target_id", "TEXT"),          # which target this answers, blank if none
     ("kelas", "TEXT"),              # bakar / tidak_bakar - the label itself
@@ -273,8 +295,14 @@ SURVEY_FIELDS = [
     ("bukti", "TEXT"),              # arang / abu / batang hangus / tidak ada
     ("akurasi_m", "REAL"),          # GPS horizontal accuracy at capture
     ("waktu", "TEXT"),              # ISO local datetime, filled by the app
-    ("foto", "TEXT"),               # attachment path
     ("catatan", "TEXT"),
+]
+
+PHOTO_FIELDS = [
+    ("plot_uuid", "TEXT"),          # foreign key to survei.uuid
+    ("berkas", "TEXT"),             # attachment path, relative to the project
+    ("arah", "TEXT"),               # permukaan / utara / timur / selatan / barat
+    ("keterangan", "TEXT"),
 ]
 
 
@@ -341,6 +369,8 @@ def main():
                " Calon kelas tidak_bakar.".format(CONTROL_CLEAR_M))
     gpkg_layer(con, "survei", SURVEY_FIELDS, [],
                "Diisi di lapangan. Kosong sampai ada yang berjalan ke sana.")
+    gpkg_table(con, "foto", PHOTO_FIELDS,
+               "Satu baris per foto, ditautkan ke survei.uuid (bukan fid).")
     con.commit()
     con.close()
     print("wrote {}".format(args.out))
