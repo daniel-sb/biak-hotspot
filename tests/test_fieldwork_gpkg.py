@@ -85,6 +85,36 @@ def test_clustering_merges_within_a_viirs_pixel():
     assert pair["prioritas"] == "sedang"      # two detections, not three
 
 
+def test_controls_are_named_and_stay_in_the_corridor():
+    """Two failures that produced a plausible-looking file.
+
+    The BIG geodatabase names its columns WADMKD/WADMKC, so reading "desa"
+    with .get() returned None for all 80 rows and nothing complained. And
+    sampling across every desa put 46 of 80 controls on Numfor and Supiori,
+    which is not only unreachable but confounds burned-against-unburned with
+    which island.
+    """
+    pd = pytest.importorskip("pandas")
+    yaml = pytest.importorskip("yaml")
+    cfg = yaml.safe_load((ROOT / "config.yaml").read_text(encoding="utf-8"))
+    desa = ROOT / cfg["admin_polygon"]
+    store = ROOT / cfg["output_paths"]["processed"]
+    if not (desa.exists() and store.exists()):
+        pytest.skip("boundary or detection store absent")
+
+    det = pd.read_parquet(store)
+    window = det[(det.date_wit >= fw.EVENT_FROM)
+                 & (det.date_wit <= fw.EVENT_TO) & det.on_land]
+    box = fw.target_box(fw.targets(window))
+    ct = fw.controls(det, desa, 20, box)
+
+    assert ct, "no controls generated"
+    for c in ct:
+        assert c["desa"] and c["distrik"], c
+        assert box[0] <= c["lon"] <= box[2], c
+        assert box[1] <= c["lat"] <= box[3], c
+
+
 def test_confidence_is_never_read_as_a_number():
     """AGENTS never-3. MODIS grades confidence 0-100 and VIIRS l/n/h; a cast
     would turn every VIIRS row into a missing value and silently drop them."""

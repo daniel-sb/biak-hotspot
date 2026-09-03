@@ -28,6 +28,7 @@ from pathlib import Path
 import pandas as pd
 import yaml
 from shapely.geometry import Point, shape
+from shapely.geometry import box as shapely_box
 from shapely.prepared import prep
 from shapely.strtree import STRtree
 
@@ -187,7 +188,23 @@ def targets(det):
     return out
 
 
-def controls(det_all, desa_path, n, seed=20260903):
+def target_box(targets_out, pad_km=5.0):
+    """Bounding box of the targets worth walking to, padded.
+
+    Control points have to come from the same landscape as the burn targets.
+    Sampling them across every desa put 46 of 80 on Numfor and Supiori,
+    hundreds of kilometres from any target, off the basemap and out of
+    reach - and worse, it would have confounded burned-against-unburned
+    with which-island, so an index difference could have been geography.
+    """
+    use = [t for t in targets_out if t["prioritas"] in ("kuat", "sedang")]
+    lons = [t["lon"] for t in use]
+    lats = [t["lat"] for t in use]
+    pad = pad_km / 110.57
+    return (min(lons) - pad, min(lats) - pad, max(lons) + pad, max(lats) + pad)
+
+
+def controls(det_all, desa_path, n, box=None, seed=20260903):
     """Random land points at least CONTROL_CLEAR_M from any detection ever.
 
     Without these the survey can measure only how often an index finds a
@@ -195,9 +212,20 @@ def controls(det_all, desa_path, n, seed=20260903):
     NBR+ exists to address.
     """
     feats = json.loads(desa_path.read_text(encoding="utf-8"))["features"]
+    # The national BIG geodatabase names its columns WADMKD/WADMKC/WADMKK,
+    # not desa/distrik. Reading the friendly names with .get() returned None
+    # for all 80 rows without raising anything; assert instead of guessing.
+    assert "WADMKD" in feats[0]["properties"], (
+        "unexpected boundary schema: {}".format(
+            sorted(feats[0]["properties"])))
     polys = [shape(f["geometry"]) for f in feats]
-    names = [(f["properties"].get("desa"), f["properties"].get("distrik"))
+    names = [(f["properties"]["WADMKD"], f["properties"]["WADMKC"])
              for f in feats]
+    if box is not None:
+        keep = [i for i, p in enumerate(polys)
+                if p.intersects(shapely_box(*box))]
+        polys = [polys[i] for i in keep]
+        names = [names[i] for i in keep]
     ready = [prep(p) for p in polys]
     tree = STRtree(polys)
 
@@ -208,10 +236,13 @@ def controls(det_all, desa_path, n, seed=20260903):
     deg = CONTROL_CLEAR_M / 111_000.0
 
     rng = random.Random(seed)
-    minx = min(p.bounds[0] for p in polys)
-    miny = min(p.bounds[1] for p in polys)
-    maxx = max(p.bounds[2] for p in polys)
-    maxy = max(p.bounds[3] for p in polys)
+    if box is not None:
+        minx, miny, maxx, maxy = box
+    else:
+        minx = min(p.bounds[0] for p in polys)
+        miny = min(p.bounds[1] for p in polys)
+        maxx = max(p.bounds[2] for p in polys)
+        maxy = max(p.bounds[3] for p in polys)
 
     out, tries = [], 0
     while len(out) < n and tries < n * 5000:
@@ -252,6 +283,10 @@ def main():
     ap.add_argument("--from", dest="start", default=EVENT_FROM)
     ap.add_argument("--to", dest="end", default=EVENT_TO)
     ap.add_argument("--controls", type=int, default=80)
+    ap.add_argument("--controls-anywhere", action="store_true",
+                    help="sample controls across every desa instead of the "
+                         "target corridor; unreachable in the field and it "
+                         "confounds burned-vs-unburned with which island")
     ap.add_argument("--out", type=Path,
                     default=ROOT / "fieldwork" / "biak_ground_truth.gpkg")
     args = ap.parse_args()
@@ -275,9 +310,16 @@ def main():
     print("targets: {} clusters at {:.0f} m  {}".format(
         len(tg), CLUSTER_M, counts))
 
-    ct = controls(det, ROOT / cfg["admin_polygon"], args.controls)
+    box = None if args.controls_anywhere else target_box(tg)
+    if box is not None:
+        print("controls confined to the target corridor {}".format(
+            [round(v, 4) for v in box]))
+    ct = controls(det, ROOT / cfg["admin_polygon"], args.controls, box)
     print("controls: {} land points >= {:.0f} m from every detection"
           " in the store".format(len(ct), CONTROL_CLEAR_M))
+    if len(ct) < args.controls:
+        print("  WARNING: asked for {}, the corridor yielded {}".format(
+            args.controls, len(ct)))
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     con = gpkg_create(args.out)
