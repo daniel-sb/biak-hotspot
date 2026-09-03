@@ -73,6 +73,38 @@ def read_targets(priorities):
     return out
 
 
+def group_by_desa(targets):
+    """One trip serves one desa, so the desa is the unit of planning.
+
+    Ranking 74 targets by distance alone reads as a route but is not one: it
+    interleaves desa, so following it means entering Sambawofuar, leaving for
+    Yendidori, and coming back. Grouped, the shape of the work appears - the
+    eight nearest desa hold 45 of the 74 strong targets, and Anjareuw alone
+    holds ten.
+
+    Groups are ordered by their nearest member, so the closest desa is still
+    first; only the interleaving is gone.
+    """
+    buckets = {}
+    for t in targets:
+        buckets.setdefault((t["distrik"], t["desa"]), []).append(t)
+
+    groups = []
+    for (distrik, desa), rows in buckets.items():
+        rows.sort(key=lambda t: (t["km"] if t["km"] == t["km"] else 0,
+                                 -t["n_deteksi"]))
+        kms = [t["km"] for t in rows if t["km"] == t["km"]]
+        groups.append({
+            "distrik": distrik, "desa": desa, "targets": rows,
+            "n_deteksi": sum(t["n_deteksi"] for t in rows),
+            "km_min": min(kms) if kms else float("nan"),
+            "km_max": max(kms) if kms else float("nan"),
+        })
+    groups.sort(key=lambda g: (g["km_min"] if g["km_min"] == g["km_min"]
+                               else -g["n_deteksi"], g["desa"]))
+    return groups
+
+
 def describe(t):
     return ("{prioritas} - {n_deteksi} deteksi, {n_satelit} satelit, "
             "{n_hari} hari, FRP maks {frp_maks} MW. {tgl_awal} s/d {tgl_akhir}. "
@@ -93,17 +125,32 @@ def write_csv(path, targets):
                         t["distrik"], t["n_deteksi"], describe(t)])
 
 
-def write_kml(path, targets, title):
+def write_kml(path, groups, title):
+    """Folders by DISTRIK, not desa. Google My Maps turns each KML folder
+    into a layer and allows ten of them; there are thirty desa here and only
+    six distrik, so folding by desa would silently lose two thirds of the
+    map. The desa is still on every placemark."""
+    by_distrik = {}
+    for g in groups:
+        by_distrik.setdefault(g["distrik"], []).append(g)
+
     parts = ['<?xml version="1.0" encoding="UTF-8"?>',
              '<kml xmlns="http://www.opengis.net/kml/2.2"><Document>',
              "<name>{}</name>".format(html.escape(title))]
-    for t in targets:
-        parts.append(
-            "<Placemark><name>{}</name><description>{}</description>"
-            "<Point><coordinates>{:.6f},{:.6f},0</coordinates></Point>"
-            "</Placemark>".format(
-                html.escape(t["target_id"]), html.escape(describe(t)),
-                t["lon"], t["lat"]))          # KML is lon,lat - not lat,lon
+    for distrik, gs in by_distrik.items():
+        n = sum(len(g["targets"]) for g in gs)
+        parts.append("<Folder><name>{} ({} target)</name>".format(
+            html.escape(distrik), n))
+        for g in gs:
+            for t in g["targets"]:
+                parts.append(
+                    "<Placemark><name>{} - {}</name><description>{}"
+                    "</description><Point><coordinates>{:.6f},{:.6f},0"
+                    "</coordinates></Point></Placemark>".format(
+                        html.escape(t["target_id"]), html.escape(g["desa"]),
+                        html.escape(describe(t)),
+                        t["lon"], t["lat"]))   # KML is lon,lat - not lat,lon
+        parts.append("</Folder>")
     parts.append("</Document></kml>")
     path.write_text("\n".join(parts), encoding="utf-8")
 
@@ -129,39 +176,64 @@ def maps_url(t):
             "{:.6f},{:.6f}".format(t["lat"], t["lon"]))
 
 
-def write_html(path, targets, origin, title):
-    rows = []
-    for i, t in enumerate(targets, 1):
-        rows.append(
-            "<tr><td>{}</td><td><b>{}</b></td><td>{}</td><td>{}</td>"
-            "<td>{:.1f} km {}</td><td><a href='{}'>buka peta</a></td></tr>"
-            .format(i, html.escape(t["target_id"]), html.escape(t["desa"]),
-                    t["n_deteksi"], t["km"], t["arah"], maps_url(t)))
-    # Google Maps takes at most nine intermediate stops in a directions URL.
-    route = ""
-    if origin and len(targets) > 1:
-        stops = targets[:10]
-        route = ("https://www.google.com/maps/dir/?api=1&origin={:.6f},{:.6f}"
-                 "&destination={:.6f},{:.6f}&travelmode=driving".format(
-                     origin[0], origin[1], stops[-1]["lat"], stops[-1]["lon"]))
-        mid = "|".join("{:.6f},{:.6f}".format(s["lat"], s["lon"])
-                       for s in stops[:-1])
-        route += "&waypoints=" + mid
+def route_url(origin, stops):
+    """A Google Maps directions URL. It accepts nine intermediate stops, so
+    a desa with more targets than that gets a route to the first ten and the
+    rest are walked from there."""
+    if not origin or len(stops) < 1:
+        return ""
+    stops = stops[:10]
+    url = ("https://www.google.com/maps/dir/?api=1&origin={:.6f},{:.6f}"
+           "&destination={:.6f},{:.6f}&travelmode=driving".format(
+               origin[0], origin[1], stops[-1]["lat"], stops[-1]["lon"]))
+    if len(stops) > 1:
+        url += "&waypoints=" + "|".join(
+            "{:.6f},{:.6f}".format(s["lat"], s["lon"]) for s in stops[:-1])
+    return url
+
+
+def write_html(path, groups, origin, title):
+    total = sum(len(g["targets"]) for g in groups)
+    body, seen = [], 0
+    for g in groups:
+        seen += len(g["targets"])
+        span = ("{:.1f} km".format(g["km_min"])
+                if g["km_min"] == g["km_min"] else "")
+        if g["km_min"] == g["km_min"] and g["km_max"] > g["km_min"] + 0.05:
+            span = "{:.1f}-{:.1f} km".format(g["km_min"], g["km_max"])
+        rows = "".join(
+            "<tr><td><b>{}</b></td><td>{} deteksi</td><td>{}</td>"
+            "<td><a href='{}'>peta</a></td></tr>".format(
+                html.escape(t["target_id"]), t["n_deteksi"],
+                "-" if t["km"] != t["km"] else
+                "{:.1f} km {}".format(t["km"], t["arah"]), maps_url(t))
+            for t in g["targets"])
+        route = route_url(origin, g["targets"])
+        body.append(
+            "<section><h3>{desa} <small>{distrik} &middot; {n} target "
+            "&middot; {span} &middot; kumulatif {seen}/{total}</small></h3>"
+            "{route}<table>{rows}</table></section>".format(
+                desa=html.escape(g["desa"]),
+                distrik=html.escape(g["distrik"]), n=len(g["targets"]),
+                span=span, seen=seen, total=total, rows=rows,
+                route=("<p><a href='{}'>Rute ke desa ini</a></p>".format(route)
+                       if route else "")))
     return path.write_text(
         "<!doctype html><meta charset='utf-8'>"
         "<meta name='viewport' content='width=device-width,initial-scale=1'>"
-        "<title>{t}</title><style>body{{font:15px system-ui;margin:12px}}"
+        "<title>{t}</title><style>body{{font:15px system-ui;margin:12px;"
+        "max-width:760px}}h3{{margin:22px 0 4px;border-bottom:2px solid #111;"
+        "padding-bottom:3px}}h3 small{{font-weight:400;color:#666;"
+        "font-size:13px;display:block;border:0}}"
         "table{{border-collapse:collapse;width:100%}}"
-        "td,th{{border-bottom:1px solid #ddd;padding:7px 5px;text-align:left}}"
+        "td{{border-bottom:1px solid #ddd;padding:7px 5px}}"
         "a{{display:inline-block;padding:6px 10px;background:#111;color:#fff;"
         "border-radius:5px;text-decoration:none}}</style>"
-        "<h2>{t}</h2>{r}"
-        "<table><tr><th>#</th><th>ID</th><th>Desa</th><th>Deteksi</th>"
-        "<th>Jarak</th><th></th></tr>{rows}</table>"
-        "<p style='color:#666'>Jarak garis lurus, bukan jarak jalan.</p>"
-        .format(t=html.escape(title), rows="".join(rows),
-                r=("<p><a href='{}'>Rute 10 titik terdekat</a></p>".format(
-                    route) if route else "")),
+        "<h2>{t}</h2><p style='color:#666'>{total} target dalam {ng} desa, "
+        "diurutkan menurut desa terdekat. Jarak garis lurus, bukan jarak "
+        "jalan.</p>{body}".format(
+            t=html.escape(title), total=total, ng=len(groups),
+            body="".join(body)),
         encoding="utf-8")
 
 
@@ -207,27 +279,40 @@ def main():
     if args.max:
         targets = targets[:args.max]
 
+    groups = group_by_desa(targets)
+
     tag = "-".join(prios)
     title = "Target bakar {} - Biak, Agustus 2026".format(tag)
     args.out_dir.mkdir(parents=True, exist_ok=True)
     stem = args.out_dir / "waypoints_{}".format(tag)
     write_csv(stem.with_suffix(".csv"), targets)
-    write_kml(stem.with_suffix(".kml"), targets, title)
+    write_kml(stem.with_suffix(".kml"), groups, title)
     write_gpx(stem.with_suffix(".gpx"), targets, title)
-    write_html(stem.with_suffix(".html"), targets, origin, title)
+    write_html(stem.with_suffix(".html"), groups, origin, title)
 
-    print("{} target, prioritas {}".format(len(targets), prios))
+    print("{} target dalam {} desa, {} distrik. prioritas {}".format(
+        len(targets), len(groups),
+        len({g["distrik"] for g in groups}), prios))
     if origin:
-        print("dari {:.6f}, {:.6f}".format(*origin))
-    print("  {:<7} {:>7} {:>5}  {:<18} {:>4} {:<22}".format(
-        "id", "km", "arah", "desa", "det", "koordinat"))
-    for t in targets[:25]:
-        print("  {:<7} {:>7} {:>5}  {:<18} {:>4} {:.6f},{:.6f}".format(
-            t["target_id"],
-            "-" if t["km"] != t["km"] else "{:.1f}".format(t["km"]),
-            t["arah"], t["desa"][:18], t["n_deteksi"], t["lat"], t["lon"]))
-    if len(targets) > 25:
-        print("  ... {} lagi di berkas".format(len(targets) - 25))
+        print("dari {:.6f}, {:.6f} - desa terdekat lebih dulu\n".format(*origin))
+
+    seen = 0
+    for g in groups:
+        seen += len(g["targets"])
+        span = ("{:.1f}".format(g["km_min"]) if g["km_min"] == g["km_min"]
+                else "-")
+        if g["km_min"] == g["km_min"] and g["km_max"] > g["km_min"] + 0.05:
+            span += "-{:.1f}".format(g["km_max"])
+        print("  {:<12} {:<16} {:>2} target  {:>10} km  {:>3} deteksi"
+              "   kumulatif {}/{}".format(
+                  g["distrik"][:12], g["desa"][:16], len(g["targets"]),
+                  span, g["n_deteksi"], seen, len(targets)))
+        for t in g["targets"]:
+            print("      {:<7} {:>4} det  {:>5} {:<4} {:.6f},{:.6f}".format(
+                t["target_id"], t["n_deteksi"],
+                "-" if t["km"] != t["km"] else "{:.1f}".format(t["km"]),
+                t["arah"], t["lat"], t["lon"]))
+
     for ext in ("csv", "kml", "gpx", "html"):
         print("wrote {}".format(stem.with_suffix("." + ext)))
 
