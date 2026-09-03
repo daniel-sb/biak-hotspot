@@ -46,6 +46,17 @@ OUT = FIELD / "biak_survey.qgz"
 # survey layer takes the one bright colour left over.
 WHITE, BLACK, YELLOW, CYAN = "#ffffff", "#000000", "#ffe700", "#00e5ff"
 
+# Photo quality is a PROJECT setting, not a phone setting. There is no such
+# control in the mobile app, and looking for one there is a dead end - the
+# app resizes according to what the project tells it. Keys and values are the
+# plugin's own (Mergin/project_settings_widget.py):
+#   0 Original   1 High approx 2-4 MB   2 Medium approx 1-2 MB   3 Low approx 0.5 MB
+# Medium, because the arithmetic decides it: 120 points at Original is 1.0
+# to 1.4 GB and the free quota dies around the fiftieth point, in the field,
+# with no signal to fix it. At Medium the same survey is about 180 MB, which
+# with the 82 MB basemap leaves room to spare. Drop to 3 if the trip grows.
+PHOTO_QUALITY = 2
+
 
 def marker(shape, fill, stroke, size, width=0.6):
     return QgsMarkerSymbol.createSimple({
@@ -242,6 +253,12 @@ def verify(project, path):
     cats = {c.value(): c.renderState() for c in targets.renderer().categories()}
     assert cats == {"kuat": True, "sedang": True, "lemah": False}, cats
     assert targets.labelsEnabled()
+
+    quality, ok = project.readNumEntry("Mergin", "PhotoQuality")
+    assert ok and quality == PHOTO_QUALITY, (ok, quality)
+    naming, ok = project.readEntry(
+        "Mergin", "PhotoNaming/{}/foto".format(survey.id()))
+    assert ok and naming == '"plot_id"', (ok, naming)
     return len(fields) - 1
 
 
@@ -288,6 +305,12 @@ def main():
     for lyr in (targets, controls):
         lyr.setReadOnly(True)
 
+    project.writeEntry("Mergin", "PhotoQuality", PHOTO_QUALITY)
+    # Name each photo after its plot, so a file separated from the database
+    # can still be traced back to the point it was taken at.
+    project.writeEntry(
+        "Mergin", "PhotoNaming/{}/foto".format(survey.id()), '"plot_id"')
+
     # Read everything worth printing BEFORE exitQgis: it deletes the
     # underlying C++ objects and any later attribute access raises.
     summary = [
@@ -311,6 +334,8 @@ def main():
     print("wrote {}".format(OUT))
     for line in summary:
         print("  " + line)
+    print("  photo quality {} (0 original, 3 lowest), photos named by "
+          "plot_id".format(PHOTO_QUALITY))
     print("  reopened and verified: {} survey fields, GPS accuracy captured "
           "once, kelas required, photos relative".format(n_fields))
 
