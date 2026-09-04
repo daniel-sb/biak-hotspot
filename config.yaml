@@ -72,3 +72,11 @@ geojson_window_days: 7
 # Wired into the ingest (src/ingest_firms.py): detections outside every desa
 # are kept with on_land = False, never dropped.
 admin_polygon: data/boundaries/biak_desa.geojson
+
+# Road network for the AOI, fetched once from OpenStreetMap by
+# scripts/fetch_osm_roads.py and tracked so the build and the tests run
+# offline. Used to record how far each survey target is from a road a
+# motorbike can reach: on Biak the interior has few roads, and a target 300 m
+# from the coastal road and one 1.3 km into the karst cost entirely different
+# afternoons. (c) OpenStreetMap contributors, ODbL.
+road_lines: data/boundaries/biak_roads.geojson
