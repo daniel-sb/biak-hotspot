@@ -101,3 +101,49 @@ def test_a_target_on_the_road_reads_near_zero():
     segs = fw.load_roads(ROOT / cfg["road_lines"])
     d, _ = fw.nearest_road(lat, lon, segs)
     assert d < 1.0, d
+
+
+def test_update_road_columns_keeps_survey_points(tmp_path):
+    """The migration exists so the columns can arrive after the GeoPackage has
+    been to the field. If it loses a survey point it is worse than useless -
+    a rebuild at least fails the guard."""
+    import sqlite3
+
+    out = tmp_path / "t.gpkg"
+    con = fw.gpkg_create(out)
+    fw.gpkg_layer(con, "target_bakar",
+                  [("target_id", "TEXT"), ("desa", "TEXT")],
+                  [{"lon": 136.02991, "lat": -1.11230, "target_id": "T044",
+                    "desa": "Yendidori"}], "d")
+    fw.gpkg_layer(con, "target_kontrol", [("target_id", "TEXT")],
+                  [{"lon": 136.05, "lat": -1.15, "target_id": "K001"}], "d")
+    fw.gpkg_layer(con, "survei", fw.SURVEY_FIELDS, [], "d")
+    con.execute("INSERT INTO survei (uuid, kelas) VALUES ('u1', 'bakar')")
+    con.commit()
+    con.close()
+
+    segs = [seg(0.0, 0.0, 1.0, 0.0)]           # far away, but a real answer
+    done = fw.update_road_columns(out, segs)
+    assert done == {"target_bakar": 1, "target_kontrol": 1}
+
+    con = sqlite3.connect(out)
+    assert con.execute("SELECT count(*) FROM survei").fetchone()[0] == 1
+    for table in ("target_bakar", "target_kontrol"):
+        cols = {r[1] for r in con.execute(
+            'PRAGMA table_info("{}")'.format(table))}
+        assert {"jarak_jalan_m", "kelas_jalan"} <= cols
+        d, cls = con.execute(
+            'SELECT jarak_jalan_m, kelas_jalan FROM "{}"'.format(
+                table)).fetchone()
+        assert d is not None and cls == "residential"
+    con.close()
+
+    # Running it twice must not duplicate the columns or change the answer.
+    again = fw.update_road_columns(out, segs)
+    assert again == done
+
+
+def test_gpkg_point_read_round_trips():
+    blob = fw.gpkg_point(136.0626332, -1.1624014)
+    lon, lat = fw.gpkg_point_read(blob)
+    assert (round(lon, 7), round(lat, 7)) == (136.0626332, -1.1624014)

@@ -162,6 +162,20 @@ def survey_rows(path):
         con.close()
 
 
+def gpkg_point_read(blob):
+    """(lon, lat) from a GeoPackageBinary point written by gpkg_point.
+
+    The header is only eight bytes long when no envelope is present, which is
+    what gpkg_point writes. A file from somewhere else may carry one, and
+    reading past it as if it were coordinates yields plausible nonsense
+    instead of an error, so the flag is checked rather than assumed.
+    """
+    assert blob[:2] == b"GP", "not a GeoPackageBinary geometry"
+    envelope = (blob[3] >> 1) & 0x07
+    assert envelope == 0, "geometry carries an envelope; header is not 8 bytes"
+    return struct.unpack("<BIdd", blob[8:])[2:]
+
+
 def gpkg_create(path):
     path.unlink(missing_ok=True)
     con = sqlite3.connect(path)
@@ -240,6 +254,42 @@ def gpkg_table(con, name, fields, description):
         "INSERT INTO gpkg_contents (table_name, data_type, identifier,"
         " description) VALUES (?, 'attributes', ?, ?)",
         (name, name, description))
+
+
+def update_road_columns(path, segs):
+    """Add and fill jarak_jalan_m / kelas_jalan on an existing GeoPackage.
+
+    Rebuilding the file would be a third of this code and would delete every
+    survey point in it, which is the whole reason this exists: once the
+    GeoPackage has been to the field, the road columns have to arrive without
+    touching anything else. Mergin cannot express an added column as a diff
+    and will upload the whole file, which is lossless as long as the local
+    copy already holds the field data - so pull before running this.
+    """
+    con = sqlite3.connect(path)
+    done = {}
+    for table in ("target_bakar", "target_kontrol"):
+        have = {r[1] for r in con.execute('PRAGMA table_info("{}")'.format(
+            table))}
+        if not have:
+            continue
+        for col, typ in (("jarak_jalan_m", "REAL"), ("kelas_jalan", "TEXT")):
+            if col not in have:
+                con.execute('ALTER TABLE "{}" ADD COLUMN "{}" {}'.format(
+                    table, col, typ))
+        rows = con.execute('SELECT fid, geom FROM "{}"'.format(table)).fetchall()
+        upd = []
+        for fid, blob in rows:
+            lon, lat = gpkg_point_read(blob)
+            d, cls = nearest_road(lat, lon, segs)
+            upd.append((None if d is None else round(d, 1), cls, fid))
+        con.executemany(
+            'UPDATE "{}" SET jarak_jalan_m = ?, kelas_jalan = ?'
+            ' WHERE fid = ?'.format(table), upd)
+        done[table] = len(upd)
+    con.commit()
+    con.close()
+    return done
 
 
 # --------------------------------------------------------------------------
@@ -413,6 +463,10 @@ def main():
                          "confounds burned-vs-unburned with which island")
     ap.add_argument("--out", type=Path,
                     default=ROOT / "fieldwork" / "biak_ground_truth.gpkg")
+    ap.add_argument("--update-roads", action="store_true",
+                    help="only add and refill the road columns on an existing "
+                         "GeoPackage, leaving the survey points alone; use "
+                         "this once the file has been to the field")
     ap.add_argument("--force", action="store_true",
                     help="rebuild even though the output already holds survey "
                          "points; they are destroyed")
@@ -423,6 +477,18 @@ def main():
     # there. The synchronised copy lives in the Mergin project directory, and
     # the surveyor pressing Sync afterwards would push the deletion to the
     # server. AGENTS never-5 in its most literal form.
+    if args.update_roads:
+        if not args.out.exists():
+            raise SystemExit("{} does not exist yet".format(args.out))
+        cfg = yaml.safe_load((ROOT / "config.yaml").read_text(encoding="utf-8"))
+        segs = load_roads(ROOT / cfg["road_lines"])
+        print("roads: {} driveable segments".format(len(segs)))
+        done = update_road_columns(args.out, segs)
+        for table, n in done.items():
+            print("  {}: {} rows updated".format(table, n))
+        print("survey points untouched: {}".format(survey_rows(args.out)))
+        return
+
     have = survey_rows(args.out)
     if have and not args.force:
         raise SystemExit(
