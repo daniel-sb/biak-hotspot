@@ -3,7 +3,9 @@
 Reads the tracked detection store and writes a GeoPackage holding three
 layers: burn targets clustered from a fire-season window, control points on
 land far from every detection ever recorded, and an empty survey layer for
-the surveyor to fill on the phone.
+the surveyor to fill on the phone. Targets and controls both carry the
+distance to the nearest driveable road, because on Biak reachability, not
+detection strength, is what decides how many plots a morning yields.
 
     python src/fieldwork_gpkg.py [--from YYYY-MM-DD] [--to YYYY-MM-DD]
                                  [--controls N] [--out PATH]
@@ -47,12 +49,93 @@ CLUSTER_M = 375.0
 # a surveyor standing on it is not standing on an unrecorded edge of a burn.
 CONTROL_CLEAR_M = 1000.0
 
+# Which OpenStreetMap highway classes a surveyor on a motorbike can actually
+# reach. Footways and paths are in the tracked road file but excluded here:
+# "300 m from a road" is a planning number, and a number that counts a
+# footpath as a road answers a different question than the one being asked.
+ROAD_DRIVEABLE = frozenset((
+    "motorway", "motorway_link", "trunk", "trunk_link", "primary",
+    "primary_link", "secondary", "secondary_link", "tertiary",
+    "tertiary_link", "unclassified", "residential", "living_street",
+    "service", "road", "track"))
+
+# Local tangent plane for road distances. The AOI spans 2.4 degrees of
+# latitude, over which the cosine changes by 0.015% - 0.15 m per kilometre,
+# far below the precision anyone plans a morning on.
+ROAD_PROJ_LAT = -1.1
+
 
 def metres(lat1, lon1, lat2, lon2):
     """Local flat-earth distance. Over 375 m at 1 S the error is microns."""
     dy = math.radians(lat2 - lat1) * EARTH_R
     dx = math.radians(lon2 - lon1) * EARTH_R * math.cos(math.radians(lat1))
     return math.hypot(dx, dy)
+
+
+# --------------------------------------------------------------------------
+# Road access
+
+
+def load_roads(path, classes=ROAD_DRIVEABLE):
+    """Road lines as flat (x1, y1, x2, y2, highway) segments in metres.
+
+    Returns segments rather than lines because the nearest point of a road is
+    almost never one of its vertices: the coastal road runs for a kilometre
+    between nodes, and measuring to vertices alone would put a target on it
+    900 m from "the road".
+    """
+    kx = (math.radians(1.0) * EARTH_R * math.cos(math.radians(ROAD_PROJ_LAT)))
+    ky = math.radians(1.0) * EARTH_R
+    feats = json.loads(Path(path).read_text(encoding="utf-8"))["features"]
+    segs = []
+    for f in feats:
+        cls = f["properties"]["highway"]
+        if cls not in classes:
+            continue
+        pts = [(lon * kx, lat * ky) for lon, lat in f["geometry"]["coordinates"]]
+        for (x1, y1), (x2, y2) in zip(pts, pts[1:]):
+            segs.append((x1, y1, x2, y2, cls))
+    return segs
+
+
+def point_seg_m(px, py, seg):
+    """Distance from a projected point to a projected segment, in metres."""
+    x1, y1, x2, y2 = seg[:4]
+    dx, dy = x2 - x1, y2 - y1
+    span = dx * dx + dy * dy
+    t = 0.0 if span == 0 else max(0.0, min(1.0, ((px - x1) * dx
+                                                 + (py - y1) * dy) / span))
+    return math.hypot(px - (x1 + t * dx), py - (y1 + t * dy))
+
+
+def nearest_road(lat, lon, segs):
+    """(distance in metres, highway class) of the closest road segment."""
+    if not segs:
+        return None, None
+    kx = (math.radians(1.0) * EARTH_R * math.cos(math.radians(ROAD_PROJ_LAT)))
+    ky = math.radians(1.0) * EARTH_R
+    px, py = lon * kx, lat * ky
+    best, cls = float("inf"), None
+    for s in segs:
+        # Cheap rejection first: a segment whose own bounding box is already
+        # further away than the best so far cannot beat it. Without this the
+        # 361 survey points against 26k segments take minutes.
+        if (min(s[0], s[2]) - px > best or px - max(s[0], s[2]) > best
+                or min(s[1], s[3]) - py > best or py - max(s[1], s[3]) > best):
+            continue
+        d = point_seg_m(px, py, s)
+        if d < best:
+            best, cls = d, s[4]
+    return best, cls
+
+
+def annotate_roads(rows, segs):
+    """Fill jarak_jalan_m and kelas_jalan on every row, in place."""
+    for r in rows:
+        d, cls = nearest_road(r["lat"], r["lon"], segs)
+        r["jarak_jalan_m"] = None if d is None else round(d, 1)
+        r["kelas_jalan"] = cls
+    return rows
 
 
 # --------------------------------------------------------------------------
@@ -349,6 +432,16 @@ def main():
         print("  WARNING: asked for {}, the corridor yielded {}".format(
             args.controls, len(ct)))
 
+    segs = load_roads(ROOT / cfg["road_lines"])
+    print("roads: {} driveable segments".format(len(segs)))
+    annotate_roads(tg, segs)
+    annotate_roads(ct, segs)
+    strong = [t for t in tg if t["prioritas"] == "kuat"]
+    for cut in (250, 500, 1000):
+        print("  kuat within {:>4} m of a road: {:2d} / {}".format(
+            cut, sum(1 for t in strong if t["jarak_jalan_m"] <= cut),
+            len(strong)))
+
     args.out.parent.mkdir(parents=True, exist_ok=True)
     con = gpkg_create(args.out)
     gpkg_layer(con, "target_bakar",
@@ -357,13 +450,15 @@ def main():
                 ("n_hari", "INTEGER"), ("frp_maks", "REAL"),
                 ("conf_tinggi_viirs", "INTEGER"), ("tgl_awal", "TEXT"),
                 ("tgl_akhir", "TEXT"), ("desa", "TEXT"), ("distrik", "TEXT"),
-                ("situs_berulang", "INTEGER")],
+                ("situs_berulang", "INTEGER"), ("jarak_jalan_m", "REAL"),
+                ("kelas_jalan", "TEXT")],
                tg,
                "Klaster deteksi {}..{}, jarak {:.0f} m."
                " Bukan batas area terbakar.".format(
                    args.start, args.end, CLUSTER_M))
     gpkg_layer(con, "target_kontrol",
-               [("target_id", "TEXT"), ("desa", "TEXT"), ("distrik", "TEXT")],
+               [("target_id", "TEXT"), ("desa", "TEXT"), ("distrik", "TEXT"),
+                ("jarak_jalan_m", "REAL"), ("kelas_jalan", "TEXT")],
                ct,
                "Titik darat >= {:.0f} m dari setiap deteksi dalam arsip."
                " Calon kelas tidak_bakar.".format(CONTROL_CLEAR_M))

@@ -2,6 +2,7 @@
 
     python src/export_waypoints.py --from=-1.1624014,136.0626332
                                    [--priority kuat] [--max 40]
+                                   [--max-road-dist 250]
 
 Note the "=" in --from. A southern latitude starts with a minus sign, and
 without the equals sign argparse reads it as another option and stops.
@@ -17,6 +18,13 @@ and prints the nearest targets with distance and bearing from where you are.
 Distances here are straight lines. Biak's roads are not, and the interior has
 few of them, so a target 4 km away across the karst can be an hour's drive
 round the coast. Read the numbers as an ordering, never as a travel time.
+
+Every target also carries how far it lies from the nearest driveable road,
+measured against OpenStreetMap by src/fieldwork_gpkg.py. That number, not the
+straight-line distance, decides how many plots a morning yields: only 20 of
+the 74 strong targets are within 250 m of a road. --max-road-dist keeps the
+reachable ones. A small distance is always true; a large one means no access
+is *mapped*, and a garden track may still exist.
 """
 
 from __future__ import annotations
@@ -34,6 +42,12 @@ GPKG = ROOT / "fieldwork" / "biak_ground_truth.gpkg"
 EARTH_R = 6371008.8
 
 COMPASS = ("U", "TL", "T", "TG", "S", "BD", "B", "BL")
+
+# A target this close to a road is reached from where the motorbike stops.
+# Beyond it the walk is the trip: the four strong targets in Manggandisapi
+# sit 785 to 1292 m into the karst, and a morning spent there returned three
+# plots where a roadside desa returns five in the same three hours.
+NEAR_M = 250.0
 
 
 def haversine(lat1, lon1, lat2, lon2):
@@ -58,7 +72,8 @@ def read_targets(priorities):
     marks = ",".join("?" for _ in priorities)
     rows = con.execute(
         "SELECT target_id, prioritas, n_deteksi, n_satelit, n_hari, frp_maks,"
-        " tgl_awal, tgl_akhir, desa, distrik, geom FROM target_bakar"
+        " tgl_awal, tgl_akhir, desa, distrik, jarak_jalan_m, kelas_jalan,"
+        " geom FROM target_bakar"
         " WHERE prioritas IN ({})".format(marks), tuple(priorities)).fetchall()
     con.close()
     out = []
@@ -68,7 +83,8 @@ def read_targets(priorities):
             "target_id": r[0], "prioritas": r[1], "n_deteksi": r[2],
             "n_satelit": r[3], "n_hari": r[4], "frp_maks": r[5],
             "tgl_awal": r[6], "tgl_akhir": r[7], "desa": r[8] or "-",
-            "distrik": r[9] or "-", "lat": lat, "lon": lon,
+            "distrik": r[9] or "-", "jarak_jalan_m": r[10],
+            "kelas_jalan": r[11] or "-", "lat": lat, "lon": lon,
         })
     return out
 
@@ -99,16 +115,26 @@ def group_by_desa(targets):
             "n_deteksi": sum(t["n_deteksi"] for t in rows),
             "km_min": min(kms) if kms else float("nan"),
             "km_max": max(kms) if kms else float("nan"),
+            "n_dekat": sum(1 for t in rows
+                           if t["jarak_jalan_m"] is not None
+                           and t["jarak_jalan_m"] <= NEAR_M),
         })
     groups.sort(key=lambda g: (g["km_min"] if g["km_min"] == g["km_min"]
                                else -g["n_deteksi"], g["desa"]))
     return groups
 
 
+def road_text(t):
+    if t["jarak_jalan_m"] is None:
+        return "jarak jalan tidak diketahui"
+    return "{:.0f} m dari jalan ({})".format(t["jarak_jalan_m"],
+                                             t["kelas_jalan"])
+
+
 def describe(t):
     return ("{prioritas} - {n_deteksi} deteksi, {n_satelit} satelit, "
             "{n_hari} hari, FRP maks {frp_maks} MW. {tgl_awal} s/d {tgl_akhir}. "
-            "Desa {desa}, {distrik}.").format(**t)
+            "Desa {desa}, {distrik}. {road}.").format(road=road_text(t), **t)
 
 
 def write_csv(path, targets):
@@ -118,11 +144,13 @@ def write_csv(path, targets):
     with path.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["nama", "latitude", "longitude", "prioritas", "desa",
-                    "distrik", "n_deteksi", "keterangan"])
+                    "distrik", "n_deteksi", "jarak_jalan_m", "kelas_jalan",
+                    "keterangan"])
         for t in targets:
             w.writerow([t["target_id"], "{:.6f}".format(t["lat"]),
                         "{:.6f}".format(t["lon"]), t["prioritas"], t["desa"],
-                        t["distrik"], t["n_deteksi"], describe(t)])
+                        t["distrik"], t["n_deteksi"], t["jarak_jalan_m"],
+                        t["kelas_jalan"], describe(t)])
 
 
 def write_kml(path, groups, title):
@@ -203,18 +231,23 @@ def write_html(path, groups, origin, title):
             span = "{:.1f}-{:.1f} km".format(g["km_min"], g["km_max"])
         rows = "".join(
             "<tr><td><b>{}</b></td><td>{} deteksi</td><td>{}</td>"
-            "<td><a href='{}'>peta</a></td></tr>".format(
+            "<td class='{}'>{}</td><td><a href='{}'>peta</a></td></tr>".format(
                 html.escape(t["target_id"]), t["n_deteksi"],
                 "-" if t["km"] != t["km"] else
-                "{:.1f} km {}".format(t["km"], t["arah"]), maps_url(t))
+                "{:.1f} km {}".format(t["km"], t["arah"]),
+                "dekat" if (t["jarak_jalan_m"] is not None
+                            and t["jarak_jalan_m"] <= NEAR_M) else "jauh",
+                html.escape(road_text(t)), maps_url(t))
             for t in g["targets"])
         route = route_url(origin, g["targets"])
         body.append(
             "<section><h3>{desa} <small>{distrik} &middot; {n} target "
-            "&middot; {span} &middot; kumulatif {seen}/{total}</small></h3>"
+            "({dekat} dalam {near:.0f} m dari jalan) &middot; {span} "
+            "&middot; kumulatif {seen}/{total}</small></h3>"
             "{route}<table>{rows}</table></section>".format(
                 desa=html.escape(g["desa"]),
                 distrik=html.escape(g["distrik"]), n=len(g["targets"]),
+                dekat=g["n_dekat"], near=NEAR_M,
                 span=span, seen=seen, total=total, rows=rows,
                 route=("<p><a href='{}'>Rute ke desa ini</a></p>".format(route)
                        if route else "")))
@@ -228,10 +261,15 @@ def write_html(path, groups, origin, title):
         "table{{border-collapse:collapse;width:100%}}"
         "td{{border-bottom:1px solid #ddd;padding:7px 5px}}"
         "a{{display:inline-block;padding:6px 10px;background:#111;color:#fff;"
-        "border-radius:5px;text-decoration:none}}</style>"
+        "border-radius:5px;text-decoration:none}}"
+        "td.dekat{{color:#0a6b2d;font-weight:600}}td.jauh{{color:#a33}}"
+        "</style>"
         "<h2>{t}</h2><p style='color:#666'>{total} target dalam {ng} desa, "
         "diurutkan menurut desa terdekat. Jarak garis lurus, bukan jarak "
-        "jalan.</p>{body}".format(
+        "jalan. Jarak ke jalan diukur ke jalan yang terpetakan di "
+        "OpenStreetMap; jalan kebun sering belum terpetakan, jadi angka "
+        "kecil selalu benar sedangkan angka besar hanya berarti akses "
+        "tidak terpetakan.</p>{body}".format(
             t=html.escape(title), total=total, ng=len(groups),
             body="".join(body)),
         encoding="utf-8")
@@ -245,6 +283,9 @@ def main():
     ap.add_argument("--priority", default="kuat",
                     help="kuat, sedang, or 'kuat,sedang'")
     ap.add_argument("--max", type=int, default=0, help="0 = semua")
+    ap.add_argument("--max-road-dist", type=float, default=0.0, metavar="M",
+                    help="buang target yang lebih jauh dari M meter dari "
+                         "jalan terpetakan. 0 = semua")
     ap.add_argument("--out-dir", type=Path, default=ROOT / "fieldwork")
     args = ap.parse_args()
 
@@ -276,6 +317,20 @@ def main():
             t["km"], t["arah"] = float("nan"), "-"
         targets.sort(key=lambda t: (-t["n_deteksi"], t["target_id"]))
 
+    if args.max_road_dist:
+        before = len(targets)
+        # A NULL distance means the road file had nothing in range, not that
+        # the target is roadside. Dropping it is the honest reading of a
+        # filter that asks for reachable targets.
+        targets = [t for t in targets
+                   if t["jarak_jalan_m"] is not None
+                   and t["jarak_jalan_m"] <= args.max_road_dist]
+        print("filter jalan <= {:.0f} m: {} dari {} target".format(
+            args.max_road_dist, len(targets), before))
+        if not targets:
+            raise SystemExit("tidak ada target dalam {:.0f} m dari jalan"
+                             .format(args.max_road_dist))
+
     if args.max:
         targets = targets[:args.max]
 
@@ -303,15 +358,19 @@ def main():
                 else "-")
         if g["km_min"] == g["km_min"] and g["km_max"] > g["km_min"] + 0.05:
             span += "-{:.1f}".format(g["km_max"])
-        print("  {:<12} {:<16} {:>2} target  {:>10} km  {:>3} deteksi"
-              "   kumulatif {}/{}".format(
+        print("  {:<12} {:<16} {:>2} target ({} dekat jalan)  {:>10} km"
+              "  {:>3} deteksi   kumulatif {}/{}".format(
                   g["distrik"][:12], g["desa"][:16], len(g["targets"]),
-                  span, g["n_deteksi"], seen, len(targets)))
+                  g["n_dekat"], span, g["n_deteksi"], seen, len(targets)))
         for t in g["targets"]:
-            print("      {:<7} {:>4} det  {:>5} {:<4} {:.6f},{:.6f}".format(
-                t["target_id"], t["n_deteksi"],
-                "-" if t["km"] != t["km"] else "{:.1f}".format(t["km"]),
-                t["arah"], t["lat"], t["lon"]))
+            print("      {:<7} {:>4} det  {:>5} {:<4} {:.6f},{:.6f}"
+                  "  jalan {:>6} m {}".format(
+                      t["target_id"], t["n_deteksi"],
+                      "-" if t["km"] != t["km"] else "{:.1f}".format(t["km"]),
+                      t["arah"], t["lat"], t["lon"],
+                      "?" if t["jarak_jalan_m"] is None
+                      else "{:.0f}".format(t["jarak_jalan_m"]),
+                      t["kelas_jalan"]))
 
     for ext in ("csv", "kml", "gpx", "html"):
         print("wrote {}".format(stem.with_suffix("." + ext)))
