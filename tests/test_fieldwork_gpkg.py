@@ -122,3 +122,26 @@ def test_confidence_is_never_read_as_a_number():
     for bad in ("int(r.confidence", "float(r.confidence",
                 'confidence"].astype', "confidence.astype"):
         assert bad not in src
+
+
+def test_survey_rows_counts_and_guards_a_rebuild(tmp_path):
+    """A rebuild over a field-filled GeoPackage deletes the survey points and
+    a later Sync pushes that deletion to the server, so the count that guards
+    it has to be right on all three states."""
+    out = tmp_path / "t.gpkg"
+    assert fw.survey_rows(out) == 0                 # missing file
+    con = fw.gpkg_create(out)
+    fw.gpkg_layer(con, "survei", fw.SURVEY_FIELDS, [], "empty")
+    con.commit()
+    con.close()
+    assert fw.survey_rows(out) == 0                 # built, still empty
+
+    con = sqlite3.connect(out)
+    con.execute("INSERT INTO survei (uuid, kelas) VALUES ('u1', 'bakar')")
+    con.commit()
+    con.close()
+    assert fw.survey_rows(out) == 1                 # been to the field
+
+    plain = tmp_path / "not-ours.gpkg"
+    sqlite3.connect(plain).close()
+    assert fw.survey_rows(plain) == 0               # no survei table

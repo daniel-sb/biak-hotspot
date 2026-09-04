@@ -149,6 +149,19 @@ def gpkg_point(lon, lat):
             + struct.pack("<BIdd", 1, 1, lon, lat))
 
 
+def survey_rows(path):
+    """How many survey points the file at `path` already holds, or 0."""
+    if not path.exists():
+        return 0
+    con = sqlite3.connect(path)
+    try:
+        return con.execute("SELECT count(*) FROM survei").fetchone()[0]
+    except sqlite3.Error:
+        return 0          # not one of ours, or no survei layer yet
+    finally:
+        con.close()
+
+
 def gpkg_create(path):
     path.unlink(missing_ok=True)
     con = sqlite3.connect(path)
@@ -400,7 +413,22 @@ def main():
                          "confounds burned-vs-unburned with which island")
     ap.add_argument("--out", type=Path,
                     default=ROOT / "fieldwork" / "biak_ground_truth.gpkg")
+    ap.add_argument("--force", action="store_true",
+                    help="rebuild even though the output already holds survey "
+                         "points; they are destroyed")
     args = ap.parse_args()
+
+    # This rebuilds the whole file rather than altering it, so a rebuild over
+    # a GeoPackage that has been to the field deletes the points collected
+    # there. The synchronised copy lives in the Mergin project directory, and
+    # the surveyor pressing Sync afterwards would push the deletion to the
+    # server. AGENTS never-5 in its most literal form.
+    have = survey_rows(args.out)
+    if have and not args.force:
+        raise SystemExit(
+            "{} already holds {} survey point(s).\n"
+            "Rebuilding destroys them. Export or synchronise them first, then"
+            " re-run with --force.".format(args.out, have))
 
     cfg = yaml.safe_load((ROOT / "config.yaml").read_text(encoding="utf-8"))
     store = ROOT / cfg["output_paths"]["processed"]
