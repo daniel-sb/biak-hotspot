@@ -1,5 +1,5 @@
 {
- "covered_wit_date": "2026-09-03",
+ "covered_wit_date": "2026-09-04",
  "districts": [
   {
    "detections": 0,
@@ -30,11 +30,11 @@
    "total_frp": null
   },
   {
-   "detections": 11,
+   "detections": 0,
    "distrik": "Biak Timur",
    "kabupaten": "Biak Numfor",
-   "max_frp": 10.3,
-   "total_frp": 58.1
+   "max_frp": null,
+   "total_frp": null
   },
   {
    "detections": 0,
@@ -107,11 +107,11 @@
    "total_frp": null
   },
   {
-   "detections": 6,
+   "detections": 0,
    "distrik": "Samofa",
    "kabupaten": "Biak Numfor",
-   "max_frp": 9.6,
-   "total_frp": 30.7
+   "max_frp": null,
+   "total_frp": null
   },
   {
    "detections": 0,
@@ -163,18 +163,18 @@
    "total_frp": null
   },
   {
-   "detections": 5,
+   "detections": 1,
    "distrik": "Yendidori",
    "kabupaten": "Biak Numfor",
-   "max_frp": 9.5,
-   "total_frp": 22.7
+   "max_frp": 2.0,
+   "total_frp": 2.0
   }
  ],
  "evening": {
   "closest_after_dark": null,
   "daylight_flags": 0,
   "daylight_summary": null,
-  "evening_date": "2026-09-02",
+  "evening_date": "2026-09-03",
   "flags": [],
   "night_flags": 0,
   "ocean_bt14_median_k": null,
@@ -184,23 +184,23 @@
   "state": "unavailable",
   "window_utc": "06:00-16:00"
  },
- "generated_utc": "2026-09-03T19:20:54Z",
+ "generated_utc": "2026-09-04T19:01:48Z",
  "geojson_window_days": 7,
  "manifest_found": true,
  "recurrent_today": [],
  "sources": [
   {
-   "detections": 3,
+   "detections": 0,
    "source": "VIIRS_SNPP_NRT",
-   "status": "observed"
+   "status": "empty"
   },
   {
-   "detections": 14,
+   "detections": 0,
    "source": "VIIRS_NOAA20_NRT",
-   "status": "observed"
+   "status": "empty"
   },
   {
-   "detections": 5,
+   "detections": 1,
    "source": "VIIRS_NOAA21_NRT",
    "status": "observed"
   },
@@ -211,8 +211,8 @@
   }
  ],
  "totals": {
-  "detections": 22,
+  "detections": 1,
   "offshore": 0,
-  "on_land": 22
+  "on_land": 1
  }
 }

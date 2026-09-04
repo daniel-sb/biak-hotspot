@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
- "generated_utc": "2026-09-03T19:20:54Z",
- "covered_wit_date": "2026-09-03",
+ "generated_utc": "2026-09-04T19:01:48Z",
+ "covered_wit_date": "2026-09-04",
  "features": [
   {
    "type": "Feature",
@@ -97,39 +97,6 @@
     "date_wit": "2026-09-03",
     "desa": "Afefbo",
     "distrik": "Biak Timur",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.04866,
-     -1.12696
-    ]
-   },
-   "properties": {
-    "detection_id": "0d9ff7c407b25e28271ea08ef94558ecfdd08a93",
-    "bright_ti4": "335.77",
-    "scan": "0.35",
-    "track": "0.57",
-    "acq_date": "2026-08-28",
-    "acq_time": "357",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "288.32",
-    "frp": 5.79,
-    "daynight": "D",
-    "datetime_utc": "2026-08-28T03:57:00+00:00",
-    "datetime_wit": "2026-08-28T12:57:00+09:00",
-    "date_wit": "2026-08-28",
-    "desa": "Sambawofuar",
-    "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
     "on_land": true,
     "recurrent_site": false
@@ -239,39 +206,6 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     136.17471,
-     -1.15579
-    ]
-   },
-   "properties": {
-    "detection_id": "2142d459eed0a8a46aa5b38620b4d1258f6986a2",
-    "bright_ti4": "329.99",
-    "scan": "0.34",
-    "track": "0.56",
-    "acq_date": "2026-08-28",
-    "acq_time": "357",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "290.4",
-    "frp": 2.17,
-    "daynight": "D",
-    "datetime_utc": "2026-08-28T03:57:00+00:00",
-    "datetime_wit": "2026-08-28T12:57:00+09:00",
-    "date_wit": "2026-08-28",
-    "desa": "Ruar",
-    "distrik": "Biak Timur",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      136.19795,
      -1.16796
     ]
@@ -295,107 +229,6 @@
     "date_wit": "2026-09-03",
     "desa": "Afefbo",
     "distrik": "Biak Timur",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.03853,
-     -1.13651
-    ]
-   },
-   "properties": {
-    "detection_id": "3492fbec18ee716057307003b2142ed627521aa0",
-    "bright_ti4": "341.9",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-08-28",
-    "acq_time": "419",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "302.87",
-    "frp": 9.71,
-    "daynight": "D",
-    "datetime_utc": "2026-08-28T04:19:00+00:00",
-    "datetime_wit": "2026-08-28T13:19:00+09:00",
-    "date_wit": "2026-08-28",
-    "desa": "Yendidori",
-    "distrik": "Yendidori",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site_id": "R002",
-    "recurrent_site_days": 13,
-    "recurrent_site": true
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.17801,
-     -1.15988
-    ]
-   },
-   "properties": {
-    "detection_id": "49670640de98b216be8420bc1a8fb1383588c9f7",
-    "bright_ti4": "347.2",
-    "scan": "0.42",
-    "track": "0.38",
-    "acq_date": "2026-08-28",
-    "acq_time": "419",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "302.34",
-    "frp": 10.34,
-    "daynight": "D",
-    "datetime_utc": "2026-08-28T04:19:00+00:00",
-    "datetime_wit": "2026-08-28T13:19:00+09:00",
-    "date_wit": "2026-08-28",
-    "desa": "Ruar",
-    "distrik": "Biak Timur",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     135.90303,
-     -1.12755
-    ]
-   },
-   "properties": {
-    "detection_id": "49d768e4fa8ca3866195904fc27f710205f5b4c6",
-    "bright_ti4": "351.61",
-    "scan": "0.44",
-    "track": "0.62",
-    "acq_date": "2026-08-28",
-    "acq_time": "501",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "290.08",
-    "frp": 11.19,
-    "daynight": "D",
-    "datetime_utc": "2026-08-28T05:01:00+00:00",
-    "datetime_wit": "2026-08-28T14:01:00+09:00",
-    "date_wit": "2026-08-28",
-    "desa": "Urfu",
-    "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
     "on_land": true,
     "recurrent_site": false
@@ -571,6 +404,39 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
+     135.88368,
+     -1.16068
+    ]
+   },
+   "properties": {
+    "detection_id": "65547c80ba8673c3616f7fccee408581f80bb8ee",
+    "bright_ti4": "335.14",
+    "scan": "0.42",
+    "track": "0.38",
+    "acq_date": "2026-09-04",
+    "acq_time": "432",
+    "satellite": "N21",
+    "instrument": "VIIRS",
+    "confidence": "n",
+    "version": "2.0NRT",
+    "bright_ti5": "297.92",
+    "frp": 1.98,
+    "daynight": "D",
+    "datetime_utc": "2026-09-04T04:32:00+00:00",
+    "datetime_wit": "2026-09-04T13:32:00+09:00",
+    "date_wit": "2026-09-04",
+    "desa": "Waroi",
+    "distrik": "Yendidori",
+    "kabupaten": "Biak Numfor",
+    "on_land": true,
+    "recurrent_site": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
      136.20097,
      -1.16044
     ]
@@ -637,39 +503,6 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     136.19864,
-     -1.16804
-    ]
-   },
-   "properties": {
-    "detection_id": "767cb181339c365dc14e42a79b3d54dae87a250b",
-    "bright_ti4": "326.27",
-    "scan": "0.34",
-    "track": "0.56",
-    "acq_date": "2026-08-28",
-    "acq_time": "357",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "293.21",
-    "frp": 2.44,
-    "daynight": "D",
-    "datetime_utc": "2026-08-28T03:57:00+00:00",
-    "datetime_wit": "2026-08-28T12:57:00+09:00",
-    "date_wit": "2026-08-28",
-    "desa": "Afefbo",
-    "distrik": "Biak Timur",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      136.02477,
      -1.14481
     ]
@@ -726,39 +559,6 @@
     "date_wit": "2026-09-03",
     "desa": "Suneri",
     "distrik": "Yendidori",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.05962,
-     -1.11368
-    ]
-   },
-   "properties": {
-    "detection_id": "7d3cbfd6b5f4c223f6b2283d9b715c2dccf49b28",
-    "bright_ti4": "326.77",
-    "scan": "0.45",
-    "track": "0.63",
-    "acq_date": "2026-08-28",
-    "acq_time": "501",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "291.35",
-    "frp": 5.04,
-    "daynight": "D",
-    "datetime_utc": "2026-08-28T05:01:00+00:00",
-    "datetime_wit": "2026-08-28T14:01:00+09:00",
-    "date_wit": "2026-08-28",
-    "desa": "Sambawofuar",
-    "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
     "on_land": true,
     "recurrent_site": false
@@ -956,72 +756,6 @@
     "datetime_wit": "2026-09-03T13:49:00+09:00",
     "date_wit": "2026-09-03",
     "desa": "Afefbo",
-    "distrik": "Biak Timur",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.22322,
-     -1.15304
-    ]
-   },
-   "properties": {
-    "detection_id": "9ade5aba05bef1ec74eebe703f8232bf7b8c755f",
-    "bright_ti4": "348.75",
-    "scan": "0.42",
-    "track": "0.38",
-    "acq_date": "2026-08-28",
-    "acq_time": "419",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "301.31",
-    "frp": 10.91,
-    "daynight": "D",
-    "datetime_utc": "2026-08-28T04:19:00+00:00",
-    "datetime_wit": "2026-08-28T13:19:00+09:00",
-    "date_wit": "2026-08-28",
-    "desa": "Woniki",
-    "distrik": "Biak Timur",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.17778,
-     -1.15532
-    ]
-   },
-   "properties": {
-    "detection_id": "9baa943068b53a9baeae56c4fb05949c8d11e949",
-    "bright_ti4": "326.44",
-    "scan": "0.34",
-    "track": "0.56",
-    "acq_date": "2026-08-28",
-    "acq_time": "357",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "291.83",
-    "frp": 2.17,
-    "daynight": "D",
-    "datetime_utc": "2026-08-28T03:57:00+00:00",
-    "datetime_wit": "2026-08-28T12:57:00+09:00",
-    "date_wit": "2026-08-28",
-    "desa": "Ruar",
     "distrik": "Biak Timur",
     "kabupaten": "Biak Numfor",
     "on_land": true,
@@ -1396,39 +1130,6 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     136.1483,
-     -1.16791
-    ]
-   },
-   "properties": {
-    "detection_id": "dfef14bfbe773a8fe4ae89250aebd7d410634019",
-    "bright_ti4": "338.01",
-    "scan": "0.42",
-    "track": "0.38",
-    "acq_date": "2026-08-28",
-    "acq_time": "419",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "301.07",
-    "frp": 5.17,
-    "daynight": "D",
-    "datetime_utc": "2026-08-28T04:19:00+00:00",
-    "datetime_wit": "2026-08-28T13:19:00+09:00",
-    "date_wit": "2026-08-28",
-    "desa": "Sumberker",
-    "distrik": "Samofa",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      135.87442,
      -1.15102
     ]
@@ -1518,39 +1219,6 @@
     "date_wit": "2026-08-31",
     "desa": "Warbukor",
     "distrik": "Bruyadori",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     135.90172,
-     -1.13037
-    ]
-   },
-   "properties": {
-    "detection_id": "f989b3992b2bd6d3a6c8cff100b6fca2e7fd29a0",
-    "bright_ti4": "304.93",
-    "scan": "0.38",
-    "track": "0.36",
-    "acq_date": "2026-08-27",
-    "acq_time": "1622",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "291.15",
-    "frp": 0.88,
-    "daynight": "N",
-    "datetime_utc": "2026-08-27T16:22:00+00:00",
-    "datetime_wit": "2026-08-28T01:22:00+09:00",
-    "date_wit": "2026-08-28",
-    "desa": "Urfu",
-    "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
     "on_land": true,
     "recurrent_site": false
