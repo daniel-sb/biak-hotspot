@@ -2,7 +2,10 @@
 
     python scripts/render_biak_poster.py [--fetch] [--lulc SOURCE] [--view V]
 
-    --lulc  esri2025 | dw2026 | truecolor      what gets draped on the relief
+    --lulc  esri2025 | dw2026 | dw2026conf | truecolor
+            what gets draped on the relief. dw2026conf is the Dynamic World
+            classification washed toward the page wherever the winning class
+            beat the runner-up by less than MARGIN_MIN.
     --view  plan | oblique                     top-down plate, or a 3D relief
 
 This is a one-off illustration tool, not part of any daily or cron path, and
@@ -130,6 +133,15 @@ def fetch(source):
                .addBands(dw.select("label").count().rename("n"))).clip(aoi)
         _download(img, ["lc", "n"], GRID_M, out, "dw2026")
 
+    elif source == "dw2026conf":
+        out = CACHE / "biak_dwconf30.npy"
+        if out.exists():
+            return
+        raise SystemExit(
+            "biak_dwconf30.npy is built from nine mean-probability bands "
+            "pulled one at a time; see the note in this file's header. "
+            "Earth Engine refuses the combined request.")
+
     elif source == "truecolor":
         out = CACHE / "biak_s2_clean.npy"
         if out.exists():
@@ -173,8 +185,29 @@ DW = {
 }
 
 
-def load_dem():
-    return np.load(CACHE / "biak_dem30.npy")["DEM"].astype("float32")
+# Each source carries the grid it was pulled on. Esri is native 10 m and
+# survives a 20 m pull in one request; the Dynamic World probability stack is
+# nine bands and only fits at 30 m, so its plate is coarser. The DEM has to
+# match whichever grid the surface uses, because the albedo the renderer
+# takes must be the same raster as the heightmap.
+SOURCES = {
+    "esri2025":   dict(dem="biak_dem20.npy", scale=20.0),
+    "dw2026":     dict(dem="biak_dem30.npy", scale=30.0),
+    "dw2026conf": dict(dem="biak_dem30.npy", scale=30.0),
+    "truecolor":  dict(dem="biak_dem30.npy", scale=30.0),
+}
+
+# A pixel that beats the runner-up by less than this is a coin flip dressed
+# as a classification. Measured on Dynamic World's mean probabilities over
+# the south-coast survey corridor, more than half the pixels it labels
+# "trees" win by under 0.15, with a median margin of 0.022 - against ground
+# observation of shrub and bare burn scars.
+MARGIN_MIN = 0.15
+
+
+def load_dem(source):
+    a = np.load(CACHE / SOURCES[source]["dem"])["DEM"]
+    return a.astype("float32")
 
 
 def surface(source, shape):
@@ -197,12 +230,18 @@ def surface(source, shape):
         rgb = np.clip(raw / 1600.0, 0, 1) ** (1 / 1.6)
         g = rgb.mean(axis=2, keepdims=True)
         rgb = np.clip(g + (rgb - g) * 1.15, 0, 1)
-        land = load_dem() > 0.5
+        land = load_dem(source) > 0.5
         return rgb, land, None, None
 
+    margin = None
     if source == "esri2025":
-        lc = np.load(CACHE / "biak_lulc30_2025.npy")["lc"].astype("uint8")
+        lc = np.load(CACHE / "biak_lulc20_2025.npy")["lc"].astype("uint8")
         palette, water, nodata = ESRI, 1, 0
+    elif source == "dw2026conf":
+        d = np.load(CACHE / "biak_dwconf30.npy")
+        lc = d["lc"].astype("uint8")
+        margin = d["margin"].astype("float32") / 255.0
+        palette, water, nodata = DW, 0, None
     else:
         lc = np.load(CACHE / "biak_dw2026.npy")["lc"].astype("uint8")
         palette, water, nodata = DW, 0, None
@@ -219,6 +258,15 @@ def surface(source, shape):
     for code, (col, _) in palette.items():
         rgb[lc == code] = col
     rgb[~land] = np.array(CREAM, "float32") / 255.0
+
+    if margin is not None:
+        # Where the decision was close, wash the class colour toward the page
+        # in proportion to how close it was. The map still says what the
+        # classifier picked; it stops implying the classifier was sure.
+        doubt = np.clip(1.0 - margin / MARGIN_MIN, 0.0, 1.0) * land
+        doubt = (doubt * 0.72)[..., None]
+        page = np.array(CREAM, "float32") / 255.0
+        rgb = rgb * (1 - doubt) + page * doubt
     return rgb, land, lc, palette
 
 
@@ -235,10 +283,40 @@ def hotspots(shape):
     return px, py, len(det), span
 
 
-def burn_in(rgb, land, px, py, layers):
+def boundaries(shape, width=2):
+    """Desa outlines from the tracked admin polygons, on the render grid.
+
+    Drawn into the albedo rather than over the finished plate so the lines
+    follow the terrain the renderer shades, and land where the coastline
+    lands, without a second projection to keep in step.
+    """
+    import json                      # noqa: PLC0415
+    H, W = shape
+    src = ROOT / "data" / "boundaries" / "biak_desa.geojson"
+    mask = Image.new("L", (W, H), 0)
+    d = ImageDraw.Draw(mask)
+    w, s, e, n = BOX
+    def to_px(ring):
+        return [(( x - w) / (e - w) * (W - 1),
+                 (n - y) / (n - s) * (H - 1)) for x, y in ring]
+    for f in json.loads(src.read_text(encoding="utf-8"))["features"]:
+        geom = f["geometry"]
+        polys = (geom["coordinates"] if geom["type"] == "Polygon"
+                 else [r for part in geom["coordinates"] for r in part])
+        for ring in polys:
+            if len(ring) < 2:
+                continue
+            d.line(to_px(ring), fill=255, width=width, joint="curve")
+    return np.array(mask, dtype="float32") / 255.0
+
+
+def burn_in(rgb, land, px, py, layers, scale):
+    """`layers` give the glow radius in metres; a radius in pixels would
+    shrink on a finer grid and quietly change the map."""
     m = np.zeros(rgb.shape[:2], "float32")
     np.add.at(m, (py, px), 1.0)
-    for sigma, col, amp in layers:
+    for metres, col, amp in layers:
+        sigma = metres / scale
         g = ndimage.gaussian_filter(m, sigma)
         g /= max(g.max(), 1e-6)
         a = (np.clip(g * amp, 0, 1) * land)[..., None]
@@ -255,20 +333,20 @@ OBLIQUE = dict(exposure=1.35, exaggeration=6.5, sun_azimuth_deg=318,
                sun_elevation_deg=27, sun_intensity=3.6, env_intensity=0.35)
 
 
-def render(view, height, rgb, land, size):
+def render(source, view, height, rgb, land, size):
     import forge3d as f3d           # noqa: PLC0415
 
     Wpx, Hpx = size
     hh = ndimage.gaussian_filter(height, 1.1).astype("float32")
-    spacing = GRID_M
+    spacing = SOURCES[source]["scale"]
     if view == "oblique":
-        # Oblique rays over the full 30 m grid at this exaggeration drive the
+        # Oblique rays over the full grid at this exaggeration drive the
         # tracer's ReSTIR reuse into "no valid reservoirs" and the render
         # fails outright. Halving the grid clears it and costs nothing
-        # visible: the plate is 2400 px across 80 km, coarser than 60 m.
+        # visible at plate scale.
         hh, rgb = hh[::2, ::2].copy(), rgb[::2, ::2].copy()
         land = land[::2, ::2]
-        spacing = GRID_M * 2
+        spacing *= 2
     H, W = hh.shape
     if view == "plan":
         # A flat sea shades to exactly one tone, and that is what lets the
@@ -305,29 +383,69 @@ def render(view, height, rgb, land, size):
 # --------------------------------------------------------------------------
 # Compose
 
-SEA = np.array([138, 136, 130])
-BG = np.array([52, 52, 52])
+def flat_tones(plate):
+    """The two constant colours in a plan plate: the page, and the sea.
+
+    Both are flat surfaces under one light, so each renders as a single
+    value - but which value depends on the grid and the lighting, so it is
+    measured per plate rather than hardcoded. The renderer's background is
+    whatever sits in the corner; the sea is the other colour big enough to
+    be a surface rather than a class.
+    """
+    flat = plate.reshape(-1, 3)
+    cols, counts = np.unique(flat, axis=0, return_counts=True)
+    order = np.argsort(-counts)
+    bg = plate[0, 0].astype(int)
+    sea = None
+    for i in order:
+        c = cols[i].astype(int)
+        if np.abs(c - bg).max() <= 5:
+            continue
+        if counts[i] / len(flat) < 0.05:
+            break
+        sea = c
+        break
+    return bg, sea
 
 
-def key_out(plate):
-    """Mask of everything outside the coastline: open sea, and the page.
+def key_out(plate, bg, sea):
+    """Mask of everything outside the coastline: the page, and the open sea.
 
-    Flooded from the frame border rather than thresholded, so water enclosed
-    by land survives. The sea plane stops at the DEM's own edge and that edge
-    draws a hairline across the page; five pixels of dilation swallow it
-    without reaching the coast, hundreds of pixels away.
+    Not one flood from the frame border. The renderer's background and its
+    sea plane meet along an anti-aliased ring, and at some plate sizes that
+    ring breaks the two apart, so a single flood keys the background and
+    leaves the sea grey. Instead the background is taken border-connected,
+    and the sea is taken by area: a flat plane is a large component, while
+    water enclosed by the coastline is a small one and keeps its colour.
+
+    The sea plane also stops at the DEM's own edge, and that edge draws a
+    hairline across the page; a few pixels of dilation swallow it without
+    reaching the coast, hundreds of pixels away.
     """
     a = plate.astype(np.int16)
-    flat = ((np.abs(a - SEA).max(axis=2) <= 5)
-            | (np.abs(a - BG).max(axis=2) <= 5))
-    lab, _ = ndimage.label(flat)
+    outside = np.zeros(a.shape[:2], bool)
+
+    page = np.abs(a - bg).max(axis=2) <= 5
+    lab, _ = ndimage.label(page)
     edge = set(np.unique(np.concatenate(
         [lab[0], lab[-1], lab[:, 0], lab[:, -1]]))) - {0}
-    return ndimage.binary_dilation(np.isin(lab, list(edge)),
-                                   np.ones((5, 5), bool))
+    if edge:
+        outside |= np.isin(lab, list(edge))
+
+    if sea is not None:
+        water = np.abs(a - sea).max(axis=2) <= 5
+        lab, n = ndimage.label(water)
+        if n:
+            big = np.bincount(lab.ravel())
+            big[0] = 0
+            keep = np.where(big > 0.005 * water.size)[0]
+            if len(keep):
+                outside |= np.isin(lab, keep)
+
+    return ndimage.binary_dilation(outside, np.ones((5, 5), bool))
 
 
-def sampled_colours(plate, outside, lc):
+def sampled_colours(plate, outside, lc, sea):
     """Median rendered colour per class, keyed by class code.
 
     The path tracer applies a tone curve - it compresses bright albedo hard
@@ -336,7 +454,7 @@ def sampled_colours(plate, outside, lc):
     the grid-to-pixel mapping needed to read the colours back out.
     """
     a = plate.astype(np.int16)
-    ys, xs = np.where(np.abs(a - SEA).max(axis=2) <= 5)
+    ys, xs = np.where(np.abs(a - sea).max(axis=2) <= 5)
     y0, y1, x0, x1 = ys.min(), ys.max(), xs.min(), xs.max()
     H, W = lc.shape
     yy = ((np.arange(y0, y1 + 1) - y0) / (y1 - y0) * (H - 1)).astype(int)
@@ -356,7 +474,22 @@ def _font(name, size):
     return ImageFont.truetype(str(FONTS / name), size)
 
 
-def _spaced(d, xy, text, font, fill, extra):
+def _spaced_width(d, text, font, extra):
+    return sum(d.textlength(ch, font=font) + extra for ch in text) - extra
+
+
+def _spaced(d, xy, text, font, fill, extra, fit=None, name=None, size=None):
+    """Draw letter-spaced text, shrinking to fit `fit` pixels if given.
+
+    Titles are set from data - a source name, a year, a qualifier - so their
+    length is not known when the layout is written. Measuring and shrinking
+    is what keeps a long one from running through the keyline.
+    """
+    if fit is not None and name is not None and size is not None:
+        while size > 8 and _spaced_width(d, text, font, extra) > fit:
+            size -= 2
+            font = _font(name, size)
+            extra = max(1, int(extra * 0.9))
     x, y = xy
     for ch in text:
         d.text((x, y), ch, font=font, fill=fill)
@@ -364,34 +497,49 @@ def _spaced(d, xy, text, font, fill, extra):
 
 
 def compose_plan(plate, lc, palette, credits, title2, out):
-    outside = key_out(plate)
+    bg, sea = flat_tones(plate)
+    outside = key_out(plate, bg, sea)
+    print("  page tone %s  sea tone %s  keyed out %.1f%%"
+          % (tuple(bg), None if sea is None else tuple(sea),
+             100 * outside.mean()))
     # Read the class colours off the plate while the sea is still on it: the
     # calibration rectangle IS the sea plane, and painting it over first
     # leaves only enclosed water to find, which is a different rectangle and
     # a silently wrong mapping.
-    got = sampled_colours(plate, outside, lc) if lc is not None else {}
+    got = (sampled_colours(plate, outside, lc, sea)
+           if lc is not None and sea is not None else {})
     plate = plate.copy()
     plate[outside] = CREAM
     nland = int((~outside).sum()) if lc is None else int(
         sum((lc == c).sum() for c in palette if c in got))
 
-    CW, CH = 3240, 2200
+    # Everything below is laid out in units of the plate, so a bigger render
+    # yields a bigger poster rather than a bigger picture in the same frame.
+    ph, pw = plate.shape[:2]
+    k = ph / 2000.0
+    def u(v):
+        return int(round(v * k))
+    CW, CH = pw + u(950), ph + u(200)
     card = Image.new("RGB", (CW, CH), CREAM)
-    card.paste(Image.fromarray(plate), (110, 100))
+    card.paste(Image.fromarray(plate), (u(110), u(100)))
     d = ImageDraw.Draw(card)
-    d.rectangle([46, 46, CW - 47, CH - 47], outline=(206, 199, 184), width=3)
+    d.rectangle([u(46), u(46), CW - u(47), CH - u(47)],
+                outline=(206, 199, 184), width=max(2, u(3)))
 
-    tx, ty = 2600, 660
-    _spaced(d, (tx, ty), "BIAK", _font("ARIALN.TTF", 128), INK, 15)
-    _spaced(d, (tx, ty + 162), title2, _font("ARIALN.TTF", 44), INK, 3)
-    fc = _font("arial.ttf", 24)
+    tx, ty = pw + u(200), u(660)
+    fit = CW - u(47) - u(24) - tx
+    _spaced(d, (tx, ty), "BIAK", _font("ARIALN.TTF", u(128)), INK, u(15),
+            fit=fit, name="ARIALN.TTF", size=u(128))
+    _spaced(d, (tx, ty + u(162)), title2, _font("ARIALN.TTF", u(44)), INK,
+            u(3), fit=fit, name="ARIALN.TTF", size=u(44))
+    fc = _font("arial.ttf", u(24))
     for i, line in enumerate(credits):
-        d.text((tx + 3, ty + 232 + i * 34), line, font=fc, fill=MUTE)
+        d.text((tx + u(3), ty + u(232) + i * u(34)), line, font=fc, fill=MUTE)
 
-    fl, fn = _font("arial.ttf", 28), _font("arial.ttf", 21)
-    y = ty + 500
+    fl, fn = _font("arial.ttf", u(28)), _font("arial.ttf", u(21))
+    y = ty + u(500)
     row, dropped = 0, []
-    entries = [("HOT", "Titik panas", (196, 116, 58), None)]
+    entries = [("HOT", "Titik panas", (214, 92, 46), None)]
     if lc is not None:
         total = max(int(sum((lc == c).sum() for c in palette)), 1)
         for code, (_, label) in palette.items():
@@ -406,15 +554,17 @@ def compose_plan(plate, lc, palette, credits, title2, out):
             if share is not None:
                 dropped.append("%s %.2f%%" % (label.lower(), share))
             continue
-        d.ellipse([tx + 4, y + row * 58, tx + 36, y + row * 58 + 32], fill=col)
+        yy = y + row * u(58)
+        d.ellipse([tx + u(4), yy, tx + u(36), yy + u(32)], fill=col)
         text = label if share is None else "%s   %.1f%%" % (label, share)
-        d.text((tx + 60, y + row * 58 + 1), text, font=fl, fill=INK)
+        d.text((tx + u(60), yy + u(1)), text, font=fl, fill=INK)
         row += 1
     if dropped:
-        d.text((tx + 4, y + row * 58 + 18),
+        yy = y + row * u(58)
+        d.text((tx + u(4), yy + u(18)),
                "Di bawah 0,1% daratan, tidak dilegendakan:", font=fn, fill=MUTE)
         for j in range(0, len(dropped), 2):
-            d.text((tx + 4, y + row * 58 + 44 + (j // 2) * 26),
+            d.text((tx + u(4), yy + u(44) + (j // 2) * u(26)),
                    ", ".join(dropped[j:j + 2]), font=fn, fill=MUTE)
     card.save(out)
     return card.size, nland
@@ -452,6 +602,56 @@ def compose_oblique(plate, credits, title2, out):
 
 
 # --------------------------------------------------------------------------
+# PDF
+
+def write_pdf(png, pdf, dpi=300):
+    """Wrap a PNG in a one-page PDF without re-encoding a single pixel.
+
+    Pillow's own PDF writer puts RGB through DCTDecode - JPEG - so a plate
+    saved that way is no longer the plate that was rendered. Flate is zlib,
+    which the standard library already has, so the lossless path costs a
+    dependency of nothing (AGENTS never-7).
+    """
+    import zlib                      # noqa: PLC0415
+
+    im = Image.open(png).convert("RGB")
+    w, h = im.size
+    raw = zlib.compress(im.tobytes(), 9)
+    pw, ph = w * 72.0 / dpi, h * 72.0 / dpi
+
+    objs = [
+        b"<< /Type /Catalog /Pages 2 0 R >>",
+        b"<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+        ("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 %.2f %.2f] "
+         "/Resources << /XObject << /Im0 5 0 R >> >> /Contents 4 0 R >>"
+         % (pw, ph)).encode(),
+        None,                        # contents stream, built below
+        None,                        # image stream, built below
+    ]
+    content = ("q %.2f 0 0 %.2f 0 0 cm /Im0 Do Q" % (pw, ph)).encode()
+    objs[3] = (b"<< /Length %d >>\nstream\n" % len(content) + content
+               + b"\nendstream")
+    objs[4] = (("<< /Type /XObject /Subtype /Image /Width %d /Height %d "
+                "/ColorSpace /DeviceRGB /BitsPerComponent 8 "
+                "/Filter /FlateDecode /Length %d >>\nstream\n"
+                % (w, h, len(raw))).encode() + raw + b"\nendstream")
+
+    out = bytearray(b"%PDF-1.4\n%\xe2\xe3\xcf\xd3\n")
+    offsets = []
+    for i, body in enumerate(objs, start=1):
+        offsets.append(len(out))
+        out += b"%d 0 obj\n" % i + body + b"\nendobj\n"
+    start = len(out)
+    out += b"xref\n0 %d\n" % (len(objs) + 1)
+    out += b"0000000000 65535 f \n"
+    for off in offsets:
+        out += b"%010d 00000 n \n" % off
+    out += (b"trailer\n<< /Size %d /Root 1 0 R >>\nstartxref\n%d\n%%%%EOF\n"
+            % (len(objs) + 1, start))
+    Path(pdf).write_bytes(bytes(out))
+
+
+# --------------------------------------------------------------------------
 
 TITLES = {"esri2025": ("TUTUPAN LAHAN 2025",
                        ["Esri / Impact Observatory / Microsoft",
@@ -459,6 +659,11 @@ TITLES = {"esri2025": ("TUTUPAN LAHAN 2025",
           "dw2026": ("TUTUPAN LAHAN 2026",
                      ["Google / World Resources Institute",
                       "Dynamic World, Sentinel-2 10 m"]),
+          "dw2026conf": ("TUTUPAN LAHAN 2026 + KEYAKINAN",
+                         ["Google / World Resources Institute",
+                          "Dynamic World, peluang rata-rata Mei-Agustus 2026",
+                          "Pudar = margin juara atas runner-up < %.2f"
+                          % MARGIN_MIN]),
           "truecolor": ("WARNA ASLI 2026",
                         ["Sentinel-2 SR, komposit median Mei-September 2026",
                          "Masking awan Cloud Score+ cs_cdf >= 0,6"])}
@@ -468,20 +673,26 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--lulc", default="esri2025",
-                    choices=["esri2025", "dw2026", "truecolor"])
+                    choices=["esri2025", "dw2026", "dw2026conf",
+                             "truecolor"])
     ap.add_argument("--view", default="plan", choices=["plan", "oblique"])
     ap.add_argument("--fetch", action="store_true",
                     help="pull any missing input from Earth Engine first")
     ap.add_argument("--size", default=None, metavar="WxH",
                     help="output plate size; the defaults are the pairs "
                          "observed to converge, see TILE/SIZE")
+    ap.add_argument("--no-admin", action="store_true",
+                    help="leave off the desa boundary overlay")
+    ap.add_argument("--pdf", action="store_true",
+                    help="also write a lossless PDF beside the PNG")
     ap.add_argument("--out", type=Path, default=None)
     args = ap.parse_args()
 
     if args.fetch:
         print("fetching:")
         fetch(args.lulc)
-    missing = [p for p in (CACHE / "biak_dem30.npy",) if not p.exists()]
+    missing = [p for p in (CACHE / SOURCES[args.lulc]["dem"],)
+               if not p.exists()]
     if missing:
         raise SystemExit("missing cache: %s\nrun once with --fetch"
                          % ", ".join(str(p) for p in missing))
@@ -490,17 +701,27 @@ def main():
     if args.size:
         size = tuple(int(v) for v in args.size.lower().split("x"))
 
-    height = load_dem()
+    height = load_dem(args.lulc)
     rgb, land, lc, palette = surface(args.lulc, height.shape)
     px, py, n_hot, span = hotspots(height.shape)
-    layers = ([(3.5, (0.663, 0.216, 0.106), 2.4),
-               (1.3, (0.902, 0.412, 0.078), 2.0)] if args.view == "plan" else
-              [(4.0, (0.95, 0.20, 0.02), 3.0), (1.6, (1.0, 0.55, 0.06), 3.0),
-               (0.7, (1.0, 0.95, 0.72), 2.2)])
-    rgb = burn_in(rgb, land, px, py, layers)
+    # The renderer's tone curve compresses bright albedo, so a "vivid" input
+    # lands muted. These are chosen for what comes out, not what goes in.
+    layers = ([(150.0, (0.94, 0.09, 0.05), 3.0),
+               (62.0, (1.00, 0.42, 0.04), 2.6),
+               (26.0, (1.00, 0.93, 0.38), 2.2)] if args.view == "plan" else
+              [(240.0, (0.95, 0.20, 0.02), 3.0),
+               (96.0, (1.0, 0.55, 0.06), 3.0),
+               (42.0, (1.0, 0.95, 0.72), 2.2)])
+    rgb = burn_in(rgb, land, px, py, layers, SOURCES[args.lulc]["scale"])
+    if not args.no_admin:
+        line = boundaries(height.shape,
+                          width=2 if args.view == "plan" else 1)
+        a = (line * land * 0.55)[..., None]
+        rgb = np.clip(rgb * (1 - a) + np.array((0.09, 0.09, 0.08),
+                                               "float32") * a, 0, 1)
     print("hotspots in frame: %d (%s .. %s)" % (n_hot, span[0], span[1]))
 
-    plate = render(args.view, height, rgb, land, size)
+    plate = render(args.lulc, args.view, height, rgb, land, size)
     title2, credits = TITLES[args.lulc]
     credits = credits + ["Relief Copernicus GLO-30, dilebihkan %.1fx"
                          % (PLAN if args.view == "plan"
@@ -520,6 +741,10 @@ def main():
                                   "%d titik panas, %s sampai %s"
                                   % (n_hot, span[0], span[1]), out)
     print("wrote %s  %dx%d" % (out, dims[0], dims[1]))
+    if args.pdf:
+        pdf = Path(out).with_suffix(".pdf")
+        write_pdf(Path(out), pdf)
+        print("wrote %s  %.1f MB" % (pdf, pdf.stat().st_size / 1e6))
 
 
 if __name__ == "__main__":
