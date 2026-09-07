@@ -1,5 +1,5 @@
 {
- "covered_wit_date": "2026-09-06",
+ "covered_wit_date": "2026-09-07",
  "districts": [
   {
    "detections": 0,
@@ -174,7 +174,7 @@
   "closest_after_dark": null,
   "daylight_flags": 0,
   "daylight_summary": null,
-  "evening_date": "2026-09-05",
+  "evening_date": "2026-09-06",
   "flags": [],
   "night_flags": 0,
   "ocean_bt14_median_k": null,
@@ -184,7 +184,7 @@
   "state": "unavailable",
   "window_utc": "06:00-16:00"
  },
- "generated_utc": "2026-09-06T18:25:52Z",
+ "generated_utc": "2026-09-07T20:02:05Z",
  "geojson_window_days": 7,
  "manifest_found": true,
  "recurrent_today": [],

@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
- "generated_utc": "2026-09-06T18:25:52Z",
- "covered_wit_date": "2026-09-06",
+ "generated_utc": "2026-09-07T20:02:05Z",
+ "covered_wit_date": "2026-09-07",
  "features": [
   {
    "type": "Feature",
@@ -767,39 +767,6 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     134.90952,
-     -1.12243
-    ]
-   },
-   "properties": {
-    "detection_id": "9fe8e05e055707516fd7af5c5a75876f1622d6bb",
-    "bright_ti4": "339.59",
-    "scan": "0.4",
-    "track": "0.44",
-    "acq_date": "2026-08-31",
-    "acq_time": "406",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "297.3",
-    "frp": 5.61,
-    "daynight": "D",
-    "datetime_utc": "2026-08-31T04:06:00+00:00",
-    "datetime_wit": "2026-08-31T13:06:00+09:00",
-    "date_wit": "2026-08-31",
-    "desa": "Rawar",
-    "distrik": "Orkeri",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      136.19429,
      -1.16851
     ]
@@ -1186,39 +1153,6 @@
     "date_wit": "2026-09-01",
     "desa": "Rarsibo",
     "distrik": "Numfor Timur",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     134.94148,
-     -1.0978
-    ]
-   },
-   "properties": {
-    "detection_id": "f593e21717bb392b24056b8be350d99b4bb86e57",
-    "bright_ti4": "339.97",
-    "scan": "0.4",
-    "track": "0.37",
-    "acq_date": "2026-08-31",
-    "acq_time": "442",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "298.01",
-    "frp": 3.99,
-    "daynight": "D",
-    "datetime_utc": "2026-08-31T04:42:00+00:00",
-    "datetime_wit": "2026-08-31T13:42:00+09:00",
-    "date_wit": "2026-08-31",
-    "desa": "Warbukor",
-    "distrik": "Bruyadori",
     "kabupaten": "Biak Numfor",
     "on_land": true,
     "recurrent_site": false
