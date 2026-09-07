@@ -81,3 +81,14 @@ data/boundaries/yahukimo_desa.geojson
 
 # Own published paper, kept for reference; the publisher holds the typeset PDF.
 Analyisis_of_Drought_in_*.pdf
+
+# --- local GeoLibre workspace ---
+# The project file inlines its layers, so it grows to megabytes and carries
+# whatever it is pointed at, including the fieldwork points that fieldwork/
+# exists to keep out of the repository. It is a local inspection tool, not a
+# deliverable: build it, look at it, and let it stay untracked.
+*.geolibre
+*.geolibre.json
+# the GeoJSON the project is assembled from; inlined on the way in,
+# so the folder is scratch and can be rebuilt at any time
+geolibre_data/
