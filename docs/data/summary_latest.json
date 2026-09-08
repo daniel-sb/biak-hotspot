@@ -1,5 +1,5 @@
 {
- "covered_wit_date": "2026-09-07",
+ "covered_wit_date": "2026-09-08",
  "districts": [
   {
    "detections": 0,
@@ -163,18 +163,18 @@
    "total_frp": null
   },
   {
-   "detections": 0,
+   "detections": 1,
    "distrik": "Yendidori",
    "kabupaten": "Biak Numfor",
-   "max_frp": null,
-   "total_frp": null
+   "max_frp": 2.9,
+   "total_frp": 2.9
   }
  ],
  "evening": {
   "closest_after_dark": null,
   "daylight_flags": 0,
   "daylight_summary": null,
-  "evening_date": "2026-09-06",
+  "evening_date": "2026-09-07",
   "flags": [],
   "night_flags": 0,
   "ocean_bt14_median_k": null,
@@ -184,7 +184,7 @@
   "state": "unavailable",
   "window_utc": "06:00-16:00"
  },
- "generated_utc": "2026-09-07T20:02:05Z",
+ "generated_utc": "2026-09-08T19:29:34Z",
  "geojson_window_days": 7,
  "manifest_found": true,
  "recurrent_today": [],
@@ -200,9 +200,9 @@
    "status": "empty"
   },
   {
-   "detections": 0,
+   "detections": 1,
    "source": "VIIRS_NOAA21_NRT",
-   "status": "empty"
+   "status": "observed"
   },
   {
    "detections": 0,
@@ -211,8 +211,8 @@
   }
  ],
  "totals": {
-  "detections": 0,
+  "detections": 1,
   "offshore": 0,
-  "on_land": 0
+  "on_land": 1
  }
 }
