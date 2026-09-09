@@ -283,31 +283,108 @@ def hotspots(shape):
     return px, py, len(det), span
 
 
-def boundaries(shape, width=2):
-    """Desa outlines from the tracked admin polygons, on the render grid.
+def desa_rings(shape):
+    """Desa outlines and label anchors, in grid pixels.
 
-    Drawn into the albedo rather than over the finished plate so the lines
-    follow the terrain the renderer shades, and land where the coastline
-    lands, without a second projection to keep in step.
+    Yields (rings, name, area) per feature, largest first, so the caller can
+    label the ones with room for a label and drop the slivers.
     """
     import json                      # noqa: PLC0415
     H, W = shape
-    src = ROOT / "data" / "boundaries" / "biak_desa.geojson"
-    mask = Image.new("L", (W, H), 0)
-    d = ImageDraw.Draw(mask)
     w, s, e, n = BOX
-    def to_px(ring):
-        return [(( x - w) / (e - w) * (W - 1),
-                 (n - y) / (n - s) * (H - 1)) for x, y in ring]
+    src = ROOT / "data" / "boundaries" / "biak_desa.geojson"
+    out = []
     for f in json.loads(src.read_text(encoding="utf-8"))["features"]:
         geom = f["geometry"]
-        polys = (geom["coordinates"] if geom["type"] == "Polygon"
+        parts = (geom["coordinates"] if geom["type"] == "Polygon"
                  else [r for part in geom["coordinates"] for r in part])
-        for ring in polys:
-            if len(ring) < 2:
+        rings, area, best = [], 0.0, None
+        for ring in parts:
+            if len(ring) < 3:
                 continue
-            d.line(to_px(ring), fill=255, width=width, joint="curve")
-    return np.array(mask, dtype="float32") / 255.0
+            pts = [((x - w) / (e - w) * (W - 1),
+                    (n - y) / (n - s) * (H - 1)) for x, y in ring]
+            rings.append(pts)
+            # Shoelace on the ring already in pixels: the same number that
+            # ranks features for labelling also decides which are slivers.
+            a = abs(sum(pts[i][0] * pts[i - 1][1] - pts[i - 1][0] * pts[i][1]
+                        for i in range(len(pts)))) / 2.0
+            if a > area:
+                area, best = a, pts
+        if best is None:
+            continue
+        cx = sum(x for x, _ in best) / len(best)
+        cy = sum(y for _, y in best) / len(best)
+        out.append((rings, f["properties"].get("WADMKD", ""), area, (cx, cy)))
+    out.sort(key=lambda r: -r[2])
+    return out
+
+
+def draw_admin(card, origin, rect, grid_shape, outside, u, labels=30):
+    """Desa boundaries and names, drawn on the finished plate.
+
+    Baked into the albedo instead, a label is shaded by the sun angle and
+    stretched over the relief until it is unreadable; a boundary line is
+    dimmed wherever the hillside faces away. Drawn here, both keep the
+    contrast they were given. The grid rectangle is what makes it possible
+    to place them without re-deriving the camera.
+    """
+    ox, oy = origin
+    y0, y1, x0, x1 = rect
+    H, W = grid_shape
+
+    def to_card(pt):
+        gx, gy = pt
+        return (ox + x0 + gx / (W - 1) * (x1 - x0),
+                oy + y0 + gy / (H - 1) * (y1 - y0))
+
+    feats = desa_rings(grid_shape)
+    # Draw into a mask first and composite it only over land. Administrative
+    # lines continue across the water to the reefs and the next island, and
+    # on a plate whose sea is the page those strands read as scribble.
+    stroke = Image.new("L", card.size, 0)
+    ds = ImageDraw.Draw(stroke)
+    for rings, _, _, _ in feats:
+        for ring in rings:
+            if len(ring) > 1:
+                ds.line([to_card(p) for p in ring], fill=255,
+                        width=max(1, u(2)), joint="curve")
+    m = np.array(stroke)
+    ch, cw = outside.shape
+    keep = np.zeros(m.shape, bool)
+    keep[oy:oy + ch, ox:ox + cw] = ~outside
+    m[~keep] = 0
+    card.paste(Image.new("RGB", card.size, (255, 214, 41)),
+               (0, 0), Image.fromarray(m))
+
+    d = ImageDraw.Draw(card)
+    font = _font("arialbd.ttf", max(11, u(21)))
+    placed, drawn = [], 0
+    ch, cw = outside.shape
+    for _, name, _, cen in feats:
+        if drawn >= labels or not name:
+            continue
+        x, y = to_card(cen)
+        px, py = int(x - ox), int(y - oy)
+        # A centroid can fall in the sea for a horseshoe-shaped desa, and a
+        # label there points at nothing.
+        if not (0 <= px < cw and 0 <= py < ch) or outside[py, px]:
+            continue
+        if any(abs(x - qx) < u(230) and abs(y - qy) < u(52)
+               for qx, qy in placed):
+            continue
+        box = d.textbbox((x, y), name, font=font, anchor="mm")
+        pad = u(7)
+        if not (ox + x0 < box[0] - pad and box[2] + pad < ox + x1
+                and oy + y0 < box[1] and box[3] < oy + y1):
+            continue
+        d.rounded_rectangle([box[0] - pad, box[1] - u(3),
+                             box[2] + pad, box[3] + u(3)],
+                            radius=u(9), fill=(248, 245, 236))
+        d.text((x, y), name, font=font, fill=INK, anchor="mm")
+        placed.append((x, y))
+        drawn += 1
+    return drawn
 
 
 def burn_in(rgb, land, px, py, layers, scale):
@@ -445,17 +522,28 @@ def key_out(plate, bg, sea):
     return ndimage.binary_dilation(outside, np.ones((5, 5), bool))
 
 
-def sampled_colours(plate, outside, lc, sea):
+def grid_rect(plate, sea):
+    """Where the DEM grid lands on the plate, as (y0, y1, x0, x1).
+
+    The sea is a flat plane covering exactly the grid, so its own bounding
+    rectangle is the calibration: it turns a grid coordinate into a plate
+    pixel without re-deriving the camera. Everything drawn after the render -
+    the legend's sampled colours, the boundaries, the labels - rides on it.
+    """
+    a = plate.astype(np.int16)
+    ys, xs = np.where(np.abs(a - sea).max(axis=2) <= 5)
+    return int(ys.min()), int(ys.max()), int(xs.min()), int(xs.max())
+
+
+def sampled_colours(plate, outside, lc, rect):
     """Median rendered colour per class, keyed by class code.
 
     The path tracer applies a tone curve - it compresses bright albedo hard
     and lifts dark albedo - so a legend quoting the colours handed *in* would
-    misdescribe the map. The sea plane's own rectangle inside the plate gives
-    the grid-to-pixel mapping needed to read the colours back out.
+    misdescribe the map.
     """
     a = plate.astype(np.int16)
-    ys, xs = np.where(np.abs(a - sea).max(axis=2) <= 5)
-    y0, y1, x0, x1 = ys.min(), ys.max(), xs.min(), xs.max()
+    y0, y1, x0, x1 = rect
     H, W = lc.shape
     yy = ((np.arange(y0, y1 + 1) - y0) / (y1 - y0) * (H - 1)).astype(int)
     xx = ((np.arange(x0, x1 + 1) - x0) / (x1 - x0) * (W - 1)).astype(int)
@@ -496,7 +584,8 @@ def _spaced(d, xy, text, font, fill, extra, fit=None, name=None, size=None):
         x += d.textlength(ch, font=font) + extra
 
 
-def compose_plan(plate, lc, palette, credits, title2, out):
+def compose_plan(plate, lc, palette, credits, title2, out,
+                 admin=True, grid_shape=None):
     bg, sea = flat_tones(plate)
     outside = key_out(plate, bg, sea)
     print("  page tone %s  sea tone %s  keyed out %.1f%%"
@@ -506,8 +595,9 @@ def compose_plan(plate, lc, palette, credits, title2, out):
     # calibration rectangle IS the sea plane, and painting it over first
     # leaves only enclosed water to find, which is a different rectangle and
     # a silently wrong mapping.
-    got = (sampled_colours(plate, outside, lc, sea)
-           if lc is not None and sea is not None else {})
+    rect = grid_rect(plate, sea) if sea is not None else None
+    got = (sampled_colours(plate, outside, lc, rect)
+           if lc is not None and rect is not None else {})
     plate = plate.copy()
     plate[outside] = CREAM
     nland = int((~outside).sum()) if lc is None else int(
@@ -522,6 +612,9 @@ def compose_plan(plate, lc, palette, credits, title2, out):
     CW, CH = pw + u(950), ph + u(200)
     card = Image.new("RGB", (CW, CH), CREAM)
     card.paste(Image.fromarray(plate), (u(110), u(100)))
+    if admin and rect is not None and grid_shape is not None:
+        n = draw_admin(card, (u(110), u(100)), rect, grid_shape, outside, u)
+        print("  desa labelled: %d" % n)
     d = ImageDraw.Draw(card)
     d.rectangle([u(46), u(46), CW - u(47), CH - u(47)],
                 outline=(206, 199, 184), width=max(2, u(3)))
@@ -682,7 +775,9 @@ def main():
                     help="output plate size; the defaults are the pairs "
                          "observed to converge, see TILE/SIZE")
     ap.add_argument("--no-admin", action="store_true",
-                    help="leave off the desa boundary overlay")
+                    help="leave off the desa boundary and label overlay "
+                         "(plan view only; the oblique plate has no grid "
+                         "rectangle to place them by)")
     ap.add_argument("--pdf", action="store_true",
                     help="also write a lossless PDF beside the PNG")
     ap.add_argument("--out", type=Path, default=None)
@@ -713,12 +808,6 @@ def main():
                (96.0, (1.0, 0.55, 0.06), 3.0),
                (42.0, (1.0, 0.95, 0.72), 2.2)])
     rgb = burn_in(rgb, land, px, py, layers, SOURCES[args.lulc]["scale"])
-    if not args.no_admin:
-        line = boundaries(height.shape,
-                          width=2 if args.view == "plan" else 1)
-        a = (line * land * 0.55)[..., None]
-        rgb = np.clip(rgb * (1 - a) + np.array((0.09, 0.09, 0.08),
-                                               "float32") * a, 0, 1)
     print("hotspots in frame: %d (%s .. %s)" % (n_hot, span[0], span[1]))
 
     plate = render(args.lulc, args.view, height, rgb, land, size)
@@ -735,7 +824,9 @@ def main():
 
     out = args.out or (CACHE / ("biak_%s_%s.png" % (args.lulc, args.view)))
     if args.view == "plan":
-        dims, _ = compose_plan(plate, lc, palette, credits, title2, out)
+        dims, _ = compose_plan(plate, lc, palette, credits, title2, out,
+                               admin=not args.no_admin,
+                               grid_shape=height.shape)
     else:
         dims, _ = compose_oblique(plate, credits,
                                   "%d titik panas, %s sampai %s"
