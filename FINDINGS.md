@@ -330,3 +330,128 @@ against the published per-stratum distributions by whoever has reference data th
 not have. No threshold is chosen here and no burned-area total exists anywhere in the
 output. This is a comparison of indices, not a map of what burned, and it is not a statement
 about the hotspots beyond the geometry of the strata.
+
+---
+
+## F8 - Two figures in F7 were percentiles wearing a median's name, and one comparison ran backwards (2026-09-10)
+
+`docs/data/burn_indices.json`, unchanged since commit `272edb5`; this entry corrects the
+prose of F7, not the data behind it. Nothing was recomputed to produce it - the numbers
+below were read back out of the same file F7 quoted.
+
+**First correction.** F7 reads "All six separate the burning-plausible stratum from far
+land in the bi-temporal form (adjacent vs far medians, dNBR+ 0.179 vs 0.027)". Those two
+numbers are 95th percentiles, not medians:
+
+| dNBR+, bi-temporal, primary pair | p50 | p95 |
+|---|---|---|
+| adjacent | 0.0075 | 0.1795 |
+| far | 0.0039 | 0.0268 |
+
+The medians are 0.0075 and 0.0039. F7 describes a separation of roughly six times where
+the statistic it names shows less than two.
+
+**Second correction, and the one that matters.** F7 continues: "the late-burning clusters
+of 23-25 August read weaker on 28 August than the 19-22 ground does on 23 August (dNBR+
+median 0.027 vs 0.179) - five extra days of tropical regrowth, or the cloudy scene, or
+both". The pair 0.027 / 0.179 is the same pair as the sentence before it, so this
+comparison never touched the late-burning stratum at all. What that stratum actually says,
+against the check pair's own adjacent stratum:
+
+| index | late-burning p50 | check adjacent p50 | late-burning p95 | check adjacent p95 |
+|---|---|---|---|---|
+| NBR | 0.0977 | 0.0700 | 0.4022 | 0.3202 |
+| NBRSWIR | 0.0117 | 0.0116 | 0.1211 | 0.1054 |
+| NDSWIR | 0.0976 | 0.0664 | 0.3086 | 0.2695 |
+| MIRBI | -0.0947 | -0.0955 | 0.3428 | 0.2800 |
+| BAIS2 | 0.2421 | 0.2109 | 0.5702 | 0.5232 |
+| NBR+ | 0.0273 | 0.0073 | 0.2227 | 0.1794 |
+
+The late-burning ground reads **stronger**, not weaker, on every one of the six indices at
+both percentiles. The regrowth-or-cloud speculation in F7 explains a pattern that is not
+in the data, and it is withdrawn. Nothing replaces it: this comparison was never designed
+to attribute a difference between two scene pairs, and one number still cannot say which
+of several causes is at work - only that the sign of the difference is the opposite of
+what was written.
+
+**A third figure F7 never computed.** A median gap says little without the spread it sits
+in. Normalised by the far stratum's own interquartile range, the bi-temporal separations
+rank the other way round from the false-alarm table:
+
+| index | (adjacent p50 - far p50) / far IQR |
+|---|---|
+| NBRSWIR | 0.71 |
+| NBR | 0.49 |
+| NDSWIR | 0.40 |
+| BAIS2 | 0.32 |
+| MIRBI | 0.29 |
+| NBR+ | 0.24 |
+
+NBR+ separates the burning-plausible stratum least of the six.
+
+**The Phase 4 recommendation survives, for a reason F7 left implicit.** The false-alarm
+table is not a second opinion on separation: its threshold is the adjacent stratum's own
+95th percentile, which pins sensitivity at 5% for every index by construction. Under equal
+sensitivity, the only thing left to compare is the false-alarm rate, and there NBR+ wins
+by an order of magnitude on the two conditions that dominate this AOI. So the ranking
+above does not overturn F7's conclusion - it says the conclusion rests on the false-alarm
+column alone, and that F7's appeal to "matching the others on the burning-plausible
+stratum" was the weakest sentence in it.
+
+The scope caveats of F7 stand unchanged: mid-event post-image, no ground truth, no
+threshold chosen, no burned-area total anywhere in the output.
+
+---
+
+## F9 - Terra and Aqua agree on ET partly because they are reading the same inputs (2026-09-10)
+
+`References/MOD16_User_Guide_V61.pdf` (MODIS Land Team, v1.0, 2021-02-26) against
+`docs/data/drought_et_check.json`, commit unchanged. This narrows F6; it does not
+overturn it.
+
+F6 tested whether the published July 2026 water-balance headline is an artifact of Terra's
+orbital drift (F4) by recomputing it under Aqua, and found the two sensors agree. That test
+is only as strong as the independence of the two ET series. The user guide says how
+independent they are, and the answer is: less than the phrase "cross-sensor agreement"
+suggests.
+
+- **Albedo is already a combined product.** MCD43A2/A3, and the guide is explicit about
+  what the letters mean: "Both Terra and Aqua data are used in the generation of this
+  product ... designating it as an 'MCD,' meaning 'Combined,' product" (§3.2, guide page
+  15). MOD16A2 and MYD16A2 take the same albedo.
+- **Meteorology is a single stream.** GMAO/MERRA, "distributed at a resolution of 0.5 x 0.6
+  degrees (MERRA GMAO) or 1.00 x 1.25" and interpolated from the four nearest cells to each
+  0.5 km MODIS pixel (guide pages 20-21). There is no Terra meteorology and no Aqua
+  meteorology.
+- **Only LAI/FPAR is sensor-specific**: MOD15A2H for Terra, MYD15A2H for Aqua (guide pages
+  17-18).
+- **And the FPAR gap-fill is combined too.** Contaminated FPAR in MOD15A2H is backfilled
+  from MCD15A2HCL - "MCD" again - built from "both MOD15A2H and MYD15A2H" over a five-year
+  window (Figure 3.2 and guide page 17).
+
+That last point is what makes this worth recording rather than filing as trivia. F6's own
+quality shares say how many pixels are on the backup path in the month under test:
+
+| July | ET_QC good share, Terra | Aqua |
+|---|---|---|
+| 2021 | 0.4767 | 0.4201 |
+| 2022 | 0.5871 | 0.4778 |
+| 2023 | 0.5339 | 0.4988 |
+| 2024 | 0.4658 | 0.4269 |
+| 2025 | 0.4501 | 0.4942 |
+| **2026** | **0.6007** | **0.6686** |
+
+July 2026 is the best-quality July of both records, and still 33% of Terra pixels and 40%
+of Aqua pixels ran on backup or fill. On those pixels the two sensors are not two
+measurements of the same thing; they are two products sharing an albedo, a meteorology,
+and a gap-filled FPAR climatology drawn from both of them.
+
+**What F6 may still claim.** That the published headline is not a Terra-drift artifact -
+because drift acts through the MODIS observation path, and that path is where the two
+products genuinely differ. What F6 may not claim, and did not, is that agreement between
+them is an independent replication of the ET estimate. The shared inputs mean the test has
+less power than its phrasing implies, and the honest reading is that it rules out one
+specific alternative rather than confirming the number.
+
+This does not touch F1: what F1 rests on is the water balance's shape across six years,
+and the ET series enters it the same way in every year.
