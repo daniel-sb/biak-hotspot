@@ -80,3 +80,46 @@ admin_polygon: data/boundaries/biak_desa.geojson
 # from the coastal road and one 1.3 km into the karst cost entirely different
 # afternoons. (c) OpenStreetMap contributors, ODbL.
 road_lines: data/boundaries/biak_roads.geojson
+
+# Burning events (Task 16; PLAN.md Phase 3). Space-time DBSCAN: two
+# detections are neighbours when within eps_m metres AND eps_hours of each
+# other on datetime_utc; a detection with min_samples - 1 neighbours is core.
+# Tuned in Task 16 against the known events below; FINDINGS.md F10 has the
+# grid. Read it before changing these, and re-run `python src/events.py
+# --tune` after. Any change rebuilds every event ID (registry_version
+# increments).
+events:
+  # Two VIIRS pixels. At 1000 m the Saramom area chains into a 4.5 km event,
+  # more than twice the 2 km linear feature PLAN.md 11.4 found there; at
+  # 750 m it stays at 2.6 km. Same value as recurrence.radius_m.
+  eps_m: 750
+  # Burning here is daytime only (PLAN.md 10.4), so a plot burned on two
+  # consecutive afternoons is re-detected about a day later - but VIIRS
+  # passes between 12:34 and 14:21 WIT and Aqua as late as 15:48, so that
+  # gap runs 21-27 h. PLAN.md's 24 h splits roughly half of those pairs on
+  # overpass timing alone. 30 h covers the spread and stays far below a
+  # two-day gap (44.8 h at its shortest); 36 h gives the same events.
+  eps_hours: 30
+  # With 2, DBSCAN reduces to connected components: any neighbour makes a
+  # core point. Chaining is the risk that brings; the tuning shows the
+  # largest event at 3.4 km, so it is not happening at these distances.
+  min_samples: 2
+  tune_eps_m: [375, 750, 1000, 1500]
+  tune_eps_hours: [12, 24, 30, 36, 48]
+  # Known events the parameters are checked against (Task 16). Each selects
+  # detections by date window and/or a radius around a point; the tuning run
+  # reports how many events those detections fall into.
+  known_events:
+    # PLAN.md 10.4: METAR-corroborated, clean onset and decay. Should be many
+    # events - it spans Biak and Numfor, 40 km of sea apart.
+    - {name: aug2026, from: "2026-08-19", to: "2026-08-25"}
+    # PLAN.md 11.3: burning within 3 km of Frans Kaisiepo, 35 of 39
+    # detections in August 2026. Should not chain to 2023 or April 2026.
+    - {name: airport, lat: -1.1900, lon: 136.1078, radius_m: 3000}
+    # PLAN.md 11.2/11.4: the dominant recurrent site, 74 distinct days over
+    # three years. Should be many short events at one place, never one.
+    - {name: saramom, lat: -1.1447, lon: 136.0347, radius_m: 750}
+    # Detected 3 September 2026, photographed still smoking by the surveyor
+    # on 4 September 13:53 WIT and undetected that day.
+    - {name: anjareuw, lat: -1.1723, lon: 136.1353, radius_m: 1000,
+       from: "2026-09-03", to: "2026-09-04"}

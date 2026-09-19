@@ -23,6 +23,10 @@ data/processed/*
 !data/processed/detections.parquet
 !data/processed/run_manifest.json
 !data/processed/recurrent_sites.json
+# Event registry (Task 16): event IDs survive re-runs only because the
+# previous membership map is read back, so it has to travel with the repo.
+# events.csv is the same records flattened and is regenerated from it.
+!data/processed/events.json
 data/cache/
 *.pmtiles
 *.tif
