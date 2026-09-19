@@ -96,9 +96,10 @@ events:
   # Burning here is daytime only (PLAN.md 10.4), so a plot burned on two
   # consecutive afternoons is re-detected about a day later - but VIIRS
   # passes between 12:34 and 14:21 WIT and Aqua as late as 15:48, so that
-  # gap runs 21-27 h. PLAN.md's 24 h splits roughly half of those pairs on
-  # overpass timing alone. 30 h covers the spread and stays far below a
-  # two-day gap (44.8 h at its shortest); 36 h gives the same events.
+  # gap runs 21-27 h (measured: 21.1-26.9 h over 1,808 same-spot pairs).
+  # PLAN.md's 24 h puts 36% of those pairs outside the window on overpass
+  # timing alone. 30 h covers the spread and stays far below a two-day gap
+  # (44.8 h at its shortest); 36 h gives the same events.
   eps_hours: 30
   # With 2, DBSCAN reduces to connected components: any neighbour makes a
   # core point. Chaining is the risk that brings; the tuning shows the

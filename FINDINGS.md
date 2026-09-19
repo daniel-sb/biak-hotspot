@@ -455,3 +455,92 @@ specific alternative rather than confirming the number.
 
 This does not touch F1: what F1 rests on is the water balance's shape across six years,
 and the ET series enters it the same way in every year.
+
+---
+
+## F10 - Burning on Biak is mostly seen once, and a 24-hour event window cuts it on overpass timing (2026-09-19)
+
+`src/events.py` -> `data/processed/events.json`, commit `7b20997`; parameters and their
+reasons in `config.yaml` under `events:`. Task 16, PLAN.md Phase 3 items 1-2. Built on the
+store as of 2026-09-16: 1,150 detections, 2023-09-01 to 2026-09-16.
+
+**The unit.** Space-time DBSCAN, neighbours within 750 m and 30 h on `datetime_utc`,
+`min_samples` 2. The store becomes **484 events, of which 337 (70%) are singletons** - one
+pixel on one overpass. Of the 147 multi-detection events, the median has 2 detections and
+lasts 0.6 h (two satellites minutes apart over the same afternoon); the 90th percentile has
+8 detections and lasts 25.8 h; 49 span two or more WIT days. 2026 alone holds 308 of the 484,
+so any per-event statistic here is mostly a statement about one season.
+
+**Why 30 h and not PLAN.md's 24 h.** Burning here is daytime only (PLAN.md 10.4: 651 of 653
+detections), so a plot burned on consecutive afternoons is re-detected about a day later.
+But the satellites do not return at the same minute: VIIRS afternoon passes over the AOI fall
+between 12:34 and 14:21 WIT across S-NPP, NOAA-20 and NOAA-21, and Aqua as late as 15:48.
+Measured on the store, 1,808 pairs of detections within 750 m of each other and 18-30 h
+apart have gaps from **21.1 to 26.9 h** (median 23.7 h), and **653 of them (36%) exceed
+24 h**. A 24 h window separates those pairs on overpass timing alone, not on anything about
+the ground. 30 h covers the observed spread with margin and stays far below the shortest
+two-day gap (44.8 h). 36 h gives the same events to within one (484 vs 483), which is what
+a threshold past the edge should do: once it clears the jitter, the answer stops moving.
+
+(The commit message for `7b20997` says a 24 h window splits "roughly half" of these pairs.
+That was stated before it was measured. The measured share is 36%, as above.)
+
+**Why 750 m and not 1000 m.** At 1000 m the events touching the Saramom recurrent site
+chain into one 4.5 km event across 19-25 August 2026; at 750 m the largest is 2.6 km -
+close to the 2 km north-south feature PLAN.md 11.4 found there, rather than twice it. 750 m
+is two VIIRS pixels, and the same value as `recurrence.radius_m`.
+
+**Chaining did not happen.** The failure the task warned about - the south corridor
+collapsing into one island-wide event - does not
+occur at any setting tried, though 485 detections fell across the AOI on 21-22 August. The
+largest event is 3.4 km across even at 1500 m / 48 h. Grid
+(events, singletons, largest event's detections and extent):
+
+| eps_m | eps_h | events | singletons | largest | extent km |
+|---|---|---|---|---|---|
+| 375 | 12 | 696 | 523 | 64 | 2.8 |
+| 375 | 24 | 616 | 470 | 135 | 3.4 |
+| 750 | 24 | 496 | 349 | 140 | 3.4 |
+| **750** | **30** | **484** | **337** | **142** | **3.4** |
+| 750 | 36 | 483 | 336 | 142 | 3.4 |
+| 1000 | 24 | 450 | 311 | 141 | 3.4 |
+| 1000 | 30 | 433 | 296 | 143 | 3.4 |
+| 1500 | 48 | 371 | 250 | 143 | 3.4 |
+
+The spread across the grid is in how *small* events are cut, not in whether large ones
+merge: the event count moves from 696 to 371, the largest event barely moves at all.
+
+**The four known events, at the chosen parameters:**
+
+1. **19-25 August 2026** (PLAN.md 10.4): 647 detections in **139 events**, not one. The
+   largest, **E0301**, is 142 detections in Anjareuw, first seen 19 August 12:47 WIT and last
+   seen 144.5 h later, FRP sum 1,672 MW. Its centroid lies 1.3 km from the -1.185, 136.130
+   cluster PLAN.md 10.4 named, but it does not hold the season's single strongest detection:
+   its own maximum is 70.1 MW against 90.5 MW that week. Its convex hull is 684 ha; that is
+   the envelope of pixel centres, not a burned area, and it can contain unburned ground
+   between plots.
+2. **Airport-adjacent, August 2026** (PLAN.md 11.3): 39 detections within 3 km in 11
+   events; none chains across months.
+3. **Saramom** (PLAN.md 11.2, 11.4): 121 detections within 750 m in **62 events** over three
+   years - a recurrent *location* burned in many separate *episodes*, which is the
+   distinction Task 04 and Task 16 exist to keep apart. The largest episode touching it,
+   E0313, is the August 2026 one: 41 detections, 73% of them on the recurrent site.
+4. **Anjareuw, 3-4 September 2026**: **E0463**, 4 detections from 12:47 to 13:04 WIT on
+   3 September. The surveyor photographed the same ground actively smoking on 4 September
+   at 13:53 WIT, and nothing was detected that day. E0463's `last_seen` is therefore 3
+   September while the burning was not over - the worked example for why `last_seen` must
+   never be read as "burning stopped".
+
+**Road distance, and what it does not yet show.** The median distance from an event's
+first-seen position to the nearest driveable OSM road is 295 m (multi-detection events:
+283 m, 90th percentile 1,065 m). This is not yet evidence that burning concentrates near
+roads. First, 295 m is inside one VIIRS pixel of positional uncertainty. Second, there is no
+null distribution: how far random land on Biak lies from a mapped road has not been
+computed, and without it a median distance has nothing to be compared against. Third, OSM
+maps roads unevenly here, so a large distance may mean an unmapped track. The comparison
+against random land is the next step before this number supports any sentence.
+
+**Scope.** No field in the record claims ignition: `first_seen` is the first overpass that
+caught heat. Nothing here attributes cause (PLAN.md section 8). Land cover at first-seen and
+distance to settlement are not computed; there is no tracked land-cover raster and no
+settlement layer in the repository.
