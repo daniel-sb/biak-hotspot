@@ -631,3 +631,74 @@ reported. Light burns below the local noise are missed. Nothing here says why an
 burned or who burned it (PLAN.md section 8). 1,050 polygons are published alongside the
 table in `burned_areas.geojson`, clipped to event footprints; they are not a burned-area
 map of Biak, only of the 23 events assessed.
+
+---
+
+## F12 - The detection climatology ranks well and calibrates badly, and 88% of burning lands where it says zero (2026-09-20)
+
+`src/baseline.py` -> `data/processed/baseline_eval.json`, commit `f5e5960`. Task 17,
+PLAN.md Phase 5 step 2. Written at review from the JSON, as that task specified: the
+implementer reports, the entry is written here.
+
+The baseline: for each 1 km land cell and each observed WIT day, the empirical probability
+of at least one detection, pooled over a 31-day day-of-year window, fitted on every
+calendar year but the one being scored. 3,435 land cells of 74,200 in the AOI box; 1,112
+observed days, none unobserved; every detection falls inside a land cell.
+
+| fold | observed days | cell-days | positives | base rate | average precision | AP / base rate | Brier skill |
+|---|---|---|---|---|---|---|---|
+| 2023 | 122 | 419,070 | 75 | 0.000143 | 0.00837 | 58x | -0.005 |
+| 2024 | 366 | 1,257,210 | 48 | 0.000200 | 0.01251 | 63x | -0.086 |
+| 2025 | 365 | 1,253,775 | 45 | 0.000201 | 0.00828 | 41x | -0.104 |
+| 2026 | 259 | 889,665 | 393 | 0.000057 | 0.00198 | 35x | +0.0005 |
+
+**Two readings, and both are needed.**
+
+*It knows where.* A no-skill ranking scores an average precision equal to the base rate.
+This one scores 35 to 63 times that. Knowing only which cells burned on which day-of-year
+in other years carries real information about where burning appears.
+
+*It does not know how much.* The Brier skill score is negative in three folds of four and
+zero in the fourth: as a probability, the climatology is no better than a single constant
+equal to the base rate, and slightly worse. Brier over 3.8 million cell-days is dominated
+by true negatives, which is why it barely moves; the ranking measure is the one with
+anything to say.
+
+**Where the positives actually fall.** Pooled across folds, of 561 positive cell-days:
+
+| predicted p | cell-days | mean p | observed rate | positives |
+|---|---|---|---|---|
+| [0, 0.0001) | 3,791,973 | 0.0000 | 0.000130 | 492 |
+| [0.01, 0.05) | 26,889 | 0.0182 | 0.001562 | 42 |
+| [0.05, 0.1) | 772 | 0.0735 | 0.029793 | 23 |
+| [0.1, 0.2) | 86 | 0.1188 | 0.046512 | 4 |
+
+**492 of 561 positives - 87.7% - fall in cell-days the baseline scored exactly zero.**
+Where it does commit to a number it is over-confident: 12x too high in the 0.01-0.05 bin,
+2.5x in the two above it.
+
+**The bins between 0.0001 and 0.01 are empty, and that is structural.** A 31-day window
+across roughly three training years pools about 93 observed days, so the smallest non-zero
+probability this estimator can express is 1/93 = 0.011. It emits zero or it emits about a
+hundredth; nothing in between exists. The over-confidence in the 0.01-0.05 bin is that
+quantum, not a modelling choice - one hit in 93 days already reads as 1.1%, where the
+out-of-sample truth is 0.16%. Three years of record is the floor PLAN.md Phase 5 names,
+and this is what the floor looks like.
+
+**The bar for Phase 5 step 3 is the average precision column, not the Brier column.** A
+model must beat 0.008, 0.013, 0.008 and 0.002 on the four held-out years, scored the same
+way, before it has earned its existence. Beating the Brier score is nearly free and means
+nothing.
+
+**The fixed constellation cost 150 positive cell-days.** NOAA-21 contributes nothing before
+16 February 2024, so all 285 of its detections are set aside to keep every year seen through
+the same satellites; 150 positive cell-days exist only through them. That is the price of
+comparability, paid deliberately and recorded.
+
+**Caveats carried in the file.** A day counts as observed only when every constellation
+instrument was successfully fetched for it; cloud is not detected, so a cloudy observed day
+counts as a day without detection. The 2026 fold scores a climatology built from quieter
+years against the most extreme season in the record, and measures how unusual 2026 was as
+much as how good the baseline is. This is a climatology of satellite detections: not a
+forecast of fire, not a danger rating, and no statement about why land is burned or who
+burns it (PLAN.md section 8).
