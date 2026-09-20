@@ -544,3 +544,90 @@ against random land is the next step before this number supports any sentence.
 caught heat. Nothing here attributes cause (PLAN.md section 8). Land cover at first-seen and
 distance to settlement are not computed; there is no tracked land-cover raster and no
 settlement layer in the repository.
+
+---
+
+## F11 - Burned area for 23 events, and the reference land the record has used up (2026-09-20)
+
+`src/burned_area_gee.py` -> `data/processed/burned_areas.json` and `burned_areas.geojson`,
+commit `ddc2d3b`, run by hand on 2026-09-20 against the store to 2026-09-16 and events
+registry v1. PLAN.md Phase 4 items 1-3; Task 18.
+
+**What was measured.** For each of the 31 events with at least 5 detections: the share of
+its footprint (375 m around each member detection) whose dNBR+ rose above a local,
+false-alarm-controlled threshold between the clear Sentinel-2 look nearest before the event
+and the nearest after. The threshold is the 99th percentile of dNBR+ over land within 10 km
+that lies farther than 3 km from every detection ever stored, so 1% of never-detected land
+nearby exceeds it by construction. It is not calibrated against ground truth and carries no
+accuracy.
+
+**23 events carry an area. 8 do not**, and the reason is the finding below.
+
+| | ha |
+|---|---|
+| footprint, land | 6,291 |
+| clear in both looks | 5,899 |
+| **changed like a burn** | **2,415** |
+| upper bound if every cloud-gap pixel had changed | 2,807 |
+| false-alarm allowance the threshold admits (1% of clear) | 59 |
+
+40.9% of the clear footprint changed. Per event the median is 62 ha and the largest,
+**E0301** (142 detections, Anjareuw, 19-25 August 2026), is 503 ha of 924 ha, all of it
+clear. One event, E0462, returned 0.0 ha against a threshold of 0.271: the method's own
+answer that nothing there changed more than nearby never-burned land.
+
+Thresholds ranged 0.0164 to 0.2710 (median 0.0838) - a sevenfold spread that is exactly
+why a single fixed threshold was refused. Post-event looks came a median of 2.9 days after
+`last_seen`, the worst event's 90th percentile 20.9 days. 2026 holds 20 of the 23 assessed
+events and 2,179 of the 2,415 ha.
+
+**What the land was, the year before it changed** (Esri 10 m annual, so 2025 for a 2026
+event):
+
+| class | clear ha | changed ha | share changed |
+|---|---|---|---|
+| trees | 4,440.2 | 1,806.4 | 40.7% |
+| rangeland | 1,209.7 | 545.2 | 45.1% |
+| built | 227.7 | 57.3 | 25.1% |
+| bare | 5.3 | 1.0 | 18.3% |
+| crops | 2.2 | 1.0 | 45.0% |
+
+**Three quarters of the changed area (74.8%) was mapped as trees the year before.** Read
+it with care in both directions. Trees are also 75% of the footprint, so the *share* that
+changed is nearly the same for trees (40.7%) and rangeland (45.1%): at this resolution the
+burning is not selecting between them, it is following what is there. And Esri's "trees"
+on Biak includes regrowth on land that was cleared before the record began, which F10's
+shrub disagreement with Dynamic World already showed is contested ground.
+
+**The reference land is nearly used up inside the burning corridor.** This is the result
+that matters for method. The eight events with no area failed for one reason: within 10 km
+of them, almost no land is farther than 3 km from *some* detection in the three-year
+record. Measured on their own rings:
+
+| event | ring land ha | of that, >3 km from every detection |
+|---|---|---|
+| E0339 | 18,705 | 25 |
+| E0323 | 24,959 | 51 |
+| E0341 | 25,705 | 72 |
+| E0267 | 19,341 | 102 |
+| E0109 | 19,045 | 83 |
+
+Between 0.1% and 0.5% of nearby land qualifies. Three of the eight are from 21 August 2026,
+the densest burning day in the record. **The threshold method degrades exactly where
+burning is densest**, because its reference is defined by the absence of the thing being
+measured, and three years of detections have covered the corridor.
+
+Cloud is not the cause. Dropping the exclusion from 3 km to 1.5 km raises the reference
+land on those same rings from 25-102 ha to 2,432-4,867 ha. That change is available but it
+is not free: F7 treats land within 1,500 m of a detection as burning-plausible, so a 1.5 km
+reference would include ground that may have burned, pushing the threshold up and the
+measured area down. The conservative direction, but a different measurement. **No
+parameter was changed for this entry**; the numbers above are all at 3 km, and the choice
+is recorded here rather than made quietly.
+
+**Scope.** Areas are "changed like a burn", not confirmed burned area: there is no
+reference data on Biak, so no accuracy, no omission rate, and no severity class is
+reported. Light burns below the local noise are missed. Nothing here says why any land was
+burned or who burned it (PLAN.md section 8). 1,050 polygons are published alongside the
+table in `burned_areas.geojson`, clipped to event footprints; they are not a burned-area
+map of Biak, only of the 23 events assessed.

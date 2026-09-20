@@ -1,0 +1,3234 @@
+{
+ "assessed": [
+  {
+   "changed_ha": 152.71,
+   "changed_ha_by_class": {
+    "rangeland": 60.94,
+    "trees": 91.77
+   },
+   "changed_ha_upper": 152.71,
+   "clear_fraction": 1.0,
+   "clear_ha": 232.52,
+   "clear_ha_by_class": {
+    "rangeland": 70.99,
+    "trees": 161.53
+   },
+   "dnbr_p50_changed": 0.4589,
+   "event_id": "E0049",
+   "expected_false_ha": 2.33,
+   "first_seen_wit": "2023-11-19T12:40:00+09:00",
+   "footprint_ha": 232.52,
+   "land_cover_year": 2022,
+   "last_seen_wit": "2023-11-20T13:11:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 6.886453151702881,
+     "p90": 6.886453151702881
+    },
+    "pre_lag": {
+     "p50": 2.0919671058654785,
+     "p90": 2.0919671058654785
+    }
+   },
+   "n_detections": 13,
+   "n_polygons": 2,
+   "n_scenes": {
+    "post": 12,
+    "pre": 22
+   },
+   "ref_clear_px": 7641,
+   "status": "assessed",
+   "threshold": 0.08381,
+   "windows_utc": {
+    "post": [
+     "2023-11-21",
+     "2023-12-21"
+    ],
+    "pre": [
+     "2023-09-20",
+     "2023-11-19"
+    ]
+   }
+  },
+  {
+   "changed_ha": 77.88,
+   "changed_ha_by_class": {
+    "built": 0,
+    "clouds": 0,
+    "rangeland": 3.83,
+    "trees": 74.05
+   },
+   "changed_ha_upper": 81.06,
+   "clear_fraction": 0.9863,
+   "clear_ha": 228.12,
+   "clear_ha_by_class": {
+    "built": 1.95,
+    "clouds": 0.08,
+    "rangeland": 30.09,
+    "trees": 196.0
+   },
+   "dnbr_p50_changed": 0.2528,
+   "event_id": "E0055",
+   "expected_false_ha": 2.28,
+   "first_seen_wit": "2023-11-20T13:11:00+09:00",
+   "footprint_ha": 231.3,
+   "land_cover_year": 2022,
+   "last_seen_wit": "2023-11-21T13:43:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 5.864231109619146,
+     "p90": 20.864273071289066
+    },
+    "pre_lag": {
+     "p50": 3.113494873046875,
+     "p90": 8.113459587097168
+    }
+   },
+   "n_detections": 10,
+   "n_polygons": 33,
+   "n_scenes": {
+    "post": 6,
+    "pre": 11
+   },
+   "ref_clear_px": 30176,
+   "status": "assessed",
+   "threshold": 0.10358,
+   "windows_utc": {
+    "post": [
+     "2023-11-22",
+     "2023-12-22"
+    ],
+    "pre": [
+     "2023-09-21",
+     "2023-11-20"
+    ]
+   }
+  },
+  {
+   "changed_ha": 4.97,
+   "changed_ha_by_class": {
+    "built": 4.97,
+    "rangeland": 0,
+    "trees": 0,
+    "water": 0
+   },
+   "changed_ha_upper": 5.28,
+   "clear_fraction": 0.9956,
+   "clear_ha": 71.25,
+   "clear_ha_by_class": {
+    "built": 45.99,
+    "rangeland": 0.16,
+    "trees": 24.39,
+    "water": 0.7
+   },
+   "dnbr_p50_changed": 0.2115,
+   "event_id": "E0079",
+   "expected_false_ha": 0.71,
+   "first_seen_wit": "2024-06-07T00:56:00+09:00",
+   "footprint_ha": 71.57,
+   "land_cover_year": 2023,
+   "last_seen_wit": "2024-06-08T01:52:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 1.3580904006958008,
+     "p90": 1.3580904006958008
+    },
+    "pre_lag": {
+     "p50": 22.60302352905273,
+     "p90": 42.60303115844726
+    }
+   },
+   "n_detections": 5,
+   "n_polygons": 7,
+   "n_scenes": {
+    "post": 12,
+    "pre": 24
+   },
+   "ref_clear_px": 2771,
+   "status": "assessed",
+   "threshold": 0.1683,
+   "windows_utc": {
+    "post": [
+     "2024-06-08",
+     "2024-07-08"
+    ],
+    "pre": [
+     "2024-04-07",
+     "2024-06-06"
+    ]
+   }
+  },
+  {
+   "event_id": "E0109",
+   "first_seen_wit": "2024-11-01T01:14:00+09:00",
+   "last_seen_wit": "2024-11-02T01:20:00+09:00",
+   "n_detections": 6,
+   "n_scenes": {
+    "post": 12,
+    "pre": 26
+   },
+   "ref_clear_px": 2116,
+   "status": "no local reference",
+   "windows_utc": {
+    "post": [
+     "2024-11-02",
+     "2024-12-02"
+    ],
+    "pre": [
+     "2024-09-01",
+     "2024-10-31"
+    ]
+   }
+  },
+  {
+   "event_id": "E0139",
+   "first_seen_wit": "2025-03-14T00:56:00+09:00",
+   "last_seen_wit": "2025-03-15T01:25:00+09:00",
+   "n_detections": 6,
+   "n_scenes": {
+    "post": 14,
+    "pre": 24
+   },
+   "ref_clear_px": 536,
+   "status": "no local reference",
+   "windows_utc": {
+    "post": [
+     "2025-03-15",
+     "2025-04-14"
+    ],
+    "pre": [
+     "2025-01-12",
+     "2025-03-13"
+    ]
+   }
+  },
+  {
+   "event_id": "E0148",
+   "first_seen_wit": "2025-05-06T01:03:00+09:00",
+   "last_seen_wit": "2025-05-09T00:54:00+09:00",
+   "n_detections": 5,
+   "n_scenes": {
+    "post": 16,
+    "pre": 26
+   },
+   "ref_clear_px": 2346,
+   "status": "no local reference",
+   "windows_utc": {
+    "post": [
+     "2025-05-09",
+     "2025-06-08"
+    ],
+    "pre": [
+     "2025-03-06",
+     "2025-05-05"
+    ]
+   }
+  },
+  {
+   "changed_ha": 14.27,
+   "changed_ha_by_class": {
+    "bare": 0,
+    "built": 12.77,
+    "rangeland": 0,
+    "trees": 1.34,
+    "water": 0.16
+   },
+   "changed_ha_upper": 14.27,
+   "clear_fraction": 1.0,
+   "clear_ha": 82.62,
+   "clear_ha_by_class": {
+    "bare": 0.12,
+    "built": 57.47,
+    "rangeland": 1.51,
+    "trees": 22.13,
+    "water": 1.39
+   },
+   "dnbr_p50_changed": 0.0856,
+   "event_id": "E0247",
+   "expected_false_ha": 0.83,
+   "first_seen_wit": "2026-07-03T13:12:00+09:00",
+   "footprint_ha": 82.62,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-07-04T01:07:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 12.38949680328369,
+     "p90": 12.38949680328369
+    },
+    "pre_lag": {
+     "p50": 4.114194869995117,
+     "p90": 7.113976001739495
+    }
+   },
+   "n_detections": 5,
+   "n_polygons": 25,
+   "n_scenes": {
+    "post": 14,
+    "pre": 30
+   },
+   "ref_clear_px": 2583,
+   "status": "assessed",
+   "threshold": 0.04781,
+   "windows_utc": {
+    "post": [
+     "2026-07-04",
+     "2026-08-03"
+    ],
+    "pre": [
+     "2026-05-04",
+     "2026-07-03"
+    ]
+   }
+  },
+  {
+   "event_id": "E0267",
+   "first_seen_wit": "2026-07-23T00:56:00+09:00",
+   "last_seen_wit": "2026-07-24T01:33:00+09:00",
+   "n_detections": 7,
+   "n_scenes": {
+    "post": 14,
+    "pre": 30
+   },
+   "ref_clear_px": 1132,
+   "status": "no local reference",
+   "windows_utc": {
+    "post": [
+     "2026-07-24",
+     "2026-08-23"
+    ],
+    "pre": [
+     "2026-05-23",
+     "2026-07-22"
+    ]
+   }
+  },
+  {
+   "changed_ha": 502.85,
+   "changed_ha_by_class": {
+    "bare": 0,
+    "built": 2.48,
+    "clouds": 0,
+    "rangeland": 115.09,
+    "trees": 385.28
+   },
+   "changed_ha_upper": 502.85,
+   "clear_fraction": 1.0,
+   "clear_ha": 924.39,
+   "clear_ha_by_class": {
+    "bare": 0.08,
+    "built": 3.47,
+    "clouds": 0.12,
+    "rangeland": 229.48,
+    "trees": 691.25
+   },
+   "dnbr_p50_changed": 0.249,
+   "event_id": "E0301",
+   "expected_false_ha": 9.24,
+   "first_seen_wit": "2026-08-19T12:47:00+09:00",
+   "footprint_ha": 924.39,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-25T13:17:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 2.8823254108428955,
+     "p90": 2.8823254108428955
+    },
+    "pre_lag": {
+     "p50": 1.0968430042266846,
+     "p90": 26.096788406372077
+    }
+   },
+   "n_detections": 142,
+   "n_polygons": 75,
+   "n_scenes": {
+    "post": 6,
+    "pre": 15
+   },
+   "ref_clear_px": 21547,
+   "status": "assessed",
+   "threshold": 0.11852,
+   "windows_utc": {
+    "post": [
+     "2026-08-26",
+     "2026-09-25"
+    ],
+    "pre": [
+     "2026-06-20",
+     "2026-08-19"
+    ]
+   }
+  },
+  {
+   "changed_ha": 238.05,
+   "changed_ha_by_class": {
+    "built": 7.59,
+    "clouds": 1.03,
+    "rangeland": 22.25,
+    "trees": 207.18
+   },
+   "changed_ha_upper": 282.18,
+   "clear_fraction": 0.887,
+   "clear_ha": 346.46,
+   "clear_ha_by_class": {
+    "built": 8.74,
+    "clouds": 1.35,
+    "rangeland": 32.71,
+    "trees": 303.66
+   },
+   "dnbr_p50_changed": 0.1201,
+   "event_id": "E0311",
+   "expected_false_ha": 3.46,
+   "first_seen_wit": "2026-08-20T13:46:00+09:00",
+   "footprint_ha": 390.59,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-23T13:55:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 4.855936527252202,
+     "p90": 9.855945587158203
+    },
+    "pre_lag": {
+     "p50": 27.137760162353523,
+     "p90": 35.137584686279304
+    }
+   },
+   "n_detections": 18,
+   "n_polygons": 32,
+   "n_scenes": {
+    "post": 7,
+    "pre": 15
+   },
+   "ref_clear_px": 71427,
+   "status": "assessed",
+   "threshold": 0.04481,
+   "windows_utc": {
+    "post": [
+     "2026-08-24",
+     "2026-09-23"
+    ],
+    "pre": [
+     "2026-06-21",
+     "2026-08-20"
+    ]
+   }
+  },
+  {
+   "changed_ha": 79.27,
+   "changed_ha_by_class": {
+    "bare": 0.04,
+    "built": 0.58,
+    "clouds": 0.83,
+    "rangeland": 32.51,
+    "trees": 45.32
+   },
+   "changed_ha_upper": 305.3,
+   "clear_fraction": 0.5528,
+   "clear_ha": 279.44,
+   "clear_ha_by_class": {
+    "bare": 0.04,
+    "built": 1.33,
+    "clouds": 3.15,
+    "rangeland": 90.56,
+    "trees": 184.36
+   },
+   "dnbr_p50_changed": 0.1544,
+   "event_id": "E0312",
+   "expected_false_ha": 2.79,
+   "first_seen_wit": "2026-08-20T14:08:00+09:00",
+   "footprint_ha": 505.47,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-23T13:55:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 4.855936527252205,
+     "p90": 9.855945587158198
+    },
+    "pre_lag": {
+     "p50": 12.153065681457521,
+     "p90": 32.15305328369141
+    }
+   },
+   "n_detections": 47,
+   "n_polygons": 59,
+   "n_scenes": {
+    "post": 14,
+    "pre": 30
+   },
+   "ref_clear_px": 137135,
+   "status": "assessed",
+   "threshold": 0.06046,
+   "windows_utc": {
+    "post": [
+     "2026-08-24",
+     "2026-09-23"
+    ],
+    "pre": [
+     "2026-06-21",
+     "2026-08-20"
+    ]
+   }
+  },
+  {
+   "changed_ha": 235.97,
+   "changed_ha_by_class": {
+    "bare": 0,
+    "built": 5.9,
+    "rangeland": 56.18,
+    "trees": 173.77,
+    "water": 0.12
+   },
+   "changed_ha_upper": 235.97,
+   "clear_fraction": 1.0,
+   "clear_ha": 412.83,
+   "clear_ha_by_class": {
+    "bare": 0.04,
+    "built": 44.91,
+    "rangeland": 131.74,
+    "trees": 235.28,
+    "water": 0.86
+   },
+   "dnbr_p50_changed": 0.1835,
+   "event_id": "E0313",
+   "expected_false_ha": 4.13,
+   "first_seen_wit": "2026-08-20T14:08:00+09:00",
+   "footprint_ha": 412.83,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-25T13:53:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 2.857325553894043,
+     "p90": 2.857325553894043
+    },
+    "pre_lag": {
+     "p50": 12.15306568145752,
+     "p90": 27.153038024902337
+    }
+   },
+   "n_detections": 41,
+   "n_polygons": 52,
+   "n_scenes": {
+    "post": 12,
+    "pre": 30
+   },
+   "ref_clear_px": 11941,
+   "status": "assessed",
+   "threshold": 0.08672,
+   "windows_utc": {
+    "post": [
+     "2026-08-26",
+     "2026-09-25"
+    ],
+    "pre": [
+     "2026-06-21",
+     "2026-08-20"
+    ]
+   }
+  },
+  {
+   "changed_ha": 12.04,
+   "changed_ha_by_class": {
+    "rangeland": 0.64,
+    "trees": 11.4
+   },
+   "changed_ha_upper": 12.04,
+   "clear_fraction": 1.0,
+   "clear_ha": 219.48,
+   "clear_ha_by_class": {
+    "rangeland": 6.63,
+    "trees": 212.85
+   },
+   "dnbr_p50_changed": 0.1687,
+   "event_id": "E0314",
+   "expected_false_ha": 2.19,
+   "first_seen_wit": "2026-08-21T12:53:00+09:00",
+   "footprint_ha": 219.48,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-23T13:10:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 1.8873929977416992,
+     "p90": 4.887186527252195
+    },
+    "pre_lag": {
+     "p50": 13.100982666015618,
+     "p90": 13.100982666015618
+    }
+   },
+   "n_detections": 9,
+   "n_polygons": 39,
+   "n_scenes": {
+    "post": 28,
+    "pre": 60
+   },
+   "ref_clear_px": 117923,
+   "status": "assessed",
+   "threshold": 0.11131,
+   "windows_utc": {
+    "post": [
+     "2026-08-24",
+     "2026-09-23"
+    ],
+    "pre": [
+     "2026-06-22",
+     "2026-08-21"
+    ]
+   }
+  },
+  {
+   "changed_ha": 211.23,
+   "changed_ha_by_class": {
+    "built": 0.64,
+    "clouds": 1.07,
+    "crops": 0.04,
+    "rangeland": 58.04,
+    "trees": 151.45
+   },
+   "changed_ha_upper": 211.23,
+   "clear_fraction": 1.0,
+   "clear_ha": 679.05,
+   "clear_ha_by_class": {
+    "built": 5.64,
+    "clouds": 2.51,
+    "crops": 0.68,
+    "rangeland": 126.59,
+    "trees": 543.63
+   },
+   "dnbr_p50_changed": 0.1306,
+   "event_id": "E0315",
+   "expected_false_ha": 6.79,
+   "first_seen_wit": "2026-08-21T12:53:00+09:00",
+   "footprint_ha": 679.05,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-22T14:14:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 0.8427427411079407,
+     "p90": 0.8427427411079407
+    },
+    "pre_lag": {
+     "p50": 18.10096168518066,
+     "p90": 33.10097122192382
+    }
+   },
+   "n_detections": 30,
+   "n_polygons": 218,
+   "n_scenes": {
+    "post": 32,
+    "pre": 60
+   },
+   "ref_clear_px": 150885,
+   "status": "assessed",
+   "threshold": 0.08001,
+   "windows_utc": {
+    "post": [
+     "2026-08-23",
+     "2026-09-22"
+    ],
+    "pre": [
+     "2026-06-22",
+     "2026-08-21"
+    ]
+   }
+  },
+  {
+   "changed_ha": 109.87,
+   "changed_ha_by_class": {
+    "rangeland": 5.16,
+    "trees": 104.7
+   },
+   "changed_ha_upper": 109.87,
+   "clear_fraction": 1.0,
+   "clear_ha": 249.94,
+   "clear_ha_by_class": {
+    "rangeland": 5.28,
+    "trees": 244.65
+   },
+   "dnbr_p50_changed": 0.1661,
+   "event_id": "E0316",
+   "expected_false_ha": 2.5,
+   "first_seen_wit": "2026-08-21T12:53:00+09:00",
+   "footprint_ha": 249.94,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-22T13:29:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 0.8739927411079411,
+     "p90": 0.8739927411079411
+    },
+    "pre_lag": {
+     "p50": 3.1009696116305343,
+     "p90": 28.100912209774012
+    }
+   },
+   "n_detections": 12,
+   "n_polygons": 36,
+   "n_scenes": {
+    "post": 32,
+    "pre": 60
+   },
+   "ref_clear_px": 109488,
+   "status": "assessed",
+   "threshold": 0.0721,
+   "windows_utc": {
+    "post": [
+     "2026-08-23",
+     "2026-09-22"
+    ],
+    "pre": [
+     "2026-06-22",
+     "2026-08-21"
+    ]
+   }
+  },
+  {
+   "changed_ha": 238.55,
+   "changed_ha_by_class": {
+    "bare": 0.65,
+    "built": 1.15,
+    "crops": 0.94,
+    "rangeland": 95.54,
+    "trees": 140.27
+   },
+   "changed_ha_upper": 250.07,
+   "clear_fraction": 0.9743,
+   "clear_ha": 436.76,
+   "clear_ha_by_class": {
+    "bare": 0.69,
+    "built": 1.27,
+    "crops": 0.94,
+    "rangeland": 115.38,
+    "trees": 318.48
+   },
+   "dnbr_p50_changed": 0.2014,
+   "event_id": "E0318",
+   "expected_false_ha": 4.37,
+   "first_seen_wit": "2026-08-21T12:53:00+09:00",
+   "footprint_ha": 448.29,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-23T13:55:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 1.856143098943437,
+     "p90": 14.85593807703289
+    },
+    "pre_lag": {
+     "p50": 3.100969594189662,
+     "p90": 18.10091989689604
+    }
+   },
+   "n_detections": 25,
+   "n_polygons": 64,
+   "n_scenes": {
+    "post": 28,
+    "pre": 60
+   },
+   "ref_clear_px": 212099,
+   "status": "assessed",
+   "threshold": 0.11325,
+   "windows_utc": {
+    "post": [
+     "2026-08-24",
+     "2026-09-23"
+    ],
+    "pre": [
+     "2026-06-22",
+     "2026-08-21"
+    ]
+   }
+  },
+  {
+   "changed_ha": 112.81,
+   "changed_ha_by_class": {
+    "clouds": 0.16,
+    "rangeland": 3.5,
+    "trees": 109.16
+   },
+   "changed_ha_upper": 112.81,
+   "clear_fraction": 1.0,
+   "clear_ha": 267.47,
+   "clear_ha_by_class": {
+    "clouds": 0.2,
+    "rangeland": 3.55,
+    "trees": 263.73
+   },
+   "dnbr_p50_changed": 0.1581,
+   "event_id": "E0321",
+   "expected_false_ha": 2.67,
+   "first_seen_wit": "2026-08-21T12:53:00+09:00",
+   "footprint_ha": 267.47,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-22T14:14:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 0.8427427411079407,
+     "p90": 0.8427427411079407
+    },
+    "pre_lag": {
+     "p50": 3.1009676319492283,
+     "p90": 33.10092544555664
+    }
+   },
+   "n_detections": 12,
+   "n_polygons": 59,
+   "n_scenes": {
+    "post": 32,
+    "pre": 60
+   },
+   "ref_clear_px": 173646,
+   "status": "assessed",
+   "threshold": 0.08,
+   "windows_utc": {
+    "post": [
+     "2026-08-23",
+     "2026-09-22"
+    ],
+    "pre": [
+     "2026-06-22",
+     "2026-08-21"
+    ]
+   }
+  },
+  {
+   "changed_ha": 36.45,
+   "changed_ha_by_class": {
+    "rangeland": 1.14,
+    "trees": 35.31
+   },
+   "changed_ha_upper": 36.45,
+   "clear_fraction": 1.0,
+   "clear_ha": 156.19,
+   "clear_ha_by_class": {
+    "rangeland": 1.49,
+    "trees": 154.7
+   },
+   "dnbr_p50_changed": 0.1476,
+   "event_id": "E0322",
+   "expected_false_ha": 1.56,
+   "first_seen_wit": "2026-08-21T12:53:00+09:00",
+   "footprint_ha": 156.19,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-22T13:29:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 0.8739927411079407,
+     "p90": 0.8739927411079407
+    },
+    "pre_lag": {
+     "p50": 28.100912254113428,
+     "p90": 33.10092544555664
+    }
+   },
+   "n_detections": 5,
+   "n_polygons": 52,
+   "n_scenes": {
+    "post": 32,
+    "pre": 60
+   },
+   "ref_clear_px": 69099,
+   "status": "assessed",
+   "threshold": 0.09577,
+   "windows_utc": {
+    "post": [
+     "2026-08-23",
+     "2026-09-22"
+    ],
+    "pre": [
+     "2026-06-22",
+     "2026-08-21"
+    ]
+   }
+  },
+  {
+   "event_id": "E0323",
+   "first_seen_wit": "2026-08-21T12:53:00+09:00",
+   "last_seen_wit": "2026-08-24T13:38:00+09:00",
+   "n_detections": 23,
+   "n_scenes": {
+    "post": 14,
+    "pre": 30
+   },
+   "ref_clear_px": 1304,
+   "status": "no local reference",
+   "windows_utc": {
+    "post": [
+     "2026-08-25",
+     "2026-09-24"
+    ],
+    "pre": [
+     "2026-06-22",
+     "2026-08-21"
+    ]
+   }
+  },
+  {
+   "event_id": "E0339",
+   "first_seen_wit": "2026-08-21T13:29:00+09:00",
+   "last_seen_wit": "2026-08-23T13:55:00+09:00",
+   "n_detections": 12,
+   "n_scenes": {
+    "post": 14,
+    "pre": 30
+   },
+   "ref_clear_px": 624,
+   "status": "no local reference",
+   "windows_utc": {
+    "post": [
+     "2026-08-24",
+     "2026-09-23"
+    ],
+    "pre": [
+     "2026-06-22",
+     "2026-08-21"
+    ]
+   }
+  },
+  {
+   "changed_ha": 39.8,
+   "changed_ha_by_class": {
+    "rangeland": 0.08,
+    "trees": 39.72
+   },
+   "changed_ha_upper": 40.18,
+   "clear_fraction": 0.9977,
+   "clear_ha": 162.74,
+   "clear_ha_by_class": {
+    "rangeland": 0.08,
+    "trees": 162.66
+   },
+   "dnbr_p50_changed": 0.1007,
+   "event_id": "E0340",
+   "expected_false_ha": 1.63,
+   "first_seen_wit": "2026-08-21T13:29:00+09:00",
+   "footprint_ha": 163.12,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-23T13:55:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 4.8559365272521955,
+     "p90": 4.8559365272521955
+    },
+    "pre_lag": {
+     "p50": 13.1259822845459,
+     "p90": 33.12596893310547
+    }
+   },
+   "n_detections": 10,
+   "n_polygons": 38,
+   "n_scenes": {
+    "post": 14,
+    "pre": 30
+   },
+   "ref_clear_px": 17758,
+   "status": "assessed",
+   "threshold": 0.04375,
+   "windows_utc": {
+    "post": [
+     "2026-08-24",
+     "2026-09-23"
+    ],
+    "pre": [
+     "2026-06-22",
+     "2026-08-21"
+    ]
+   }
+  },
+  {
+   "event_id": "E0341",
+   "first_seen_wit": "2026-08-21T13:29:00+09:00",
+   "last_seen_wit": "2026-08-23T13:55:00+09:00",
+   "n_detections": 6,
+   "n_scenes": {
+    "post": 14,
+    "pre": 30
+   },
+   "ref_clear_px": 1823,
+   "status": "no local reference",
+   "windows_utc": {
+    "post": [
+     "2026-08-24",
+     "2026-09-23"
+    ],
+    "pre": [
+     "2026-06-22",
+     "2026-08-21"
+    ]
+   }
+  },
+  {
+   "changed_ha": 34.41,
+   "changed_ha_by_class": {
+    "rangeland": 12.93,
+    "trees": 21.48
+   },
+   "changed_ha_upper": 34.41,
+   "clear_fraction": 1.0,
+   "clear_ha": 134.1,
+   "clear_ha_by_class": {
+    "rangeland": 37.54,
+    "trees": 96.56
+   },
+   "dnbr_p50_changed": 0.1268,
+   "event_id": "E0342",
+   "expected_false_ha": 1.34,
+   "first_seen_wit": "2026-08-21T13:29:00+09:00",
+   "footprint_ha": 134.1,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-22T13:29:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 0.8739927411079407,
+     "p90": 0.8739927411079407
+    },
+    "pre_lag": {
+     "p50": 13.125982284545898,
+     "p90": 18.12596321105957
+    }
+   },
+   "n_detections": 6,
+   "n_polygons": 40,
+   "n_scenes": {
+    "post": 24,
+    "pre": 45
+   },
+   "ref_clear_px": 111760,
+   "status": "assessed",
+   "threshold": 0.0761,
+   "windows_utc": {
+    "post": [
+     "2026-08-23",
+     "2026-09-22"
+    ],
+    "pre": [
+     "2026-06-22",
+     "2026-08-21"
+    ]
+   }
+  },
+  {
+   "changed_ha": 43.93,
+   "changed_ha_by_class": {
+    "built": 0.32,
+    "rangeland": 3.02,
+    "trees": 40.6
+   },
+   "changed_ha_upper": 43.93,
+   "clear_fraction": 1.0,
+   "clear_ha": 132.4,
+   "clear_ha_by_class": {
+    "built": 0.38,
+    "rangeland": 11.95,
+    "trees": 120.06
+   },
+   "dnbr_p50_changed": 0.1221,
+   "event_id": "E0344",
+   "expected_false_ha": 1.32,
+   "first_seen_wit": "2026-08-21T13:29:00+09:00",
+   "footprint_ha": 132.4,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-22T13:29:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 0.8739927411079407,
+     "p90": 0.8739927411079407
+    },
+    "pre_lag": {
+     "p50": 13.125982739043208,
+     "p90": 33.12596893310546
+    }
+   },
+   "n_detections": 5,
+   "n_polygons": 39,
+   "n_scenes": {
+    "post": 32,
+    "pre": 60
+   },
+   "ref_clear_px": 180215,
+   "status": "assessed",
+   "threshold": 0.07607,
+   "windows_utc": {
+    "post": [
+     "2026-08-23",
+     "2026-09-22"
+    ],
+    "pre": [
+     "2026-06-22",
+     "2026-08-21"
+    ]
+   }
+  },
+  {
+   "changed_ha": 45.73,
+   "changed_ha_by_class": {
+    "bare": 0.28,
+    "built": 2.2,
+    "clouds": 0.69,
+    "rangeland": 7.72,
+    "trees": 34.84
+   },
+   "changed_ha_upper": 55.34,
+   "clear_fraction": 0.9465,
+   "clear_ha": 169.9,
+   "clear_ha_by_class": {
+    "bare": 4.16,
+    "built": 4.63,
+    "clouds": 2.51,
+    "rangeland": 32.0,
+    "trees": 126.6
+   },
+   "dnbr_p50_changed": 0.1775,
+   "event_id": "E0361",
+   "expected_false_ha": 1.7,
+   "first_seen_wit": "2026-08-21T13:49:00+09:00",
+   "footprint_ha": 179.52,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-23T13:55:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 4.855936527252195,
+     "p90": 9.855945946380835
+    },
+    "pre_lag": {
+     "p50": 18.139808667435766,
+     "p90": 33.13981628417969
+    }
+   },
+   "n_detections": 7,
+   "n_polygons": 49,
+   "n_scenes": {
+    "post": 14,
+    "pre": 30
+   },
+   "ref_clear_px": 4270,
+   "status": "assessed",
+   "threshold": 0.11487,
+   "windows_utc": {
+    "post": [
+     "2026-08-24",
+     "2026-09-23"
+    ],
+    "pre": [
+     "2026-06-22",
+     "2026-08-21"
+    ]
+   }
+  },
+  {
+   "changed_ha": 82.23,
+   "changed_ha_by_class": {
+    "built": 1.41,
+    "rangeland": 36.97,
+    "trees": 43.84
+   },
+   "changed_ha_upper": 101.62,
+   "clear_fraction": 0.9309,
+   "clear_ha": 261.22,
+   "clear_ha_by_class": {
+    "built": 10.75,
+    "rangeland": 155.49,
+    "trees": 94.99
+   },
+   "dnbr_p50_changed": 0.1816,
+   "event_id": "E0368",
+   "expected_false_ha": 2.61,
+   "first_seen_wit": "2026-08-22T12:34:00+09:00",
+   "footprint_ha": 280.61,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-25T13:53:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 2.857325553894043,
+     "p90": 2.857325553894043
+    },
+    "pre_lag": {
+     "p50": 4.087815284729004,
+     "p90": 14.08778762817383
+    }
+   },
+   "n_detections": 31,
+   "n_polygons": 42,
+   "n_scenes": {
+    "post": 6,
+    "pre": 15
+   },
+   "ref_clear_px": 41121,
+   "status": "assessed",
+   "threshold": 0.13091,
+   "windows_utc": {
+    "post": [
+     "2026-08-26",
+     "2026-09-25"
+    ],
+    "pre": [
+     "2026-06-23",
+     "2026-08-22"
+    ]
+   }
+  },
+  {
+   "changed_ha": 21.85,
+   "changed_ha_by_class": {
+    "bare": 0,
+    "built": 0,
+    "clouds": 0.04,
+    "rangeland": 10.14,
+    "trees": 11.67
+   },
+   "changed_ha_upper": 50.8,
+   "clear_fraction": 0.8548,
+   "clear_ha": 170.5,
+   "clear_ha_by_class": {
+    "bare": 0.16,
+    "built": 2.75,
+    "clouds": 1.06,
+    "rangeland": 64.58,
+    "trees": 101.95
+   },
+   "dnbr_p50_changed": 0.1891,
+   "event_id": "E0371",
+   "expected_false_ha": 1.71,
+   "first_seen_wit": "2026-08-22T13:10:00+09:00",
+   "footprint_ha": 199.46,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-23T13:55:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 9.855946278495999,
+     "p90": 14.85593829447398
+    },
+    "pre_lag": {
+     "p50": 29.112716944110723,
+     "p90": 34.11273268525995
+    }
+   },
+   "n_detections": 8,
+   "n_polygons": 49,
+   "n_scenes": {
+    "post": 14,
+    "pre": 30
+   },
+   "ref_clear_px": 17794,
+   "status": "assessed",
+   "threshold": 0.12299,
+   "windows_utc": {
+    "post": [
+     "2026-08-24",
+     "2026-09-23"
+    ],
+    "pre": [
+     "2026-06-23",
+     "2026-08-22"
+    ]
+   }
+  },
+  {
+   "changed_ha": 62.38,
+   "changed_ha_by_class": {
+    "built": 17.26,
+    "rangeland": 16.27,
+    "trees": 28.85
+   },
+   "changed_ha_upper": 62.38,
+   "clear_fraction": 1.0,
+   "clear_ha": 87.37,
+   "clear_ha_by_class": {
+    "built": 38.46,
+    "rangeland": 18.01,
+    "trees": 30.9
+   },
+   "dnbr_p50_changed": 0.0928,
+   "event_id": "E0373",
+   "expected_false_ha": 0.87,
+   "first_seen_wit": "2026-08-22T13:10:00+09:00",
+   "footprint_ha": 87.37,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-25T13:17:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 2.8823254108428955,
+     "p90": 2.8823254108428955
+    },
+    "pre_lag": {
+     "p50": 14.112788200378418,
+     "p90": 14.112788200378418
+    }
+   },
+   "n_detections": 5,
+   "n_polygons": 21,
+   "n_scenes": {
+    "post": 12,
+    "pre": 30
+   },
+   "ref_clear_px": 7659,
+   "status": "assessed",
+   "threshold": 0.04953,
+   "windows_utc": {
+    "post": [
+     "2026-08-26",
+     "2026-09-25"
+    ],
+    "pre": [
+     "2026-06-23",
+     "2026-08-22"
+    ]
+   }
+  },
+  {
+   "changed_ha": 57.68,
+   "changed_ha_by_class": {
+    "rangeland": 3.26,
+    "trees": 54.42
+   },
+   "changed_ha_upper": 57.68,
+   "clear_fraction": 1.0,
+   "clear_ha": 133.52,
+   "clear_ha_by_class": {
+    "rangeland": 34.18,
+    "trees": 99.34
+   },
+   "dnbr_p50_changed": 0.0478,
+   "event_id": "E0428",
+   "expected_false_ha": 1.34,
+   "first_seen_wit": "2026-08-24T12:51:00+09:00",
+   "footprint_ha": 133.52,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-08-24T14:14:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 3.8427422046661346,
+     "p90": 3.8427422046661346
+    },
+    "pre_lag": {
+     "p50": 1.0996183156967163,
+     "p90": 1.0996183156967163
+    }
+   },
+   "n_detections": 6,
+   "n_polygons": 19,
+   "n_scenes": {
+    "post": 14,
+    "pre": 30
+   },
+   "ref_clear_px": 85269,
+   "status": "assessed",
+   "threshold": 0.01645,
+   "windows_utc": {
+    "post": [
+     "2026-08-25",
+     "2026-09-24"
+    ],
+    "pre": [
+     "2026-06-25",
+     "2026-08-24"
+    ]
+   }
+  },
+  {
+   "changed_ha": 0.0,
+   "changed_ha_by_class": {
+    "crops": 0,
+    "rangeland": 0,
+    "trees": 0
+   },
+   "changed_ha_upper": 48.66,
+   "clear_fraction": 0.5553,
+   "clear_ha": 60.77,
+   "clear_ha_by_class": {
+    "crops": 0.56,
+    "rangeland": 9.66,
+    "trees": 50.55
+   },
+   "dnbr_p50_changed": null,
+   "event_id": "E0462",
+   "expected_false_ha": 0.61,
+   "first_seen_wit": "2026-09-03T12:47:00+09:00",
+   "footprint_ha": 109.43,
+   "land_cover_year": 2025,
+   "last_seen_wit": "2026-09-03T13:49:00+09:00",
+   "look_lag_days": {
+    "post_lag": {
+     "p50": 3.86010479927063,
+     "p90": 3.86010479927063
+    },
+    "pre_lag": {
+     "p50": 1.0968321561813354,
+     "p90": 6.096841335296631
+    }
+   },
+   "n_detections": 6,
+   "n_polygons": 0,
+   "n_scenes": {
+    "post": 4,
+    "pre": 15
+   },
+   "ref_clear_px": 9555,
+   "status": "assessed",
+   "threshold": 0.27104,
+   "windows_utc": {
+    "post": [
+     "2026-09-04",
+     "2026-10-04"
+    ],
+    "pre": [
+     "2026-07-05",
+     "2026-09-03"
+    ]
+   }
+  },
+  {
+   "event_id": "E0473",
+   "first_seen_wit": "2026-09-13T13:17:00+09:00",
+   "last_seen_wit": "2026-09-14T15:40:00+09:00",
+   "n_detections": 7,
+   "n_scenes": {
+    "post": 2,
+    "pre": 30
+   },
+   "ref_clear_px": 0,
+   "status": "no local reference",
+   "windows_utc": {
+    "post": [
+     "2026-09-15",
+     "2026-10-15"
+    ],
+    "pre": [
+     "2026-07-15",
+     "2026-09-13"
+    ]
+   }
+  }
+ ],
+ "caveats": [
+  "Areas are pixels whose dNBR+ exceeds the 99th percentile of never-detected land within the event's reference ring. This controls false alarms on land that never burned; it is not an accuracy, and light burns below the local noise are missed.",
+  "Each pixel uses the clear Sentinel-2 look nearest the event, so dates vary within one event; the look-lag statistics say by how much.",
+  "changed_ha_upper assumes every cloud-gap pixel changed. The true area lies between changed_ha and changed_ha_upper, less expected_false_ha.",
+  "A change like a burn is not proof of burning, and says nothing about why land was burned or who burned it (PLAN.md section 8)."
+ ],
+ "events_registry_version": 1,
+ "not_assessed": [
+  {
+   "event_id": "E0001",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0002",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0003",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0004",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0005",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0006",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0007",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0008",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0009",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0010",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0011",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0012",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0013",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0014",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0015",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0016",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0017",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0018",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0019",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0020",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0021",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0022",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0023",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0024",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0025",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0026",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0027",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0028",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0029",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0030",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0031",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0032",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0033",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0034",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0035",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0036",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0037",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0038",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0039",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0040",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0041",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0042",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0043",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0044",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0045",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0046",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0047",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0048",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0050",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0051",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0052",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0053",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0054",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0056",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0057",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0058",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0059",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0060",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0061",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0062",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0063",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0064",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0065",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0066",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0067",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0068",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0069",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0070",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0071",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0072",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0073",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0074",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0075",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0076",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0077",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0078",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0080",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0081",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0082",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0083",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0084",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0085",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0086",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0087",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0088",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0089",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0090",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0091",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0092",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0093",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0094",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0095",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0096",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0097",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0098",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0099",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0100",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0101",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0102",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0103",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0104",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0105",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0106",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0107",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0108",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0110",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0111",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0112",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0113",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0114",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0115",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0116",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0117",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0118",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0119",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0120",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0121",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0122",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0123",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0124",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0125",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0126",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0127",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0128",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0129",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0130",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0131",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0132",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0133",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0134",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0135",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0136",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0137",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0138",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0140",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0141",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0142",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0143",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0144",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0145",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0146",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0147",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0149",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0150",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0151",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0152",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0153",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0154",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0155",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0156",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0157",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0158",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0159",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0160",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0161",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0162",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0163",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0164",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0165",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0166",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0167",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0168",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0169",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0170",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0171",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0172",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0173",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0174",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0175",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0176",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0177",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0178",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0179",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0180",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0181",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0182",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0183",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0184",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0185",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0186",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0187",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0188",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0189",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0190",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0191",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0192",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0193",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0194",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0195",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0196",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0197",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0198",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0199",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0200",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0201",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0202",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0203",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0204",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0205",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0206",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0207",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0208",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0209",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0210",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0211",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0212",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0213",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0214",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0215",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0216",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0217",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0218",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0219",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0220",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0221",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0222",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0223",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0224",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0225",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0226",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0227",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0228",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0229",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0230",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0231",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0232",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0233",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0234",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0235",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0236",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0237",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0238",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0239",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0240",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0241",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0242",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0243",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0244",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0245",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0246",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0248",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0249",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0250",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0251",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0252",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0253",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0254",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0255",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0256",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0257",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0258",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0259",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0260",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0261",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0262",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0263",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0264",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0265",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0266",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0268",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0269",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0270",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0271",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0272",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0273",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0274",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0275",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0276",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0277",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0278",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0279",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0280",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0281",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0282",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0283",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0284",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0285",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0286",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0287",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0288",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0289",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0290",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0291",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0292",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0293",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0294",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0295",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0296",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0297",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0298",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0299",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0300",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0302",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0303",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0304",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0305",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0306",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0307",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0308",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0309",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0310",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0317",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0319",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0320",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0324",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0325",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0326",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0327",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0328",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0329",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0330",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0331",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0332",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0333",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0334",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0335",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0336",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0337",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0338",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0343",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0345",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0346",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0347",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0348",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0349",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0350",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0351",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0352",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0353",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0354",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0355",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0356",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0357",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0358",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0359",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0360",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0362",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0363",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0364",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0365",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0366",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0367",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0369",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0370",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0372",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0374",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0375",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0376",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0377",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0378",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0379",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0380",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0381",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0382",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0383",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0384",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0385",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0386",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0387",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0388",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0389",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0390",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0391",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0392",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0393",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0394",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0395",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0396",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0397",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0398",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0399",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0400",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0401",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0402",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0403",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0404",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0405",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0406",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0407",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0408",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0409",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0410",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0411",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0412",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0413",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0414",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0415",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0416",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0417",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0418",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0419",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0420",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0421",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0422",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0423",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0424",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0425",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0426",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0427",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0429",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0430",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0431",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0432",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0433",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0434",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0435",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0436",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0437",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0438",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0439",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0440",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0441",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0442",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0443",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0444",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0445",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0446",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0447",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0448",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0449",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0450",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0451",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0452",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0453",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0454",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0455",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0456",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0457",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0458",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0459",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0460",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0461",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0463",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0464",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0465",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0466",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0467",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0468",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0469",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0470",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0471",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0472",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0474",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0475",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0476",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0477",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0478",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0479",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0480",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0481",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0482",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0483",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0484",
+   "reason": "fewer than 5 detections"
+  }
+ ],
+ "params": {
+  "cs_min": 0.6,
+  "far_m": 3000,
+  "footprint_m": 375,
+  "min_detections": 5,
+  "min_ref_px": 2500,
+  "post_days": 30,
+  "pre_days": 60,
+  "ref_quantile": 0.99,
+  "ref_radius_m": 10000,
+  "scale_m": 20
+ },
+ "store_last_date_wit": "2026-09-16"
+}

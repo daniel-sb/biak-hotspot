@@ -27,6 +27,14 @@ data/processed/*
 # previous membership map is read back, so it has to travel with the repo.
 # events.csv is the same records flattened and is regenerated from it.
 !data/processed/events.json
+# Burned-area postmortem (Task 18): written by a by-hand Earth Engine run,
+# so it travels with the repo rather than being regenerated on demand.
+!data/processed/burned_areas.json
+!data/processed/burned_areas.geojson
+# Detection climatology evaluation (Task 17): the fold metrics the baseline
+# is held to. Deterministic from the tracked store, but committed so later
+# models can be compared against the same printed bar.
+!data/processed/baseline_eval.json
 data/cache/
 *.pmtiles
 *.tif
