@@ -702,3 +702,26 @@ years against the most extreme season in the record, and measures how unusual 20
 much as how good the baseline is. This is a climatology of satellite detections: not a
 forecast of fire, not a danger rating, and no statement about why land is burned or who
 burns it (PLAN.md section 8).
+
+---
+
+## F13 - Four more detections, and not one burned-area figure moved (2026-09-20)
+
+`src/events.py` and `src/burned_area_gee.py` re-run against the store to 2026-09-19
+(1,154 detections), where F10 and F11 were built on the store to 2026-09-16 (1,150).
+
+Events: 484 -> 488. The four new detections became four new single-detection events; no
+existing event grew, none merged, none was retired, and the registry stayed at version 1 -
+which is what the membership-overlap identity in F10 exists to do. The count of events at
+or above the burned-area size bar is unchanged at 31.
+
+Burned area: **the assessed records are byte-identical to F11's.** Same 23 events with an
+area and 8 without, the same thresholds, the same 2,414.9 ha. The four new detections fell
+outside every assessed event's footprint and outside every reference ring, so neither the
+thresholds nor the areas could move.
+
+F11's figures therefore stand as published. Its provenance line names the 2026-09-16 store,
+and the tracked file now names 2026-09-19; the numbers in between are the same ones.
+
+Nothing here is a new measurement. It is recorded because "we re-ran it and nothing
+changed" is only worth anything if it is written down the same way a change would be.

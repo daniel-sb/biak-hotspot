@@ -13700,6 +13700,118 @@
     "N"
    ],
    "singleton": true
+  },
+  {
+   "centroid_lat": -1.12876,
+   "centroid_lon": 136.08365,
+   "desa": "Maryendi",
+   "distrik": "Samofa",
+   "duration_hours": 0.0,
+   "event_id": "E0485",
+   "first_lat": -1.12876,
+   "first_lon": 136.08365,
+   "first_seen_utc": "2026-09-17T04:23:00Z",
+   "first_seen_wit": "2026-09-17T13:23:00+09:00",
+   "frp_max": 3.06,
+   "frp_sum": 3.06,
+   "hull_area_ha": null,
+   "last_seen_utc": "2026-09-17T04:23:00Z",
+   "last_seen_wit": "2026-09-17T13:23:00+09:00",
+   "n_detections": 1,
+   "n_frp_missing": 0,
+   "n_overpasses": 1,
+   "on_land_share": 1.0,
+   "recurrent_share": 0.0,
+   "road_class": "residential",
+   "road_m": 719.4,
+   "satellites": [
+    "N"
+   ],
+   "singleton": true
+  },
+  {
+   "centroid_lat": -1.10616,
+   "centroid_lon": 135.93129,
+   "desa": "Sunyar",
+   "distrik": "Yendidori",
+   "duration_hours": 0.0,
+   "event_id": "E0486",
+   "first_lat": -1.10616,
+   "first_lon": 135.93129,
+   "first_seen_utc": "2026-09-17T04:44:00Z",
+   "first_seen_wit": "2026-09-17T13:44:00+09:00",
+   "frp_max": 2.98,
+   "frp_sum": 2.98,
+   "hull_area_ha": null,
+   "last_seen_utc": "2026-09-17T04:44:00Z",
+   "last_seen_wit": "2026-09-17T13:44:00+09:00",
+   "n_detections": 1,
+   "n_frp_missing": 0,
+   "n_overpasses": 1,
+   "on_land_share": 1.0,
+   "recurrent_share": 0.0,
+   "road_class": "tertiary",
+   "road_m": 5.2,
+   "satellites": [
+    "N20"
+   ],
+   "singleton": true
+  },
+  {
+   "centroid_lat": -1.13565,
+   "centroid_lon": 135.98755,
+   "desa": "Adoki",
+   "distrik": "Yendidori",
+   "duration_hours": 0.0,
+   "event_id": "E0487",
+   "first_lat": -1.13565,
+   "first_lon": 135.98755,
+   "first_seen_utc": "2026-09-17T16:28:00Z",
+   "first_seen_wit": "2026-09-18T01:28:00+09:00",
+   "frp_max": 0.61,
+   "frp_sum": 0.61,
+   "hull_area_ha": null,
+   "last_seen_utc": "2026-09-17T16:28:00Z",
+   "last_seen_wit": "2026-09-18T01:28:00+09:00",
+   "n_detections": 1,
+   "n_frp_missing": 0,
+   "n_overpasses": 1,
+   "on_land_share": 1.0,
+   "recurrent_share": 0.0,
+   "road_class": "unclassified",
+   "road_m": 660.8,
+   "satellites": [
+    "N21"
+   ],
+   "singleton": true
+  },
+  {
+   "centroid_lat": -1.09963,
+   "centroid_lon": 135.88991,
+   "desa": "Dousi",
+   "distrik": "Biak Barat",
+   "duration_hours": 0.0,
+   "event_id": "E0488",
+   "first_lat": -1.09963,
+   "first_lon": 135.88991,
+   "first_seen_utc": "2026-09-19T04:06:00Z",
+   "first_seen_wit": "2026-09-19T13:06:00+09:00",
+   "frp_max": 7.11,
+   "frp_sum": 7.11,
+   "hull_area_ha": null,
+   "last_seen_utc": "2026-09-19T04:06:00Z",
+   "last_seen_wit": "2026-09-19T13:06:00+09:00",
+   "n_detections": 1,
+   "n_frp_missing": 0,
+   "n_overpasses": 1,
+   "on_land_share": 1.0,
+   "recurrent_share": 0.0,
+   "road_class": "tertiary",
+   "road_m": 497.5,
+   "satellites": [
+    "N20"
+   ],
+   "singleton": true
   }
  ],
  "membership": [
@@ -13850,6 +13962,10 @@
   {
    "detection_id": "0a313bbb47825c1a17a9ee693b2c5bc1f6c7bd77",
    "event_id": "E0080"
+  },
+  {
+   "detection_id": "0a6317201007bd73349044aa5b1019cef34506f9",
+   "event_id": "E0485"
   },
   {
    "detection_id": "0a83e5f738534fe6383292ef19244c5712816787",
@@ -16172,6 +16288,10 @@
    "event_id": "E0097"
   },
   {
+   "detection_id": "8606da529d39ae1f0a3d4883c41f0778499ad6ba",
+   "event_id": "E0487"
+  },
+  {
    "detection_id": "862a806483bb99ca120b2205dc00d524a32eda5b",
    "event_id": "E0301"
   },
@@ -17046,6 +17166,10 @@
   {
    "detection_id": "b6f36dfefd84c84c99c6bf845e092fadd8c4c6bf",
    "event_id": "E0311"
+  },
+  {
+   "detection_id": "b74862744d0d198eb4f215acca6fdfed4b896c17",
+   "event_id": "E0488"
   },
   {
    "detection_id": "b813f70dedc48242647c64e606286c2401417288",
@@ -18236,6 +18360,10 @@
    "event_id": "E0055"
   },
   {
+   "detection_id": "fbf8988eae6a42ff6ebae3515309fc2600c14534",
+   "event_id": "E0486"
+  },
+  {
    "detection_id": "fc0cb3adaf718599bd8d768ecb2947b477dba821",
    "event_id": "E0353"
   },
@@ -18304,7 +18432,7 @@
    "event_id": "E0425"
   }
  ],
- "next_number": 485,
+ "next_number": 489,
  "notes": [],
  "params": {
   "eps_hours": 30,
@@ -18313,6 +18441,6 @@
  },
  "registry_version": 1,
  "retired": {},
- "store_last_date_wit": "2026-09-16",
- "store_rows": 1150
+ "store_last_date_wit": "2026-09-19",
+ "store_rows": 1154
 }

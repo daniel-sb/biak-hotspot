@@ -3216,6 +3216,22 @@
   {
    "event_id": "E0484",
    "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0485",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0486",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0487",
+   "reason": "fewer than 5 detections"
+  },
+  {
+   "event_id": "E0488",
+   "reason": "fewer than 5 detections"
   }
  ],
  "params": {
@@ -3230,5 +3246,5 @@
   "ref_radius_m": 10000,
   "scale_m": 20
  },
- "store_last_date_wit": "2026-09-16"
+ "store_last_date_wit": "2026-09-19"
 }
