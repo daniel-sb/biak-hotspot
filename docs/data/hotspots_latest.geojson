@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
- "generated_utc": "2026-09-19T18:40:06Z",
- "covered_wit_date": "2026-09-19",
+ "generated_utc": "2026-09-20T18:55:20Z",
+ "covered_wit_date": "2026-09-20",
  "features": [
   {
    "type": "Feature",
@@ -437,39 +437,6 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     135.89639,
-     -1.15293
-    ]
-   },
-   "properties": {
-    "detection_id": "73bb131bb41a95a1d99a859fbae2c5af6396e389",
-    "bright_ti4": "331.06",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-09-13",
-    "acq_time": "417",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "l",
-    "version": "2.0NRT",
-    "bright_ti5": "303.81",
-    "frp": 3.1,
-    "daynight": "D",
-    "datetime_utc": "2026-09-13T04:17:00+00:00",
-    "datetime_wit": "2026-09-13T13:17:00+09:00",
-    "date_wit": "2026-09-13",
-    "desa": "Waroi",
-    "distrik": "Yendidori",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
      135.94856,
      -1.10379
     ]
@@ -602,28 +569,28 @@
    "geometry": {
     "type": "Point",
     "coordinates": [
-     135.91731,
-     -1.10622
+     135.89214,
+     -1.15688
     ]
    },
    "properties": {
-    "detection_id": "a7a8561abbe3f77a40cab8e3d30ffd0314fdeca3",
-    "bright_ti4": "326.97",
-    "scan": "0.45",
-    "track": "0.63",
-    "acq_date": "2026-09-13",
-    "acq_time": "501",
+    "detection_id": "a09945b76015ef6e2e0855018c37f51f31a9a96d",
+    "bright_ti4": "335.29",
+    "scan": "0.42",
+    "track": "0.38",
+    "acq_date": "2026-09-20",
+    "acq_time": "432",
     "satellite": "N21",
     "instrument": "VIIRS",
-    "confidence": "l",
+    "confidence": "n",
     "version": "2.0NRT",
-    "bright_ti5": "299.11",
-    "frp": 4.99,
+    "bright_ti5": "282.47",
+    "frp": 4.06,
     "daynight": "D",
-    "datetime_utc": "2026-09-13T05:01:00+00:00",
-    "datetime_wit": "2026-09-13T14:01:00+09:00",
-    "date_wit": "2026-09-13",
-    "desa": "Urfu",
+    "datetime_utc": "2026-09-20T04:32:00+00:00",
+    "datetime_wit": "2026-09-20T13:32:00+09:00",
+    "date_wit": "2026-09-20",
+    "desa": "Waroi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
     "on_land": true,
