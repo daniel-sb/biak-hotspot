@@ -124,3 +124,36 @@ events:
     # on 4 September 13:53 WIT and undetected that day.
     - {name: anjareuw, lat: -1.1723, lon: 136.1353, radius_m: 1000,
        from: "2026-09-03", to: "2026-09-04"}
+
+# Burned area per event (Task 18; PLAN.md Phase 4 items 1-3). Sentinel-2
+# dNBR+ against a false-alarm-controlled local threshold. Run by hand with
+# Earth Engine: python src/burned_area_gee.py <project>.
+burned_area:
+  # Events this small are one or two overpasses; below five detections the
+  # footprint is a few pixels and the area a coin toss (Task 18: 31 events
+  # at >= 5 when written).
+  min_detections: 5
+  # One VIIRS pixel around each member detection; also absorbs its
+  # geolocation jitter. Burning outside it is not attributed to the event.
+  footprint_m: 375
+  # Look windows. Pre ends the day before first_seen; post starts the day
+  # after last_seen. 30 days of post is a trade: shorter leaves more cloud
+  # gap, longer lets tropical regrowth erase the signal. The look-lag
+  # statistics in the output show what each event actually got.
+  pre_days: 60
+  post_days: 30
+  # Cloud Score+ cs_cdf: probability a pixel is clear. 0.6 is the value the
+  # other Sentinel-2 composites here use.
+  cs_min: 0.6
+  # Reference ring for the threshold: land within ref_radius_m of the event
+  # centroid and farther than far_m from every detection ever stored - F7's
+  # "far" stratum, land never seen hot.
+  ref_radius_m: 10000
+  far_m: 3000
+  # The threshold is this quantile of dNBR+ on the ring: 1% of never-
+  # detected land nearby exceeds it. False-alarm-controlled, not calibrated.
+  ref_quantile: 0.99
+  # 2,500 clear 20 m pixels is 100 ha. Below that the 99th percentile rests
+  # on 25 pixels and the event gets no threshold at all.
+  min_ref_px: 2500
+  scale_m: 20
