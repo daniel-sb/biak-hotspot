@@ -1,0 +1,168 @@
+{
+ "caveats": [
+  "A day is observed when every constellation instrument was successfully fetched for it. Cloud is not detected: a cloudy observed day counts as a day without detection.",
+  "The constellation excludes NOAA-21, which contributes nothing before 16 February 2024, so that the baseline sees each year through the same satellites.",
+  "Three years of history is the minimum PLAN.md Phase 5 names. Probabilities are pooled over a 31-day window and remain small-sample estimates.",
+  "A climatology fitted on 2023-2025 under-predicts August 2026 by construction; that fold measures how unusual 2026 was as much as how good the baseline is.",
+  "This is a climatology of satellite detections. It is not a forecast of fire, not a fire danger rating, and it says nothing about why land is burned or who burns it (PLAN.md section 8)."
+ ],
+ "excluded": {
+  "detections_outside_land_cells": 0,
+  "outside_constellation_by_satellite": {
+   "N21": 285
+  },
+  "positive_cell_days_lost": 150
+ },
+ "folds": {
+  "2023": {
+   "average_precision": 0.00836679,
+   "base_rate": 0.00014291,
+   "brier": 0.00017983,
+   "brier_ref": 0.00017894,
+   "brier_skill": -0.00498579,
+   "n_cell_days": 419070,
+   "n_positive": 75,
+   "observed_days": 122
+  },
+  "2024": {
+   "average_precision": 0.01251427,
+   "base_rate": 0.00020019,
+   "brier": 4.149e-05,
+   "brier_ref": 3.82e-05,
+   "brier_skill": -0.08596112,
+   "n_cell_days": 1257210,
+   "n_positive": 48,
+   "observed_days": 366
+  },
+  "2025": {
+   "average_precision": 0.00828212,
+   "base_rate": 0.0002011,
+   "brier": 3.966e-05,
+   "brier_ref": 3.592e-05,
+   "brier_skill": -0.10413437,
+   "n_cell_days": 1253775,
+   "n_positive": 45,
+   "observed_days": 365
+  },
+  "2026": {
+   "average_precision": 0.00198013,
+   "base_rate": 5.734e-05,
+   "brier": 0.00044148,
+   "brier_ref": 0.00044169,
+   "brier_skill": 0.00047297,
+   "n_cell_days": 889665,
+   "n_positive": 393,
+   "observed_days": 259
+  }
+ },
+ "grid": {
+  "cell_deg": 0.008983111749910169,
+  "cells_total": 74200,
+  "land_cells": 3435
+ },
+ "observed_days": {
+  "per_year": {
+   "2023": 122,
+   "2024": 366,
+   "2025": 365,
+   "2026": 259
+  },
+  "total": 1112,
+  "unobserved": []
+ },
+ "parameters": {
+  "constellation": {
+   "Aqua": [
+    "MODIS_NRT",
+    "MODIS_SP"
+   ],
+   "N": [
+    "VIIRS_SNPP_NRT",
+    "VIIRS_SNPP_SP"
+   ],
+   "N20": [
+    "VIIRS_NOAA20_NRT",
+    "VIIRS_NOAA20_SP"
+   ],
+   "Terra": [
+    "MODIS_NRT",
+    "MODIS_SP"
+   ]
+  },
+  "doy_half_window": 15,
+  "grid_m": 1000,
+  "instrument_groups": {
+   "MODIS": [
+    "MODIS_NRT",
+    "MODIS_SP"
+   ],
+   "NOAA-20": [
+    "VIIRS_NOAA20_NRT",
+    "VIIRS_NOAA20_SP"
+   ],
+   "S-NPP": [
+    "VIIRS_SNPP_NRT",
+    "VIIRS_SNPP_SP"
+   ]
+  },
+  "reliability_bins": [
+   0,
+   0.0001,
+   0.001,
+   0.01,
+   0.05,
+   0.1,
+   0.2,
+   1
+  ]
+ },
+ "reliability": [
+  {
+   "bin": "[0, 0.0001)",
+   "mean_p": 0.0,
+   "n": 3791973,
+   "observed_rate": 0.00012975
+  },
+  {
+   "bin": "[0.0001, 0.001)",
+   "mean_p": 0.0,
+   "n": 0,
+   "observed_rate": 0.0
+  },
+  {
+   "bin": "[0.001, 0.01)",
+   "mean_p": 0.0,
+   "n": 0,
+   "observed_rate": 0.0
+  },
+  {
+   "bin": "[0.01, 0.05)",
+   "mean_p": 0.01821817,
+   "n": 26889,
+   "observed_rate": 0.00156198
+  },
+  {
+   "bin": "[0.05, 0.1)",
+   "mean_p": 0.07345986,
+   "n": 772,
+   "observed_rate": 0.02979275
+  },
+  {
+   "bin": "[0.1, 0.2)",
+   "mean_p": 0.11876831,
+   "n": 86,
+   "observed_rate": 0.04651163
+  },
+  {
+   "bin": "[0.2, 1]",
+   "mean_p": 0.0,
+   "n": 0,
+   "observed_rate": 0.0
+  }
+ ],
+ "store": {
+  "detections": 1150,
+  "first_date_wit": "2023-09-01",
+  "last_date_wit": "2026-09-16"
+ }
+}

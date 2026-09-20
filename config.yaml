@@ -55,6 +55,36 @@ recurrence:
   min_span_days: 90
   min_history_days: 365
 
+# Detection climatology baseline (Phase 5 step 2, Task 17): the
+# probability of a detection per land grid cell per day-of-year, fitted on
+# training years and scored out of sample. Any statistical model must beat
+# it to justify its existence (PLAN.md 5).
+baseline:
+  # Cell side in metres, anchored at the south-west corner of
+  # aoi_bbox_wsen. 1 km is coarse next to a 375 m VIIRS pixel, but three
+  # years of history is thin: finer cells drive the per-cell-day positive
+  # rate toward zero and the climatology toward all-zeros.
+  grid_m: 1000
+  # Half-width of the day-of-year window, in days. Three years give three
+  # samples of any single calendar day, which is not a probability, so the
+  # window pools the 31 neighbouring days of the same season. Widening it
+  # further starts mixing the wet season in.
+  doy_half_window: 15
+  # Reliability bins. Detection rates here sit far below 1%, so the bins
+  # are dense near zero (Phase 5 asks for a reliability curve; this table
+  # is its data).
+  reliability_bins: [0, 0.0001, 0.001, 0.01, 0.05, 0.1, 0.2, 1]
+  # The fixed constellation the baseline sees every year through. NOAA-21
+  # contributes nothing before 2024-02-16 (manifest marks its source
+  # unavailable 2023-08-27..2024-01-16; first stored detection 2024-02-16),
+  # so counting it would read an extra satellite as extra burning. Keys
+  # are the store's satellite values; values are manifest source names.
+  constellation:
+    N: [VIIRS_SNPP_NRT, VIIRS_SNPP_SP]
+    N20: [VIIRS_NOAA20_NRT, VIIRS_NOAA20_SP]
+    Terra: [MODIS_NRT, MODIS_SP]
+    Aqua: [MODIS_NRT, MODIS_SP]
+
 output_paths:
   raw_dir: data/raw
   processed: data/processed/detections.parquet
