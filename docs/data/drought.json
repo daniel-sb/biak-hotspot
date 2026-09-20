@@ -401,6 +401,12 @@
    "precip_mm": 115.6,
    "et_mm": 139.6,
    "p_minus_et_mm": -24.0
+  },
+  {
+   "month": "2026-08",
+   "precip_mm": 74.8,
+   "et_mm": 131.2,
+   "p_minus_et_mm": -56.4
   }
  ],
  "climatology": {
@@ -466,20 +472,20 @@
   }
  },
  "current": {
-  "month": "2026-07",
-  "precip_mm": 115.6,
-  "et_mm": 139.6,
-  "p_minus_et_mm": -24.0,
-  "climatology_mean_mm": 245.9,
-  "z": -1.53,
-  "rank_driest": 4,
+  "month": "2026-08",
+  "precip_mm": 74.8,
+  "et_mm": 131.2,
+  "p_minus_et_mm": -56.4,
+  "climatology_mean_mm": 215.1,
+  "z": -1.86,
+  "rank_driest": 3,
   "rank_of": 46
  },
  "coverage": {
-  "chirps_last_date": "2026-07-31",
-  "chirps_last_complete_month": "2026-07",
-  "et_last_date": "2026-08-13",
-  "generated_utc": "2026-09-01T05:00:30Z"
+  "chirps_last_date": "2026-08-31",
+  "chirps_last_complete_month": "2026-08",
+  "et_last_date": "2026-08-29",
+  "generated_utc": "2026-09-20T13:37:03Z"
  },
  "sources": {
   "precipitation": "UCSB-CHG/CHIRPS/DAILY",
