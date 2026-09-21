@@ -42,6 +42,10 @@ data/raw/metar/*
 # is held to. Deterministic from the tracked store, but committed so later
 # models can be compared against the same printed bar.
 !data/processed/baseline_eval.json
+# Onset brackets (Task 20): deterministic from the raw band-segments and
+# the tracked events file, so the brackets any later reading relies on can
+# be re-checked from the committed JSON.
+!data/processed/himawari_onset.json
 data/cache/
 *.pmtiles
 *.tif

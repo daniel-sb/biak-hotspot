@@ -226,17 +226,24 @@ def slot_key(slot_utc: datetime, band: str, segment: int) -> str:
 def fetch_slot_file(slot_utc: datetime, band: str, segment: int,
                     raw_dir: Path) -> Path | None:
     """Download one band-segment into raw_dir (persist before parsing).
-    Returns the local path, or None if the slot does not exist upstream
-    (latency 10-16 min; slots at the window edge can legitimately be absent)."""
+    Returns the local path, or None when the slot is genuinely absent
+    upstream (HTTP 404 - latency 10-16 min; slots at a window edge can
+    legitimately not exist yet). Any OTHER non-200, or a 200 body under
+    10,000 bytes, RAISES naming the key and the status: a throttled or
+    failed request is not an empty slot (AGENTS never-2). requests
+    exceptions propagate as before."""
     key = slot_key(slot_utc, band, segment)
     dest = raw_dir / key.split("/")[-1]
     if dest.exists():
         return dest
     r = requests.get(BUCKET + "/" + key, timeout=300)
-    if r.status_code != 200 or len(r.content) < 10000:
-        log.warning("missing/unusable upstream: %s (HTTP %s, %s bytes)",
-                    key, r.status_code, len(r.content))
+    if r.status_code == 404:
+        log.warning("slot absent upstream (404): %s", key)
         return None
+    if r.status_code != 200 or len(r.content) < 10000:
+        raise RuntimeError(
+            f"failed request for {key}: HTTP {r.status_code}, "
+            f"{len(r.content)} bytes")
     dest.write_bytes(r.content)
     return dest
 

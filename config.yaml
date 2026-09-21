@@ -112,6 +112,42 @@ metar:
   # reporting enough to say anything: a data gap, not a negative.
   min_coverage: 0.5
 
+# Himawari-9 onset brackets (Task 20; PLAN.md Phase 4 item 4, PLAN.md 13).
+# The last slot at which an event's pixels were clear and quiet, and the
+# first slot at which they were anomalously hot: when heat first rose above
+# a 2 km sensor's detection floor. A bracket bounds when heat was present;
+# it is never a start time, and it says nothing about why or by whom
+# (PLAN.md section 8).
+himawari_onset:
+  # Events below this member count hold too few VIIRS pixels to bracket at
+  # 2 km (the burned-area bar of Task 18).
+  min_detections: 5
+  # Reaching back 12 h lands near the previous VIIRS night overpass, so
+  # the bracket can close on a quiet slot from the previous dark pass.
+  lookback_hours: 12
+  # Slots at and just after the VIIRS look are the validation: if Himawari
+  # does not flag the event there, it cannot time it either.
+  after_minutes: 30
+  # Full AHI scan rate; the evening product runs 30 min, the bracket wants
+  # every look.
+  cadence_minutes: 10
+  # Below this B14 an event pixel counts as obscured (cloud tops are
+  # cold). Basis: over the 727 land pixels of the 2026-08-22 evening run,
+  # night B14 had median 294.9 K, 5th percentile 286.7 K, and all 37
+  # flagged pixels sat above 299 K. Provisional, and NOT a cloud mask:
+  # thin cirrus passes it.
+  cloud_bt14_k: 285
+  # Below this share of usable slots (not missing upstream) a window
+  # cannot bracket anything and gets no bracket.
+  min_slot_share: 0.8
+  # Inclusive WIT days of the burning peak for the AOI-wide diurnal cycle.
+  diurnal_days: ["2026-08-21", "2026-08-24"]
+  # The F10 field case: E0463's ground was photographed actively smoking
+  # on 4 September 2026 at 13:53 WIT with no detection that day. The
+  # question is only whether its pixels were obscured around the VIIRS
+  # looks of that day.
+  named_case: {event_id: E0463, wit_day: "2026-09-04"}
+
 output_paths:
   raw_dir: data/raw
   processed: data/processed/detections.parquet
