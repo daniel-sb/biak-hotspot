@@ -97,6 +97,18 @@ def test_no_output_field_names_a_cause():
     assert not [w for w in banned if w in text]
 
 
+def test_tmf_is_the_year_before_capped_at_the_latest_map():
+    assert ba.tmf_year("2026-08-19T12:47:00+09:00", 2024) == 2024
+    assert ba.tmf_year("2025-03-14T00:56:00+09:00", 2024) == 2024
+    assert ba.tmf_year("2024-11-01T01:14:00+09:00", 2024) == 2023
+
+
+def test_prior_loss_excludes_the_events_own_year():
+    # lossyear code n = loss in 2000 + n
+    assert ba.prior_loss_max_code("2026-08-19T12:47:00+09:00") == 25
+    assert ba.prior_loss_max_code("2025-05-06T01:03:00+09:00") == 24
+
+
 if __name__ == "__main__":
     for name, fn in list(globals().items()):
         if name.startswith("test_"):

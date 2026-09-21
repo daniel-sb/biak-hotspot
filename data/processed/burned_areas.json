@@ -6,6 +6,14 @@
     "rangeland": 60.94,
     "trees": 91.77
    },
+   "changed_ha_by_tmf": {
+    "deforested": 53.9,
+    "degraded": 10.92,
+    "other": 83.24,
+    "regrowth": 2.34,
+    "undisturbed": 2.3
+   },
+   "changed_ha_prior_loss": 25.44,
    "changed_ha_upper": 152.71,
    "clear_fraction": 1.0,
    "clear_ha": 232.52,
@@ -13,6 +21,14 @@
     "rangeland": 70.99,
     "trees": 161.53
    },
+   "clear_ha_by_tmf": {
+    "deforested": 64.04,
+    "degraded": 28.95,
+    "other": 94.99,
+    "regrowth": 14.81,
+    "undisturbed": 29.71
+   },
+   "clear_ha_prior_loss": 35.84,
    "dnbr_p50_changed": 0.4589,
    "event_id": "E0049",
    "expected_false_ha": 2.33,
@@ -39,6 +55,7 @@
    "ref_clear_px": 7641,
    "status": "assessed",
    "threshold": 0.08381,
+   "tmf_year": 2022,
    "windows_utc": {
     "post": [
      "2023-11-21",
@@ -58,6 +75,14 @@
     "rangeland": 3.83,
     "trees": 74.05
    },
+   "changed_ha_by_tmf": {
+    "deforested": 8.84,
+    "degraded": 0.63,
+    "other": 66.46,
+    "regrowth": 1.55,
+    "undisturbed": 0.4
+   },
+   "changed_ha_prior_loss": 3.6,
    "changed_ha_upper": 81.06,
    "clear_fraction": 0.9863,
    "clear_ha": 228.12,
@@ -67,6 +92,14 @@
     "rangeland": 30.09,
     "trees": 196.0
    },
+   "clear_ha_by_tmf": {
+    "deforested": 20.7,
+    "degraded": 5.11,
+    "other": 161.46,
+    "regrowth": 38.85,
+    "undisturbed": 2.0
+   },
+   "clear_ha_prior_loss": 30.67,
    "dnbr_p50_changed": 0.2528,
    "event_id": "E0055",
    "expected_false_ha": 2.28,
@@ -93,6 +126,7 @@
    "ref_clear_px": 30176,
    "status": "assessed",
    "threshold": 0.10358,
+   "tmf_year": 2022,
    "windows_utc": {
     "post": [
      "2023-11-22",
@@ -112,6 +146,15 @@
     "trees": 0,
     "water": 0
    },
+   "changed_ha_by_tmf": {
+    "deforested": 0,
+    "degraded": 0,
+    "other": 4.93,
+    "regrowth": 0.04,
+    "undisturbed": 0,
+    "water": 0
+   },
+   "changed_ha_prior_loss": 0.28,
    "changed_ha_upper": 5.28,
    "clear_fraction": 0.9956,
    "clear_ha": 71.25,
@@ -121,6 +164,15 @@
     "trees": 24.39,
     "water": 0.7
    },
+   "clear_ha_by_tmf": {
+    "deforested": 5.14,
+    "degraded": 6.36,
+    "other": 31.77,
+    "regrowth": 8.3,
+    "undisturbed": 19.39,
+    "water": 0.28
+   },
+   "clear_ha_prior_loss": 5.71,
    "dnbr_p50_changed": 0.2115,
    "event_id": "E0079",
    "expected_false_ha": 0.71,
@@ -147,6 +199,7 @@
    "ref_clear_px": 2771,
    "status": "assessed",
    "threshold": 0.1683,
+   "tmf_year": 2023,
    "windows_utc": {
     "post": [
      "2024-06-08",
@@ -233,6 +286,15 @@
     "trees": 1.34,
     "water": 0.16
    },
+   "changed_ha_by_tmf": {
+    "deforested": 0.6,
+    "degraded": 0.72,
+    "other": 10.13,
+    "regrowth": 1.45,
+    "undisturbed": 1.26,
+    "water": 0.12
+   },
+   "changed_ha_prior_loss": 1.31,
    "changed_ha_upper": 14.27,
    "clear_fraction": 1.0,
    "clear_ha": 82.62,
@@ -243,6 +305,15 @@
     "trees": 22.13,
     "water": 1.39
    },
+   "clear_ha_by_tmf": {
+    "deforested": 5.57,
+    "degraded": 7.34,
+    "other": 41.12,
+    "regrowth": 9.89,
+    "undisturbed": 18.13,
+    "water": 0.56
+   },
+   "clear_ha_prior_loss": 6.94,
    "dnbr_p50_changed": 0.0856,
    "event_id": "E0247",
    "expected_false_ha": 0.83,
@@ -269,6 +340,7 @@
    "ref_clear_px": 2583,
    "status": "assessed",
    "threshold": 0.04781,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-07-04",
@@ -311,6 +383,14 @@
     "rangeland": 115.09,
     "trees": 385.28
    },
+   "changed_ha_by_tmf": {
+    "deforested": 29.83,
+    "degraded": 26.94,
+    "other": 227.62,
+    "regrowth": 194.16,
+    "undisturbed": 24.3
+   },
+   "changed_ha_prior_loss": 61.32,
    "changed_ha_upper": 502.85,
    "clear_fraction": 1.0,
    "clear_ha": 924.39,
@@ -321,6 +401,14 @@
     "rangeland": 229.48,
     "trees": 691.25
    },
+   "clear_ha_by_tmf": {
+    "deforested": 55.74,
+    "degraded": 42.03,
+    "other": 336.29,
+    "regrowth": 232.0,
+    "undisturbed": 258.33
+   },
+   "clear_ha_prior_loss": 127.0,
    "dnbr_p50_changed": 0.249,
    "event_id": "E0301",
    "expected_false_ha": 9.24,
@@ -347,6 +435,7 @@
    "ref_clear_px": 21547,
    "status": "assessed",
    "threshold": 0.11852,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-26",
@@ -366,6 +455,14 @@
     "rangeland": 22.25,
     "trees": 207.18
    },
+   "changed_ha_by_tmf": {
+    "deforested": 24.09,
+    "degraded": 43.83,
+    "other": 32.4,
+    "regrowth": 38.22,
+    "undisturbed": 99.5
+   },
+   "changed_ha_prior_loss": 27.02,
    "changed_ha_upper": 282.18,
    "clear_fraction": 0.887,
    "clear_ha": 346.46,
@@ -375,6 +472,14 @@
     "rangeland": 32.71,
     "trees": 303.66
    },
+   "clear_ha_by_tmf": {
+    "deforested": 32.14,
+    "degraded": 66.21,
+    "other": 58.01,
+    "regrowth": 56.2,
+    "undisturbed": 133.9
+   },
+   "clear_ha_prior_loss": 41.18,
    "dnbr_p50_changed": 0.1201,
    "event_id": "E0311",
    "expected_false_ha": 3.46,
@@ -401,6 +506,7 @@
    "ref_clear_px": 71427,
    "status": "assessed",
    "threshold": 0.04481,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-24",
@@ -421,6 +527,14 @@
     "rangeland": 32.51,
     "trees": 45.32
    },
+   "changed_ha_by_tmf": {
+    "deforested": 13.17,
+    "degraded": 9.06,
+    "other": 30.5,
+    "regrowth": 15.27,
+    "undisturbed": 11.27
+   },
+   "changed_ha_prior_loss": 19.29,
    "changed_ha_upper": 305.3,
    "clear_fraction": 0.5528,
    "clear_ha": 279.44,
@@ -431,6 +545,14 @@
     "rangeland": 90.56,
     "trees": 184.36
    },
+   "clear_ha_by_tmf": {
+    "deforested": 30.23,
+    "degraded": 36.65,
+    "other": 89.79,
+    "regrowth": 34.34,
+    "undisturbed": 88.44
+   },
+   "clear_ha_prior_loss": 41.31,
    "dnbr_p50_changed": 0.1544,
    "event_id": "E0312",
    "expected_false_ha": 2.79,
@@ -457,6 +579,7 @@
    "ref_clear_px": 137135,
    "status": "assessed",
    "threshold": 0.06046,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-24",
@@ -477,6 +600,15 @@
     "trees": 173.77,
     "water": 0.12
    },
+   "changed_ha_by_tmf": {
+    "deforested": 37.33,
+    "degraded": 45.17,
+    "other": 40.64,
+    "regrowth": 24.78,
+    "undisturbed": 88.05,
+    "water": 0
+   },
+   "changed_ha_prior_loss": 47.1,
    "changed_ha_upper": 235.97,
    "clear_fraction": 1.0,
    "clear_ha": 412.83,
@@ -487,6 +619,15 @@
     "trees": 235.28,
     "water": 0.86
    },
+   "clear_ha_by_tmf": {
+    "deforested": 67.01,
+    "degraded": 56.85,
+    "other": 119.48,
+    "regrowth": 30.79,
+    "undisturbed": 138.34,
+    "water": 0.36
+   },
+   "clear_ha_prior_loss": 102.39,
    "dnbr_p50_changed": 0.1835,
    "event_id": "E0313",
    "expected_false_ha": 4.13,
@@ -513,6 +654,7 @@
    "ref_clear_px": 11941,
    "status": "assessed",
    "threshold": 0.08672,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-26",
@@ -530,6 +672,14 @@
     "rangeland": 0.64,
     "trees": 11.4
    },
+   "changed_ha_by_tmf": {
+    "deforested": 2.55,
+    "degraded": 5.49,
+    "other": 0.28,
+    "regrowth": 3.33,
+    "undisturbed": 0.38
+   },
+   "changed_ha_prior_loss": 7.76,
    "changed_ha_upper": 12.04,
    "clear_fraction": 1.0,
    "clear_ha": 219.48,
@@ -537,6 +687,14 @@
     "rangeland": 6.63,
     "trees": 212.85
    },
+   "clear_ha_by_tmf": {
+    "deforested": 26.21,
+    "degraded": 88.4,
+    "other": 5.05,
+    "regrowth": 20.73,
+    "undisturbed": 79.09
+   },
+   "clear_ha_prior_loss": 95.58,
    "dnbr_p50_changed": 0.1687,
    "event_id": "E0314",
    "expected_false_ha": 2.19,
@@ -563,6 +721,7 @@
    "ref_clear_px": 117923,
    "status": "assessed",
    "threshold": 0.11131,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-24",
@@ -583,6 +742,14 @@
     "rangeland": 58.04,
     "trees": 151.45
    },
+   "changed_ha_by_tmf": {
+    "deforested": 43.7,
+    "degraded": 33.48,
+    "other": 64.3,
+    "regrowth": 58.88,
+    "undisturbed": 10.87
+   },
+   "changed_ha_prior_loss": 73.84,
    "changed_ha_upper": 211.23,
    "clear_fraction": 1.0,
    "clear_ha": 679.05,
@@ -593,6 +760,14 @@
     "rangeland": 126.59,
     "trees": 543.63
    },
+   "clear_ha_by_tmf": {
+    "deforested": 99.16,
+    "degraded": 137.5,
+    "other": 151.5,
+    "regrowth": 136.75,
+    "undisturbed": 154.14
+   },
+   "clear_ha_prior_loss": 199.28,
    "dnbr_p50_changed": 0.1306,
    "event_id": "E0315",
    "expected_false_ha": 6.79,
@@ -619,6 +794,7 @@
    "ref_clear_px": 150885,
    "status": "assessed",
    "threshold": 0.08001,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-23",
@@ -636,6 +812,14 @@
     "rangeland": 5.16,
     "trees": 104.7
    },
+   "changed_ha_by_tmf": {
+    "deforested": 19.9,
+    "degraded": 56.04,
+    "other": 5.04,
+    "regrowth": 11.17,
+    "undisturbed": 17.71
+   },
+   "changed_ha_prior_loss": 46.86,
    "changed_ha_upper": 109.87,
    "clear_fraction": 1.0,
    "clear_ha": 249.94,
@@ -643,6 +827,14 @@
     "rangeland": 5.28,
     "trees": 244.65
    },
+   "clear_ha_by_tmf": {
+    "deforested": 21.36,
+    "degraded": 97.75,
+    "other": 5.24,
+    "regrowth": 11.77,
+    "undisturbed": 113.82
+   },
+   "clear_ha_prior_loss": 73.3,
    "dnbr_p50_changed": 0.1661,
    "event_id": "E0316",
    "expected_false_ha": 2.5,
@@ -669,6 +861,7 @@
    "ref_clear_px": 109488,
    "status": "assessed",
    "threshold": 0.0721,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-23",
@@ -689,6 +882,14 @@
     "rangeland": 95.54,
     "trees": 140.27
    },
+   "changed_ha_by_tmf": {
+    "deforested": 85.34,
+    "degraded": 55.85,
+    "other": 21.45,
+    "regrowth": 67.87,
+    "undisturbed": 8.03
+   },
+   "changed_ha_prior_loss": 134.34,
    "changed_ha_upper": 250.07,
    "clear_fraction": 0.9743,
    "clear_ha": 436.76,
@@ -699,6 +900,14 @@
     "rangeland": 115.38,
     "trees": 318.48
    },
+   "clear_ha_by_tmf": {
+    "deforested": 121.84,
+    "degraded": 130.36,
+    "other": 29.0,
+    "regrowth": 106.56,
+    "undisturbed": 49.0
+   },
+   "clear_ha_prior_loss": 220.83,
    "dnbr_p50_changed": 0.2014,
    "event_id": "E0318",
    "expected_false_ha": 4.37,
@@ -725,6 +934,7 @@
    "ref_clear_px": 212099,
    "status": "assessed",
    "threshold": 0.11325,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-24",
@@ -743,6 +953,14 @@
     "rangeland": 3.5,
     "trees": 109.16
    },
+   "changed_ha_by_tmf": {
+    "deforested": 18.45,
+    "degraded": 46.79,
+    "other": 10.03,
+    "regrowth": 25.27,
+    "undisturbed": 12.27
+   },
+   "changed_ha_prior_loss": 41.51,
    "changed_ha_upper": 112.81,
    "clear_fraction": 1.0,
    "clear_ha": 267.47,
@@ -751,6 +969,14 @@
     "rangeland": 3.55,
     "trees": 263.73
    },
+   "clear_ha_by_tmf": {
+    "deforested": 26.55,
+    "degraded": 111.01,
+    "other": 11.88,
+    "regrowth": 34.43,
+    "undisturbed": 83.6
+   },
+   "clear_ha_prior_loss": 74.79,
    "dnbr_p50_changed": 0.1581,
    "event_id": "E0321",
    "expected_false_ha": 2.67,
@@ -777,6 +1003,7 @@
    "ref_clear_px": 173646,
    "status": "assessed",
    "threshold": 0.08,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-23",
@@ -794,6 +1021,14 @@
     "rangeland": 1.14,
     "trees": 35.31
    },
+   "changed_ha_by_tmf": {
+    "deforested": 5.64,
+    "degraded": 14.22,
+    "other": 3.04,
+    "regrowth": 10.7,
+    "undisturbed": 2.84
+   },
+   "changed_ha_prior_loss": 14.59,
    "changed_ha_upper": 36.45,
    "clear_fraction": 1.0,
    "clear_ha": 156.19,
@@ -801,6 +1036,14 @@
     "rangeland": 1.49,
     "trees": 154.7
    },
+   "clear_ha_by_tmf": {
+    "deforested": 16.44,
+    "degraded": 64.29,
+    "other": 7.34,
+    "regrowth": 31.12,
+    "undisturbed": 37.0
+   },
+   "clear_ha_prior_loss": 49.95,
    "dnbr_p50_changed": 0.1476,
    "event_id": "E0322",
    "expected_false_ha": 1.56,
@@ -827,6 +1070,7 @@
    "ref_clear_px": 69099,
    "status": "assessed",
    "threshold": 0.09577,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-23",
@@ -888,6 +1132,14 @@
     "rangeland": 0.08,
     "trees": 39.72
    },
+   "changed_ha_by_tmf": {
+    "deforested": 2.42,
+    "degraded": 15.79,
+    "other": 3.42,
+    "regrowth": 6.21,
+    "undisturbed": 11.97
+   },
+   "changed_ha_prior_loss": 13.5,
    "changed_ha_upper": 40.18,
    "clear_fraction": 0.9977,
    "clear_ha": 162.74,
@@ -895,6 +1147,14 @@
     "rangeland": 0.08,
     "trees": 162.66
    },
+   "clear_ha_by_tmf": {
+    "deforested": 3.15,
+    "degraded": 47.66,
+    "other": 4.65,
+    "regrowth": 9.83,
+    "undisturbed": 97.45
+   },
+   "clear_ha_prior_loss": 39.4,
    "dnbr_p50_changed": 0.1007,
    "event_id": "E0340",
    "expected_false_ha": 1.63,
@@ -921,6 +1181,7 @@
    "ref_clear_px": 17758,
    "status": "assessed",
    "threshold": 0.04375,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-24",
@@ -960,6 +1221,14 @@
     "rangeland": 12.93,
     "trees": 21.48
    },
+   "changed_ha_by_tmf": {
+    "deforested": 7.53,
+    "degraded": 8.32,
+    "other": 9.66,
+    "regrowth": 5.99,
+    "undisturbed": 2.91
+   },
+   "changed_ha_prior_loss": 10.01,
    "changed_ha_upper": 34.41,
    "clear_fraction": 1.0,
    "clear_ha": 134.1,
@@ -967,6 +1236,14 @@
     "rangeland": 37.54,
     "trees": 96.56
    },
+   "clear_ha_by_tmf": {
+    "deforested": 15.36,
+    "degraded": 27.06,
+    "other": 32.09,
+    "regrowth": 12.66,
+    "undisturbed": 46.94
+   },
+   "clear_ha_prior_loss": 30.26,
    "dnbr_p50_changed": 0.1268,
    "event_id": "E0342",
    "expected_false_ha": 1.34,
@@ -993,6 +1270,7 @@
    "ref_clear_px": 111760,
    "status": "assessed",
    "threshold": 0.0761,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-23",
@@ -1011,6 +1289,14 @@
     "rangeland": 3.02,
     "trees": 40.6
    },
+   "changed_ha_by_tmf": {
+    "deforested": 10.5,
+    "degraded": 8.65,
+    "other": 8.01,
+    "regrowth": 13.55,
+    "undisturbed": 3.22
+   },
+   "changed_ha_prior_loss": 18.18,
    "changed_ha_upper": 43.93,
    "clear_fraction": 1.0,
    "clear_ha": 132.4,
@@ -1019,6 +1305,14 @@
     "rangeland": 11.95,
     "trees": 120.06
    },
+   "clear_ha_by_tmf": {
+    "deforested": 32.16,
+    "degraded": 25.63,
+    "other": 19.7,
+    "regrowth": 38.26,
+    "undisturbed": 16.66
+   },
+   "clear_ha_prior_loss": 49.57,
    "dnbr_p50_changed": 0.1221,
    "event_id": "E0344",
    "expected_false_ha": 1.32,
@@ -1045,6 +1339,7 @@
    "ref_clear_px": 180215,
    "status": "assessed",
    "threshold": 0.07607,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-23",
@@ -1065,6 +1360,14 @@
     "rangeland": 7.72,
     "trees": 34.84
    },
+   "changed_ha_by_tmf": {
+    "deforested": 10.2,
+    "degraded": 15.4,
+    "other": 8.01,
+    "regrowth": 8.67,
+    "undisturbed": 3.44
+   },
+   "changed_ha_prior_loss": 20.47,
    "changed_ha_upper": 55.34,
    "clear_fraction": 0.9465,
    "clear_ha": 169.9,
@@ -1075,6 +1378,14 @@
     "rangeland": 32.0,
     "trees": 126.6
    },
+   "clear_ha_by_tmf": {
+    "deforested": 34.2,
+    "degraded": 43.18,
+    "other": 39.62,
+    "regrowth": 27.66,
+    "undisturbed": 25.24
+   },
+   "clear_ha_prior_loss": 68.89,
    "dnbr_p50_changed": 0.1775,
    "event_id": "E0361",
    "expected_false_ha": 1.7,
@@ -1101,6 +1412,7 @@
    "ref_clear_px": 4270,
    "status": "assessed",
    "threshold": 0.11487,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-24",
@@ -1119,6 +1431,14 @@
     "rangeland": 36.97,
     "trees": 43.84
    },
+   "changed_ha_by_tmf": {
+    "deforested": 12.44,
+    "degraded": 8.66,
+    "other": 32.54,
+    "regrowth": 27.31,
+    "undisturbed": 1.29
+   },
+   "changed_ha_prior_loss": 31.62,
    "changed_ha_upper": 101.62,
    "clear_fraction": 0.9309,
    "clear_ha": 261.22,
@@ -1127,6 +1447,14 @@
     "rangeland": 155.49,
     "trees": 94.99
    },
+   "clear_ha_by_tmf": {
+    "deforested": 37.76,
+    "degraded": 24.35,
+    "other": 134.35,
+    "regrowth": 57.11,
+    "undisturbed": 7.64
+   },
+   "clear_ha_prior_loss": 84.94,
    "dnbr_p50_changed": 0.1816,
    "event_id": "E0368",
    "expected_false_ha": 2.61,
@@ -1153,6 +1481,7 @@
    "ref_clear_px": 41121,
    "status": "assessed",
    "threshold": 0.13091,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-26",
@@ -1173,6 +1502,14 @@
     "rangeland": 10.14,
     "trees": 11.67
    },
+   "changed_ha_by_tmf": {
+    "deforested": 5.76,
+    "degraded": 4.71,
+    "other": 4.9,
+    "regrowth": 5.79,
+    "undisturbed": 0.69
+   },
+   "changed_ha_prior_loss": 8.63,
    "changed_ha_upper": 50.8,
    "clear_fraction": 0.8548,
    "clear_ha": 170.5,
@@ -1183,6 +1520,14 @@
     "rangeland": 64.58,
     "trees": 101.95
    },
+   "clear_ha_by_tmf": {
+    "deforested": 44.26,
+    "degraded": 44.34,
+    "other": 38.41,
+    "regrowth": 30.13,
+    "undisturbed": 13.36
+   },
+   "clear_ha_prior_loss": 68.81,
    "dnbr_p50_changed": 0.1891,
    "event_id": "E0371",
    "expected_false_ha": 1.71,
@@ -1209,6 +1554,7 @@
    "ref_clear_px": 17794,
    "status": "assessed",
    "threshold": 0.12299,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-24",
@@ -1227,6 +1573,14 @@
     "rangeland": 16.27,
     "trees": 28.85
    },
+   "changed_ha_by_tmf": {
+    "deforested": 7.8,
+    "degraded": 5.7,
+    "other": 20.5,
+    "regrowth": 10.0,
+    "undisturbed": 18.37
+   },
+   "changed_ha_prior_loss": 9.87,
    "changed_ha_upper": 62.38,
    "clear_fraction": 1.0,
    "clear_ha": 87.37,
@@ -1235,6 +1589,14 @@
     "rangeland": 18.01,
     "trees": 30.9
    },
+   "clear_ha_by_tmf": {
+    "deforested": 10.85,
+    "degraded": 7.3,
+    "other": 35.47,
+    "regrowth": 13.32,
+    "undisturbed": 20.42
+   },
+   "clear_ha_prior_loss": 11.38,
    "dnbr_p50_changed": 0.0928,
    "event_id": "E0373",
    "expected_false_ha": 0.87,
@@ -1261,6 +1623,7 @@
    "ref_clear_px": 7659,
    "status": "assessed",
    "threshold": 0.04953,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-26",
@@ -1278,6 +1641,14 @@
     "rangeland": 3.26,
     "trees": 54.42
    },
+   "changed_ha_by_tmf": {
+    "deforested": 5.33,
+    "degraded": 9.69,
+    "other": 4.64,
+    "regrowth": 4.91,
+    "undisturbed": 33.1
+   },
+   "changed_ha_prior_loss": 4.93,
    "changed_ha_upper": 57.68,
    "clear_fraction": 1.0,
    "clear_ha": 133.52,
@@ -1285,6 +1656,14 @@
     "rangeland": 34.18,
     "trees": 99.34
    },
+   "clear_ha_by_tmf": {
+    "deforested": 14.17,
+    "degraded": 19.12,
+    "other": 33.96,
+    "regrowth": 10.29,
+    "undisturbed": 55.97
+   },
+   "clear_ha_prior_loss": 16.07,
    "dnbr_p50_changed": 0.0478,
    "event_id": "E0428",
    "expected_false_ha": 1.34,
@@ -1311,6 +1690,7 @@
    "ref_clear_px": 85269,
    "status": "assessed",
    "threshold": 0.01645,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-08-25",
@@ -1329,6 +1709,14 @@
     "rangeland": 0,
     "trees": 0
    },
+   "changed_ha_by_tmf": {
+    "deforested": 0,
+    "degraded": 0,
+    "other": 0,
+    "regrowth": 0,
+    "undisturbed": 0
+   },
+   "changed_ha_prior_loss": 0.0,
    "changed_ha_upper": 48.66,
    "clear_fraction": 0.5553,
    "clear_ha": 60.77,
@@ -1337,6 +1725,14 @@
     "rangeland": 9.66,
     "trees": 50.55
    },
+   "clear_ha_by_tmf": {
+    "deforested": 3.15,
+    "degraded": 1.31,
+    "other": 9.27,
+    "regrowth": 0.67,
+    "undisturbed": 46.37
+   },
+   "clear_ha_prior_loss": 1.36,
    "dnbr_p50_changed": null,
    "event_id": "E0462",
    "expected_false_ha": 0.61,
@@ -1363,6 +1759,7 @@
    "ref_clear_px": 9555,
    "status": "assessed",
    "threshold": 0.27104,
+   "tmf_year": 2024,
    "windows_utc": {
     "post": [
      "2026-09-04",
@@ -1401,7 +1798,9 @@
   "Areas are pixels whose dNBR+ exceeds the 99th percentile of never-detected land within the event's reference ring. This controls false alarms on land that never burned; it is not an accuracy, and light burns below the local noise are missed.",
   "Each pixel uses the clear Sentinel-2 look nearest the event, so dates vary within one event; the look-lag statistics say by how much.",
   "changed_ha_upper assumes every cloud-gap pixel changed. The true area lies between changed_ha and changed_ha_upper, less expected_false_ha.",
-  "A change like a burn is not proof of burning, and says nothing about why land was burned or who burned it (PLAN.md section 8)."
+  "A change like a burn is not proof of burning, and says nothing about why land was burned or who burned it (PLAN.md section 8).",
+  "TMF is read for the year before each event, capped at its latest map; tmf_year says which year was used. For 2026 events that is December 2024.",
+  "Hansen loss records tree-cover removal from any cause; prior loss is history, not a statement about why land was cleared."
  ],
  "events_registry_version": 1,
  "not_assessed": [
@@ -3244,7 +3643,8 @@
   "pre_days": 60,
   "ref_quantile": 0.99,
   "ref_radius_m": 10000,
-  "scale_m": 20
+  "scale_m": 20,
+  "tmf_latest_year": 2024
  },
  "store_last_date_wit": "2026-09-19"
 }

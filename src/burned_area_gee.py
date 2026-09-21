@@ -46,6 +46,13 @@ ESRI = "projects/sat-io/open-datasets/landcover/ESRI_Global-LULC_10m_TS"
 ESRI_CLASSES = {1: "water", 2: "trees", 4: "flooded_vegetation", 5: "crops",
                 7: "built", 8: "bare", 9: "snow_ice", 10: "clouds",
                 11: "rangeland"}
+# Task 18b. Esri's "trees" cannot tell forest from regrowth on cleared land;
+# the JRC Tropical Moist Forest product was built to, from Landsat, for the
+# humid tropics. Hansen's loss year adds the clearing history.
+TMF = "projects/JRC/TMF/v1_2024/AnnualChanges"
+TMF_CLASSES = {1: "undisturbed", 2: "degraded", 3: "deforested",
+               4: "regrowth", 5: "water", 6: "other"}
+HANSEN = "UMD/hansen/global_forest_change_2025_v1_13"
 
 CAVEATS = [
     "Areas are pixels whose dNBR+ exceeds the 99th percentile of "
@@ -58,6 +65,11 @@ CAVEATS = [
     "lies between changed_ha and changed_ha_upper, less expected_false_ha.",
     "A change like a burn is not proof of burning, and says nothing about "
     "why land was burned or who burned it (PLAN.md section 8).",
+    "TMF is read for the year before each event, capped at its latest map; "
+    "tmf_year says which year was used. For 2026 events that is December "
+    "2024.",
+    "Hansen loss records tree-cover removal from any cause; prior loss is "
+    "history, not a statement about why land was cleared.",
 ]
 
 
@@ -101,6 +113,19 @@ def land_cover_year(first_seen_wit):
     """The Esri annual map for the calendar year before the event, so the
     class describes the land before it burned, not after."""
     return int(first_seen_wit[:4]) - 1
+
+
+def tmf_year(first_seen_wit, latest):
+    """The TMF December map for the year before the event, or the latest map
+    the asset holds if that year is not published yet."""
+    return min(int(first_seen_wit[:4]) - 1, int(latest))
+
+
+def prior_loss_max_code(first_seen_wit):
+    """Largest Hansen `lossyear` code that counts as clearing before the
+    event. Code n is loss in year 2000 + n; the event's own year is excluded
+    because that loss may be the event itself."""
+    return int(first_seen_wit[:4]) - 2000 - 1
 
 
 def bounds(changed_ha, clear_ha, footprint_ha, quantile):
@@ -266,6 +291,27 @@ def assess(ee, event, members, all_pts, p):
             **kw).getInfo()
         rec[name] = {ESRI_CLASSES.get(int(g["cls"]), str(g["cls"])):
                      round(g["sum"], 2) for g in got.get("groups", [])}
+
+    ty = tmf_year(event["first_seen_wit"], p["tmf_latest_year"])
+    tmf = ee.ImageCollection(TMF).mosaic().select("Dec%d" % ty)
+    rec["tmf_year"] = ty
+    for name, mask in (("clear_ha_by_tmf", clear),
+                       ("changed_ha_by_tmf", changed)):
+        got = area.updateMask(mask).addBands(tmf).reduceRegion(
+            ee.Reducer.sum().group(groupField=1, groupName="cls"), fp,
+            **kw).getInfo()
+        rec[name] = {TMF_CLASSES.get(int(g["cls"]), str(g["cls"])):
+                     round(g["sum"], 2) for g in got.get("groups", [])}
+
+    loss = ee.Image(HANSEN).select("lossyear")
+    prior = loss.gt(0).And(loss.lte(prior_loss_max_code(
+        event["first_seen_wit"])))
+    got = ee.Image.cat([
+        area.updateMask(clear.And(prior)).rename("clear"),
+        area.updateMask(changed.And(prior)).rename("changed"),
+    ]).reduceRegion(ee.Reducer.sum(), fp, **kw).getInfo()
+    rec["clear_ha_prior_loss"] = round(got["clear"] or 0.0, 2)
+    rec["changed_ha_prior_loss"] = round(got["changed"] or 0.0, 2)
 
     polys = []
     if changed_ha > 0:

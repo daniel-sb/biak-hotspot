@@ -725,3 +725,66 @@ and the tracked file now names 2026-09-19; the numbers in between are the same o
 
 Nothing here is a new measurement. It is recorded because "we re-ran it and nothing
 changed" is only worth anything if it is written down the same way a change would be.
+
+---
+
+## F14 - The burned ground was mostly not forest, and intact forest burned at half the rate of regrowth (2026-09-21)
+
+`src/burned_area_gee.py` -> `data/processed/burned_areas.json`, Task 18b, the same 23
+assessed events as F11 and F13. The rerun left every pre-existing field identical; it added
+two land-cover readings beside Esri's. **This qualifies F11's "74.8% trees", and the
+qualification changes what the sentence means.**
+
+**Why a second product.** Esri's annual 10 m land cover has one class, "trees", for
+everything woody. On Biak that covers intact forest and regrowth on land cleared years
+before alike. The surveyor, walking the south corridor, saw shrub and open ground where Esri
+maps trees. The JRC Tropical Moist Forest product (Landsat, 30 m) was built to separate
+exactly those cases in the humid tropics. Each event is read against TMF's December map for
+the year before it, capped at the latest one published: 20 of the 23 events use December
+2024, about 20 months before they burned.
+
+**What the changed area was:**
+
+| TMF class | clear footprint ha | changed ha | share of changed | share of class that changed |
+|---|---|---|---|---|
+| undisturbed forest | 1,534.9 | 354.2 | 14.7% | **23.1%** |
+| other land | 1,490.4 | 691.7 | 28.6% | 46.4% |
+| degraded forest | 1,118.8 | 426.1 | 17.6% | 38.1% |
+| regrowth | 966.5 | 537.5 | 22.3% | **55.6%** |
+| deforested earlier | 787.2 | 405.3 | 16.8% | 51.5% |
+
+Where Esri says 74.8% of the changed area was trees, TMF says **14.7% was undisturbed
+forest.** The other 85% was regrowth, degraded forest, land already deforested, or not
+forest at all.
+
+**The selectivity Esri could not show.** F11 found the share that changed nearly equal for
+Esri's trees (40.7%) and rangeland (45.1%), and concluded that burning followed what was
+there rather than selecting. TMF splits "trees" apart, and inside the same footprints the
+rates are not equal: **regrowth changed at 55.6% and undisturbed forest at 23.1%**, about
+2.4 times less. Land that was already disturbed burned far more readily than intact forest
+beside it. F11's no-selection reading was an artefact of a class too coarse to see the
+difference.
+
+**Hansen's clearing history, and a correction made before publishing.** Of the changed
+area, 25.7% had a recorded tree-cover loss in a year before the event; of the clear
+footprint, 25.0%. Within an event, prior clearing does not predict which pixels change. A
+figure given in conversation on 2026-09-21 - that burned ground was "2.4 times more likely"
+to have been cleared before - compared the changed area with the whole south corridor
+(12.1%), not with its own footprints. The accurate reading has two parts: events sit on land
+with about twice the corridor's clearing history, but prior clearing adds nothing once you
+are inside one.
+
+**Reading it together.** The burning in these 23 events fell mostly on a mosaic of regrowth,
+degraded and previously cleared land, and inside it went for the disturbed ground over
+the intact forest. That pattern is what rotational fallow burning of regrowing plots looks
+like from orbit, and it is not what clearance of standing forest looks like. It is also the
+reading PLAN.md section 8 needs: "burned area was 75% trees" invites exactly the
+implication about forest destruction that section exists to keep out of the analysis.
+
+**Limits.** TMF is up to 20 months older than the burning, so plots cleared in 2025 appear
+as forest here. Its "degraded" class is known to miss some degradation, so if anything the
+undisturbed share is too high. At 30 m against 20 m polygons, small plots blur at their
+edges. Hansen loss records removal from any cause. No product here is a 2026 map, and none
+has been checked on the ground: the only true 2026 land cover would be a Sentinel-2
+classification trained and validated on labels this project does not yet have. Nothing
+here says why any land was burned or who burned it.

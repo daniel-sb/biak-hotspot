@@ -187,3 +187,8 @@ burned_area:
   # on 25 pixels and the event gets no threshold at all.
   min_ref_px: 2500
   scale_m: 20
+  # Task 18b. The latest December band in the JRC TMF asset. Events are
+  # read against the year before them, capped here: 2026 events use
+  # December 2024, about 20 months early. Raise it when TMF v1_2025
+  # appears - and change the asset id in burned_area_gee.py with it.
+  tmf_latest_year: 2024
