@@ -788,3 +788,57 @@ edges. Hansen loss records removal from any cause. No product here is a 2026 map
 has been checked on the ground: the only true 2026 land cover would be a Sentinel-2
 classification trained and validated on labels this project does not yet have. Nothing
 here says why any land was burned or who burned it.
+
+## F15 - Airport smoke corroborates the August and September 2026 episodes, never one event alone (2026-09-22)
+
+`src/metar.py` -> `data/processed/metar_corroboration.json`, Task 19, commit 2cde660. It
+covers the 488 events of F10's registry against 51,838 WABB METAR reports, 2023-09-01 to
+2026-09-20 UTC. Written at review. The counts below were recomputed from the raw CSVs
+independently of the module for three events (E0295, E0296, E0373) and matched.
+
+**Smoke at the airport is new in this record.** WABB reported `FU` on no day in 2023
+(from September), 2024 or 2025. In 2026 it reported it on 17 WIT days, 265 reports, in
+two runs: 14 and 22-29 August (9 days) and 3 and 12-18 September (8 days). `HZ` never
+appears as WABB's own present weather. The 23 raw-text "HZ" strings in the archive all
+belong to other stations' reports (WAAA, WADD, WIDD, WIHH, WIII, WIMM) appended to 157 WABB
+records (0.30%); the parsed `wxcodes` field does not carry them. Two days in the span have
+no report at all: 2024-06-08 and 2024-07-14.
+
+**Classes at the pre-registered 50 km:**
+
+| class | events |
+|---|---|
+| corroborated | 124 |
+| no_smoke_at_station | 263 |
+| beyond_range | 68 |
+| smoke_other_direction | 32 |
+| unobserved | 1 (E0079, coverage 0.19, June 2024) |
+
+At 25 km the corroborated count is 98; at 100 km it is 128. Every corroborated event
+started in August (110) or September (14) 2026. No event from 2023-2025 is corroborated,
+which follows from the baseline: there was no smoke to report.
+
+**Read n_concurrent_events before the class.** The corroborated events share their
+reports. The median corroborated event shares them with 120 others; the most with 129, 44
+share with exactly 120, and only 6 share with five or fewer (E0295 and E0296 on 13 August
+with each other; E0472, E0474, E0475, E0476 in mid-September). E0295 and E0296 illustrate
+the limit: both are corroborated by the same two reports (14 August 09:00 and 09:30 UTC,
+wind 330 and 320 at 4 kt, 5 km visibility), though they lie 44 degrees apart as seen from
+the airport, because the 90-degree sector covers both. So the finding is that **the airport
+corroborates two episodes**, August and mid-September 2026, and not any single event within
+them.
+
+**When smoke reached the station.** FU reports by WIT hour are spread across the whole day
+(6-17 per hour), highest 06:00-12:00 WIT and lowest 17:00-20:00. The station does not see
+smoke mostly at night. This does not contradict PLAN.md section 12: that note concerns
+smoke that pooled away from the station at night, which a station record cannot show.
+
+**Checked and minor.** `coverage` exceeds 1 for 114 events (maximum 1.175), because special
+reports (SPECI) add to the half-hourly count. It is used only as a lower bound, so no class
+changes. The per-year and per-month baseline tables are wrapped in an extra list in the
+JSON (`[[...]]`); the values are correct.
+
+**Caveats.** An FU report is strong evidence that smoke reached the airport; its absence is
+close to none, and `no_smoke_at_station` says only that. The upwind test is one 90-degree
+sector on the reported surface wind, not a trajectory. Numfor is beyond range of the one
+station. Smoke at the airport says nothing about why land was burned or who burned it.
