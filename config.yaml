@@ -85,6 +85,33 @@ baseline:
     Terra: [MODIS_NRT, MODIS_SP]
     Aqua: [MODIS_NRT, MODIS_SP]
 
+# METAR corroboration (Phase 2 item 4, Task 19): events against airport
+# smoke reports from Frans Kaisiepo (WABB), the one independent ground
+# observation available at scale here. The Iowa State archive only, via
+# --fetch; everything else reads the raw files.
+metar:
+  station: WABB
+  # Station position per PLAN.md 10.1 (-1.190, 136.108, elevation 12 m).
+  lat: -1.190
+  lon: 136.108
+  # The archive holds WABB from here (PLAN.md 10.2 checked it); earlier
+  # years return an empty year that would read as a quiet station.
+  archive_start: "2023-09-01"
+  # Smoke outlasts the burning that makes it: burning peaked 21-22 August
+  # 2026, airport smoke 23-24 (PLAN.md 10.4). 48 h covers that lag with
+  # margin.
+  lag_hours: 48
+  # The upwind test is one sector rule on the reported surface wind, not
+  # plume modelling: 45 degrees each side of the station-event bearing.
+  sector_half_width_deg: 45
+  # Numfor lies 126-148 km from the airport; a single station cannot speak
+  # for it. 50 km keeps the corroborated class inside the island cluster
+  # the station can plausibly see.
+  max_km: 50
+  # Below half the expected half-hourly reports the station was not
+  # reporting enough to say anything: a data gap, not a negative.
+  min_coverage: 0.5
+
 output_paths:
   raw_dir: data/raw
   processed: data/processed/detections.parquet

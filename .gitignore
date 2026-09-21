@@ -27,6 +27,13 @@ data/processed/*
 # previous membership map is read back, so it has to travel with the repo.
 # events.csv is the same records flattened and is regenerated from it.
 !data/processed/events.json
+# METAR corroboration (Task 19): the archive CSVs are the raw responses
+# (AGENTS rule 2 - fetch once, parse forever after) and the JSON is
+# deterministic from them, so both travel with the repo.
+!data/raw/metar/
+data/raw/metar/*
+!data/raw/metar/*.csv
+!data/processed/metar_corroboration.json
 # Burned-area postmortem (Task 18): written by a by-hand Earth Engine run,
 # so it travels with the repo rather than being regenerated on demand.
 !data/processed/burned_areas.json
