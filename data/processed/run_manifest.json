@@ -8831,6 +8831,102 @@
    "rows": 0,
    "utc": "2026-09-20T18:55:19Z",
    "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-09-08",
+   "days": 5,
+   "rows": 0,
+   "utc": "2026-09-22T19:47:43Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-09-13",
+   "days": 5,
+   "rows": 5,
+   "utc": "2026-09-22T19:47:44Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-09-18",
+   "days": 5,
+   "rows": 4,
+   "utc": "2026-09-22T19:47:45Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-09-08",
+   "days": 5,
+   "rows": 2,
+   "utc": "2026-09-22T19:47:47Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-09-13",
+   "days": 5,
+   "rows": 8,
+   "utc": "2026-09-22T19:47:48Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-09-18",
+   "days": 5,
+   "rows": 6,
+   "utc": "2026-09-22T19:47:49Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-09-08",
+   "days": 5,
+   "rows": 1,
+   "utc": "2026-09-22T19:47:50Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-09-13",
+   "days": 5,
+   "rows": 10,
+   "utc": "2026-09-22T19:47:52Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-09-18",
+   "days": 5,
+   "rows": 1,
+   "utc": "2026-09-22T19:47:53Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-09-08",
+   "days": 5,
+   "rows": 0,
+   "utc": "2026-09-22T19:47:54Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-09-13",
+   "days": 5,
+   "rows": 1,
+   "utc": "2026-09-22T19:47:55Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-09-18",
+   "days": 5,
+   "rows": 0,
+   "utc": "2026-09-22T19:47:56Z",
+   "outcome": "fetched"
   }
  ]
 }
