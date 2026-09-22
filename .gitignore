@@ -46,6 +46,13 @@ data/raw/metar/*
 # the tracked events file, so the brackets any later reading relies on can
 # be re-checked from the committed JSON.
 !data/processed/himawari_onset.json
+# Fire danger (Task 21): the per-month ERA5-Land raw responses are the
+# fetch's persisted facts (AGENTS rule 2) and are small enough to track;
+# the JSON is deterministic from them and the tracked store.
+!data/raw/era5land/
+data/raw/era5land/*
+!data/raw/era5land/*.json
+!data/processed/fire_danger.json
 data/cache/
 *.pmtiles
 *.tif

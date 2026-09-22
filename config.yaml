@@ -148,6 +148,35 @@ himawari_onset:
   # looks of that day.
   named_case: {event_id: E0463, wit_day: "2026-09-04"}
 
+# Fire danger indices (Phase 5 step 1, Task 21): the Canadian FWI system
+# and KBDI computed from ERA5-Land per land cell per WIT day, scored
+# against the detection record out of sample. They describe how weather
+# has dried the fuel - nothing about whether anyone burned land, or why
+# (PLAN.md sections 8 and 14).
+fire_danger:
+  # Indices run continuously from here so the moisture codes carry a real
+  # history into 2023-09-01; everything before score_start is discarded.
+  spin_up_start: "2022-09-01"
+  # The first day the AOI series and the scoring cover.
+  score_start: "2023-09-01"
+  # Standard start-up values (Van Wagner and Pickett 1985: FFMC 85,
+  # DMC 6, DC 15).
+  start_codes: {ffmc: 85, dmc: 6, dc: 15}
+  # Equatorial day-length constants: between 10S and 10N the DMC
+  # effective day length is 9.0 every month and the DC day-length factor
+  # 1.39 (Lawson and Armitage 2008; the same rule the cffdrs package's
+  # latitude adjustment applies, which uses 1.4). Biak sits near 1S.
+  dmc_day_length: 9.0
+  dc_day_length_factor: 1.39
+  # KBDI: the first 5.08 mm (0.2 inch) of each run of consecutive rainy
+  # days is intercepted (Keetch and Byram 1968).
+  kbdi_rain_interception_mm: 5.08
+  # Mean annual precipitation per cell for KBDI's R: the 1991-2020
+  # ERA5-Land total, the standard climate normal window.
+  kbdi_mean_rain_period: [1991, 2020]
+  # A WIT day counts as a rain day for days_since_rain at or above this.
+  rain_day_mm: 1.0
+
 output_paths:
   raw_dir: data/raw
   processed: data/processed/detections.parquet
