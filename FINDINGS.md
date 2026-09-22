@@ -842,3 +842,55 @@ JSON (`[[...]]`); the values are correct.
 close to none, and `no_smoke_at_station` says only that. The upwind test is one 90-degree
 sector on the reported surface wind, not a trajectory. Numfor is beyond range of the one
 station. Smoke at the airport says nothing about why land was burned or who burned it.
+
+## F16 - Himawari's daytime flags cannot time the burning: a day with no detections flags as often (2026-09-22)
+
+`src/himawari_onset.py` -> `data/processed/himawari_onset.json`, Task 20, commit a9ad7af.
+Written at review. The control below was run at review with the same reader, thresholds,
+land test and 285 K B14 cut, from `src/himawari.py`; it is not in the tracked output.
+
+**What the task produced.** Of the 31 events with five or more detections, 25 are
+`not_resolved` (no Himawari flag at the slots where VIIRS saw them) and 6 are `bracketed`.
+All six first flags fall at 13:10-13:40 WIT, every gap is 10 minutes, and the lead over
+VIIRS runs from -30 to +10 minutes. Over 21-24 August, flagged land pixels appear only
+from 10:00 to 17:00 WIT, peak at 13:00, and are zero after dark. At E0463 on 4 September,
+144 slots split 73 quiet, 69 obscured and 2 missing, with no flag.
+
+**Why the brackets are not onsets.** In every bracketed and unresolved event examined
+(E0301, E0315, E0318, E0373), the anomaly over the event pixels rises smoothly from about
+0 K at 07:30 WIT to 5-10 K by 13:00 WIT, following the sun. The bracket is where that ramp
+crosses the 10 K threshold: E0315 reads 8.5, 9.9 and then 15.0 K; E0373 reads 9.7 and then
+11.0 K. A 10-minute gap between a "last quiet" slot at 9.9 K and a flag at 15.0 K bounds a
+threshold crossing, not the time heat appeared.
+
+**The control.** Eight WIT days with no FIRMS detection anywhere in the AOI (30 July to
+6 August 2026), four slots each at 03:40-04:40 UTC (12:40-13:40 WIT), 32 slots:
+
+| | clear land pixel-slots | flagged | share |
+|---|---|---|---|
+| no-detection days, 30 Jul-6 Aug | 6,677 | 71 | 1.06% |
+| peak days, 21-24 Aug, same four slot times | 11,614 | 123 | 1.06% |
+
+18 of the 32 control slots had at least one flag, with anomalies up to 20.0 K, in
+contiguous clusters on Supiori (for example nine pixels around -1.02, 136.01 on 3 August).
+**At these thresholds, the midday flag rate on the four heaviest burning days of the record
+equals the rate on days when VIIRS saw nothing.** The diurnal curve is therefore not the
+burning's curve. Its shape is the shape of the sun, and it cannot be told apart from the
+background here.
+
+**What survives.** The control days had fewer clear land pixels than the peak days (they
+were cloudier, and cloud edges are a plausible source of daytime false flags). The equal
+rate does not prove that no peak-day flag was fire, and PLAN.md 13.1's +44 K pixel on the
+fire cluster on 22 August was far above anything in the control. What it establishes is
+narrower: **a 10 K daytime flag is not evidence of heat from an event,** so the six
+brackets and the diurnal table cannot be read as timing. The night result stands as in
+PLAN.md 13: no flag after dark, with the 2 km floor as one of two explanations. E0463's
+record says only that its pixels were cloud-free in 73 of 144 slots on 4 September and
+never crossed a threshold that also fires on days without burning.
+
+**The error is in the spec, not the implementation.** Task 20 took the evening product's
+provisional 10 K thresholds into daylight without a no-burning control, which PLAN.md 13.4
+already said they lacked. The pre-registered readings are kept unchanged in the JSON. Any
+later use of Himawari timing needs a daytime threshold set against a no-detection
+false-alarm rate, measured the way the table above measures it, before a bracket means
+anything. Nothing here says why any land was burned or who burned it.
