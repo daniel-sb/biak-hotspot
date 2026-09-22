@@ -894,3 +894,61 @@ already said they lacked. The pre-registered readings are kept unchanged in the 
 later use of Himawari timing needs a daytime threshold set against a no-detection
 false-alarm rate, measured the way the table above measures it, before a bracket means
 anything. Nothing here says why any land was burned or who burned it.
+
+## F17 - Dry-fuel indices rank burning days above the calendar, and most of that survives a cloud check (2026-09-22)
+
+`src/fire_danger.py` -> `data/processed/fire_danger.json`, Task 21, commit 66f173b. Written
+at review. The cloud check below was run at review from the tracked WABB METAR files
+(Task 19) and is not in the tracked output.
+
+**The setup.** FWI system and KBDI from ERA5-Land at 30 native 0.1-degree land cells, noon
+WIT, spun up from 2022-09-01, scored from 2023-09-01 to 2026-09-16 (the last ERA5-Land
+hour available). The unit is the AOI-day: a burning day has at least one land detection
+from the fixed constellation, not at a recurrent site. That exclusion removed 55 of 165
+positive days; in 2024 and 2025 it removed more than half (39 to 18, 37 to 16).
+
+**Average precision, leave one calendar year out:**
+
+| year | days | positive | FFMC | ISI | FWI | DMC | BUI | DC | KBDI | days since rain | climatology | chance |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 2023 (Sep-Dec) | 122 | 19 | 0.534 | 0.623 | **0.664** | 0.562 | 0.535 | 0.310 | 0.282 | 0.264 | 0.213 | 0.156 |
+| 2024 | 366 | 18 | 0.209 | **0.219** | 0.187 | 0.159 | 0.138 | 0.084 | 0.070 | 0.169 | 0.053 | 0.049 |
+| 2025 | 365 | 16 | 0.301 | **0.329** | 0.315 | 0.194 | 0.197 | 0.128 | 0.116 | 0.154 | 0.052 | 0.044 |
+| 2026 (to 16 Sep) | 263 | 57 | **0.626** | 0.589 | 0.605 | 0.421 | 0.418 | 0.437 | 0.408 | 0.394 | 0.257 | 0.217 |
+
+By the pre-registered reading, every index beats both the day-of-year climatology and
+chance in all four years. The fast-responding indices (FFMC, ISI, FWI) rank best. The slow
+drought codes (DC, KBDI) rank worst, below the plain count of dry days in 2024 and 2025. At
+the AOI-day level the climatology is barely above chance (0.053 against 0.049 in 2024):
+F12's skill was about *where*, and it says almost nothing about *which day*.
+
+**The confound checked at review.** VIIRS cannot see through cloud, and dry, high-FFMC days
+are clear days. The airport's reported sky at 13:00-13:59 WIT, the day overpass, splits the
+1,076 scored days that have a METAR:
+
+| airport sky at the day pass | days | burning days | share |
+|---|---|---|---|
+| no broken or overcast layer | 734 | 101 | 13.8% |
+| broken or overcast (BKN/OVC) | 342 | 3 | 0.9% |
+
+So observability explains a large part of why "burning days" are dry days: on a cloudy day
+there is almost never a detection, whatever burned. **Restricted to days with no broken or
+overcast layer at the airport, the indices still rank well above chance:** FWI 0.701
+against 0.207 in 2023, 0.198 against 0.073 in 2024, 0.367 against 0.061 in 2025, 0.623
+against 0.258 in 2026. FFMC and ISI behave the same way, and the order of indices does not
+change among FFMC, ISI, FWI, DC and KBDI. The airport is one point, and its sky is not the sky over every plot, so this
+check removes the obvious part of the confound, not all of it.
+
+**August 2026.** FFMC ran 86-88 and FWI 13-17 on 21-25 August, the heaviest burning days
+in the record. The monthly DC median rose from 18 in July to 209 in August and 306 in
+September 2026.
+
+**Checked and minor.** `missing_cell_days` (10,980) counts the 365-day spin-up of the 30
+cells (10,950) as missing; only 30 cell-days were actually missing input. The
+published FWI test day reproduces to 0.01. The DC day-length factor is
+1.39 (Lawson and Armitage 2008), where the cffdrs package uses 1.4.
+
+**Caveats.** Average precision measures ranking only; no index here is a probability, and
+none is calibrated. The indices describe how weather has dried the fuel. Ranking burning
+days is not predicting them, and nothing here says why any land was burned or who burned
+it.
