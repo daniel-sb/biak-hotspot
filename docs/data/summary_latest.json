@@ -1,5 +1,5 @@
 {
- "covered_wit_date": "2026-09-22",
+ "covered_wit_date": "2026-09-23",
  "districts": [
   {
    "detections": 0,
@@ -128,11 +128,11 @@
    "total_frp": null
   },
   {
-   "detections": 0,
+   "detections": 2,
    "distrik": "Supiori Timur",
    "kabupaten": "Supiori",
-   "max_frp": null,
-   "total_frp": null
+   "max_frp": 4.3,
+   "total_frp": 6.7
   },
   {
    "detections": 0,
@@ -174,7 +174,7 @@
   "closest_after_dark": null,
   "daylight_flags": 0,
   "daylight_summary": null,
-  "evening_date": "2026-09-21",
+  "evening_date": "2026-09-22",
   "flags": [],
   "night_flags": 0,
   "ocean_bt14_median_k": null,
@@ -184,20 +184,20 @@
   "state": "unavailable",
   "window_utc": "06:00-16:00"
  },
- "generated_utc": "2026-09-22T19:47:58Z",
+ "generated_utc": "2026-09-23T19:43:53Z",
  "geojson_window_days": 7,
  "manifest_found": true,
  "recurrent_today": [],
  "sources": [
   {
-   "detections": 0,
+   "detections": 1,
    "source": "VIIRS_SNPP_NRT",
-   "status": "empty"
+   "status": "observed"
   },
   {
-   "detections": 0,
+   "detections": 1,
    "source": "VIIRS_NOAA20_NRT",
-   "status": "empty"
+   "status": "observed"
   },
   {
    "detections": 0,
@@ -211,8 +211,8 @@
   }
  ],
  "totals": {
-  "detections": 0,
+  "detections": 2,
   "offshore": 0,
-  "on_land": 0
+  "on_land": 2
  }
 }
