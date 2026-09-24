@@ -9023,6 +9023,102 @@
    "rows": 0,
    "utc": "2026-09-23T19:43:52Z",
    "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-09-10",
+   "days": 5,
+   "rows": 0,
+   "utc": "2026-09-24T20:02:33Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-09-15",
+   "days": 5,
+   "rows": 5,
+   "utc": "2026-09-24T20:02:34Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-09-20",
+   "days": 5,
+   "rows": 5,
+   "utc": "2026-09-24T20:02:35Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-09-10",
+   "days": 5,
+   "rows": 8,
+   "utc": "2026-09-24T20:02:37Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-09-15",
+   "days": 5,
+   "rows": 3,
+   "utc": "2026-09-24T20:02:38Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-09-20",
+   "days": 5,
+   "rows": 6,
+   "utc": "2026-09-24T20:02:39Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-09-10",
+   "days": 5,
+   "rows": 5,
+   "utc": "2026-09-24T20:02:40Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-09-15",
+   "days": 5,
+   "rows": 5,
+   "utc": "2026-09-24T20:02:41Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-09-20",
+   "days": 5,
+   "rows": 1,
+   "utc": "2026-09-24T20:02:42Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-09-10",
+   "days": 5,
+   "rows": 1,
+   "utc": "2026-09-24T20:02:44Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-09-15",
+   "days": 5,
+   "rows": 0,
+   "utc": "2026-09-24T20:02:45Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-09-20",
+   "days": 5,
+   "rows": 0,
+   "utc": "2026-09-24T20:02:46Z",
+   "outcome": "fetched"
   }
  ]
 }

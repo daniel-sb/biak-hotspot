@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
- "generated_utc": "2026-09-23T19:43:53Z",
- "covered_wit_date": "2026-09-23",
+ "generated_utc": "2026-09-24T20:02:47Z",
+ "covered_wit_date": "2026-09-24",
  "features": [
   {
    "type": "Feature",
@@ -64,39 +64,6 @@
     "date_wit": "2026-09-21",
     "desa": "Waroi",
     "distrik": "Yendidori",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     136.08365,
-     -1.12876
-    ]
-   },
-   "properties": {
-    "detection_id": "0a6317201007bd73349044aa5b1019cef34506f9",
-    "bright_ti4": "332.23",
-    "scan": "0.43",
-    "track": "0.38",
-    "acq_date": "2026-09-17",
-    "acq_time": "423",
-    "satellite": "N",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "300.15",
-    "frp": 3.06,
-    "daynight": "D",
-    "datetime_utc": "2026-09-17T04:23:00+00:00",
-    "datetime_wit": "2026-09-17T13:23:00+09:00",
-    "date_wit": "2026-09-17",
-    "desa": "Maryendi",
-    "distrik": "Samofa",
     "kabupaten": "Biak Numfor",
     "on_land": true,
     "recurrent_site": false
@@ -492,39 +459,6 @@
     "datetime_wit": "2026-09-21T13:46:00+09:00",
     "date_wit": "2026-09-21",
     "desa": "Waroi",
-    "distrik": "Yendidori",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     135.93129,
-     -1.10616
-    ]
-   },
-   "properties": {
-    "detection_id": "fbf8988eae6a42ff6ebae3515309fc2600c14534",
-    "bright_ti4": "330.81",
-    "scan": "0.51",
-    "track": "0.41",
-    "acq_date": "2026-09-17",
-    "acq_time": "444",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "297.08",
-    "frp": 2.98,
-    "daynight": "D",
-    "datetime_utc": "2026-09-17T04:44:00+00:00",
-    "datetime_wit": "2026-09-17T13:44:00+09:00",
-    "date_wit": "2026-09-17",
-    "desa": "Sunyar",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
     "on_land": true,
