@@ -9119,6 +9119,102 @@
    "rows": 0,
    "utc": "2026-09-24T20:02:46Z",
    "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-09-11",
+   "days": 5,
+   "rows": 1,
+   "utc": "2026-09-25T20:04:12Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-09-16",
+   "days": 5,
+   "rows": 4,
+   "utc": "2026-09-25T20:04:13Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_SNPP_NRT",
+   "chunk_start": "2026-09-21",
+   "days": 5,
+   "rows": 5,
+   "utc": "2026-09-25T20:04:14Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-09-11",
+   "days": 5,
+   "rows": 9,
+   "utc": "2026-09-25T20:04:16Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-09-16",
+   "days": 5,
+   "rows": 2,
+   "utc": "2026-09-25T20:04:17Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA20_NRT",
+   "chunk_start": "2026-09-21",
+   "days": 5,
+   "rows": 6,
+   "utc": "2026-09-25T20:04:18Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-09-11",
+   "days": 5,
+   "rows": 5,
+   "utc": "2026-09-25T20:04:19Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-09-16",
+   "days": 5,
+   "rows": 6,
+   "utc": "2026-09-25T20:04:20Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "VIIRS_NOAA21_NRT",
+   "chunk_start": "2026-09-21",
+   "days": 5,
+   "rows": 0,
+   "utc": "2026-09-25T20:04:21Z",
+   "outcome": "fetched"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-09-11",
+   "days": 5,
+   "rows": 1,
+   "utc": "2026-09-25T20:04:23Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-09-16",
+   "days": 5,
+   "rows": 0,
+   "utc": "2026-09-25T20:04:24Z",
+   "outcome": "cached"
+  },
+  {
+   "source": "MODIS_NRT",
+   "chunk_start": "2026-09-21",
+   "days": 5,
+   "rows": 0,
+   "utc": "2026-09-25T20:04:25Z",
+   "outcome": "fetched"
   }
  ]
 }

@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
- "generated_utc": "2026-09-24T20:02:47Z",
- "covered_wit_date": "2026-09-24",
+ "generated_utc": "2026-09-25T20:04:27Z",
+ "covered_wit_date": "2026-09-25",
  "features": [
   {
    "type": "Feature",
@@ -263,39 +263,6 @@
     "desa": "Imbirsbari",
     "distrik": "Kepulauan Aruri",
     "kabupaten": "Supiori",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     135.98755,
-     -1.13565
-    ]
-   },
-   "properties": {
-    "detection_id": "8606da529d39ae1f0a3d4883c41f0778499ad6ba",
-    "bright_ti4": "301.88",
-    "scan": "0.42",
-    "track": "0.38",
-    "acq_date": "2026-09-17",
-    "acq_time": "1628",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "285.64",
-    "frp": 0.61,
-    "daynight": "N",
-    "datetime_utc": "2026-09-17T16:28:00+00:00",
-    "datetime_wit": "2026-09-18T01:28:00+09:00",
-    "date_wit": "2026-09-18",
-    "desa": "Adoki",
-    "distrik": "Yendidori",
-    "kabupaten": "Biak Numfor",
     "on_land": true,
     "recurrent_site": false
    }
