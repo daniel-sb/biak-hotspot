@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
- "generated_utc": "2026-09-25T20:04:27Z",
- "covered_wit_date": "2026-09-25",
+ "generated_utc": "2026-09-26T19:16:41Z",
+ "covered_wit_date": "2026-09-26",
  "features": [
   {
    "type": "Feature",
@@ -361,39 +361,6 @@
     "date_wit": "2026-09-21",
     "desa": "Waroi",
     "distrik": "Yendidori",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     135.88991,
-     -1.09963
-    ]
-   },
-   "properties": {
-    "detection_id": "b74862744d0d198eb4f215acca6fdfed4b896c17",
-    "bright_ti4": "341.3",
-    "scan": "0.43",
-    "track": "0.46",
-    "acq_date": "2026-09-19",
-    "acq_time": "406",
-    "satellite": "N20",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "289.47",
-    "frp": 7.11,
-    "daynight": "D",
-    "datetime_utc": "2026-09-19T04:06:00+00:00",
-    "datetime_wit": "2026-09-19T13:06:00+09:00",
-    "date_wit": "2026-09-19",
-    "desa": "Dousi",
-    "distrik": "Biak Barat",
     "kabupaten": "Biak Numfor",
     "on_land": true,
     "recurrent_site": false
