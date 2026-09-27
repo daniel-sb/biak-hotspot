@@ -1,7 +1,7 @@
 {
  "type": "FeatureCollection",
- "generated_utc": "2026-09-26T19:16:41Z",
- "covered_wit_date": "2026-09-26",
+ "generated_utc": "2026-09-27T19:48:52Z",
+ "covered_wit_date": "2026-09-27",
  "features": [
   {
    "type": "Feature",
@@ -293,39 +293,6 @@
     "datetime_utc": "2026-09-21T04:46:00+00:00",
     "datetime_wit": "2026-09-21T13:46:00+09:00",
     "date_wit": "2026-09-21",
-    "desa": "Waroi",
-    "distrik": "Yendidori",
-    "kabupaten": "Biak Numfor",
-    "on_land": true,
-    "recurrent_site": false
-   }
-  },
-  {
-   "type": "Feature",
-   "geometry": {
-    "type": "Point",
-    "coordinates": [
-     135.89214,
-     -1.15688
-    ]
-   },
-   "properties": {
-    "detection_id": "a09945b76015ef6e2e0855018c37f51f31a9a96d",
-    "bright_ti4": "335.29",
-    "scan": "0.42",
-    "track": "0.38",
-    "acq_date": "2026-09-20",
-    "acq_time": "432",
-    "satellite": "N21",
-    "instrument": "VIIRS",
-    "confidence": "n",
-    "version": "2.0NRT",
-    "bright_ti5": "282.47",
-    "frp": 4.06,
-    "daynight": "D",
-    "datetime_utc": "2026-09-20T04:32:00+00:00",
-    "datetime_wit": "2026-09-20T13:32:00+09:00",
-    "date_wit": "2026-09-20",
     "desa": "Waroi",
     "distrik": "Yendidori",
     "kabupaten": "Biak Numfor",
