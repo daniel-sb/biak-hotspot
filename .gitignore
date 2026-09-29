@@ -122,3 +122,12 @@ Analyisis_of_Drought_in_*.pdf
 # the GeoJSON the project is assembled from; inlined on the way in,
 # so the folder is scratch and can be rebuilt at any time
 geolibre_data/
+
+# Hand-labelling package (scripts/label_prepare.py, scripts/label_qgis_project.py).
+# The 1 m imagery is 200 MB of S2DR4 model output and the project file rebuilds
+# from the script; the GeoPackage holds the labels themselves, so it is tracked.
+data/labels/imagery/
+data/labels/*.qgz
+!data/labels/biak_labels.gpkg
+# SAM pilot scores, collected from the gitignored Colab result folders.
+!data/processed/sam_pilot.json
