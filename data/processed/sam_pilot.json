@@ -2,50 +2,50 @@
  "best_per_prompt_type": {
   "E0301|boxes": {
    "best_run": "E0301|tci|box_one_box",
-   "iou": 0.113,
-   "margin": -0.619,
+   "iou": 0.112,
+   "margin": -0.62,
    "trivial_iou": 0.732,
    "verdict": "below_trivial"
   },
   "E0301|langsam": {
-   "best_run": "E0301|swir|lang:bare soil",
-   "iou": 0.732,
-   "margin": 0.0,
+   "best_run": "E0301|swir|lang:dark patch of land",
+   "iou": 0.733,
+   "margin": 0.001,
    "trivial_iou": 0.732,
    "verdict": "ties_trivial"
   },
   "E0301|points": {
-   "best_run": "E0301|swir|points",
+   "best_run": "E0301|swir_old|points",
    "iou": 0.732,
    "margin": 0.0,
    "trivial_iou": 0.732,
    "verdict": "ties_trivial"
   },
   "E0313|boxes": {
-   "best_run": "E0313|swir|box_one_box",
+   "best_run": "E0313|swir_old|box_one_box",
    "iou": 0.457,
    "margin": -0.123,
    "trivial_iou": 0.58,
    "verdict": "below_trivial"
   },
   "E0313|langsam": {
-   "best_run": "E0313|tci|lang:bare soil",
-   "iou": 0.57,
-   "margin": -0.01,
+   "best_run": "E0313|swir|lang:bare soil",
+   "iou": 0.578,
+   "margin": -0.002,
    "trivial_iou": 0.58,
-   "verdict": "below_trivial"
+   "verdict": "ties_trivial"
   },
   "E0313|points": {
-   "best_run": "E0313|tci|points",
-   "iou": 0.582,
-   "margin": 0.002,
+   "best_run": "E0313|swir|points",
+   "iou": 0.585,
+   "margin": 0.005,
    "trivial_iou": 0.58,
    "verdict": "ties_trivial"
   },
   "E0368|boxes": {
-   "best_run": "E0368|tci|box_per_detection",
-   "iou": 0.005,
-   "margin": -0.303,
+   "best_run": "E0368|swir|box_one_box",
+   "iou": 0.004,
+   "margin": -0.304,
    "trivial_iou": 0.308,
    "verdict": "below_trivial"
   },
@@ -57,7 +57,7 @@
    "verdict": "ties_trivial"
   },
   "E0368|points": {
-   "best_run": "E0368|swir|points",
+   "best_run": "E0368|swir_old|points",
    "iou": 0.307,
    "margin": -0.001,
    "trivial_iou": 0.308,
@@ -102,45 +102,73 @@
  "runs": {
   "boxes": {
    "result": {
-    "E0301|swir|box_one_box": {
+    "E0301|swir_old|box_one_box": {
      "dnbr_ha_in_footprint": 253.5,
      "iou": 0.033,
      "recall_of_dnbr": 0.034,
-     "sam_ha_in_footprint": 17.0,
+     "sam_ha_in_footprint": 16.9,
      "sam_ha_outside_footprint": 1.3
     },
-    "E0301|swir|box_per_detection": {
+    "E0301|swir_old|box_per_detection": {
      "error": "ValueError: No masks found. Please run generate_masks() first."
+    },
+    "E0301|swir|box_one_box": {
+     "dnbr_ha_in_footprint": 253.5,
+     "iou": 0.024,
+     "recall_of_dnbr": 0.024,
+     "sam_ha_in_footprint": 9.7,
+     "sam_ha_outside_footprint": 0.0
+    },
+    "E0301|swir|box_per_detection": {
+     "dnbr_ha_in_footprint": 253.5,
+     "iou": 0.011,
+     "recall_of_dnbr": 0.011,
+     "sam_ha_in_footprint": 2.8,
+     "sam_ha_outside_footprint": 0.0
     },
     "E0301|tci|box_one_box": {
      "dnbr_ha_in_footprint": 253.5,
-     "iou": 0.113,
+     "iou": 0.112,
      "recall_of_dnbr": 0.116,
-     "sam_ha_in_footprint": 38.0,
+     "sam_ha_in_footprint": 37.9,
      "sam_ha_outside_footprint": 0.0
     },
     "E0301|tci|box_per_detection": {
      "error": "ValueError: No masks found. Please run generate_masks() first."
     },
-    "E0313|swir|box_one_box": {
+    "E0313|swir_old|box_one_box": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.457,
-     "recall_of_dnbr": 0.516,
-     "sam_ha_in_footprint": 94.5,
-     "sam_ha_outside_footprint": 12.8
+     "recall_of_dnbr": 0.513,
+     "sam_ha_in_footprint": 93.3,
+     "sam_ha_outside_footprint": 12.9
     },
-    "E0313|swir|box_per_detection": {
+    "E0313|swir_old|box_per_detection": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.0,
      "recall_of_dnbr": 0.0,
      "sam_ha_in_footprint": 0.0,
      "sam_ha_outside_footprint": 0.0
     },
+    "E0313|swir|box_one_box": {
+     "dnbr_ha_in_footprint": 146.5,
+     "iou": 0.056,
+     "recall_of_dnbr": 0.057,
+     "sam_ha_in_footprint": 8.5,
+     "sam_ha_outside_footprint": 9.9
+    },
+    "E0313|swir|box_per_detection": {
+     "dnbr_ha_in_footprint": 146.5,
+     "iou": 0.003,
+     "recall_of_dnbr": 0.003,
+     "sam_ha_in_footprint": 0.5,
+     "sam_ha_outside_footprint": 0.0
+    },
     "E0313|tci|box_one_box": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.108,
      "recall_of_dnbr": 0.11,
-     "sam_ha_in_footprint": 18.8,
+     "sam_ha_in_footprint": 18.9,
      "sam_ha_outside_footprint": 13.9
     },
     "E0313|tci|box_per_detection": {
@@ -150,15 +178,33 @@
      "sam_ha_in_footprint": 0.4,
      "sam_ha_outside_footprint": 0.0
     },
-    "E0368|swir|box_one_box": {
+    "E0368|swir_old|box_one_box": {
      "dnbr_ha_in_footprint": 80.6,
      "iou": 0.002,
      "recall_of_dnbr": 0.002,
      "sam_ha_in_footprint": 3.8,
      "sam_ha_outside_footprint": 1.3
     },
+    "E0368|swir_old|box_per_detection": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.001,
+     "recall_of_dnbr": 0.001,
+     "sam_ha_in_footprint": 1.2,
+     "sam_ha_outside_footprint": 0.0
+    },
+    "E0368|swir|box_one_box": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.004,
+     "recall_of_dnbr": 0.004,
+     "sam_ha_in_footprint": 3.6,
+     "sam_ha_outside_footprint": 2.1
+    },
     "E0368|swir|box_per_detection": {
-     "error": "ValueError: No masks found. Please run generate_masks() first."
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.001,
+     "recall_of_dnbr": 0.001,
+     "sam_ha_in_footprint": 0.2,
+     "sam_ha_outside_footprint": 0.0
     },
     "E0368|tci|box_one_box": {
      "dnbr_ha_in_footprint": 80.6,
@@ -169,17 +215,17 @@
     },
     "E0368|tci|box_per_detection": {
      "dnbr_ha_in_footprint": 80.6,
-     "iou": 0.005,
-     "recall_of_dnbr": 0.005,
-     "sam_ha_in_footprint": 1.7,
+     "iou": 0.004,
+     "recall_of_dnbr": 0.004,
+     "sam_ha_in_footprint": 1.5,
      "sam_ha_outside_footprint": 0.0
     }
    },
-   "source": "data/raw/sam3_results_2/sam3_box_scores.json"
+   "source": "data/raw/sam3_results (3)/sam3_box_scores.json"
   },
   "langsam": {
    "result": {
-    "E0301|swir|lang:bare soil": {
+    "E0301|swir_old|lang:bare soil": {
      "dnbr_ha_in_footprint": 253.5,
      "iou": 0.732,
      "n_boxes": 1,
@@ -187,7 +233,7 @@
      "sam_ha_in_footprint": 346.3,
      "sam_ha_outside_footprint": 73.1
     },
-    "E0301|swir|lang:building": {
+    "E0301|swir_old|lang:building": {
      "dnbr_ha_in_footprint": 253.5,
      "iou": 0.732,
      "n_boxes": 1,
@@ -195,7 +241,7 @@
      "sam_ha_in_footprint": 346.3,
      "sam_ha_outside_footprint": 73.1
     },
-    "E0301|swir|lang:burn scar": {
+    "E0301|swir_old|lang:burn scar": {
      "dnbr_ha_in_footprint": 253.5,
      "iou": 0.732,
      "n_boxes": 4,
@@ -203,45 +249,109 @@
      "sam_ha_in_footprint": 346.3,
      "sam_ha_outside_footprint": 73.1
     },
-    "E0301|swir|lang:burned area": {
+    "E0301|swir_old|lang:burned area": {
+     "dnbr_ha_in_footprint": 253.5,
+     "iou": 0.732,
+     "n_boxes": 1,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 346.3,
+     "sam_ha_outside_footprint": 73.1
+    },
+    "E0301|swir_old|lang:burnt land": {
+     "dnbr_ha_in_footprint": 253.5,
+     "iou": 0.732,
+     "n_boxes": 1,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 346.3,
+     "sam_ha_outside_footprint": 73.1
+    },
+    "E0301|swir_old|lang:cleared land": {
      "dnbr_ha_in_footprint": 253.5,
      "iou": 0.732,
      "n_boxes": 2,
      "recall_of_dnbr": 1.0,
      "sam_ha_in_footprint": 346.3,
      "sam_ha_outside_footprint": 73.1
+    },
+    "E0301|swir_old|lang:dark patch of land": {
+     "dnbr_ha_in_footprint": 253.5,
+     "iou": 0.732,
+     "n_boxes": 2,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 346.3,
+     "sam_ha_outside_footprint": 73.1
+    },
+    "E0301|swir_old|lang:tree": {
+     "dnbr_ha_in_footprint": 253.5,
+     "iou": 0.732,
+     "n_boxes": 1,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 346.3,
+     "sam_ha_outside_footprint": 73.1
+    },
+    "E0301|swir|lang:bare soil": {
+     "dnbr_ha_in_footprint": 253.5,
+     "iou": 0.732,
+     "n_boxes": 1,
+     "recall_of_dnbr": 0.998,
+     "sam_ha_in_footprint": 345.0,
+     "sam_ha_outside_footprint": 69.9
+    },
+    "E0301|swir|lang:building": {
+     "dnbr_ha_in_footprint": 253.5,
+     "iou": 0.732,
+     "n_boxes": 1,
+     "recall_of_dnbr": 0.999,
+     "sam_ha_in_footprint": 345.5,
+     "sam_ha_outside_footprint": 71.1
+    },
+    "E0301|swir|lang:burn scar": {
+     "dnbr_ha_in_footprint": 253.5,
+     "iou": 0.732,
+     "n_boxes": 11,
+     "recall_of_dnbr": 0.999,
+     "sam_ha_in_footprint": 346.0,
+     "sam_ha_outside_footprint": 72.2
+    },
+    "E0301|swir|lang:burned area": {
+     "dnbr_ha_in_footprint": 253.5,
+     "iou": 0.732,
+     "n_boxes": 2,
+     "recall_of_dnbr": 0.999,
+     "sam_ha_in_footprint": 345.9,
+     "sam_ha_outside_footprint": 72.1
     },
     "E0301|swir|lang:burnt land": {
      "dnbr_ha_in_footprint": 253.5,
      "iou": 0.732,
      "n_boxes": 1,
-     "recall_of_dnbr": 1.0,
-     "sam_ha_in_footprint": 346.3,
-     "sam_ha_outside_footprint": 73.1
+     "recall_of_dnbr": 0.999,
+     "sam_ha_in_footprint": 345.5,
+     "sam_ha_outside_footprint": 71.1
     },
     "E0301|swir|lang:cleared land": {
      "dnbr_ha_in_footprint": 253.5,
      "iou": 0.732,
      "n_boxes": 2,
-     "recall_of_dnbr": 1.0,
-     "sam_ha_in_footprint": 346.3,
-     "sam_ha_outside_footprint": 73.1
+     "recall_of_dnbr": 0.999,
+     "sam_ha_in_footprint": 345.9,
+     "sam_ha_outside_footprint": 72.1
     },
     "E0301|swir|lang:dark patch of land": {
      "dnbr_ha_in_footprint": 253.5,
-     "iou": 0.732,
-     "n_boxes": 2,
-     "recall_of_dnbr": 1.0,
-     "sam_ha_in_footprint": 346.3,
-     "sam_ha_outside_footprint": 73.1
+     "iou": 0.733,
+     "n_boxes": 5,
+     "recall_of_dnbr": 0.996,
+     "sam_ha_in_footprint": 343.5,
+     "sam_ha_outside_footprint": 65.7
     },
     "E0301|swir|lang:tree": {
      "dnbr_ha_in_footprint": 253.5,
      "iou": 0.732,
      "n_boxes": 1,
-     "recall_of_dnbr": 1.0,
-     "sam_ha_in_footprint": 346.3,
-     "sam_ha_outside_footprint": 73.1
+     "recall_of_dnbr": 0.999,
+     "sam_ha_in_footprint": 345.5,
+     "sam_ha_outside_footprint": 71.1
     },
     "E0301|tci|lang:bare soil": {
      "dnbr_ha_in_footprint": 253.5,
@@ -307,7 +417,7 @@
      "sam_ha_in_footprint": 345.8,
      "sam_ha_outside_footprint": 72.1
     },
-    "E0313|swir|lang:bare soil": {
+    "E0313|swir_old|lang:bare soil": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.287,
      "n_boxes": 1,
@@ -315,7 +425,7 @@
      "sam_ha_in_footprint": 78.3,
      "sam_ha_outside_footprint": 144.0
     },
-    "E0313|swir|lang:building": {
+    "E0313|swir_old|lang:building": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.287,
      "n_boxes": 1,
@@ -323,7 +433,7 @@
      "sam_ha_in_footprint": 78.3,
      "sam_ha_outside_footprint": 144.0
     },
-    "E0313|swir|lang:burn scar": {
+    "E0313|swir_old|lang:burn scar": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.297,
      "n_boxes": 7,
@@ -331,7 +441,7 @@
      "sam_ha_in_footprint": 81.9,
      "sam_ha_outside_footprint": 144.0
     },
-    "E0313|swir|lang:burned area": {
+    "E0313|swir_old|lang:burned area": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.282,
      "n_boxes": 3,
@@ -339,23 +449,23 @@
      "sam_ha_in_footprint": 89.8,
      "sam_ha_outside_footprint": 144.0
     },
-    "E0313|swir|lang:burnt land": {
+    "E0313|swir_old|lang:burnt land": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.287,
      "n_boxes": 2,
-     "recall_of_dnbr": 0.342,
-     "sam_ha_in_footprint": 78.3,
+     "recall_of_dnbr": 0.343,
+     "sam_ha_in_footprint": 78.4,
      "sam_ha_outside_footprint": 144.0
     },
-    "E0313|swir|lang:cleared land": {
+    "E0313|swir_old|lang:cleared land": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.546,
      "n_boxes": 4,
-     "recall_of_dnbr": 0.942,
+     "recall_of_dnbr": 0.941,
      "sam_ha_in_footprint": 244.0,
      "sam_ha_outside_footprint": 162.4
     },
-    "E0313|swir|lang:dark patch of land": {
+    "E0313|swir_old|lang:dark patch of land": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.294,
      "n_boxes": 3,
@@ -363,13 +473,77 @@
      "sam_ha_in_footprint": 79.5,
      "sam_ha_outside_footprint": 144.0
     },
-    "E0313|swir|lang:tree": {
+    "E0313|swir_old|lang:tree": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.289,
      "n_boxes": 4,
      "recall_of_dnbr": 0.345,
      "sam_ha_in_footprint": 79.1,
      "sam_ha_outside_footprint": 144.0
+    },
+    "E0313|swir|lang:bare soil": {
+     "dnbr_ha_in_footprint": 146.5,
+     "iou": 0.578,
+     "n_boxes": 4,
+     "recall_of_dnbr": 0.96,
+     "sam_ha_in_footprint": 237.2,
+     "sam_ha_outside_footprint": 163.5
+    },
+    "E0313|swir|lang:building": {
+     "dnbr_ha_in_footprint": 146.5,
+     "iou": 0.302,
+     "n_boxes": 11,
+     "recall_of_dnbr": 0.38,
+     "sam_ha_in_footprint": 93.5,
+     "sam_ha_outside_footprint": 145.0
+    },
+    "E0313|swir|lang:burn scar": {
+     "dnbr_ha_in_footprint": 146.5,
+     "iou": 0.573,
+     "n_boxes": 17,
+     "recall_of_dnbr": 0.952,
+     "sam_ha_in_footprint": 236.2,
+     "sam_ha_outside_footprint": 163.2
+    },
+    "E0313|swir|lang:burned area": {
+     "dnbr_ha_in_footprint": 146.5,
+     "iou": 0.564,
+     "n_boxes": 8,
+     "recall_of_dnbr": 0.973,
+     "sam_ha_in_footprint": 248.8,
+     "sam_ha_outside_footprint": 163.6
+    },
+    "E0313|swir|lang:burnt land": {
+     "dnbr_ha_in_footprint": 146.5,
+     "iou": 0.557,
+     "n_boxes": 5,
+     "recall_of_dnbr": 0.961,
+     "sam_ha_in_footprint": 246.7,
+     "sam_ha_outside_footprint": 163.1
+    },
+    "E0313|swir|lang:cleared land": {
+     "dnbr_ha_in_footprint": 146.5,
+     "iou": 0.555,
+     "n_boxes": 5,
+     "recall_of_dnbr": 0.957,
+     "sam_ha_in_footprint": 246.3,
+     "sam_ha_outside_footprint": 163.0
+    },
+    "E0313|swir|lang:dark patch of land": {
+     "dnbr_ha_in_footprint": 146.5,
+     "iou": 0.576,
+     "n_boxes": 8,
+     "recall_of_dnbr": 0.955,
+     "sam_ha_in_footprint": 236.3,
+     "sam_ha_outside_footprint": 163.1
+    },
+    "E0313|swir|lang:tree": {
+     "dnbr_ha_in_footprint": 146.5,
+     "iou": 0.552,
+     "n_boxes": 3,
+     "recall_of_dnbr": 0.95,
+     "sam_ha_in_footprint": 244.4,
+     "sam_ha_outside_footprint": 162.7
     },
     "E0313|tci|lang:bare soil": {
      "dnbr_ha_in_footprint": 146.5,
@@ -382,7 +556,7 @@
     "E0313|tci|lang:building": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.008,
-     "n_boxes": 10,
+     "n_boxes": 9,
      "recall_of_dnbr": 0.008,
      "sam_ha_in_footprint": 9.9,
      "sam_ha_outside_footprint": 0.0
@@ -398,33 +572,33 @@
     "E0313|tci|lang:burned area": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.531,
-     "n_boxes": 4,
+     "n_boxes": 5,
      "recall_of_dnbr": 0.91,
      "sam_ha_in_footprint": 237.9,
      "sam_ha_outside_footprint": 162.2
     },
     "E0313|tci|lang:burnt land": {
      "dnbr_ha_in_footprint": 146.5,
-     "iou": 0.532,
+     "iou": 0.531,
      "n_boxes": 4,
      "recall_of_dnbr": 0.911,
-     "sam_ha_in_footprint": 238.0,
+     "sam_ha_in_footprint": 238.1,
      "sam_ha_outside_footprint": 162.2
     },
     "E0313|tci|lang:cleared land": {
      "dnbr_ha_in_footprint": 146.5,
-     "iou": 0.532,
+     "iou": 0.533,
      "n_boxes": 4,
      "recall_of_dnbr": 0.913,
-     "sam_ha_in_footprint": 238.3,
+     "sam_ha_in_footprint": 238.4,
      "sam_ha_outside_footprint": 162.2
     },
     "E0313|tci|lang:dark patch of land": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.544,
      "n_boxes": 4,
-     "recall_of_dnbr": 0.901,
-     "sam_ha_in_footprint": 228.4,
+     "recall_of_dnbr": 0.902,
+     "sam_ha_in_footprint": 228.5,
      "sam_ha_outside_footprint": 162.2
     },
     "E0313|tci|lang:tree": {
@@ -433,17 +607,9 @@
      "n_boxes": 4,
      "recall_of_dnbr": 0.313,
      "sam_ha_in_footprint": 74.1,
-     "sam_ha_outside_footprint": 143.6
+     "sam_ha_outside_footprint": 143.5
     },
-    "E0368|swir|lang:bare soil": {
-     "dnbr_ha_in_footprint": 80.6,
-     "iou": 0.307,
-     "n_boxes": 1,
-     "recall_of_dnbr": 1.0,
-     "sam_ha_in_footprint": 262.0,
-     "sam_ha_outside_footprint": 157.2
-    },
-    "E0368|swir|lang:building": {
+    "E0368|swir_old|lang:bare soil": {
      "dnbr_ha_in_footprint": 80.6,
      "iou": 0.307,
      "n_boxes": 1,
@@ -451,7 +617,15 @@
      "sam_ha_in_footprint": 262.0,
      "sam_ha_outside_footprint": 157.3
     },
-    "E0368|swir|lang:burn scar": {
+    "E0368|swir_old|lang:building": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.307,
+     "n_boxes": 1,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 262.0,
+     "sam_ha_outside_footprint": 157.3
+    },
+    "E0368|swir_old|lang:burn scar": {
      "dnbr_ha_in_footprint": 80.6,
      "iou": 0.307,
      "n_boxes": 5,
@@ -459,39 +633,15 @@
      "sam_ha_in_footprint": 262.0,
      "sam_ha_outside_footprint": 157.3
     },
-    "E0368|swir|lang:burned area": {
+    "E0368|swir_old|lang:burned area": {
      "dnbr_ha_in_footprint": 80.6,
      "iou": 0.307,
      "n_boxes": 2,
      "recall_of_dnbr": 1.0,
      "sam_ha_in_footprint": 262.0,
-     "sam_ha_outside_footprint": 157.2
+     "sam_ha_outside_footprint": 157.3
     },
-    "E0368|swir|lang:burnt land": {
-     "dnbr_ha_in_footprint": 80.6,
-     "iou": 0.307,
-     "n_boxes": 1,
-     "recall_of_dnbr": 1.0,
-     "sam_ha_in_footprint": 262.0,
-     "sam_ha_outside_footprint": 157.2
-    },
-    "E0368|swir|lang:cleared land": {
-     "dnbr_ha_in_footprint": 80.6,
-     "iou": 0.307,
-     "n_boxes": 2,
-     "recall_of_dnbr": 1.0,
-     "sam_ha_in_footprint": 262.0,
-     "sam_ha_outside_footprint": 157.2
-    },
-    "E0368|swir|lang:dark patch of land": {
-     "dnbr_ha_in_footprint": 80.6,
-     "iou": 0.307,
-     "n_boxes": 3,
-     "recall_of_dnbr": 1.0,
-     "sam_ha_in_footprint": 262.0,
-     "sam_ha_outside_footprint": 157.2
-    },
-    "E0368|swir|lang:tree": {
+    "E0368|swir_old|lang:burnt land": {
      "dnbr_ha_in_footprint": 80.6,
      "iou": 0.307,
      "n_boxes": 1,
@@ -499,10 +649,98 @@
      "sam_ha_in_footprint": 262.0,
      "sam_ha_outside_footprint": 157.3
     },
+    "E0368|swir_old|lang:cleared land": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.307,
+     "n_boxes": 2,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 262.0,
+     "sam_ha_outside_footprint": 157.2
+    },
+    "E0368|swir_old|lang:dark patch of land": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.307,
+     "n_boxes": 3,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 262.0,
+     "sam_ha_outside_footprint": 157.2
+    },
+    "E0368|swir_old|lang:tree": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.307,
+     "n_boxes": 1,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 262.0,
+     "sam_ha_outside_footprint": 157.2
+    },
+    "E0368|swir|lang:bare soil": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.308,
+     "n_boxes": 2,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 261.9,
+     "sam_ha_outside_footprint": 157.1
+    },
+    "E0368|swir|lang:building": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.308,
+     "n_boxes": 1,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 261.9,
+     "sam_ha_outside_footprint": 157.2
+    },
+    "E0368|swir|lang:burn scar": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.308,
+     "n_boxes": 10,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 261.9,
+     "sam_ha_outside_footprint": 157.1
+    },
+    "E0368|swir|lang:burned area": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.308,
+     "n_boxes": 2,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 261.9,
+     "sam_ha_outside_footprint": 157.1
+    },
+    "E0368|swir|lang:burnt land": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.308,
+     "n_boxes": 1,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 261.9,
+     "sam_ha_outside_footprint": 157.1
+    },
+    "E0368|swir|lang:cleared land": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.308,
+     "n_boxes": 4,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 261.9,
+     "sam_ha_outside_footprint": 157.1
+    },
+    "E0368|swir|lang:dark patch of land": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.308,
+     "n_boxes": 7,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 261.9,
+     "sam_ha_outside_footprint": 157.0
+    },
+    "E0368|swir|lang:tree": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.308,
+     "n_boxes": 2,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 261.9,
+     "sam_ha_outside_footprint": 157.3
+    },
     "E0368|tci|lang:bare soil": {
      "dnbr_ha_in_footprint": 80.6,
      "iou": 0.31,
-     "n_boxes": 3,
+     "n_boxes": 4,
      "recall_of_dnbr": 0.997,
      "sam_ha_in_footprint": 258.6,
      "sam_ha_outside_footprint": 157.3
@@ -520,7 +758,7 @@
      "iou": 0.31,
      "n_boxes": 8,
      "recall_of_dnbr": 0.997,
-     "sam_ha_in_footprint": 258.6,
+     "sam_ha_in_footprint": 258.7,
      "sam_ha_outside_footprint": 157.2
     },
     "E0368|tci|lang:burned area": {
@@ -552,7 +790,7 @@
      "iou": 0.31,
      "n_boxes": 8,
      "recall_of_dnbr": 0.997,
-     "sam_ha_in_footprint": 258.6,
+     "sam_ha_in_footprint": 258.7,
      "sam_ha_outside_footprint": 157.3
     },
     "E0368|tci|lang:tree": {
@@ -564,10 +802,17 @@
      "sam_ha_outside_footprint": 157.2
     }
    },
-   "source": "data/raw/sam3_results_2/sam3_lang_scores.json"
+   "source": "data/raw/sam3_results (3)/sam3_lang_scores.json"
   },
   "points": {
    "result": {
+    "E0301|swir_old|points": {
+     "dnbr_ha_in_footprint": 253.5,
+     "iou": 0.732,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 346.4,
+     "sam_ha_outside_footprint": 73.1
+    },
     "E0301|swir|points": {
      "dnbr_ha_in_footprint": 253.5,
      "iou": 0.732,
@@ -582,11 +827,18 @@
      "sam_ha_in_footprint": 346.4,
      "sam_ha_outside_footprint": 73.1
     },
-    "E0313|swir|points": {
+    "E0313|swir_old|points": {
      "dnbr_ha_in_footprint": 146.5,
      "iou": 0.579,
      "recall_of_dnbr": 1.0,
      "sam_ha_in_footprint": 253.1,
+     "sam_ha_outside_footprint": 166.4
+    },
+    "E0313|swir|points": {
+     "dnbr_ha_in_footprint": 146.5,
+     "iou": 0.585,
+     "recall_of_dnbr": 0.992,
+     "sam_ha_in_footprint": 247.2,
      "sam_ha_outside_footprint": 166.4
     },
     "E0313|tci|points": {
@@ -595,6 +847,13 @@
      "recall_of_dnbr": 0.991,
      "sam_ha_in_footprint": 248.4,
      "sam_ha_outside_footprint": 166.4
+    },
+    "E0368|swir_old|points": {
+     "dnbr_ha_in_footprint": 80.6,
+     "iou": 0.307,
+     "recall_of_dnbr": 1.0,
+     "sam_ha_in_footprint": 262.0,
+     "sam_ha_outside_footprint": 157.4
     },
     "E0368|swir|points": {
      "dnbr_ha_in_footprint": 80.6,
@@ -611,10 +870,23 @@
      "sam_ha_outside_footprint": 157.4
     }
    },
-   "source": "data/raw/sam3_results_2/sam3_point_scores.json"
+   "source": "data/raw/sam3_results (3)/sam3_point_scores.json"
   },
   "words": {
    "result": {
+    "E0301|swir_old|ash": 0,
+    "E0301|swir_old|black soil": 0,
+    "E0301|swir_old|brown field": 0,
+    "E0301|swir_old|building": 0,
+    "E0301|swir_old|burn scar": 0,
+    "E0301|swir_old|burned area": 0,
+    "E0301|swir_old|burnt land": 0,
+    "E0301|swir_old|charred ground": 0,
+    "E0301|swir_old|cleared land": 0,
+    "E0301|swir_old|dry grass": 0,
+    "E0301|swir_old|farm field": 0,
+    "E0301|swir_old|fire scar": 0,
+    "E0301|swir_old|tree": 0,
     "E0301|swir|ash": 0,
     "E0301|swir|black soil": 0,
     "E0301|swir|brown field": 0,
@@ -625,7 +897,7 @@
     "E0301|swir|charred ground": 0,
     "E0301|swir|cleared land": 0,
     "E0301|swir|dry grass": 0,
-    "E0301|swir|farm field": 0,
+    "E0301|swir|farm field": 1,
     "E0301|swir|fire scar": 0,
     "E0301|swir|tree": 0,
     "E0301|tci|ash": 0,
@@ -641,23 +913,36 @@
     "E0301|tci|farm field": 1,
     "E0301|tci|fire scar": 0,
     "E0301|tci|tree": 2,
+    "E0313|swir_old|ash": 0,
+    "E0313|swir_old|black soil": 0,
+    "E0313|swir_old|brown field": 0,
+    "E0313|swir_old|building": 11,
+    "E0313|swir_old|burn scar": 0,
+    "E0313|swir_old|burned area": 0,
+    "E0313|swir_old|burnt land": 0,
+    "E0313|swir_old|charred ground": 0,
+    "E0313|swir_old|cleared land": 0,
+    "E0313|swir_old|dry grass": 0,
+    "E0313|swir_old|farm field": 0,
+    "E0313|swir_old|fire scar": 0,
+    "E0313|swir_old|tree": 0,
     "E0313|swir|ash": 0,
     "E0313|swir|black soil": 0,
-    "E0313|swir|brown field": 0,
-    "E0313|swir|building": 10,
+    "E0313|swir|brown field": 9,
+    "E0313|swir|building": 24,
     "E0313|swir|burn scar": 0,
     "E0313|swir|burned area": 0,
     "E0313|swir|burnt land": 0,
     "E0313|swir|charred ground": 0,
     "E0313|swir|cleared land": 0,
     "E0313|swir|dry grass": 0,
-    "E0313|swir|farm field": 0,
+    "E0313|swir|farm field": 3,
     "E0313|swir|fire scar": 0,
     "E0313|swir|tree": 0,
     "E0313|tci|ash": 0,
     "E0313|tci|black soil": 0,
     "E0313|tci|brown field": 4,
-    "E0313|tci|building": 24,
+    "E0313|tci|building": 25,
     "E0313|tci|burn scar": 0,
     "E0313|tci|burned area": 0,
     "E0313|tci|burnt land": 0,
@@ -667,6 +952,19 @@
     "E0313|tci|farm field": 6,
     "E0313|tci|fire scar": 0,
     "E0313|tci|tree": 25,
+    "E0368|swir_old|ash": 0,
+    "E0368|swir_old|black soil": 0,
+    "E0368|swir_old|brown field": 0,
+    "E0368|swir_old|building": 0,
+    "E0368|swir_old|burn scar": 0,
+    "E0368|swir_old|burned area": 0,
+    "E0368|swir_old|burnt land": 0,
+    "E0368|swir_old|charred ground": 0,
+    "E0368|swir_old|cleared land": 0,
+    "E0368|swir_old|dry grass": 0,
+    "E0368|swir_old|farm field": 0,
+    "E0368|swir_old|fire scar": 0,
+    "E0368|swir_old|tree": 0,
     "E0368|swir|ash": 0,
     "E0368|swir|black soil": 0,
     "E0368|swir|brown field": 0,
@@ -677,9 +975,9 @@
     "E0368|swir|charred ground": 0,
     "E0368|swir|cleared land": 0,
     "E0368|swir|dry grass": 0,
-    "E0368|swir|farm field": 0,
+    "E0368|swir|farm field": 1,
     "E0368|swir|fire scar": 0,
-    "E0368|swir|tree": 0,
+    "E0368|swir|tree": 3,
     "E0368|tci|ash": 0,
     "E0368|tci|black soil": 0,
     "E0368|tci|brown field": 0,
@@ -689,12 +987,12 @@
     "E0368|tci|burnt land": 0,
     "E0368|tci|charred ground": 1,
     "E0368|tci|cleared land": 1,
-    "E0368|tci|dry grass": 10,
+    "E0368|tci|dry grass": 8,
     "E0368|tci|farm field": 1,
     "E0368|tci|fire scar": 0,
     "E0368|tci|tree": 0
    },
-   "source": "data/raw/sam3_results_2/sam3_word_counts.json"
+   "source": "data/raw/sam3_results (3)/sam3_word_counts.json"
   }
  },
  "what": "SAM 2.1, SAM 3 and LangSAM asked to delineate burn scars, scored against the Task 18 dNBR+ polygons inside each event's VIIRS footprint."

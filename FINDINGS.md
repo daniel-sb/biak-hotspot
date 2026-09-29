@@ -1009,3 +1009,63 @@ only and no area figure rests on it. Point and box prompts need SAM 3's Meta bac
 requires triton and therefore Linux, so those runs were made on Colab. Three events, one
 date, and prompted inference only: nothing here tests a model trained on labels of this
 ground, which is the open question F11's missing accuracy still needs.
+
+## F19 - Correcting F18: the band order was wrong, and two of its sentences with it (2026-09-30)
+
+`scripts/sam_pilot_collect.py` -> `data/processed/sam_pilot.json`, rerun from
+`notebooks/sam3_biak_colab.ipynb` on 2026-09-29/30. **This supersedes two claims in F18.
+Its main conclusion survives, and now rests on the case that was missing.**
+
+**What was wrong.** S2DR4 writes its ten bands as **B2 B3 B4 B8 B5 B6 B7 B11 B12 B8A** - the
+four 10 m bands first, then the 20 m ones - and labels none of them. Reading them in the
+documented Sentinel-2 order puts NIR in the red channel. Checked on 2026-09-29 against
+native Sentinel-2 medians over water, canopy and burnt ground for the same date and tile:
+band 9 matches B12 to 5%, band 8 matches B11 to 7%, band 10 matches B8A. Every run F18
+labelled "SWIR" therefore used a near-infrared composite, and each channel had also been
+stretched on its own percentiles, which breaks the relation between them. The owner spotted
+it from the colours: vegetation orange where it should be green.
+
+**Correction 1: the untested case was the favourable one.** A true SWIR composite (B12,
+B8A, B4, one fixed reflectance scale) is where a burn scar separates best, and F18 never
+tested it. Saying its conclusion would hold there was an assumption, not a result. The rerun
+covers it, three events, three renderings:
+
+| event | rendering | trivial claim | prompts with masks | points | boxes | LangSAM |
+|---|---|---|---|---|---|---|
+| E0301 | true colour | 0.732 | 3 | 0.732 | 0.112 | 0.732 |
+| E0301 | SWIR | 0.732 | 1 | 0.732 | 0.024 | 0.733 |
+| E0313 | true colour | 0.579 | 3 | 0.582 | 0.108 | 0.570 |
+| E0313 | SWIR | 0.579 | 2 | 0.585 | 0.056 | 0.578 |
+| E0368 | true colour | 0.307 | 4 | 0.307 | 0.004 | 0.310 |
+| E0368 | SWIR | 0.307 | 1 | 0.307 | 0.004 | 0.308 |
+
+**No prompt type beats the trivial claim on any rendering.** Point prompts tie it everywhere,
+LangSAM ties it, box prompts sit below it. F18's headline holds, and it now holds on the
+imagery that gave the method its best chance.
+
+**But the rendering did change the numbers**, which is why the assumption was unsafe. F18's
+best box-prompt figure, 0.457 at E0313, came from the superseded composite; on the corrected
+SWIR the same prompt scores **0.056**, eight times smaller. Box prompts are therefore worse
+than F18 reported, not better.
+
+**Correction 2: "0 masks for all 11 burn-scar wordings" is wrong.** The split is finer:
+
+- **always zero, every event and every rendering:** `burned area`, `burn scar`, `fire scar`,
+  `burnt land`, `ash`, `black soil`. These are the words a person would use for the thing
+  itself, and SAM 3 grounds none of them.
+- **sometimes non-zero:** `brown field` (9 masks at E0313), `dry grass` (8 at E0368),
+  `farm field` (up to 3), `cleared land` and `charred ground` (1 each). These describe a
+  field's appearance rather than the burning, and they return a handful of small objects.
+
+So the right sentence is narrower than F18's: SAM 3 has no grounding for a burn scar as
+such, while phrases about bare or brown ground do fire weakly. It does not change what the
+masks were worth - none of those wordings produced a delineation that beat the trivial
+claim either.
+
+**What F18 keeps.** The 10 m SAM 2.1 results, unaffected: true colour was never wrong there.
+The true-colour runs at 1 m, likewise: `_TCI.tif` is S2DR4's own product and the band bug
+never touched it. The reading also stands, and reads better now: a burn scar is not an
+object, and every prompt type fails on it in its own way.
+
+**Caveat.** Three events, one date, one interpreter of what counts as a burn scar, and
+agreement measured against dNBR+ rather than the ground.

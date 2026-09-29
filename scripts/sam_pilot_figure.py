@@ -45,12 +45,17 @@ PILOT = ROOT / "data/processed/sam_pilot.json"
 TILE = {"E0301": "T53MPU-4e09bbfee", "E0313": "T53MPU-0c59f172e", "E0368": "T53MPU-c501689c0"}
 DESA = {"E0301": "Anjareuw", "E0313": "Yendidori", "E0368": "Insumarires"}
 SIZE = 2048                      # metres, at 1 m per pixel
+# S2DR4 writes B2 B3 B4 B8 B5 B6 B7 B11 B12 B8A and names none of them; checked
+# on 2026-09-29 against native Sentinel-2 over water, canopy and burnt ground.
+SWIR_BANDS = [9, 10, 3]          # B12, B8A, B4
+CEILING = 0.40                   # fixed reflectance scale for all three channels
 to_utm = Transformer.from_crs("EPSG:4326", "EPSG:32753", always_xy=True).transform
 
 
 def stretch(band):
-    lo, hi = np.percentile(band, [2, 98])
-    return np.clip((band - lo) / max(hi - lo, 1e-6), 0, 1)
+    """One fixed scale for every channel: a per-band percentile stretch would
+    break the relation between them and invert how a burn scar reads."""
+    return np.clip(band / 10000.0 / CEILING, 0, 1)
 
 
 def event_data(eid, mem, store, polys):
@@ -63,7 +68,7 @@ def event_data(eid, mem, store, polys):
     with rasterio.open(TILES / tile / f"S2L3Ax10_{tile}-20260828_MS.tif") as r:
         row, col = r.index(cx, cy)
         win = Window(col - SIZE // 2, row - SIZE // 2, SIZE, SIZE)
-        swir = r.read(indexes=[10, 8, 3], window=win).astype("float32")   # B12, B8A, B4
+        swir = r.read(indexes=SWIR_BANDS, window=win).astype("float32")
         transform = r.window_transform(win)
     rgb = np.dstack([stretch(b) for b in swir])
 

@@ -42,7 +42,14 @@ OUT = ROOT / "data/labels"
 IMG = OUT / "imagery"
 GPKG = OUT / "biak_labels.gpkg"
 UTM = "EPSG:32753"
-SWIR_BANDS = [10, 8, 3]          # B12, B8A, B4 in the 10-band S2DR4 MS file
+# S2DR4 writes its ten bands as B2 B3 B4 B8 B5 B6 B7 B11 B12 B8A - the four 10 m
+# bands first, then the 20 m ones - and labels none of them. Checked on 2026-09-29
+# against native Sentinel-2 medians over water, canopy and burnt ground for the same
+# date and tile: band 9 matches B12 to 5%, band 8 matches B11 to 7%, band 10 matches
+# B8A. Reading them in the documented Sentinel-2 order puts NIR in the red channel,
+# which is why an earlier version of this composite showed vegetation orange.
+SWIR_BANDS = [9, 10, 3]          # B12, B8A, B4
+REFLECTANCE_CEILING = 0.40       # fixed for all three channels
 N_PER_STRATUM = 7                # 7 in + 7 out per event = 42 polygons
 MIN_SEP_M = 150.0                # neighbouring pixels are correlated; keep samples apart
 SEED = 20260928
@@ -52,8 +59,11 @@ to_ll = Transformer.from_crs(UTM, "EPSG:4326", always_xy=True).transform
 
 
 def stretch_to_byte(band: np.ndarray) -> np.ndarray:
-    lo, hi = np.percentile(band, [2, 98])
-    return np.clip((band - lo) / max(hi - lo, 1e-6) * 255, 0, 255).astype("uint8")
+    """One fixed scale for every channel. A per-band percentile stretch rescales each
+    band independently, which destroys the relation between them: over a scene that is
+    mostly vegetation it blows a narrow SWIR range up to full red and inverts how a
+    burn scar reads."""
+    return np.clip(band / 10000.0 / REFLECTANCE_CEILING * 255, 0, 255).astype("uint8")
 
 
 def write_imagery(eid: str, tile: str) -> tuple[dict, box]:
