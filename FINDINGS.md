@@ -952,3 +952,60 @@ published FWI test day reproduces to 0.01. The DC day-length factor is
 none is calibrated. The indices describe how weather has dried the fuel. Ranking burning
 days is not predicting them, and nothing here says why any land was burned or who burned
 it.
+
+## F18 - No prompted segmentation model could outline a burn scar, at 10 m or at 1 m (2026-09-29)
+
+`scripts/sam_pilot_collect.py` -> `data/processed/sam_pilot.json`, commit 8a3819f. The runs
+themselves were made on Colab from `notebooks/sam3_biak_colab.ipynb`; the raw result files
+sit under `data/raw/sam3_results*/`, which is gitignored. Three events with 1 m imagery:
+E0301 Anjareuw (142 detections), E0313 Yendidori (41), E0368 Insumarires (31).
+
+**Why this was tested.** Task 18 draws burned area by thresholding dNBR+, and a reader may
+reasonably ask why a segmentation foundation model was not used instead. This answers it
+with numbers rather than an opinion.
+
+**The bar.** Each mask is scored by IoU against the Task 18 dNBR+ polygons inside the
+event's VIIRS footprint. The comparison is against **claiming the whole footprint burned**,
+which scores IoU = dNBR+ area / footprint area: 0.732 for E0301, 0.580 for E0313, 0.308 for
+E0368. A prompt that matches that number carries no information from the model. Results
+within 0.01 of it are recorded as ties, because rasterising the polygons on a 1 m grid moves
+the figure by about that much.
+
+| route | imagery | what happened | best vs the bar |
+|---|---|---|---|
+| SAM 2.1, automatic masks | 10 m | 2-4 objects per whole chip, none containing a detection; 0 after a contrast stretch | no mask |
+| SAM 2.1, point prompts | 10 m | one blob: 924 ha of a 924 ha footprint, plus 1,914 ha outside it | tie |
+| SAM 3, text | 1 m | **0 masks for all 11 burn-scar wordings** | no mask |
+| SAM 3, point prompts | 1 m | mask = 100% of the footprint in all three events | tie |
+| SAM 3, box prompts | 1 m | far too small; best 94.6 ha of 146.5 ha at E0313 | **below** (0.457 vs 0.580) |
+| LangSAM (Grounding DINO + SAM 1) | 1 m | output barely depends on the phrase | tie |
+
+**The text result is the cleanest.** On the same 1 m crops where SAM 3 returned 0 masks for
+`burned area`, `burn scar`, `fire scar`, `burnt land`, `charred ground`, `ash`, `black soil`
+and four more, it returned 25 masks for `tree`, 40 for `building`, 11 for `dry grass`. The
+model works on this imagery; the concept is missing from it.
+
+**LangSAM fails in the most telling way.** At E0301 every phrase scored 0.731-0.732,
+`tree` and `building` included, and the mask areas ran 345.8-346.3 ha against a 346.4 ha
+footprint. At E0368 the same: 258.6-262.0 ha against 262.0 ha. Grounding DINO did propose
+boxes, 1 to 11 of them, but the resulting mask is effectively independent of what was asked
+for. Only E0313 varied with the phrase (9.9-228.4 ha), and its best, `bare soil` at 0.570,
+still sits below the bar.
+
+**Box prompts are the only route that behaved like a segmenter at all**: they selected part
+of the land and rejected the rest, which point prompts never did. They simply selected the
+wrong part, missing half the burned ground at E0313 and nearly all of it at E0368.
+
+**The reading.** A burn scar is not an object. It has no edge a human would trace without
+hesitating, its shape is a mosaic of plots, and what defines it is spectral rather than
+visual. Models built to find objects fail on it in different ways, and raising the
+resolution from 10 m to 1 m did not change that: the failure moved from "cannot see it" to
+"sees everything".
+
+**Caveats.** Agreement here is with dNBR+, not with the ground; neither is a field
+measurement, and this says nothing about whether dNBR+ itself is right. The 1 m imagery is
+Gamma Earth's S2DR4, which is model output, not observation, so it is used for delineation
+only and no area figure rests on it. Point and box prompts need SAM 3's Meta backend, which
+requires triton and therefore Linux, so those runs were made on Colab. Three events, one
+date, and prompted inference only: nothing here tests a model trained on labels of this
+ground, which is the open question F11's missing accuracy still needs.
