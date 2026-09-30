@@ -48,24 +48,51 @@ a small isolated object: those are the parts a super-resolution model invents.
 
 ## The job: one polygon per sample point
 
+**Draw everything first, type afterwards.** The attribute form does not open on this
+machine — QGIS ignores the setting that should make it, whatever that setting is set to —
+so the fields are filled in the attribute table once the drawing is done. It costs nothing:
+two of the four fields fill themselves from the geometry.
+
+### 1. Draw
+
 1. Select **LABELS — draw here**, then toggle editing (the pencil, or Ctrl+E).
 2. Zoom to a sample point. Its `sample_id` is drawn beside it, e.g. `E0313-IN03`.
 3. Draw a polygon around the **homogeneous patch the point sits in**: same tone, same
    texture, bounded by whatever boundary you can actually see — a plot edge, a track, a
-   tree line. Follow the patch, not a fixed shape.
-4. Right-click to finish. The form opens.
-5. Fill it in:
-   - `sample_id` — copy the point's id exactly;
-   - `event_id` — `E0301`, `E0313` or `E0368`;
-   - `class` — `burned`, `unburned` or `unsure`;
-   - `confidence` — `high`, `medium` or `low`;
-   - `notes` — free text, only if something needs saying;
-   - `drawn_on` fills itself with today's date.
-6. Save the layer (Ctrl+S). Do it often; QGIS keeps edits in memory until you do.
+   tree line. Follow the patch, not a fixed shape. **The polygon must contain its sample
+   point**, which is how the script below knows which sample it is.
+4. Right-click to finish. Ignore the empty attributes.
+5. Save often (Ctrl+S). QGIS keeps edits in memory until you do.
 
 Aim for a patch of roughly 0.5 to 3 hectares: big enough to hold several 20 m pixels,
 small enough to stay genuinely uniform. A polygon of one hectare is 100 m by 100 m, which
 is 25 pixels of the product being tested.
+
+### 2. Fill the two bookkeeping fields automatically
+
+Close QGIS, then:
+
+```
+python scripts/label_fill_ids.py --dry-run     # look first
+python scripts/label_fill_ids.py               # write
+```
+
+It reads which sample point each polygon contains and writes `sample_id` and `event_id`.
+It never touches `class` or `confidence`: those are the judgement, and nothing should guess
+them. Polygons holding no point, or two, are reported and left alone.
+
+### 3. Type the judgement
+
+Reopen the project, select LABELS, open the attribute table (**F6**), toggle editing, and
+fill two columns:
+
+- `class` — `burned`, `unburned` or `unsure`;
+- `confidence` — `high`, `medium` or `low`;
+- `notes` — only if something needs saying.
+
+Spelling matters, and `scripts/label_check.py` will catch anything unexpected. The table
+also has a **form view** button at the bottom right, which shows one feature at a time if
+that reads more comfortably than a grid.
 
 ## The rules that keep this honest
 
@@ -94,7 +121,19 @@ python scripts/label_check.py
 ```
 
 It reports how many polygons exist, whether each holds its own sample point, the class
-counts by stratum, and anything malformed. It changes nothing.
+counts by stratum, the polygon sizes, and anything malformed or misspelled. It changes
+nothing.
 
 Partial work is fine — the check tells you what is left. Task 22 can run on fewer than 42
 polygons, it will just say so and carry a wider uncertainty.
+
+## The three scripts, in the order you need them
+
+| script | when | what it does |
+|---|---|---|
+| `scripts/label_prepare.py` | already run | builds the imagery, the sample points and the empty label layer |
+| `scripts/label_fill_ids.py` | after drawing | fills `sample_id` and `event_id` from the point inside each polygon |
+| `scripts/label_check.py` | any time | reports what is there and what is wrong |
+
+`scripts/label_qgis_project.py` rebuilds the `.qgz` itself. It never touches the
+GeoPackage, so polygons already drawn survive a rebuild.

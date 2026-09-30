@@ -24,7 +24,7 @@ from pathlib import Path
 
 from qgis.core import (
     QgsApplication, QgsCoordinateReferenceSystem, QgsDefaultValue,
-    QgsEditorWidgetSetup, QgsFieldConstraints, QgsFillSymbol, QgsLayerTreeGroup,
+    QgsEditFormConfig, QgsEditorWidgetSetup, QgsFieldConstraints, QgsFillSymbol,
     QgsMarkerSymbol, QgsPalLayerSettings, QgsProject, QgsRasterLayer,
     QgsSingleSymbolRenderer, QgsTextBufferSettings, QgsTextFormat,
     QgsVectorLayer, QgsVectorLayerSimpleLabeling,
@@ -68,9 +68,13 @@ def label_with(lyr: QgsVectorLayer, field: str, size: int = 9) -> None:
 
 
 def value_map(lyr: QgsVectorLayer, field: str, mapping: dict) -> None:
+    """A drop-down of allowed values. The config is the classic {label: value}
+    dict: the newer list-of-dicts form is written by some QGIS versions and
+    silently breaks the form on others, and a form whose widget cannot be built
+    never opens at all."""
     idx = lyr.fields().indexOf(field)
     lyr.setEditorWidgetSetup(idx, QgsEditorWidgetSetup(
-        "ValueMap", {"map": [{v: k} for k, v in mapping.items()]}))
+        "ValueMap", {"map": {label: value for value, label in mapping.items()}}))
 
 
 def main() -> int:
@@ -90,15 +94,24 @@ def main() -> int:
     sym = QgsFillSymbol.createSimple({"color": "255,255,0,60", "outline_color": "#ffd400",
                                       "outline_width": "0.6"})
     labels.setRenderer(QgsSingleSymbolRenderer(sym))
+    # Force the attribute form to open when a polygon is finished. QGIS otherwise
+    # follows the global digitising setting, and if that suppresses the form the
+    # polygon is saved with empty fields and nothing says so.
+    form = labels.editFormConfig()
+    form.setSuppress(QgsEditFormConfig.SuppressOff)
+    labels.setEditFormConfig(form)
+
     value_map(labels, "class", CLASSES)
     value_map(labels, "confidence", CONFIDENCE)
     fields = labels.fields()
     labels.setDefaultValueDefinition(fields.indexOf("drawn_on"),
                                      QgsDefaultValue("format_date(now(),'yyyy-MM-dd')"))
+    # Soft, not hard: a hard constraint refuses to save the feature at all, which
+    # is a poor way to learn that a field was missed halfway through a session.
     for required in ("sample_id", "class", "confidence"):
         i = fields.indexOf(required)
         labels.setFieldConstraint(i, QgsFieldConstraints.ConstraintNotNull,
-                                  QgsFieldConstraints.ConstraintStrengthHard)
+                                  QgsFieldConstraints.ConstraintStrengthSoft)
     project.addMapLayer(labels)
 
     # --- what to draw against, all read-only ----------------------------
