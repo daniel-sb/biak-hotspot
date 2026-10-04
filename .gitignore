@@ -131,3 +131,6 @@ data/labels/*.qgz
 !data/labels/biak_labels.gpkg
 # SAM pilot scores, collected from the gitignored Colab result folders.
 !data/processed/sam_pilot.json
+
+# SKP and other administrative drafts: personal paperwork, not project output.
+drafts/

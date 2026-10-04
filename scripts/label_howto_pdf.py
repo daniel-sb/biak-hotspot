@@ -60,7 +60,7 @@ def inline(text: str) -> str:
     return out
 
 
-def to_html(md: str) -> str:
+def to_html(md: str, title: str = "") -> str:
     body: list[str] = []
     lines = md.splitlines()
     i, in_list, in_code = 0, False, False
@@ -129,7 +129,7 @@ def to_html(md: str) -> str:
         body.append("</ol>" if in_list == "ol" else "</ul>")
 
     return (f"<!doctype html><html><head><meta charset='utf-8'>"
-            f"<title>Panduan digitasi label</title><style>{CSS}</style></head>"
+            f"<title>{html.escape(title)}</title><style>{CSS}</style></head>"
             f"<body>{''.join(body)}</body></html>")
 
 
@@ -146,18 +146,20 @@ def find_chrome() -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--src", type=Path, default=SRC, help="markdown to render")
     ap.add_argument("--out", type=Path, default=OUT)
+    ap.add_argument("--title", default="", help="page title, defaults to the file name")
     args = ap.parse_args()
-    if not SRC.exists():
-        raise SystemExit(f"missing {SRC}")
+    if not args.src.exists():
+        raise SystemExit(f"missing {args.src}")
 
-    page = to_html(SRC.read_text(encoding="utf-8"))
+    page = to_html(args.src.read_text(encoding="utf-8"), args.title or args.src.stem)
     with tempfile.TemporaryDirectory() as tmp:
         src_html = Path(tmp) / "howto.html"
         src_html.write_text(page, encoding="utf-8")
+        args.out = args.out.resolve()   # Chrome needs an absolute --print-to-pdf path
         args.out.parent.mkdir(parents=True, exist_ok=True)
-        subprocess.run([find_chrome(), "--headless", "--disable-gpu",
-                        "--no-pdf-header-footer", f"--print-to-pdf={args.out}",
+        subprocess.run([find_chrome(), "--headless", "--disable-gpu", f"--print-to-pdf={args.out}",
                         src_html.as_uri()], check=True, capture_output=True)
     size = args.out.stat().st_size
     print(f"written {args.out.relative_to(ROOT)} ({size / 1024:.0f} KB)")
