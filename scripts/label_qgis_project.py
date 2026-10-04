@@ -77,7 +77,29 @@ def value_map(lyr: QgsVectorLayer, field: str, mapping: dict) -> None:
         "ValueMap", {"map": {label: value for value, label in mapping.items()}}))
 
 
+def annotation_count(qgz: Path) -> int:
+    """Polygon annotations in an existing project file. They live in the .qgz, not
+    in the GeoPackage, so rebuilding the project destroys them - which it did once,
+    on 2026-10-04, losing seven drawn polygons."""
+    import re
+    import zipfile
+    if not qgz.exists():
+        return 0
+    with zipfile.ZipFile(qgz) as z:
+        name = next((n for n in z.namelist() if n.endswith(".qgs")), None)
+        if name is None:
+            return 0
+        xml = z.read(name).decode("utf-8", errors="ignore")
+    return len(re.findall(r'<item type="polygon"', xml))
+
+
 def main() -> int:
+    drawn = annotation_count(OUT)
+    if drawn and "--force" not in sys.argv:
+        raise SystemExit(
+            f"{OUT.name} holds {drawn} polygon annotations, which a rebuild would "
+            "destroy. Run scripts/label_import_annotations.py first, then re-run "
+            "with --force.")
     if not GPKG.exists():
         raise SystemExit(f"run scripts/label_prepare.py first: {GPKG} missing")
 

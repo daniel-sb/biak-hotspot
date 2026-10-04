@@ -52,10 +52,13 @@ SWIR_BANDS = [9, 10, 3]          # B12, B8A, B4
 REFLECTANCE_CEILING = 0.40       # fixed for all three channels
 N_PER_STRATUM = 7                # 7 in + 7 out per event = 42 polygons
 MIN_SEP_M = 150.0                # neighbouring pixels are correlated; keep samples apart
+BOX_M = 60.0                     # label unit: 9 pixels of the 20 m product, small
+                                 # enough to stay one cover type
 SEED = 20260928
 
 to_utm = Transformer.from_crs("EPSG:4326", UTM, always_xy=True).transform
 to_ll = Transformer.from_crs(UTM, "EPSG:4326", always_xy=True).transform
+to_ll_geom = to_ll          # same transform, used on whole geometries
 
 
 def stretch_to_byte(band: np.ndarray) -> np.ndarray:
@@ -64,6 +67,12 @@ def stretch_to_byte(band: np.ndarray) -> np.ndarray:
     mostly vegetation it blows a narrow SWIR range up to full red and inverts how a
     burn scar reads."""
     return np.clip(band / 10000.0 / REFLECTANCE_CEILING * 255, 0, 255).astype("uint8")
+
+
+def bounds_of(eid: str, tile: str):
+    """The tile rectangle in UTM, without rewriting the imagery."""
+    with rasterio.open(TILES / tile / f"S2L3Ax10_{tile}-20260828_MS.tif") as r:
+        return box(*r.bounds)
 
 
 def write_imagery(eid: str, tile: str) -> tuple[dict, box]:
@@ -106,6 +115,7 @@ def sample_points(rng, region, n, min_sep_m, tries=20000):
 
 
 def main() -> int:
+    only_labels = "--labels-only" in sys.argv   # skip the slow imagery rebuild
     IMG.mkdir(parents=True, exist_ok=True)
     import geopandas as gpd
 
@@ -119,7 +129,8 @@ def main() -> int:
     rng = np.random.default_rng(SEED)
     det_rows, fp_rows, sample_rows = [], [], []
     for eid, tile in TILE.items():
-        _, tile_box = write_imagery(eid, tile)
+        tile_box = (bounds_of(eid, tile) if only_labels
+                    else write_imagery(eid, tile)[1])
         ids = [d for d, e in mem.items() if e == eid]
         pts = store[store.detection_id.isin(ids)]
         for r in pts.itertuples():
@@ -150,12 +161,24 @@ def main() -> int:
     samples = gpd.GeoDataFrame(sample_rows, crs="EPSG:4326")
     samples.to_file(GPKG, layer="samples", driver="GPKG")
 
-    labels = gpd.GeoDataFrame(
-        {"sample_id": pd.Series(dtype="str"), "event_id": pd.Series(dtype="str"),
-         "class": pd.Series(dtype="str"), "confidence": pd.Series(dtype="str"),
-         "notes": pd.Series(dtype="str"), "drawn_on": pd.Series(dtype="str")},
-        geometry=gpd.GeoSeries([], crs="EPSG:4326"))
-    labels.to_file(GPKG, layer="labels", driver="GPKG")
+    # One fixed box per sample point, rather than a hand-drawn outline. The sample
+    # location has to come from the random draw, not from where a scar is visible,
+    # or the agreement figure is measured on the easy cases only. A fixed box also
+    # removes the drawing from the job: only the class is a judgement.
+    boxes = []
+    for r in samples.itertuples():
+        x, y = to_utm(r.geometry.x, r.geometry.y)
+        half = BOX_M / 2
+        square = box(x - half, y - half, x + half, y + half)
+        boxes.append({"sample_id": r.sample_id, "event_id": r.event_id,
+                      "sampling": "random_box", "class": None, "confidence": None,
+                      "notes": None, "drawn_on": None,
+                      "geometry": shp_transform(to_ll_geom, square)})
+    labels = gpd.GeoDataFrame(boxes, crs="EPSG:4326")
+    # geometry_type is required: an empty layer written without it lands in the
+    # GeoPackage as "Unknown", and QGIS greys out every digitising tool for a
+    # layer whose geometry type it cannot determine.
+    labels.to_file(GPKG, layer="labels", driver="GPKG", geometry_type="MultiPolygon")
 
     print(f"\n{len(det_rows)} detections, {len(fp_rows)} footprints, {len(samples)} samples")
     print(f"gpkg  {GPKG}")

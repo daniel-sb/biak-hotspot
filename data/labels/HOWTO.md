@@ -46,70 +46,49 @@ The 1 m detail is super-resolved, which means a model generated it from 10 m pix
 the shape of a patch and the contrast between patches. Do not trust a single sharp edge or
 a small isolated object: those are the parts a super-resolution model invents.
 
-## The job: one polygon per sample point
+## The job: judge 42 boxes
 
-**Draw everything first, type afterwards.** The attribute form does not open on this
-machine — QGIS ignores the setting that should make it, whatever that setting is set to —
-so the fields are filled in the attribute table once the drawing is done. It costs nothing:
-two of the four fields fill themselves from the geometry.
+There is nothing to draw. The label layer already holds **42 boxes of 60 x 60 m**, one
+centred on each sample point, 0.36 ha each, which is 9 pixels of the 20 m product being
+tested. Your job is the judgement only: what is inside each box.
 
-### 1. Draw
+Why fixed boxes rather than outlines: the sample location has to come from the random draw.
+Choosing where to draw, by eye, around a scar that is visible turns the reference into a
+collection of obvious cases, and the agreement figure then measures the easy ones only.
 
-1. Select **LABELS — draw here**, then toggle editing (the pencil, or Ctrl+E).
-2. Zoom to a sample point. Its `sample_id` is drawn beside it, e.g. `E0313-IN03`.
-3. Draw a polygon around the **homogeneous patch the point sits in**: same tone, same
-   texture, bounded by whatever boundary you can actually see — a plot edge, a track, a
-   tree line. Follow the patch, not a fixed shape. **The polygon must contain its sample
-   point**, which is how the script below knows which sample it is.
-4. Right-click to finish. Ignore the empty attributes.
-5. Save often (Ctrl+S). QGIS keeps edits in memory until you do.
+1. Open the project, select **LABELS — draw here**, open the attribute table (**F6**).
+2. Toggle editing (**Ctrl+E**).
+3. Click a row, then the **Zoom to feature** button, so the map shows that box.
+4. Fill two columns:
+   - `class` — `burned`, `unburned` or `unsure`;
+   - `confidence` — `high`, `medium` or `low`;
+   - `notes` — only if something needs saying.
+5. Save (**Ctrl+S**) often.
 
-Aim for a patch of roughly 0.5 to 3 hectares: big enough to hold several 20 m pixels,
-small enough to stay genuinely uniform. A polygon of one hectare is 100 m by 100 m, which
-is 25 pixels of the product being tested.
+The table also has a **form view** at the bottom right, which shows one box at a time if
+that reads more comfortably than the grid.
 
-### 2. Fill the two bookkeeping fields automatically
+Spelling matters, and `scripts/label_check.py` catches anything unexpected.
 
-Close QGIS, then:
+### If a box straddles two cover types
 
-```
-python scripts/label_fill_ids.py --dry-run     # look first
-python scripts/label_fill_ids.py               # write
-```
-
-It reads which sample point each polygon contains and writes `sample_id` and `event_id`.
-It never touches `class` or `confidence`: those are the judgement, and nothing should guess
-them. Polygons holding no point, or two, are reported and left alone.
-
-### 3. Type the judgement
-
-Reopen the project, select LABELS, open the attribute table (**F6**), toggle editing, and
-fill two columns:
-
-- `class` — `burned`, `unburned` or `unsure`;
-- `confidence` — `high`, `medium` or `low`;
-- `notes` — only if something needs saying.
-
-Spelling matters, and `scripts/label_check.py` will catch anything unexpected. The table
-also has a **form view** button at the bottom right, which shows one feature at a time if
-that reads more comfortably than a grid.
+Judge what covers most of it. If it is close to half and half, that is exactly what `unsure`
+is for.
 
 ## The rules that keep this honest
 
 - **`unsure` is a real answer.** Thin smoke, cloud shadow, a patch you would argue about —
   mark it `unsure` and move on. Task 22 drops those and reports how many there were. A
   guessed label is worse than no label, because it silently moves the accuracy figure.
-- **Do not move a sample point** to somewhere easier to judge. The points were drawn at
-  random from a fixed seed; moving them to convenient ground is exactly the bias the random
-  draw exists to prevent. If a point lands in water, on a roof, or in cloud, draw the
-  polygon anyway and mark it `unsure` with a note.
+- **Do not move a box** to somewhere easier to judge, and do not resize it. The points were
+  drawn at random from a fixed seed; shifting them onto convenient ground is exactly the
+  bias the random draw exists to prevent. A box on water, on a roof or under cloud gets
+  `unsure` and a note.
 - **Inside the footprint does not mean burned.** The footprint only says a satellite saw
   heat within 375 m at some point. Plenty of ground inside it did not burn, and that is
   precisely what the labels are meant to establish. Judge each patch on the imagery.
 - **Outside the footprint does not mean unburned** either. If it looks burned, label it
   burned.
-- **One polygon per point.** Do not draw several small ones, and do not merge two points
-  into one polygon.
 - **Do not use the detections as evidence.** They tell you where heat was seen, which is
   the very thing the product is trying to convert into area. Use them to orient yourself,
   not to decide.
@@ -132,7 +111,7 @@ polygons, it will just say so and carry a wider uncertainty.
 | script | when | what it does |
 |---|---|---|
 | `scripts/label_prepare.py` | already run | builds the imagery, the sample points and the empty label layer |
-| `scripts/label_fill_ids.py` | after drawing | fills `sample_id` and `event_id` from the point inside each polygon |
+| `scripts/label_fill_ids.py` | only if you add polygons by hand | fills `sample_id` and `event_id` from the point inside each polygon |
 | `scripts/label_check.py` | any time | reports what is there and what is wrong |
 
 `scripts/label_qgis_project.py` rebuilds the `.qgz` itself. It never touches the
