@@ -159,6 +159,24 @@ def main() -> int:
     detections.setReadOnly(True)
     project.addMapLayer(detections)
 
+    # --- native Sentinel-2, the pair dNBR+ actually compared --------------
+    pair = root.insertGroup(len(root.children()),
+                            "Sentinel-2 20 m: before, mid-episode, after")
+    for eid, desa in EVENTS.items():
+        for tag, title in (("post", "after, 28 Aug"),
+                           ("mid", "mid-episode, 23 Aug"),
+                           ("pre", "before")):
+            path = LAB / "imagery" / f"{eid}_{tag}_s2.tif"
+            if not path.exists():
+                print("missing:", path, "- run scripts/label_pre_imagery.py")
+                continue
+            rl = QgsRasterLayer(str(path), f"{eid} {desa} - {title} (20 m)")
+            if not rl.isValid():
+                print("raster not valid:", path)
+                continue
+            project.addMapLayer(rl, False)
+            pair.addLayer(rl).setItemVisibilityChecked(False)
+
     # --- imagery, SWIR on top of true colour ----------------------------
     group = root.insertGroup(len(root.children()), "S2DR4 1 m imagery, 28 Aug 2026")
     for eid, desa in EVENTS.items():
