@@ -188,10 +188,25 @@ def main() -> int:
                       "notes": None, "drawn_on": None,
                       "geometry": shp_transform(to_ll_geom, square)})
     labels = gpd.GeoDataFrame(boxes, crs="EPSG:4326")
-    # geometry_type is required: an empty layer written without it lands in the
-    # GeoPackage as "Unknown", and QGIS greys out every digitising tool for a
-    # layer whose geometry type it cannot determine.
-    labels.to_file(GPKG, layer="labels", driver="GPKG", geometry_type="MultiPolygon")
+
+    # Never overwrite work. Rebuilding the imagery for a new date went through this
+    # same function once and wiped 42 judged boxes; they came back from git, which
+    # they would not have done an hour earlier.
+    judged = 0
+    if GPKG.exists():
+        try:
+            existing = gpd.read_file(GPKG, layer="labels")
+            judged = int(existing["class"].notna().sum())
+        except Exception:
+            judged = 0
+    if judged and "--reset-labels" not in sys.argv:
+        print(f"\nlabels layer left alone: {judged} of {len(existing)} boxes already judged."
+              "\npass --reset-labels to throw those judgements away.")
+    else:
+        # geometry_type is required: an empty layer written without it lands in the
+        # GeoPackage as "Unknown", and QGIS greys out every digitising tool for a
+        # layer whose geometry type it cannot determine.
+        labels.to_file(GPKG, layer="labels", driver="GPKG", geometry_type="MultiPolygon")
 
     print(f"\n{len(det_rows)} detections, {len(fp_rows)} footprints, {len(samples)} samples")
     print(f"gpkg  {GPKG}")
