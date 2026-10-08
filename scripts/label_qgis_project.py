@@ -178,9 +178,11 @@ def main() -> int:
             pair.addLayer(rl).setItemVisibilityChecked(False)
 
     # --- imagery, SWIR on top of true colour ----------------------------
-    group = root.insertGroup(len(root.children()), "S2DR4 1 m imagery, 28 Aug 2026")
+    group = root.insertGroup(len(root.children()), "S2DR4 1 m imagery")
+    dated = sorted({p.stem.split("_")[-1] for p in (LAB / "imagery").glob("*_swir_2026*.tif")},
+                   reverse=True)
     for eid, desa in EVENTS.items():
-        for kind, title in (("swir", "SWIR B12/B8A/B4"), ("tci", "true colour")):
+        for kind, title in [(f"swir_{d}", f"SWIR B12/B8A/B4, {d[6:]} {d[4:6]}") for d in dated]                 + [(f"tci_{d}", f"true colour, {d[6:]} {d[4:6]}") for d in dated]:
             path = LAB / "imagery" / f"{eid}_{kind}.tif"
             if not path.exists():
                 print("missing imagery:", path)
@@ -191,7 +193,8 @@ def main() -> int:
                 continue
             project.addMapLayer(rl, False)
             node = group.addLayer(rl)
-            node.setItemVisibilityChecked(kind == "swir" and eid == "E0313")
+            node.setItemVisibilityChecked(
+                eid == "E0313" and kind == f"swir_{dated[0]}" if dated else False)
 
     project.write(str(OUT))
     qgs.exitQgis()

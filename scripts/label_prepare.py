@@ -75,24 +75,37 @@ def bounds_of(eid: str, tile: str):
         return box(*r.bounds)
 
 
-def write_imagery(eid: str, tile: str) -> tuple[dict, box]:
-    """SWIR and true-colour 8-bit copies of the S2DR4 tile; returns its profile
-    and footprint rectangle in UTM."""
-    ms = TILES / tile / f"S2L3Ax10_{tile}-20260828_MS.tif"
-    with rasterio.open(ms) as r:
-        prof = r.profile.copy()
-        a = r.read(indexes=SWIR_BANDS).astype("float32")
-        bounds = r.bounds
-    prof.update(count=3, dtype="uint8", nodata=None, compress="deflate",
-            tiled=True, blockxsize=512, blockysize=512)
-    with rasterio.open(IMG / f"{eid}_swir.tif", "w", **prof) as w:
-        w.write(np.stack([stretch_to_byte(b) for b in a]))
+def tile_dates(tile: str) -> list[str]:
+    """Which S2DR4 dates were downloaded for this tile, oldest first."""
+    return sorted({p.name.split("-")[-1].split("_")[0]
+                   for p in (TILES / tile).glob("S2L3Ax10_*_MS.tif")})
 
-    tci = TILES / tile / f"S2L3Ax10_{tile}-20260828_TCI.tif"
-    with rasterio.open(tci) as r:
-        a = r.read()[:3].astype("uint8")
-    with rasterio.open(IMG / f"{eid}_tci.tif", "w", **prof) as w:
-        w.write(a)
+
+def write_imagery(eid: str, tile: str) -> tuple[dict, box]:
+    """SWIR and true-colour 8-bit copies of every S2DR4 date held for the tile.
+    The newest date keeps the plain name, so the project and the scripts that
+    read one chip per event carry on working."""
+    dates = tile_dates(tile)
+    prof = None
+    for date in dates:
+        ms = TILES / tile / f"S2L3Ax10_{tile}-{date}_MS.tif"
+        with rasterio.open(ms) as r:
+            prof = r.profile.copy()
+            a = r.read(indexes=SWIR_BANDS).astype("float32")
+            bounds = r.bounds
+        prof.update(count=3, dtype="uint8", nodata=None, compress="deflate",
+                    tiled=True, blockxsize=512, blockysize=512)
+        swir = np.stack([stretch_to_byte(b) for b in a])
+        with rasterio.open(TILES / tile / f"S2L3Ax10_{tile}-{date}_TCI.tif") as r:
+            tci = r.read()[:3].astype("uint8")
+
+        names = [(f"{eid}_swir_{date}.tif", swir), (f"{eid}_tci_{date}.tif", tci)]
+        if date == dates[-1]:
+            names += [(f"{eid}_swir.tif", swir), (f"{eid}_tci.tif", tci)]
+        for name, arr in names:
+            with rasterio.open(IMG / name, "w", **prof) as w:
+                w.write(arr)
+        print(f"   {eid} {date}: swir and true colour written")
     return prof, box(*bounds)
 
 
