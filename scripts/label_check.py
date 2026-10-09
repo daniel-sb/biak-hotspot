@@ -28,7 +28,18 @@ def main() -> int:
 
     samples = gpd.read_file(GPKG, layer="samples")
     labels = gpd.read_file(GPKG, layer="labels")
-    print(f"{len(labels)} polygons drawn, of {len(samples)} sample points\n")
+    # Two strata, checked differently. The footprint boxes each sit on a sample
+    # point; the map stratum was drawn inside the dNBR+ polygons and has none.
+    if "sampling" not in labels.columns:
+        labels["sampling"] = "random_box"
+    mapped = labels[labels.sampling == "map_burned"]
+    labels = labels[labels.sampling != "map_burned"].copy()
+    print(f"{len(labels)} footprint boxes of {len(samples)} sample points, "
+          f"{len(mapped)} map-stratum boxes\n")
+    if len(mapped):
+        done = int(mapped["class"].notna().sum())
+        print("map stratum:", mapped["class"].value_counts(dropna=False).to_dict(),
+              f"({done} of {len(mapped)} judged)\n")
     if labels.empty:
         print("nothing drawn yet — open data/labels/biak_labels.qgz and see HOWTO.md")
         return 0

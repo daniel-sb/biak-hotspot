@@ -10,7 +10,7 @@ security conditions, and F18 showed that no prompted segmentation model can stan
 
 | layer | what it is |
 |---|---|
-| **LABELS — draw here** | 42 boxes of 60 x 60 m, already placed; you fill in the class |
+| **LABELS — draw here** | 67 boxes of 60 x 60 m, already placed; you fill in the class |
 | samples | the 42 random points each box is centred on |
 | VIIRS footprints | 375 m circles round the detections — where the samples were drawn from, not truth |
 | VIIRS/MODIS detections | the individual satellite detections |
@@ -67,15 +67,30 @@ The 1 m detail is super-resolved, which means a model generated it from 10 m pix
 the shape of a patch and the contrast between patches. Do not trust a single sharp edge or
 a small isolated object: those are the parts a super-resolution model invents.
 
-## The job: judge 42 boxes
+## The job: judge the boxes
 
-There is nothing to draw. The label layer already holds **42 boxes of 60 x 60 m**, one
-centred on each sample point, 0.36 ha each, which is 9 pixels of the 20 m product being
-tested. Your job is the judgement only: what is inside each box.
+There is nothing to draw. The label layer holds **67 boxes of 60 x 60 m**, 0.36 ha each,
+which is 9 pixels of the 20 m product being tested. Your job is the judgement only: what is
+inside each box.
 
 Why fixed boxes rather than outlines: the sample location has to come from the random draw.
 Choosing where to draw, by eye, around a scar that is visible turns the reference into a
 collection of obvious cases, and the agreement figure then measures the easy ones only.
+
+### Two strata, and why
+
+| `sampling` | how many | drawn from |
+|---|---|---|
+| `random_box` | 42, judged | random points, 7 inside and 7 outside each event's VIIRS footprint |
+| `map_burned` | 25, to do | random points inside the dNBR+ polygons of the same three events |
+
+The first 42 produced only 3 burned boxes, which is too few to say anything: the interval
+on 3 of 8 runs from about 14% to 69%. The second stratum samples the map being tested, so
+the burned class is well represented and the two strata together give a corrected area
+estimate with a confidence interval.
+
+Sampling by the map is not circular, because the map is never shown while judging. Judging
+by the map would be. That is why there is still no dNBR+ layer in the project.
 
 1. Open the project, select **LABELS — draw here**, open the attribute table (**F6**).
 2. Toggle editing (**Ctrl+E**).
