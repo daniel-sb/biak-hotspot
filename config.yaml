@@ -177,6 +177,16 @@ fire_danger:
   # A WIT day counts as a rain day for days_since_rain at or above this.
   rain_day_mm: 1.0
 
+# Burn classifier from the hand-drawn labels (Task 22; PLAN.md Phase 5 step
+# 3). The labels are one interpreter's reading of S2DR4 1 m imagery - model
+# output, not observation - so every figure is agreement with that
+# interpretation, never accuracy against ground truth.
+burn_classifier:
+  # Every estimator seed (three classifiers) and the permutation-importance
+  # seed, so the same feature table gives a byte-identical JSON. Nothing is
+  # tuned on the held-out event.
+  random_state: 42
+
 output_paths:
   raw_dir: data/raw
   processed: data/processed/detections.parquet

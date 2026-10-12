@@ -44,7 +44,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install dependencies
-        run: pip install "pandas>=3" pyarrow requests pyyaml "shapely>=2.1" pytest
+        run: pip install "pandas>=3" pyarrow requests pyyaml "shapely>=2.1" pytest scikit-learn
 
       # FIRMS publishes an AAAA record alongside its A record, and GitHub's
       # Ubuntu runners have no IPv6 route: getaddrinfo returns the AAAA

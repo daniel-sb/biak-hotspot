@@ -38,6 +38,16 @@ data/raw/metar/*
 # so it travels with the repo rather than being regenerated on demand.
 !data/processed/burned_areas.json
 !data/processed/burned_areas.geojson
+# Label features and the burn classifier (Task 22): the CSV is what the run
+# without --fetch reads and every classifier figure rests on it; the JSON is
+# deterministic from it and the tracked store, so both travel with the repo.
+!data/raw/labels_features/
+data/raw/labels_features/*
+!data/raw/labels_features/*.csv
+!data/processed/burn_classifier.json
+# The accuracy assessment behind F20: small, and every figure in that entry
+# is recomputed from it by scripts/label_accuracy.py.
+!data/processed/label_accuracy.json
 # Detection climatology evaluation (Task 17): the fold metrics the baseline
 # is held to. Deterministic from the tracked store, but committed so later
 # models can be compared against the same printed bar.

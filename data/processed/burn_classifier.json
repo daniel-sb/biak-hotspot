@@ -1,0 +1,1957 @@
+{
+ "caveats": [
+  "The labels are one interpreter's reading of S2DR4 1 m imagery, which is model output, not observation. These figures are agreement with that interpretation, not accuracy against ground truth.",
+  "Features come from native Sentinel-2 at 20 m, not from the 1 m imagery the labels were drawn on.",
+  "Folds leave one event out, so no polygon's pixels appear in both training and testing. Per-pixel figures describe pixels; the per-polygon table carries the real sample size.",
+  "A learned classifier that beats the threshold rule here has beaten it on three events of one island in one season, and nothing more (PLAN.md section 8)."
+ ],
+ "features": {
+  "columns": [
+   "sample_id",
+   "event_id",
+   "sampling",
+   "class",
+   "lon",
+   "lat",
+   "pre_valid",
+   "post_valid",
+   "pre_B2",
+   "pre_B3",
+   "pre_B4",
+   "pre_B8A",
+   "pre_B11",
+   "pre_B12",
+   "post_B2",
+   "post_B3",
+   "post_B4",
+   "post_B8A",
+   "post_B11",
+   "post_B12",
+   "d_B2",
+   "d_B3",
+   "d_B4",
+   "d_B8A",
+   "d_B11",
+   "d_B12",
+   "dnbr_plus",
+   "dnbr",
+   "dndvi",
+   "dnbr_swir",
+   "pre_lag",
+   "post_lag",
+   "in_footprint"
+  ],
+  "file": "features_2026-10-12.csv",
+  "n_boxes": 67,
+  "n_pixels_modelled": 501,
+  "n_pixels_sampled": 612
+ },
+ "folds": {
+  "E0301": {
+   "importances": {
+    "hist_gradient_boosting": {
+     "d_B11": 0.0,
+     "d_B12": 0.024167,
+     "d_B2": 0.0,
+     "d_B3": 0.0,
+     "d_B4": 0.0,
+     "d_B8A": 0.0,
+     "dnbr": 0.189167,
+     "dnbr_plus": 0.0,
+     "dnbr_swir": 0.15375,
+     "dndvi": 0.0,
+     "post_B11": 0.0,
+     "post_B12": 0.0,
+     "post_B2": 0.002083,
+     "post_B3": 0.0,
+     "post_B4": 0.0,
+     "post_B8A": 0.01375,
+     "post_lag": 0.0,
+     "pre_B11": 0.0,
+     "pre_B12": 0.0,
+     "pre_B2": 0.0,
+     "pre_B3": 0.0,
+     "pre_B4": 0.0,
+     "pre_B8A": 0.0,
+     "pre_lag": 0.0
+    },
+    "random_forest": {
+     "d_B11": 0.000417,
+     "d_B12": 0.004167,
+     "d_B2": -0.000417,
+     "d_B3": -0.000417,
+     "d_B4": -0.002083,
+     "d_B8A": 0.000417,
+     "dnbr": 0.009583,
+     "dnbr_plus": 0.005417,
+     "dnbr_swir": 0.02875,
+     "dndvi": -0.00875,
+     "post_B11": 0.000833,
+     "post_B12": 0.000833,
+     "post_B2": -0.005417,
+     "post_B3": 0.00375,
+     "post_B4": 0.00125,
+     "post_B8A": 0.01625,
+     "post_lag": 0.0,
+     "pre_B11": -0.000417,
+     "pre_B12": 0.0,
+     "pre_B2": 0.0,
+     "pre_B3": 0.0,
+     "pre_B4": -0.000417,
+     "pre_B8A": 0.000417,
+     "pre_lag": 0.0
+    }
+   },
+   "n_test_boxes": 26,
+   "n_test_burned_boxes": 13,
+   "n_test_burned_pixels": 120,
+   "n_test_pixels": 240,
+   "n_train_boxes": 29,
+   "n_train_burned_pixels": 45,
+   "n_train_pixels": 261,
+   "pixel": {
+    "decision_tree_depth3": {
+     "all": {
+      "average_precision": 0.854839,
+      "balanced_accuracy": 0.9,
+      "f1": 0.901639,
+      "fn": 10,
+      "fp": 14,
+      "n": 240,
+      "precision": 0.887097,
+      "recall": 0.916667,
+      "tn": 106,
+      "tp": 110
+     },
+     "map_burned": {
+      "average_precision": 0.913137,
+      "balanced_accuracy": 0.728758,
+      "f1": 0.910891,
+      "fn": 10,
+      "fp": 8,
+      "n": 120,
+      "precision": 0.92,
+      "recall": 0.901961,
+      "tn": 10,
+      "tp": 92
+     },
+     "random_box": {
+      "average_precision": 0.75,
+      "balanced_accuracy": 0.970588,
+      "f1": 0.857143,
+      "fn": 0,
+      "fp": 6,
+      "n": 120,
+      "precision": 0.75,
+      "recall": 1.0,
+      "tn": 96,
+      "tp": 18
+     }
+    },
+    "hist_gradient_boosting": {
+     "all": {
+      "average_precision": 0.94757,
+      "balanced_accuracy": 0.895833,
+      "f1": 0.895397,
+      "fn": 13,
+      "fp": 12,
+      "n": 240,
+      "precision": 0.89916,
+      "recall": 0.891667,
+      "tn": 108,
+      "tp": 107
+     },
+     "map_burned": {
+      "average_precision": 0.956432,
+      "balanced_accuracy": 0.714052,
+      "f1": 0.894472,
+      "fn": 13,
+      "fp": 8,
+      "n": 120,
+      "precision": 0.917526,
+      "recall": 0.872549,
+      "tn": 10,
+      "tp": 89
+     },
+     "random_box": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 0.980392,
+      "f1": 0.9,
+      "fn": 0,
+      "fp": 4,
+      "n": 120,
+      "precision": 0.818182,
+      "recall": 1.0,
+      "tn": 98,
+      "tp": 18
+     }
+    },
+    "random_forest": {
+     "all": {
+      "average_precision": 0.967731,
+      "balanced_accuracy": 0.908333,
+      "f1": 0.903509,
+      "fn": 17,
+      "fp": 5,
+      "n": 240,
+      "precision": 0.953704,
+      "recall": 0.858333,
+      "tn": 115,
+      "tp": 103
+     },
+     "map_burned": {
+      "average_precision": 0.978923,
+      "balanced_accuracy": 0.805556,
+      "f1": 0.890052,
+      "fn": 17,
+      "fp": 4,
+      "n": 120,
+      "precision": 0.955056,
+      "recall": 0.833333,
+      "tn": 14,
+      "tp": 85
+     },
+     "random_box": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 0.995098,
+      "f1": 0.972973,
+      "fn": 0,
+      "fp": 1,
+      "n": 120,
+      "precision": 0.947368,
+      "recall": 1.0,
+      "tn": 101,
+      "tp": 18
+     }
+    },
+    "task18_threshold": {
+     "all": {
+      "average_precision": null,
+      "balanced_accuracy": 0.741667,
+      "f1": 0.78169,
+      "fn": 9,
+      "fp": 53,
+      "n": 240,
+      "precision": 0.676829,
+      "recall": 0.925,
+      "tn": 67,
+      "tp": 111
+     },
+     "map_burned": {
+      "average_precision": null,
+      "balanced_accuracy": 0.511438,
+      "f1": 0.881517,
+      "fn": 9,
+      "fp": 16,
+      "n": 120,
+      "precision": 0.853211,
+      "recall": 0.911765,
+      "tn": 2,
+      "tp": 93
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": 0.818627,
+      "f1": 0.493151,
+      "fn": 0,
+      "fp": 37,
+      "n": 120,
+      "precision": 0.327273,
+      "recall": 1.0,
+      "tn": 65,
+      "tp": 18
+     }
+    },
+    "trivial_footprint": {
+     "all": {
+      "average_precision": null,
+      "balanced_accuracy": 0.779167,
+      "f1": 0.819113,
+      "fn": 0,
+      "fp": 53,
+      "n": 240,
+      "precision": 0.693642,
+      "recall": 1.0,
+      "tn": 67,
+      "tp": 120
+     },
+     "map_burned": {
+      "average_precision": null,
+      "balanced_accuracy": 0.5,
+      "f1": 0.918919,
+      "fn": 0,
+      "fp": 18,
+      "n": 120,
+      "precision": 0.85,
+      "recall": 1.0,
+      "tn": 0,
+      "tp": 102
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": 0.828431,
+      "f1": 0.507042,
+      "fn": 0,
+      "fp": 35,
+      "n": 120,
+      "precision": 0.339623,
+      "recall": 1.0,
+      "tn": 67,
+      "tp": 18
+     }
+    }
+   },
+   "polygon": {
+    "decision_tree_depth3": {
+     "all": {
+      "average_precision": 0.988588,
+      "balanced_accuracy": 0.923077,
+      "f1": 0.923077,
+      "fn": 1,
+      "fp": 1,
+      "n": 26,
+      "precision": 0.923077,
+      "recall": 0.923077,
+      "ties": 0,
+      "tn": 12,
+      "tp": 12
+     },
+     "map_burned": {
+      "average_precision": 0.98416,
+      "balanced_accuracy": 0.704545,
+      "f1": 0.909091,
+      "fn": 1,
+      "fp": 1,
+      "n": 13,
+      "precision": 0.909091,
+      "recall": 0.909091,
+      "ties": 0,
+      "tn": 1,
+      "tp": 10
+     },
+     "random_box": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 13,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 11,
+      "tp": 2
+     }
+    },
+    "hist_gradient_boosting": {
+     "all": {
+      "average_precision": 0.982178,
+      "balanced_accuracy": 0.923077,
+      "f1": 0.923077,
+      "fn": 1,
+      "fp": 1,
+      "n": 26,
+      "precision": 0.923077,
+      "recall": 0.923077,
+      "ties": 0,
+      "tn": 12,
+      "tp": 12
+     },
+     "map_burned": {
+      "average_precision": 0.975069,
+      "balanced_accuracy": 0.704545,
+      "f1": 0.909091,
+      "fn": 1,
+      "fp": 1,
+      "n": 13,
+      "precision": 0.909091,
+      "recall": 0.909091,
+      "ties": 0,
+      "tn": 1,
+      "tp": 10
+     },
+     "random_box": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 13,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 11,
+      "tp": 2
+     }
+    },
+    "random_forest": {
+     "all": {
+      "average_precision": 0.994505,
+      "balanced_accuracy": 0.961538,
+      "f1": 0.96,
+      "fn": 1,
+      "fp": 0,
+      "n": 26,
+      "precision": 1.0,
+      "recall": 0.923077,
+      "ties": 0,
+      "tn": 13,
+      "tp": 12
+     },
+     "map_burned": {
+      "average_precision": 0.992424,
+      "balanced_accuracy": 0.954545,
+      "f1": 0.952381,
+      "fn": 1,
+      "fp": 0,
+      "n": 13,
+      "precision": 1.0,
+      "recall": 0.909091,
+      "ties": 0,
+      "tn": 2,
+      "tp": 10
+     },
+     "random_box": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 13,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 11,
+      "tp": 2
+     }
+    },
+    "task18_threshold": {
+     "all": {
+      "average_precision": null,
+      "balanced_accuracy": 0.692308,
+      "f1": 0.75,
+      "fn": 1,
+      "fp": 7,
+      "n": 26,
+      "precision": 0.631579,
+      "recall": 0.923077,
+      "ties": 0,
+      "tn": 6,
+      "tp": 12
+     },
+     "map_burned": {
+      "average_precision": null,
+      "balanced_accuracy": 0.454545,
+      "f1": 0.869565,
+      "fn": 1,
+      "fp": 2,
+      "n": 13,
+      "precision": 0.833333,
+      "recall": 0.909091,
+      "ties": 0,
+      "tn": 0,
+      "tp": 10
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": 0.772727,
+      "f1": 0.444444,
+      "fn": 0,
+      "fp": 5,
+      "n": 13,
+      "precision": 0.285714,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 6,
+      "tp": 2
+     }
+    },
+    "trivial_footprint": {
+     "all": {
+      "average_precision": null,
+      "balanced_accuracy": 0.769231,
+      "f1": 0.8125,
+      "fn": 0,
+      "fp": 6,
+      "n": 26,
+      "precision": 0.684211,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 7,
+      "tp": 13
+     },
+     "map_burned": {
+      "average_precision": null,
+      "balanced_accuracy": 0.5,
+      "f1": 0.916667,
+      "fn": 0,
+      "fp": 2,
+      "n": 13,
+      "precision": 0.846154,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 0,
+      "tp": 11
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": 0.818182,
+      "f1": 0.5,
+      "fn": 0,
+      "fp": 4,
+      "n": 13,
+      "precision": 0.333333,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 7,
+      "tp": 2
+     }
+    }
+   },
+   "tree_rule": "|--- dndvi <= -0.28\n|   |--- class: 1\n|--- dndvi >  -0.28\n|   |--- dnbr <= 0.26\n|   |   |--- post_B8A <= 0.00\n|   |   |   |--- class: 0\n|   |   |--- post_B8A >  0.00\n|   |   |   |--- class: 0\n|   |--- dnbr >  0.26\n|   |   |--- post_B12 <= 0.00\n|   |   |   |--- class: 0\n|   |   |--- post_B12 >  0.00\n|   |   |   |--- class: 1\n"
+  },
+  "E0313": {
+   "importances": {
+    "hist_gradient_boosting": {
+     "d_B11": -0.006838,
+     "d_B12": -0.000427,
+     "d_B2": -0.004274,
+     "d_B3": -0.003846,
+     "d_B4": -0.01453,
+     "d_B8A": -0.000427,
+     "dnbr": 0.002137,
+     "dnbr_plus": 0.002564,
+     "dnbr_swir": 0.0651,
+     "dndvi": 0.003419,
+     "post_B11": -0.000427,
+     "post_B12": -0.001282,
+     "post_B2": -0.004701,
+     "post_B3": -0.002564,
+     "post_B4": 0.0,
+     "post_B8A": 0.131197,
+     "post_lag": 0.0,
+     "pre_B11": 0.000855,
+     "pre_B12": -0.004274,
+     "pre_B2": 0.003846,
+     "pre_B3": -0.001709,
+     "pre_B4": 0.000427,
+     "pre_B8A": -0.011111,
+     "pre_lag": -0.012821
+    },
+    "random_forest": {
+     "d_B11": 0.0,
+     "d_B12": 0.0,
+     "d_B2": 0.0,
+     "d_B3": 0.0,
+     "d_B4": 0.0,
+     "d_B8A": 0.0,
+     "dnbr": 0.01396,
+     "dnbr_plus": -0.003419,
+     "dnbr_swir": 0.043875,
+     "dndvi": 0.003704,
+     "post_B11": 0.01567,
+     "post_B12": 0.015385,
+     "post_B2": 0.0,
+     "post_B3": 0.0,
+     "post_B4": -0.003419,
+     "post_B8A": 0.025926,
+     "post_lag": 0.0,
+     "pre_B11": 0.002137,
+     "pre_B12": 0.003846,
+     "pre_B2": 0.002564,
+     "pre_B3": 0.0,
+     "pre_B4": 0.001709,
+     "pre_B8A": 0.011823,
+     "pre_lag": 0.0
+    }
+   },
+   "n_test_boxes": 16,
+   "n_test_burned_boxes": 3,
+   "n_test_burned_pixels": 27,
+   "n_test_pixels": 144,
+   "n_train_boxes": 39,
+   "n_train_burned_pixels": 138,
+   "n_train_pixels": 357,
+   "pixel": {
+    "decision_tree_depth3": {
+     "all": {
+      "average_precision": 0.739885,
+      "balanced_accuracy": 0.89886,
+      "f1": 0.862745,
+      "fn": 5,
+      "fp": 2,
+      "n": 144,
+      "precision": 0.916667,
+      "recall": 0.814815,
+      "tn": 115,
+      "tp": 22
+     },
+     "map_burned": {
+      "average_precision": 0.925926,
+      "balanced_accuracy": 0.907407,
+      "f1": 0.897959,
+      "fn": 5,
+      "fp": 0,
+      "n": 45,
+      "precision": 1.0,
+      "recall": 0.814815,
+      "tn": 18,
+      "tp": 22
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 2,
+      "n": 99,
+      "precision": 0.0,
+      "recall": null,
+      "tn": 97,
+      "tp": 0
+     }
+    },
+    "hist_gradient_boosting": {
+     "all": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 0.940171,
+      "f1": 0.794118,
+      "fn": 0,
+      "fp": 14,
+      "n": 144,
+      "precision": 0.658537,
+      "recall": 1.0,
+      "tn": 103,
+      "tp": 27
+     },
+     "map_burned": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 0.916667,
+      "f1": 0.947368,
+      "fn": 0,
+      "fp": 3,
+      "n": 45,
+      "precision": 0.9,
+      "recall": 1.0,
+      "tn": 15,
+      "tp": 27
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 11,
+      "n": 99,
+      "precision": 0.0,
+      "recall": null,
+      "tn": 88,
+      "tp": 0
+     }
+    },
+    "random_forest": {
+     "all": {
+      "average_precision": 0.982184,
+      "balanced_accuracy": 0.944444,
+      "f1": 0.941176,
+      "fn": 3,
+      "fp": 0,
+      "n": 144,
+      "precision": 1.0,
+      "recall": 0.888889,
+      "tn": 117,
+      "tp": 24
+     },
+     "map_burned": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 0.944444,
+      "f1": 0.941176,
+      "fn": 3,
+      "fp": 0,
+      "n": 45,
+      "precision": 1.0,
+      "recall": 0.888889,
+      "tn": 18,
+      "tp": 24
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 99,
+      "precision": null,
+      "recall": null,
+      "tn": 99,
+      "tp": 0
+     }
+    },
+    "task18_threshold": {
+     "all": {
+      "average_precision": null,
+      "balanced_accuracy": 0.833333,
+      "f1": 0.580645,
+      "fn": 0,
+      "fp": 39,
+      "n": 144,
+      "precision": 0.409091,
+      "recall": 1.0,
+      "tn": 78,
+      "tp": 27
+     },
+     "map_burned": {
+      "average_precision": null,
+      "balanced_accuracy": 0.777778,
+      "f1": 0.870968,
+      "fn": 0,
+      "fp": 8,
+      "n": 45,
+      "precision": 0.771429,
+      "recall": 1.0,
+      "tn": 10,
+      "tp": 27
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 31,
+      "n": 99,
+      "precision": 0.0,
+      "recall": null,
+      "tn": 68,
+      "tp": 0
+     }
+    },
+    "trivial_footprint": {
+     "all": {
+      "average_precision": null,
+      "balanced_accuracy": 0.75641,
+      "f1": 0.486486,
+      "fn": 0,
+      "fp": 57,
+      "n": 144,
+      "precision": 0.321429,
+      "recall": 1.0,
+      "tn": 60,
+      "tp": 27
+     },
+     "map_burned": {
+      "average_precision": null,
+      "balanced_accuracy": 0.5,
+      "f1": 0.75,
+      "fn": 0,
+      "fp": 18,
+      "n": 45,
+      "precision": 0.6,
+      "recall": 1.0,
+      "tn": 0,
+      "tp": 27
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 39,
+      "n": 99,
+      "precision": 0.0,
+      "recall": null,
+      "tn": 60,
+      "tp": 0
+     }
+    }
+   },
+   "polygon": {
+    "decision_tree_depth3": {
+     "all": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 0.833333,
+      "f1": 0.8,
+      "fn": 1,
+      "fp": 0,
+      "n": 16,
+      "precision": 1.0,
+      "recall": 0.666667,
+      "ties": 0,
+      "tn": 13,
+      "tp": 2
+     },
+     "map_burned": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 0.833333,
+      "f1": 0.8,
+      "fn": 1,
+      "fp": 0,
+      "n": 5,
+      "precision": 1.0,
+      "recall": 0.666667,
+      "ties": 0,
+      "tn": 2,
+      "tp": 2
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 11,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 11,
+      "tp": 0
+     }
+    },
+    "hist_gradient_boosting": {
+     "all": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 0.961538,
+      "f1": 0.857143,
+      "fn": 0,
+      "fp": 1,
+      "n": 16,
+      "precision": 0.75,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 12,
+      "tp": 3
+     },
+     "map_burned": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 5,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 2,
+      "tp": 3
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 1,
+      "n": 11,
+      "precision": 0.0,
+      "recall": null,
+      "ties": 0,
+      "tn": 10,
+      "tp": 0
+     }
+    },
+    "random_forest": {
+     "all": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 16,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 13,
+      "tp": 3
+     },
+     "map_burned": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 5,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 2,
+      "tp": 3
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 11,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 11,
+      "tp": 0
+     }
+    },
+    "task18_threshold": {
+     "all": {
+      "average_precision": null,
+      "balanced_accuracy": 0.884615,
+      "f1": 0.666667,
+      "fn": 0,
+      "fp": 3,
+      "n": 16,
+      "precision": 0.5,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 10,
+      "tp": 3
+     },
+     "map_burned": {
+      "average_precision": null,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 5,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 2,
+      "tp": 3
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 3,
+      "n": 11,
+      "precision": 0.0,
+      "recall": null,
+      "ties": 0,
+      "tn": 8,
+      "tp": 0
+     }
+    },
+    "trivial_footprint": {
+     "all": {
+      "average_precision": null,
+      "balanced_accuracy": 0.769231,
+      "f1": 0.5,
+      "fn": 0,
+      "fp": 6,
+      "n": 16,
+      "precision": 0.333333,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 7,
+      "tp": 3
+     },
+     "map_burned": {
+      "average_precision": null,
+      "balanced_accuracy": 0.5,
+      "f1": 0.75,
+      "fn": 0,
+      "fp": 2,
+      "n": 5,
+      "precision": 0.6,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 0,
+      "tp": 3
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 4,
+      "n": 11,
+      "precision": 0.0,
+      "recall": null,
+      "ties": 0,
+      "tn": 7,
+      "tp": 0
+     }
+    }
+   },
+   "tree_rule": "|--- dnbr <= 0.32\n|   |--- dnbr_swir <= 0.00\n|   |   |--- dnbr_plus <= 0.22\n|   |   |   |--- class: 0\n|   |   |--- dnbr_plus >  0.22\n|   |   |   |--- class: 1\n|   |--- dnbr_swir >  0.00\n|   |   |--- pre_B3 <= 0.00\n|   |   |   |--- class: 1\n|   |   |--- pre_B3 >  0.00\n|   |   |   |--- class: 0\n|--- dnbr >  0.32\n|   |--- dnbr <= 0.35\n|   |   |--- pre_B8A <= 0.00\n|   |   |   |--- class: 1\n|   |   |--- pre_B8A >  0.00\n|   |   |   |--- class: 0\n|   |--- dnbr >  0.35\n|   |   |--- pre_B12 <= 0.00\n|   |   |   |--- class: 1\n|   |   |--- pre_B12 >  0.00\n|   |   |   |--- class: 1\n"
+  },
+  "E0368": {
+   "importances": {
+    "hist_gradient_boosting": {
+     "d_B11": -0.019444,
+     "d_B12": -0.002778,
+     "d_B2": 0.0,
+     "d_B3": 0.0,
+     "d_B4": 0.0,
+     "d_B8A": 0.0,
+     "dnbr": -0.005556,
+     "dnbr_plus": 0.0,
+     "dnbr_swir": 0.141667,
+     "dndvi": -0.005556,
+     "post_B11": -0.016667,
+     "post_B12": 0.0,
+     "post_B2": -0.005556,
+     "post_B3": -0.002778,
+     "post_B4": 0.0,
+     "post_B8A": -0.007323,
+     "post_lag": 0.0,
+     "pre_B11": 0.0,
+     "pre_B12": 0.0,
+     "pre_B2": -0.005556,
+     "pre_B3": 0.0,
+     "pre_B4": 0.0,
+     "pre_B8A": 0.0,
+     "pre_lag": -0.022222
+    },
+    "random_forest": {
+     "d_B11": 0.0,
+     "d_B12": 0.0,
+     "d_B2": 0.002778,
+     "d_B3": 0.0,
+     "d_B4": 0.0,
+     "d_B8A": 0.0,
+     "dnbr": 0.022475,
+     "dnbr_plus": 0.0,
+     "dnbr_swir": 0.016667,
+     "dndvi": 0.013889,
+     "post_B11": 0.0,
+     "post_B12": 0.008333,
+     "post_B2": 0.0,
+     "post_B3": 0.0,
+     "post_B4": 0.0,
+     "post_B8A": 0.02197,
+     "post_lag": 0.0,
+     "pre_B11": 0.0,
+     "pre_B12": 0.0,
+     "pre_B2": 0.0,
+     "pre_B3": 0.0,
+     "pre_B4": 0.0,
+     "pre_B8A": 0.0,
+     "pre_lag": 0.0
+    }
+   },
+   "n_test_boxes": 13,
+   "n_test_burned_boxes": 2,
+   "n_test_burned_pixels": 18,
+   "n_test_pixels": 117,
+   "n_train_boxes": 42,
+   "n_train_burned_pixels": 147,
+   "n_train_pixels": 384,
+   "pixel": {
+    "decision_tree_depth3": {
+     "all": {
+      "average_precision": 0.686944,
+      "balanced_accuracy": 0.964646,
+      "f1": 0.837209,
+      "fn": 0,
+      "fp": 7,
+      "n": 117,
+      "precision": 0.72,
+      "recall": 1.0,
+      "tn": 92,
+      "tp": 18
+     },
+     "map_burned": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 18,
+      "precision": 1.0,
+      "recall": 1.0,
+      "tn": 9,
+      "tp": 9
+     },
+     "random_box": {
+      "average_precision": 0.513889,
+      "balanced_accuracy": 0.961111,
+      "f1": 0.72,
+      "fn": 0,
+      "fp": 7,
+      "n": 99,
+      "precision": 0.5625,
+      "recall": 1.0,
+      "tn": 83,
+      "tp": 9
+     }
+    },
+    "hist_gradient_boosting": {
+     "all": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 0.972222,
+      "f1": 0.971429,
+      "fn": 1,
+      "fp": 0,
+      "n": 117,
+      "precision": 1.0,
+      "recall": 0.944444,
+      "tn": 99,
+      "tp": 17
+     },
+     "map_burned": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 18,
+      "precision": 1.0,
+      "recall": 1.0,
+      "tn": 9,
+      "tp": 9
+     },
+     "random_box": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 0.944444,
+      "f1": 0.941176,
+      "fn": 1,
+      "fp": 0,
+      "n": 99,
+      "precision": 1.0,
+      "recall": 0.888889,
+      "tn": 90,
+      "tp": 8
+     }
+    },
+    "random_forest": {
+     "all": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 117,
+      "precision": 1.0,
+      "recall": 1.0,
+      "tn": 99,
+      "tp": 18
+     },
+     "map_burned": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 18,
+      "precision": 1.0,
+      "recall": 1.0,
+      "tn": 9,
+      "tp": 9
+     },
+     "random_box": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 99,
+      "precision": 1.0,
+      "recall": 1.0,
+      "tn": 90,
+      "tp": 9
+     }
+    },
+    "task18_threshold": {
+     "all": {
+      "average_precision": null,
+      "balanced_accuracy": 0.984848,
+      "f1": 0.923077,
+      "fn": 0,
+      "fp": 3,
+      "n": 117,
+      "precision": 0.857143,
+      "recall": 1.0,
+      "tn": 96,
+      "tp": 18
+     },
+     "map_burned": {
+      "average_precision": null,
+      "balanced_accuracy": 0.888889,
+      "f1": 0.9,
+      "fn": 0,
+      "fp": 2,
+      "n": 18,
+      "precision": 0.818182,
+      "recall": 1.0,
+      "tn": 7,
+      "tp": 9
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": 0.994444,
+      "f1": 0.947368,
+      "fn": 0,
+      "fp": 1,
+      "n": 99,
+      "precision": 0.9,
+      "recall": 1.0,
+      "tn": 89,
+      "tp": 9
+     }
+    },
+    "trivial_footprint": {
+     "all": {
+      "average_precision": null,
+      "balanced_accuracy": 0.772727,
+      "f1": 0.444444,
+      "fn": 0,
+      "fp": 45,
+      "n": 117,
+      "precision": 0.285714,
+      "recall": 1.0,
+      "tn": 54,
+      "tp": 18
+     },
+     "map_burned": {
+      "average_precision": null,
+      "balanced_accuracy": 0.5,
+      "f1": 0.666667,
+      "fn": 0,
+      "fp": 9,
+      "n": 18,
+      "precision": 0.5,
+      "recall": 1.0,
+      "tn": 0,
+      "tp": 9
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": 0.8,
+      "f1": 0.333333,
+      "fn": 0,
+      "fp": 36,
+      "n": 99,
+      "precision": 0.2,
+      "recall": 1.0,
+      "tn": 54,
+      "tp": 9
+     }
+    }
+   },
+   "polygon": {
+    "decision_tree_depth3": {
+     "all": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 13,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 11,
+      "tp": 2
+     },
+     "map_burned": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 1,
+      "tp": 1
+     },
+     "random_box": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 11,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 10,
+      "tp": 1
+     }
+    },
+    "hist_gradient_boosting": {
+     "all": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 13,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 11,
+      "tp": 2
+     },
+     "map_burned": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 1,
+      "tp": 1
+     },
+     "random_box": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 11,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 10,
+      "tp": 1
+     }
+    },
+    "random_forest": {
+     "all": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 13,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 11,
+      "tp": 2
+     },
+     "map_burned": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 1,
+      "tp": 1
+     },
+     "random_box": {
+      "average_precision": 1.0,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 11,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 10,
+      "tp": 1
+     }
+    },
+    "task18_threshold": {
+     "all": {
+      "average_precision": null,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 13,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 11,
+      "tp": 2
+     },
+     "map_burned": {
+      "average_precision": null,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 2,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 1,
+      "tp": 1
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": 1.0,
+      "f1": 1.0,
+      "fn": 0,
+      "fp": 0,
+      "n": 11,
+      "precision": 1.0,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 10,
+      "tp": 1
+     }
+    },
+    "trivial_footprint": {
+     "all": {
+      "average_precision": null,
+      "balanced_accuracy": 0.772727,
+      "f1": 0.444444,
+      "fn": 0,
+      "fp": 5,
+      "n": 13,
+      "precision": 0.285714,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 6,
+      "tp": 2
+     },
+     "map_burned": {
+      "average_precision": null,
+      "balanced_accuracy": 0.5,
+      "f1": 0.666667,
+      "fn": 0,
+      "fp": 1,
+      "n": 2,
+      "precision": 0.5,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 0,
+      "tp": 1
+     },
+     "random_box": {
+      "average_precision": null,
+      "balanced_accuracy": 0.8,
+      "f1": 0.333333,
+      "fn": 0,
+      "fp": 4,
+      "n": 11,
+      "precision": 0.2,
+      "recall": 1.0,
+      "ties": 0,
+      "tn": 6,
+      "tp": 1
+     }
+    }
+   },
+   "tree_rule": "|--- dnbr <= 0.33\n|   |--- dnbr_swir <= 0.00\n|   |   |--- dnbr_plus <= 0.23\n|   |   |   |--- class: 0\n|   |   |--- dnbr_plus >  0.23\n|   |   |   |--- class: 1\n|   |--- dnbr_swir >  0.00\n|   |   |--- dndvi <= -0.15\n|   |   |   |--- class: 1\n|   |   |--- dndvi >  -0.15\n|   |   |   |--- class: 0\n|--- dnbr >  0.33\n|   |--- d_B12 <= 0.00\n|   |   |--- class: 0\n|   |--- d_B12 >  0.00\n|   |   |--- dnbr_plus <= 0.23\n|   |   |   |--- class: 1\n|   |   |--- dnbr_plus >  0.23\n|   |   |   |--- class: 1\n"
+  }
+ },
+ "labels": {
+  "by_class": {
+   "burned": 18,
+   "unburned": 38,
+   "unsure": 11
+  },
+  "by_event": {
+   "E0301": {
+    "burned": 13,
+    "unburned": 13,
+    "unsure": 4
+   },
+   "E0313": {
+    "burned": 3,
+    "unburned": 13,
+    "unsure": 5
+   },
+   "E0368": {
+    "burned": 2,
+    "unburned": 12,
+    "unsure": 2
+   }
+  },
+  "by_stratum": {
+   "map_burned": {
+    "burned": 15,
+    "unburned": 5,
+    "unsure": 5
+   },
+   "random_box": {
+    "burned": 3,
+    "unburned": 33,
+    "unsure": 6
+   }
+  },
+  "dropped": {
+   "boxes_not_judged_burned_or_unburned": {
+    "by_event": {
+     "E0301": 4,
+     "E0313": 5,
+     "E0368": 2
+    },
+    "by_stratum": {
+     "map_burned": 5,
+     "random_box": 6
+    },
+    "total": 11
+   },
+   "boxes_with_no_complete_pixel": {
+    "by_event": {
+     "E0368": 1
+    },
+    "by_stratum": {
+     "random_box": 1
+    },
+    "sample_ids": [
+     "E0368-OUT03"
+    ],
+    "total": 1
+   },
+   "pixels_incomplete": {
+    "by_event": {
+     "E0368": 9
+    },
+    "missing_post_look": 9,
+    "missing_pre_look": 0,
+    "total": 9
+   }
+  },
+  "n_boxes": 67
+ },
+ "parameters": {
+  "classifiers": {
+   "decision_tree_depth3": {
+    "max_depth": 3
+   },
+   "hist_gradient_boosting": "scikit-learn defaults",
+   "random_forest": "scikit-learn defaults"
+  },
+  "cs_min": 0.6,
+  "feature_columns": [
+   "pre_B2",
+   "pre_B3",
+   "pre_B4",
+   "pre_B8A",
+   "pre_B11",
+   "pre_B12",
+   "post_B2",
+   "post_B3",
+   "post_B4",
+   "post_B8A",
+   "post_B11",
+   "post_B12",
+   "d_B2",
+   "d_B3",
+   "d_B4",
+   "d_B8A",
+   "d_B11",
+   "d_B12",
+   "dnbr_plus",
+   "dnbr",
+   "dndvi",
+   "dnbr_swir",
+   "pre_lag",
+   "post_lag"
+  ],
+  "folds": "leave one event out; train on two, test on the third",
+  "permutation_importance": {
+   "n_repeats": 10,
+   "scoring": "balanced_accuracy"
+  },
+  "random_state": 42,
+  "scale_m": 20,
+  "threshold_rule": "d nbr_plus above the event's own Task 18 threshold",
+  "trivial_rule": "every pixel inside the VIIRS footprint is called burn-like"
+ },
+ "pooled": {
+  "pixel": {
+   "decision_tree_depth3": {
+    "all": {
+     "average_precision": 0.832413,
+     "balanced_accuracy": 0.920319,
+     "f1": 0.887574,
+     "fn": 15,
+     "fp": 23,
+     "n": 501,
+     "precision": 0.867052,
+     "recall": 0.909091,
+     "tn": 313,
+     "tp": 150
+    },
+    "map_burned": {
+     "average_precision": 0.909491,
+     "balanced_accuracy": 0.856763,
+     "f1": 0.914498,
+     "fn": 15,
+     "fp": 8,
+     "n": 183,
+     "precision": 0.938931,
+     "recall": 0.891304,
+     "tn": 37,
+     "tp": 123
+    },
+    "random_box": {
+     "average_precision": 0.672712,
+     "balanced_accuracy": 0.974227,
+     "f1": 0.782609,
+     "fn": 0,
+     "fp": 15,
+     "n": 318,
+     "precision": 0.642857,
+     "recall": 1.0,
+     "tn": 276,
+     "tp": 27
+    }
+   },
+   "hist_gradient_boosting": {
+    "all": {
+     "average_precision": 0.944297,
+     "balanced_accuracy": 0.918885,
+     "f1": 0.883041,
+     "fn": 14,
+     "fp": 26,
+     "n": 501,
+     "precision": 0.853107,
+     "recall": 0.915152,
+     "tn": 310,
+     "tp": 151
+    },
+    "map_burned": {
+     "average_precision": 0.959844,
+     "balanced_accuracy": 0.830676,
+     "f1": 0.912409,
+     "fn": 13,
+     "fp": 11,
+     "n": 183,
+     "precision": 0.919118,
+     "recall": 0.905797,
+     "tn": 34,
+     "tp": 125
+    },
+    "random_box": {
+     "average_precision": 0.986219,
+     "balanced_accuracy": 0.955708,
+     "f1": 0.764706,
+     "fn": 1,
+     "fp": 15,
+     "n": 318,
+     "precision": 0.634146,
+     "recall": 0.962963,
+     "tn": 276,
+     "tp": 26
+    }
+   },
+   "random_forest": {
+    "all": {
+     "average_precision": 0.964665,
+     "balanced_accuracy": 0.931953,
+     "f1": 0.920635,
+     "fn": 20,
+     "fp": 5,
+     "n": 501,
+     "precision": 0.966667,
+     "recall": 0.878788,
+     "tn": 331,
+     "tp": 145
+    },
+    "map_burned": {
+     "average_precision": 0.9805,
+     "balanced_accuracy": 0.883092,
+     "f1": 0.907692,
+     "fn": 20,
+     "fp": 4,
+     "n": 183,
+     "precision": 0.967213,
+     "recall": 0.855072,
+     "tn": 41,
+     "tp": 118
+    },
+    "random_box": {
+     "average_precision": 0.998677,
+     "balanced_accuracy": 0.998282,
+     "f1": 0.981818,
+     "fn": 0,
+     "fp": 1,
+     "n": 318,
+     "precision": 0.964286,
+     "recall": 1.0,
+     "tn": 290,
+     "tp": 27
+    }
+   },
+   "task18_threshold": {
+    "all": {
+     "average_precision": null,
+     "balanced_accuracy": 0.831358,
+     "f1": 0.75,
+     "fn": 9,
+     "fp": 95,
+     "n": 501,
+     "precision": 0.621514,
+     "recall": 0.945455,
+     "tn": 241,
+     "tp": 156
+    },
+    "map_burned": {
+     "average_precision": null,
+     "balanced_accuracy": 0.678502,
+     "f1": 0.880546,
+     "fn": 9,
+     "fp": 26,
+     "n": 183,
+     "precision": 0.832258,
+     "recall": 0.934783,
+     "tn": 19,
+     "tp": 129
+    },
+    "random_box": {
+     "average_precision": null,
+     "balanced_accuracy": 0.881443,
+     "f1": 0.439024,
+     "fn": 0,
+     "fp": 69,
+     "n": 318,
+     "precision": 0.28125,
+     "recall": 1.0,
+     "tn": 222,
+     "tp": 27
+    }
+   },
+   "trivial_footprint": {
+    "all": {
+     "average_precision": null,
+     "balanced_accuracy": 0.769345,
+     "f1": 0.680412,
+     "fn": 0,
+     "fp": 155,
+     "n": 501,
+     "precision": 0.515625,
+     "recall": 1.0,
+     "tn": 181,
+     "tp": 165
+    },
+    "map_burned": {
+     "average_precision": null,
+     "balanced_accuracy": 0.5,
+     "f1": 0.859813,
+     "fn": 0,
+     "fp": 45,
+     "n": 183,
+     "precision": 0.754098,
+     "recall": 1.0,
+     "tn": 0,
+     "tp": 138
+    },
+    "random_box": {
+     "average_precision": null,
+     "balanced_accuracy": 0.810997,
+     "f1": 0.329268,
+     "fn": 0,
+     "fp": 110,
+     "n": 318,
+     "precision": 0.19708,
+     "recall": 1.0,
+     "tn": 181,
+     "tp": 27
+    }
+   }
+  },
+  "polygon": {
+   "decision_tree_depth3": {
+    "all": {
+     "average_precision": 0.990722,
+     "balanced_accuracy": 0.930931,
+     "f1": 0.914286,
+     "fn": 2,
+     "fp": 1,
+     "n": 55,
+     "precision": 0.941176,
+     "recall": 0.888889,
+     "ties": 0,
+     "tn": 36,
+     "tp": 16
+    },
+    "map_burned": {
+     "average_precision": 0.986627,
+     "balanced_accuracy": 0.833333,
+     "f1": 0.896552,
+     "fn": 2,
+     "fp": 1,
+     "n": 20,
+     "precision": 0.928571,
+     "recall": 0.866667,
+     "ties": 0,
+     "tn": 4,
+     "tp": 13
+    },
+    "random_box": {
+     "average_precision": 1.0,
+     "balanced_accuracy": 1.0,
+     "f1": 1.0,
+     "fn": 0,
+     "fp": 0,
+     "n": 35,
+     "precision": 1.0,
+     "recall": 1.0,
+     "ties": 0,
+     "tn": 32,
+     "tp": 3
+    }
+   },
+   "hist_gradient_boosting": {
+    "all": {
+     "average_precision": 0.982424,
+     "balanced_accuracy": 0.945195,
+     "f1": 0.918919,
+     "fn": 1,
+     "fp": 2,
+     "n": 55,
+     "precision": 0.894737,
+     "recall": 0.944444,
+     "ties": 0,
+     "tn": 35,
+     "tp": 17
+    },
+    "map_burned": {
+     "average_precision": 0.986627,
+     "balanced_accuracy": 0.866667,
+     "f1": 0.933333,
+     "fn": 1,
+     "fp": 1,
+     "n": 20,
+     "precision": 0.933333,
+     "recall": 0.933333,
+     "ties": 0,
+     "tn": 4,
+     "tp": 14
+    },
+    "random_box": {
+     "average_precision": 1.0,
+     "balanced_accuracy": 0.984375,
+     "f1": 0.857143,
+     "fn": 0,
+     "fp": 1,
+     "n": 35,
+     "precision": 0.75,
+     "recall": 1.0,
+     "ties": 0,
+     "tn": 31,
+     "tp": 3
+    }
+   },
+   "random_forest": {
+    "all": {
+     "average_precision": 0.994444,
+     "balanced_accuracy": 0.972222,
+     "f1": 0.971429,
+     "fn": 1,
+     "fp": 0,
+     "n": 55,
+     "precision": 1.0,
+     "recall": 0.944444,
+     "ties": 0,
+     "tn": 37,
+     "tp": 17
+    },
+    "map_burned": {
+     "average_precision": 0.995833,
+     "balanced_accuracy": 0.966667,
+     "f1": 0.965517,
+     "fn": 1,
+     "fp": 0,
+     "n": 20,
+     "precision": 1.0,
+     "recall": 0.933333,
+     "ties": 0,
+     "tn": 5,
+     "tp": 14
+    },
+    "random_box": {
+     "average_precision": 1.0,
+     "balanced_accuracy": 1.0,
+     "f1": 1.0,
+     "fn": 0,
+     "fp": 0,
+     "n": 35,
+     "precision": 1.0,
+     "recall": 1.0,
+     "ties": 0,
+     "tn": 32,
+     "tp": 3
+    }
+   },
+   "task18_threshold": {
+    "all": {
+     "average_precision": null,
+     "balanced_accuracy": 0.837087,
+     "f1": 0.755556,
+     "fn": 1,
+     "fp": 10,
+     "n": 55,
+     "precision": 0.62963,
+     "recall": 0.944444,
+     "ties": 0,
+     "tn": 27,
+     "tp": 17
+    },
+    "map_burned": {
+     "average_precision": null,
+     "balanced_accuracy": 0.766667,
+     "f1": 0.903226,
+     "fn": 1,
+     "fp": 2,
+     "n": 20,
+     "precision": 0.875,
+     "recall": 0.933333,
+     "ties": 0,
+     "tn": 3,
+     "tp": 14
+    },
+    "random_box": {
+     "average_precision": null,
+     "balanced_accuracy": 0.875,
+     "f1": 0.428571,
+     "fn": 0,
+     "fp": 8,
+     "n": 35,
+     "precision": 0.272727,
+     "recall": 1.0,
+     "ties": 0,
+     "tn": 24,
+     "tp": 3
+    }
+   },
+   "trivial_footprint": {
+    "all": {
+     "average_precision": null,
+     "balanced_accuracy": 0.77027,
+     "f1": 0.679245,
+     "fn": 0,
+     "fp": 17,
+     "n": 55,
+     "precision": 0.514286,
+     "recall": 1.0,
+     "ties": 0,
+     "tn": 20,
+     "tp": 18
+    },
+    "map_burned": {
+     "average_precision": null,
+     "balanced_accuracy": 0.5,
+     "f1": 0.857143,
+     "fn": 0,
+     "fp": 5,
+     "n": 20,
+     "precision": 0.75,
+     "recall": 1.0,
+     "ties": 0,
+     "tn": 0,
+     "tp": 15
+    },
+    "random_box": {
+     "average_precision": null,
+     "balanced_accuracy": 0.8125,
+     "f1": 0.333333,
+     "fn": 0,
+     "fp": 12,
+     "n": 35,
+     "precision": 0.2,
+     "recall": 1.0,
+     "ties": 0,
+     "tn": 20,
+     "tp": 3
+    }
+   }
+  }
+ }
+}

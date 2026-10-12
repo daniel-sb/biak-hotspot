@@ -1,0 +1,39 @@
+{
+ "caveats": [
+  "The reference is one interpreter's reading of S2DR4 1 m imagery, which is model output rather than observation. These are agreement figures, not accuracy against the ground.",
+  "The corrected area covers three events of August 2026, not the 23 events F11 reports.",
+  "Omission is estimated from boxes drawn around the VIIRS footprints, so it bounds missed burning near the events and says nothing about the rest of the island.",
+  "Boxes are 60 m and the product is 20 m, so a box can hold both classes; those were judged by majority and the doubtful ones marked unsure."
+ ],
+ "corrected_area_ha": {
+  "ci95": [
+   435.2,
+   727.5
+  ],
+  "estimate": 614.3,
+  "mapped": 819.1
+ },
+ "mapped_area_ha": 819.1,
+ "omission_near_events": {
+  "burned": 0,
+  "ci95": [
+   0.0,
+   0.114
+  ],
+  "estimate": 0.0,
+  "judged": 30,
+  "stratum": "random_box, boxes the map does not claim"
+ },
+ "unsure_dropped": 11,
+ "users_accuracy": {
+  "burned": 15,
+  "ci95": [
+   0.531,
+   0.888
+  ],
+  "estimate": 0.75,
+  "judged": 20,
+  "stratum": "map_burned"
+ },
+ "what": "The Task 18 dNBR+ product measured against hand labels on 1 m imagery, over 3 events: E0301, E0313, E0368."
+}

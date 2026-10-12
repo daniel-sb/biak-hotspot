@@ -1069,3 +1069,90 @@ object, and every prompt type fails on it in its own way.
 
 **Caveat.** Three events, one date, one interpreter of what counts as a burn scar, and
 agreement measured against dNBR+ rather than the ground.
+
+## F20 - The first accuracy figure: dNBR+ over-claims by about a quarter (2026-10-12)
+
+`scripts/label_accuracy.py` -> `data/processed/label_accuracy.json`, from the hand labels
+in `data/labels/biak_labels.gpkg`. **F11 published 2,415 ha with no accuracy at all.** This
+measures three of its 23 events, and the figure it returns is lower than the map.
+
+**The reference.** 67 boxes of 60 x 60 m, judged by the owner on S2DR4 1 m imagery for 23,
+25 and 28 August 2026 and Sentinel-2 at 20 m for before, mid-episode and after. Judgement
+was on change across those dates, not on how one date looked, which is what dNBR+ measures
+too. 11 boxes were marked `unsure` and dropped.
+
+Two strata, because the first was not enough:
+
+| stratum | boxes | burned | unburned | unsure | drawn from |
+|---|---|---|---|---|---|
+| `random_box` | 42 | 3 | 33 | 6 | random points, 7 in and 7 out of each event's VIIRS footprint |
+| `map_burned` | 25 | 15 | 5 | 5 | random points inside the dNBR+ polygons of the same events |
+
+Three positives cannot carry a precision figure, so the second stratum samples the map
+being tested. That is standard for map accuracy assessment, and it stays honest only
+because the map was never shown while judging: the QGIS project carries no dNBR+ layer.
+
+**The numbers, for E0301, E0313 and E0368 together:**
+
+| | value | 95% CI |
+|---|---|---|
+| mapped area | 819 ha | - |
+| user's accuracy | 15 of 20 = **75%** | 53% to 89% |
+| **corrected area** | **614 ha** | 435 to 728 ha |
+| omission near the events | 0 of 30 | 0% to 11% |
+
+**819 ha lies outside the interval.** The product over-claims these three events by roughly
+205 ha, a quarter of what it reports, and it missed nothing in 30 boxes drawn around the
+same events.
+
+**Where the error sits.** Among map-stratum boxes more than 90% covered by dNBR+ polygons,
+12 of 13 were judged burned. Among those 50% to 90% covered, 3 of 5. The commission is
+concentrated at polygon edges rather than spread through their interiors, which is what a
+local p99 threshold would be expected to do.
+
+**Caveats.** The reference is one interpreter reading super-resolved imagery, which is model
+output, not observation; these are agreement figures, not accuracy against the ground. The
+estimate covers 3 of F11's 23 events and does not license rescaling the 2,415 ha total.
+Omission is bounded only near the events, because those boxes come from the footprint
+strata rather than a random sample of the island. A 60 m box can hold both classes; those
+were judged by majority, and the genuinely mixed ones were marked `unsure`.
+
+## F21 - A learned classifier halves the false area the threshold claims (2026-10-12)
+
+`src/burn_classifier.py` -> `data/processed/burn_classifier.json`, Task 22, implemented by
+opencode and reviewed here. Features are native Sentinel-2 at 20 m, the same looks Task 18
+used; the 1 m imagery was only ever the reference, never an input. Folds leave one event
+out. 501 pixels in 55 boxes after dropping `unsure` and one box with no complete pixel.
+
+**Precision and recall against the hand labels, pooled over folds, per stratum:**
+
+| rule | `random_box` precision | `map_burned` precision | recall (random_box) |
+|---|---|---|---|
+| trivial: all of the footprint burned | 0.20 | 0.75 | 1.00 |
+| Task 18 threshold (F11's rule) | **0.27** | 0.88 | 1.00 |
+| decision tree, depth 3 | 1.00 | 0.93 | 1.00 |
+| hist gradient boosting | 0.75 | 0.93 | 1.00 |
+| random forest | **1.00** | 1.00 | 1.00 |
+
+Polygon level, 35 and 20 boxes. The strata are reported apart on purpose: `map_burned` was
+drawn inside the map, so a score pooled across both designs would describe neither.
+
+**The reading.** In the stratum that was not chosen by the map, the threshold rule is right
+about a quarter of the time it claims burning, and the learned rules are right most of the
+time, at no cost in recall. The gain is entirely in commission, exactly where F20 found the
+product wrong.
+
+**Why the features make sense.** Permutation importance puts `dnbr_swir`, `dnbr` and the
+post-fire B8A first in every fold. `in_footprint` scores exactly zero in all three, so the
+models are not quietly learning the sampling design.
+
+**What stops this being a result to act on.** The `random_box` stratum holds 3 burned boxes
+of 35. A precision of 1.00 on three positives is not a measurement, and the depth-3 trees
+disagree with each other across folds, splitting on `dnbr` at 0.26, 0.33 and 0.32 to 0.35,
+and on `dndvi` first in E0301. The honest claim is directional: a classifier trained on a
+dozen spectral features is better at refusing unburned ground than a single local threshold,
+on three events of one island in one season. Before any published area changes, the labelled
+sample needs to cover more events and more than one interpreter.
+
+**Checked at review.** Re-running the model offline against the committed feature table
+reproduces `burn_classifier.json` byte for byte. Nothing under `docs/` changed.
