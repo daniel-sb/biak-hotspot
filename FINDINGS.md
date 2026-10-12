@@ -1208,3 +1208,74 @@ boxes more than 90% covered were judged burned, against 3 of 5 covered between 5
 
 **What this does to F21.** Nothing. The classifier comparison is per stratum and never used
 the area estimate; the threshold rule's precision of 0.27 in the footprint stratum stands.
+
+## F23 - Audited against Olofsson 2014, and the audit changes the answer (2026-10-12)
+
+The reference design behind F20 and F22 read against Olofsson, Foody, Herold, Stehman,
+Woodcock and Wulder (2014), *Good practices for estimating area and assessing accuracy of
+land change*, Remote Sensing of Environment 148, 42-57, now in `References/`. Worked from
+the paper itself, not a summary.
+
+**What the design already follows.** Stratified random sampling with the map classes as
+strata, which is what the paper recommends for exactly this job. A probability sample with
+known inclusion probabilities. A reference source finer than the product being tested. Area
+estimated from the reference labels rather than by counting map pixels, and reported with a
+confidence interval.
+
+**What it does not follow, in order of how much it matters.**
+
+**1. The estimator and the zero-count stratum, which decides the headline.** Applying the
+paper's own estimator (its Eqs. 9 to 11) to our two strata:
+
+```
+p = W_A*0.75 + W_B*0.00 = 0.376      area = 614 ha
+S(p) = sqrt( W_A^2 * 0.75*0.25/19 + W_B^2 * 0.00/9 ) = 0.0499
+S(area) = 1,632 * 0.0499 = 81 ha     95% CI 455 to 774 ha
+```
+
+**That interval excludes the mapped 819 ha**, which is what F20 claimed and F22 withdrew.
+The disagreement is entirely stratum B: with 0 of 10 boxes burned, `p(1-p)` is zero, so the
+paper's variance term for a stratum carrying half the area is exactly zero. F22 instead took
+a Wilson upper bound of 28% on that stratum and got 435 to 953 ha, which includes 819.
+
+Neither is a mistake. The normal-approximation variance is simply blind to a zero count, and
+at n = 10 that blindness is doing the work. **F22's wider interval stands as the figure to
+quote**, because a method that reports zero uncertainty about half the study area from ten
+observations should not be the one deciding whether a product over-claims. The two numbers
+are reported together because the gap between them is the result: the sample is too small to
+settle the question either way.
+
+**2. Sample size.** The paper recommends 50 to 100 units in the rare or change strata.
+We have 20 and 10. Its Eq. 13, with our stratum weights and a conjectured 10% burning in
+stratum B, gives the sample needed for a target standard error:
+
+| target S(p) | boxes needed | per stratum |
+|---|---|---|
+| 0.05 | 54 | 27 and 27 |
+| 0.03 | 149 | 75 and 74 |
+| 0.02 | 336 | 169 and 168 |
+
+Task 23's target of 50 judged boxes per stratum lands near S(p) = 0.036, an area interval of
+roughly plus or minus 115 ha. That would separate 614 from 819, or fail to, for a reason
+other than sample size.
+
+**3. The sample unit is a 60 m box, and the paper says the variance estimators do not apply
+to it.** Section 4.3 is explicit: *"The variance estimators would not apply to a polygon
+assessment unit or to a mixed pixel situation."* Our box holds nine 20 m pixels, so it is a
+cluster, and treating it as one independent unit understates variance for the same reason a
+cluster sample does. Both intervals above are therefore optimistic in a way neither number
+shows. The honest fix is a pixel unit, or a cluster-aware variance; the practical obstacle
+is that a 20 m pixel cannot be judged reliably on the imagery available.
+
+**4. One interpreter.** The paper's worked example has three analysts inspect each unit.
+Every figure here comes from one person. Task 23 adds a second pass and a kappa, which is
+the first measurement of that uncertainty rather than an assumption about it.
+
+**5. Two frames, now kept apart.** The 42 footprint boxes were drawn before the map strata
+existed. They are used only for the stratum their own draw supports, and `scripts/label_accuracy.py`
+enforces that. The paper's framework assumes one design; ours is two designs stitched at a
+boundary, and that is a deviation to declare in any write-up rather than smooth over.
+
+**What does not change.** The per-stratum rates, the classifier comparison in F21, and the
+observation that commission concentrates at polygon edges. None of those depend on the area
+estimator.
