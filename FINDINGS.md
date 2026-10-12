@@ -1156,3 +1156,55 @@ sample needs to cover more events and more than one interpreter.
 
 **Checked at review.** Re-running the model offline against the committed feature table
 reproduces `burn_classifier.json` byte for byte. Nothing under `docs/` changed.
+
+## F22 - Correcting F20: the interval left out omission, and the map survives (2026-10-12)
+
+`scripts/label_accuracy.py` -> `data/processed/label_accuracy.json`. **F20's interval of
+435 to 728 ha is wrong and is superseded by the one below. Its headline claim, that dNBR+
+over-claims by about a quarter, is not supported by this sample.** The point estimate is
+unchanged.
+
+**What was wrong.** F20 multiplied the mapped area by the share of mapped boxes that really
+burned, and stopped there. That measures commission only. The area under test is the union
+of the three footprints, 1,632 ha, and the map divides it in two:
+
+| stratum | area | judged boxes | burned | rate | 95% CI |
+|---|---|---|---|---|---|
+| A, mapped by dNBR+ | 819 ha | 20 | 15 | 0.75 | 0.53 to 0.89 |
+| B, inside a footprint, unmapped | 813 ha | 10 | 0 | 0.00 | 0.00 to **0.28** |
+
+Stratum B carries almost exactly as much ground as stratum A, and F20 treated its
+contribution as a hard zero. **Zero of ten is not zero.** Its 95% upper bound is 28%, and
+28% of 813 ha is 226 ha of burning that could sit in ground the map does not claim.
+
+**The corrected estimate, for the footprints of E0301, E0313 and E0368:**
+
+```
+burned area = 819 * 0.75 + 813 * 0.00 = 614 ha,  95% CI 435 to 953 ha
+  commission term   614 ha   CI 435 to 728
+  omission term       0 ha   CI   0 to 226
+```
+
+**819 ha lies inside that interval.** The right reading is that the reference agrees with
+the product within the precision this sample can offer, and the point estimate sits below
+it without separating from it.
+
+**Why the sample cannot do better.** Stratum B holds ten judged boxes. Published good
+practice for map accuracy assessment asks for 50 to 100 sample units per stratum (Olofsson
+et al. 2014, Remote Sensing of Environment 148, 42-57). At ten, the upper bound on a
+zero-count stratum is 28% whatever the ground actually does, and that single number is what
+widens 728 to 953. No change of estimator fixes it; only more labels do.
+
+**A second correction, smaller.** Stratum membership follows how a box was drawn, not how
+much of it the polygons cover. An intermediate version of the script filtered the map
+stratum to boxes at least half covered, dropping two, which raised the rate from 15 of 20
+to 15 of 18 and the estimate from 614 to 683 ha. That filter drops the boxes at polygon
+edges, which are the hardest cases and the ones F20 found the product failing on, so it
+flatters the map. It is gone.
+
+**What F20 keeps.** The reference itself, the two-stratum design, the per-stratum rates,
+and the observation that commission concentrates at polygon edges: 12 of 13 map-stratum
+boxes more than 90% covered were judged burned, against 3 of 5 covered between 50% and 90%.
+
+**What this does to F21.** Nothing. The classifier comparison is per stratum and never used
+the area estimate; the threshold rule's precision of 0.27 in the footprint stratum stands.
