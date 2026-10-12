@@ -23,7 +23,12 @@ their stratum has no defined area short of the whole island, and nothing in this
 sample supports extrapolating to it.
 
 Intervals are Wilson score intervals at 95%, which behave at zero successes
-where the normal approximation collapses to a point.
+where the normal approximation collapses to a point. The estimator published
+in Olofsson et al. 2014 uses the normal approximation instead, and is reported
+beside the Wilson one because the two disagree about whether the map's own
+figure is inside the interval (F23). At 0 of 10 the normal approximation
+reports zero variance for a stratum carrying half the area, so the Wilson
+version is the one to quote.
 """
 from __future__ import annotations
 
@@ -53,6 +58,23 @@ def wilson(k: int, n: int) -> tuple[float, float]:
     centre = (p + Z * Z / (2 * n)) / d
     half = Z * sqrt(p * (1 - p) / n + Z * Z / (4 * n * n)) / d
     return max(0.0, centre - half), min(1.0, centre + half)
+
+
+def olofsson(areas, counts):
+    """The stratified estimator of Olofsson et al. 2014, Eqs. 9 to 11.
+
+    areas and counts are per stratum: area in ha, and (burned, judged).
+    Returns the proportion, its standard error, and the 95% interval in ha.
+    """
+    total = sum(areas)
+    p = var = 0.0
+    for a, (k, n) in zip(areas, counts):
+        w, pi = a / total, (k / n if n else 0.0)
+        p += w * pi
+        if n > 1:
+            var += w * w * pi * (1 - pi) / (n - 1)
+    se = sqrt(var)
+    return p, se, (total * (p - Z * se), total * (p + Z * se))
 
 
 def footprint_union(to_utm):
@@ -116,6 +138,18 @@ def main() -> int:
     loB, hiB = wilson(kB, nB)
     loO, hiO = wilson(kO, nO)
 
+    pO, seO, ciO = olofsson([area_A, area_B], [(kA, nA), (kB, nB)])
+    _olof = {
+        "note": ("Eqs. 9 to 11 of Olofsson et al. 2014, which use the normal "
+                 "approximation. At 0 of 10 that gives stratum B zero variance "
+                 "although it carries half the area, so this interval is "
+                 "narrower than the sample supports. F23 says to quote the "
+                 "Wilson one above."),
+        "estimate_ha": round((area_A + area_B) * pO, 1),
+        "se_ha": round((area_A + area_B) * seO, 1),
+        "ci95": [round(ciO[0], 1), round(ciO[1], 1)],
+    }
+
     doc = {
         "what": ("The Task 18 dNBR+ product measured against hand labels on 1 m imagery, "
                  f"over the footprints of {', '.join(EVENTS)}."),
@@ -144,6 +178,7 @@ def main() -> int:
                 "ci95": [round(area_B * loB, 1), round(area_B * hiB, 1)],
             },
         },
+        "olofsson_2014": _olof,
         "outside_footprints": {"burned": kO, "judged": nO,
                                "rate": round(kO / nO, 3) if nO else None,
                                "ci95": [round(loO, 3), round(hiO, 3)],
@@ -182,6 +217,11 @@ def main() -> int:
     print(f"  omission term   {ba_['omission_term_only']['estimate']:.0f} ha "
           f"CI {ba_['omission_term_only']['ci95'][0]:.0f} to "
           f"{ba_['omission_term_only']['ci95'][1]:.0f}")
+    o_in = _olof["ci95"][0] <= area_A <= _olof["ci95"][1]
+    print(f"\nOlofsson 2014 normal approximation {_olof['estimate_ha']:.0f} ha "
+          f"CI {_olof['ci95'][0]:.0f} to {_olof['ci95'][1]:.0f} ha, "
+          f"which puts the map's {area_A:.0f} ha "
+          f"{'inside' if o_in else 'outside'} (F23)")
     print(f"\nwritten {OUT.relative_to(ROOT)}")
     return 0
 

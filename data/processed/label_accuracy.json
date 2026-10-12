@@ -32,6 +32,15 @@
   "The estimate covers the footprints of three events of August 2026, not the 23 events F11 reports, and not the island.",
   "Boxes are 60 m and the product is 20 m, so a box can hold both classes; those were judged by majority and the doubtful ones marked unsure."
  ],
+ "olofsson_2014": {
+  "ci95": [
+   454.8,
+   773.8
+  ],
+  "estimate_ha": 614.3,
+  "note": "Eqs. 9 to 11 of Olofsson et al. 2014, which use the normal approximation. At 0 of 10 that gives stratum B zero variance although it carries half the area, so this interval is narrower than the sample supports. F23 says to quote the Wilson one above.",
+  "se_ha": 81.4
+ },
  "outside_footprints": {
   "burned": 0,
   "ci95": [

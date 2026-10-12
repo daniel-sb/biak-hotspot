@@ -1253,7 +1253,7 @@ stratum B, gives the sample needed for a target standard error:
 |---|---|---|
 | 0.05 | 54 | 27 and 27 |
 | 0.03 | 149 | 75 and 74 |
-| 0.02 | 336 | 169 and 168 |
+| 0.02 | 336 | 169 and 167 |
 
 Task 23's target of 50 judged boxes per stratum lands near S(p) = 0.036, an area interval of
 roughly plus or minus 115 ha. That would separate 614 from 819, or fail to, for a reason

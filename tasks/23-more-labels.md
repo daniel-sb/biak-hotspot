@@ -1,16 +1,39 @@
 # Task 23 — Enough labels to say something: more boxes, and a second interpreter
 
-F22 settles what the reference sample can and cannot do. With 20 judged boxes in the mapped
-stratum and 10 in the unmapped one, the burned-area estimate for three events is 614 ha with
-a 95% interval of 435 to 953 ha. The map's own 819 ha sits inside it. The estimator is not
-the problem: a zero-count stratum of ten has an upper bound of 28% whatever the ground does,
-and that one number widens the interval by 226 ha.
+F22 and F23 settle what the reference sample can and cannot do. With 20 judged boxes in the
+mapped stratum and 10 in the unmapped one, the burned-area estimate for three events is
+614 ha. Which interval goes round it decides the answer, and the two available answers
+disagree:
 
-Published good practice asks for 50 to 100 sample units per stratum (Olofsson et al. 2014,
-Remote Sensing of Environment 148, 42-57). This task gets there, and adds the one check the
-reference has never had: a second person judging the same boxes.
+| treatment | 95% interval | the map's 819 ha |
+|---|---|---|
+| Wilson per stratum, F22 | 435 to 953 ha | inside |
+| Olofsson et al. 2014 Eqs. 9 to 11, normal approximation | 455 to 774 ha | outside |
+
+The gap is stratum B. Zero of ten gives the normal approximation exactly zero variance for
+ground that is half the study area; the Wilson upper bound of 28% gives it 226 ha. F23 keeps
+the wider figure, and says the sample is too small to settle it. **This task is what settles
+it**, and adds the one check the reference has never had: a second person judging the same
+boxes.
 
 It does not change any published figure, and it does not touch `docs/`, the brief or the cron.
+
+## How many boxes is enough, from the paper
+
+Olofsson et al. 2014 (Remote Sensing of Environment 148, 42-57, in `References/`) recommends
+50 to 100 units per change stratum, and its Eq. 13 gives the arithmetic. With our stratum
+weights, the mapped stratum's observed 75%, and a conjectured 10% burning in stratum B:
+
+| target S(p) | boxes in total | per stratum | area interval, roughly |
+|---|---|---|---|
+| 0.05 | 54 | 27 and 27 | plus or minus 160 ha |
+| 0.03 | 149 | 75 and 74 | plus or minus 96 ha |
+| 0.02 | 336 | 169 and 167 | plus or minus 64 ha |
+
+**50 judged boxes per stratum is the target**, which lands near S(p) = 0.036 and an interval
+of about plus or minus 115 ha. That separates 614 from 819, or fails to, for a reason other
+than sample size. Going further is a judging-time decision, not a statistical one: say in
+your final message what the achieved S(p) turned out to be.
 
 ## What to build
 
@@ -58,7 +81,9 @@ into the first pass under any circumstance.
 
 Once the boxes are judged, re-run and report the deltas, nothing more:
 
-- `scripts/label_accuracy.py` — the two-stratum estimate and its interval;
+- `scripts/label_accuracy.py` — the two-stratum estimate and **both** intervals, the Wilson
+  one and the `olofsson()` one already in that script. Report whether they still disagree
+  about 819 ha; that disagreement closing is the result this task exists for.
 - `src/burn_classifier.py` — the fold table; more positives in stratum B is exactly what its
   weakest number needed.
 
@@ -90,6 +115,8 @@ Extend `tests/test_label_tools.py`, or create it:
 4. The accuracy script reads stratum B from both `random_box` and `footprint_unmapped`
    boxes, and reports the count from each.
 5. A stratum with zero burned boxes still produces an upper bound, as F22 relies on.
+   `tests/test_label_accuracy.py` already checks this and the Olofsson estimator against the
+   published figures; extend it rather than starting a second file for the same script.
 
 ## Constraints
 
@@ -109,4 +136,8 @@ list in your final message; the entry is written at review.
 - More events. Three events have 1 m imagery; adding a fourth means another S2DR4 run and
   belongs to its own task.
 - Reconciling disagreements into a single label set.
+- Changing the assessment unit. F23 records that the 60 m box is a cluster of nine 20 m
+  pixels and that the paper's variance estimators are not written for it. That is a real
+  deviation, and fixing it means re-judging everything at pixel level on imagery that cannot
+  support it. Leave it stated, not fixed.
 - Any change to F11's published 2,415 ha.
