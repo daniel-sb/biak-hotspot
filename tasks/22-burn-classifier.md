@@ -25,12 +25,30 @@ It does not touch the dashboard, the brief, the cron, or `docs/`.
 - PLAN.md section 8 applies: no output may name a cause or a person. The words are "changed
   like a burn", "burn-like change", "estimated".
 
+## What the labels turned out to be
+
+Judged between 4 and 12 October 2026, on 1 m S2DR4 imagery for 23, 25 and 28 August and
+20 m Sentinel-2 for before, mid-episode and after. **67 boxes of 60 x 60 m, in two strata:**
+
+| `sampling` | boxes | burned | unburned | unsure | drawn from |
+|---|---|---|---|---|---|
+| `random_box` | 42 | 3 | 33 | 6 | random points, 7 in and 7 out of each event's footprint |
+| `map_burned` | 25 | 15 | 5 | 5 | random points inside the dNBR+ polygons of the same three events |
+
+The second stratum exists because the first produced three positives, which cannot carry
+any figure. Both strata cover E0301, E0313 and E0368 only.
+
+The accuracy assessment is **already done** and belongs to the review entry, not to this
+task: user's accuracy 15 of 20, and a corrected area of 614 ha against the 819 ha the map
+claims for those three events. This task is the other half, the classifier.
+
 ## Inputs
 
-- `data/labels/biak_labels.gpkg`, layer `labels`: polygons with `sample_id`, `event_id`,
-  `class` (`burned` / `unburned` / `unsure`), `confidence`, `notes`. Built by
-  `scripts/label_prepare.py`; the sample points are stratified inside and outside the VIIRS
-  footprints, 7 and 7 per event, with a fixed seed.
+- `data/labels/biak_labels.gpkg`, layer `labels`: boxes with `sample_id`, `event_id`,
+  `sampling`, `class` (`burned` / `unburned` / `unsure`), `confidence`, `notes`.
+- **The two strata are not interchangeable.** Train on both, but any figure reported per
+  stratum stays per stratum: `map_burned` boxes were chosen inside the map being tested, so
+  a score pooled across strata without weights is not an accuracy of anything.
 - **Drop every `unsure` polygon** and report how many were dropped, by event and by stratum.
   Do not guess them either way (AGENTS never-5 in spirit: the record stays auditable).
 - `data/processed/events.json`, `data/processed/detections.parquet`,
@@ -87,6 +105,10 @@ as its bar.
 
 `sklearn.ensemble.HistGradientBoostingClassifier` as the model, and
 `RandomForestClassifier` beside it because it costs nothing to add and reviewers ask for it.
+Add `DecisionTreeClassifier` with `max_depth=3` as a third: it will score worse, and its
+value is that the rule can be printed in full and argued with. Print it with
+`sklearn.tree.export_text`.
+
 Default hyper-parameters, `random_state` from config. **Do not tune** on the test fold; if
 you want a tuned version, say so in your final message and leave it out.
 
@@ -117,7 +139,8 @@ no timestamp, added to the `data/processed/` allowlist:
 
 - the parameters, the label counts by class, event and stratum, and the dropped `unsure`
   count;
-- the per-fold and pooled metrics for all four rules;
+- the per-fold and pooled metrics for all five rules, with the stratum each box came from
+  carried through, so no score silently mixes the two designs;
 - the feature importances of both classifiers (permutation importance on the held-out fold,
   not the impurity kind, which favours high-cardinality features);
 - a `caveats` list, verbatim:
@@ -143,7 +166,7 @@ review. Put the fold table, the polygon counts and the comparison in your final 
 `tests/test_burn_classifier.py`, offline, synthetic frames built inside the test. It may read
 the committed feature CSV once that exists, but must not fetch.
 
-1. `unsure` polygons are dropped, and the dropped count is reported.
+1. `unsure` polygons are dropped, and the dropped count is reported, by stratum.
 2. Leave-one-event-out: no `sample_id` appears in both the training and test split of a
    fold, and a fold's test set holds exactly one event.
 3. The per-polygon vote: a polygon with 7 burned and 3 unburned pixels reads as burned; a
@@ -163,4 +186,8 @@ the committed feature CSV once that exists, but must not fetch.
   rule, that is a finding, not a correction to apply automatically.
 - Deep learning, transfer learning, and anything with a GPU. The owner's laptop lost power
   three times under GPU load (F18), and this task does not need one.
+- Hosted decision or scoring models reached over the network. The features here are a dozen
+  reflectance numbers per pixel, which is what gradient boosting is for; a remote model adds
+  a key, a bill, and a result that changes when the vendor rebases it, and the tests in this
+  project are offline by rule.
 - Retraining on the 1 m imagery, or using S2DR4 as a feature source.
