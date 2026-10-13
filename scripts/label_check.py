@@ -28,18 +28,25 @@ def main() -> int:
 
     samples = gpd.read_file(GPKG, layer="samples")
     labels = gpd.read_file(GPKG, layer="labels")
-    # Two strata, checked differently. The footprint boxes each sit on a sample
-    # point; the map stratum was drawn inside the dNBR+ polygons and has none.
+    # Three strata, checked differently. The 42 `random_box` boxes each sit on a
+    # sample point; `map_burned` and `footprint_unmapped` were drawn at random
+    # inside their own frames and are not near any sample point, so the
+    # point-in-polygon check does not apply to them (Task 23).
     if "sampling" not in labels.columns:
         labels["sampling"] = "random_box"
-    mapped = labels[labels.sampling == "map_burned"]
-    labels = labels[labels.sampling != "map_burned"].copy()
+    DRAWN = ("map_burned", "footprint_unmapped")
+    drawn = labels[labels.sampling.isin(DRAWN)]
+    labels = labels[~labels.sampling.isin(DRAWN)].copy()
     print(f"{len(labels)} footprint boxes of {len(samples)} sample points, "
-          f"{len(mapped)} map-stratum boxes\n")
-    if len(mapped):
-        done = int(mapped["class"].notna().sum())
-        print("map stratum:", mapped["class"].value_counts(dropna=False).to_dict(),
-              f"({done} of {len(mapped)} judged)\n")
+          f"{len(drawn)} drawn-stratum boxes\n")
+    for stratum in DRAWN:
+        part = drawn[drawn.sampling == stratum]
+        if len(part):
+            done = int(part["class"].notna().sum())
+            print(f"{stratum}:", part["class"].value_counts(dropna=False).to_dict(),
+                  f"({done} of {len(part)} judged)")
+    if len(drawn):
+        print()
     if labels.empty:
         print("nothing drawn yet — open data/labels/biak_labels.qgz and see HOWTO.md")
         return 0

@@ -1,0 +1,13 @@
+{
+ "compared": 0,
+ "disagreements": [],
+ "not_compared": 142,
+ "note": "Neither answer wins where they disagree: a reconciled label is the owner's decision, taken box by box and recorded with a reason.",
+ "per_stratum": {},
+ "pooled": {
+  "agreement": null,
+  "kappa": null,
+  "n": 0
+ },
+ "what": "Two interpreters' readings of the same label boxes on S2DR4 1 m imagery. These are agreement between two readings of model output, not accuracy against ground (F18)."
+}

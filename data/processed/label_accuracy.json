@@ -1,13 +1,15 @@
 {
  "areas_ha": {
-  "footprints": 1631.9,
-  "inside_footprint_unmapped": 812.8,
-  "mapped": 819.1
+  "footprint_off_land_or_imagery": 14.6,
+  "footprints": 1619.2,
+  "inside_footprint_unmapped": 800.1,
+  "mapped": 819.1,
+  "note": "mapped and unmapped are land inside the S2DR4 1 m imagery, which is where boxes can be judged"
  },
  "burned_area_ha": {
   "ci95": [
    435.2,
-   953.1
+   949.5
   ],
   "commission_term_only": {
    "ci95": [
@@ -21,14 +23,14 @@
   "omission_term_only": {
    "ci95": [
     0.0,
-    225.6
+    222.1
    ],
    "estimate": 0.0
   }
  },
  "caveats": [
   "The reference is one interpreter's reading of S2DR4 1 m imagery, which is model output rather than observation. These are agreement figures, not accuracy against the ground.",
-  "Stratum B holds 10 judged boxes. Published good practice for map accuracy assessment asks for 50 to 100 per stratum, so the interval is wide enough that the map's own figure sits inside it.",
+  "Stratum B holds 10 judged boxes. Published good practice for map accuracy assessment asks for 50 to 100 per stratum, so the interval is wide enough that whether the map's own figure sits inside it is decided by the estimator, not by the sample.",
   "The estimate covers the footprints of three events of August 2026, not the 23 events F11 reports, and not the island.",
   "Boxes are 60 m and the product is 20 m, so a box can hold both classes; those were judged by majority and the doubtful ones marked unsure."
  ],
@@ -64,16 +66,34 @@
    "sample": "map_burned"
   },
   "B_unmapped_in_footprint": {
-   "area_ha": 812.8,
+   "area_ha": 800.1,
    "burned": 0,
    "ci95": [
     0.0,
     0.278
    ],
+   "designs": {
+    "footprint_unmapped": {
+     "burned": 0,
+     "judged": 0
+    },
+    "random_box": {
+     "burned": 0,
+     "judged": 10
+    }
+   },
    "judged": 10,
    "rate": 0.0,
-   "sample": "random_box"
+   "sample": "random_box and footprint_unmapped"
   }
+ },
+ "unjudged_boxes": {
+  "by_stratum": {
+   "footprint_unmapped": 50,
+   "map_burned": 25
+  },
+  "note": "boxes drawn but not yet judged; not counted as unburned anywhere in this file",
+  "total": 75
  },
  "unsure_dropped": 11,
  "what": "The Task 18 dNBR+ product measured against hand labels on 1 m imagery, over the footprints of E0301, E0313, E0368."

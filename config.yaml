@@ -294,3 +294,27 @@ burned_area:
   # December 2024, about 20 months early. Raise it when TMF v1_2025
   # appears - and change the asset id in burned_area_gee.py with it.
   tmf_latest_year: 2024
+
+# Hand-label accuracy assessment (Tasks 22 and 23). The labels are one
+# interpreter's reading of S2DR4 1 m imagery (F18), so every figure drawn
+# from them is agreement with that reading, never accuracy against ground.
+labels:
+  # The label unit: a 60 m box is nine 20 m pixels of the product being
+  # tested - small enough to stay one cover type, large enough to judge on
+  # 1 m imagery. Fixed at its sample point; never drawn or resized by hand.
+  box_m: 60
+  # Neighbouring boxes are spatially correlated and the variance estimators
+  # treat a box as one independent unit, so sample points are kept apart.
+  min_separation_m: 150
+  # Boxes to hold per stratum. 50 is the floor Olofsson et al. 2014
+  # recommends for a change stratum (50 to 100 units); at the 20 and 10 of
+  # F22 the interval on the burned area is too wide to say whether the
+  # map's 819 ha is inside it (F23). Fifty per stratum lands near
+  # S(p) = 0.036, an area interval of roughly plus or minus 115 ha.
+  target_per_stratum: 50
+  # Fixed seeds, so the same draw can be made again. The earlier draws used
+  # 20260928 (the 42 random_box points) and 20261009 (the first 25
+  # map_burned boxes); these continue the series and must never be reused.
+  seeds:
+    map_burned_2: 20261013        # the second map_burned draw, MAP26 onward
+    footprint_unmapped: 20261014  # the footprint_unmapped draw, B01 onward

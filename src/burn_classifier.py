@@ -90,7 +90,7 @@ FEATURES = tuple(
 CLASSIFIERS = ("hist_gradient_boosting", "random_forest",
                "decision_tree_depth3")
 RULES = CLASSIFIERS + ("task18_threshold", "trivial_footprint")
-STRATA = ("random_box", "map_burned")
+STRATA = ("random_box", "map_burned", "footprint_unmapped")
 PERMUTATION_REPEATS = 10
 COLUMNS = (("sample_id", "event_id", "sampling", "class", "lon", "lat",
             "pre_valid", "post_valid") + FEATURES)

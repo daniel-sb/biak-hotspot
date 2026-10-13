@@ -48,6 +48,12 @@ data/raw/labels_features/*
 # The accuracy assessment behind F20: small, and every figure in that entry
 # is recomputed from it by scripts/label_accuracy.py.
 !data/processed/label_accuracy.json
+# Second-interpreter agreement (Task 23): the kappa and the disagreement
+# list are the result, and the .gpkg beside it holds a second person's
+# judgements, which cannot be regenerated from anything else. Tracked for
+# the same reason the first pass is.
+!data/processed/label_agreement.json
+!data/labels/biak_labels_pass2.gpkg
 # Detection climatology evaluation (Task 17): the fold metrics the baseline
 # is held to. Deterministic from the tracked store, but committed so later
 # models can be compared against the same printed bar.

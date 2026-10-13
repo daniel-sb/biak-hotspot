@@ -37,16 +37,24 @@ your final message what the achieved S(p) turned out to be.
 
 ## Before you start: which Python runs this
 
-`.venv` has shapely but **no geopandas**, so every script under `scripts/label_*.py` fails
-there with `ModuleNotFoundError: No module named 'geopandas'`. They run under the QGIS 3.44
-LTR interpreter, which has geopandas 1.1.4:
+Three interpreters on this machine, and only one runs the data work:
+
+| interpreter | has | use it for |
+|---|---|---|
+| `.venv` | shapely, no geopandas | nothing here; `scripts/label_*.py` dies with `ModuleNotFoundError: No module named 'geopandas'` |
+| **conda env `geolibre`** | geopandas 1.1.4, rasterio, pyproj, sklearn, ee, pytest | **everything in this task** |
+| QGIS 3.44 LTR python | geopandas, osgeo, no rasterio | only `label_qgis_project.py` and `label_second_pass.py`, which import `qgis.core` |
 
 ```
-& "C:\Program Files\QGIS 3.44.13\bin\python-qgis-ltr.bat" scripts\label_accuracy.py
+GDAL_DATA=C:/Users/User/.conda/envs/geolibre/Library/share/gdal
+PROJ_LIB=C:/Users/User/.conda/envs/geolibre/Library/share/proj
+C:/Users/User/.conda/envs/geolibre/python.exe scripts/label_accuracy.py
 ```
 
-Tests that import only the estimators run anywhere, because the geo imports live inside
-`main()`. Keep it that way: a new test must not force geopandas into `.venv`.
+Without those two variables pyogrio warns `Could not detect GDAL data files` and CRS work
+gets unreliable. With them the whole label suite is about 7 seconds and the full
+`pytest tests` about 7 minutes. Booting the QGIS interpreter per command instead costs 3.6 s
+each time and cannot import rasterio at all, so do not reach for it to run a script.
 
 **Never invent a label, a geometry or a coverage number.** If a box cannot be drawn, a file
 cannot be read or a count does not come out, exit non-zero and say which one. No placeholder

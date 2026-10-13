@@ -123,6 +123,18 @@
       "tn": 106,
       "tp": 110
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": 0.913137,
       "balanced_accuracy": 0.728758,
@@ -160,6 +172,18 @@
       "recall": 0.891667,
       "tn": 108,
       "tp": 107
+     },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
      },
      "map_burned": {
       "average_precision": 0.956432,
@@ -199,6 +223,18 @@
       "tn": 115,
       "tp": 103
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": 0.978923,
       "balanced_accuracy": 0.805556,
@@ -237,6 +273,18 @@
       "tn": 67,
       "tp": 111
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": null,
       "balanced_accuracy": 0.511438,
@@ -274,6 +322,18 @@
       "recall": 1.0,
       "tn": 67,
       "tp": 120
+     },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
      },
      "map_burned": {
       "average_precision": null,
@@ -316,6 +376,19 @@
       "tn": 12,
       "tp": 12
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": 0.98416,
       "balanced_accuracy": 0.704545,
@@ -356,6 +429,19 @@
       "ties": 0,
       "tn": 12,
       "tp": 12
+     },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
      },
      "map_burned": {
       "average_precision": 0.975069,
@@ -398,6 +484,19 @@
       "tn": 13,
       "tp": 12
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": 0.992424,
       "balanced_accuracy": 0.954545,
@@ -439,6 +538,19 @@
       "tn": 6,
       "tp": 12
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": null,
       "balanced_accuracy": 0.454545,
@@ -479,6 +591,19 @@
       "ties": 0,
       "tn": 7,
       "tp": 13
+     },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
      },
      "map_burned": {
       "average_precision": null,
@@ -586,6 +711,18 @@
       "tn": 115,
       "tp": 22
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": 0.925926,
       "balanced_accuracy": 0.907407,
@@ -623,6 +760,18 @@
       "recall": 1.0,
       "tn": 103,
       "tp": 27
+     },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
      },
      "map_burned": {
       "average_precision": 1.0,
@@ -662,6 +811,18 @@
       "tn": 117,
       "tp": 24
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": 1.0,
       "balanced_accuracy": 0.944444,
@@ -700,6 +861,18 @@
       "tn": 78,
       "tp": 27
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": null,
       "balanced_accuracy": 0.777778,
@@ -737,6 +910,18 @@
       "recall": 1.0,
       "tn": 60,
       "tp": 27
+     },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
      },
      "map_burned": {
       "average_precision": null,
@@ -779,6 +964,19 @@
       "tn": 13,
       "tp": 2
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": 1.0,
       "balanced_accuracy": 0.833333,
@@ -819,6 +1017,19 @@
       "ties": 0,
       "tn": 12,
       "tp": 3
+     },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
      },
      "map_burned": {
       "average_precision": 1.0,
@@ -861,6 +1072,19 @@
       "tn": 13,
       "tp": 3
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": 1.0,
       "balanced_accuracy": 1.0,
@@ -902,6 +1126,19 @@
       "tn": 10,
       "tp": 3
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": null,
       "balanced_accuracy": 1.0,
@@ -942,6 +1179,19 @@
       "ties": 0,
       "tn": 7,
       "tp": 3
+     },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
      },
      "map_burned": {
       "average_precision": null,
@@ -1049,6 +1299,18 @@
       "tn": 92,
       "tp": 18
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": 1.0,
       "balanced_accuracy": 1.0,
@@ -1086,6 +1348,18 @@
       "recall": 0.944444,
       "tn": 99,
       "tp": 17
+     },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
      },
      "map_burned": {
       "average_precision": 1.0,
@@ -1125,6 +1399,18 @@
       "tn": 99,
       "tp": 18
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": 1.0,
       "balanced_accuracy": 1.0,
@@ -1163,6 +1449,18 @@
       "tn": 96,
       "tp": 18
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": null,
       "balanced_accuracy": 0.888889,
@@ -1200,6 +1498,18 @@
       "recall": 1.0,
       "tn": 54,
       "tp": 18
+     },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "tn": 0,
+      "tp": 0
      },
      "map_burned": {
       "average_precision": null,
@@ -1242,6 +1552,19 @@
       "tn": 11,
       "tp": 2
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": 1.0,
       "balanced_accuracy": 1.0,
@@ -1282,6 +1605,19 @@
       "ties": 0,
       "tn": 11,
       "tp": 2
+     },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
      },
      "map_burned": {
       "average_precision": 1.0,
@@ -1324,6 +1660,19 @@
       "tn": 11,
       "tp": 2
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": 1.0,
       "balanced_accuracy": 1.0,
@@ -1365,6 +1714,19 @@
       "tn": 11,
       "tp": 2
      },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
+     },
      "map_burned": {
       "average_precision": null,
       "balanced_accuracy": 1.0,
@@ -1405,6 +1767,19 @@
       "ties": 0,
       "tn": 6,
       "tp": 2
+     },
+     "footprint_unmapped": {
+      "average_precision": null,
+      "balanced_accuracy": null,
+      "f1": null,
+      "fn": 0,
+      "fp": 0,
+      "n": 0,
+      "precision": null,
+      "recall": null,
+      "ties": 0,
+      "tn": 0,
+      "tp": 0
      },
      "map_burned": {
       "average_precision": null,
@@ -1568,6 +1943,18 @@
      "tn": 313,
      "tp": 150
     },
+    "footprint_unmapped": {
+     "average_precision": null,
+     "balanced_accuracy": null,
+     "f1": null,
+     "fn": 0,
+     "fp": 0,
+     "n": 0,
+     "precision": null,
+     "recall": null,
+     "tn": 0,
+     "tp": 0
+    },
     "map_burned": {
      "average_precision": 0.909491,
      "balanced_accuracy": 0.856763,
@@ -1605,6 +1992,18 @@
      "recall": 0.915152,
      "tn": 310,
      "tp": 151
+    },
+    "footprint_unmapped": {
+     "average_precision": null,
+     "balanced_accuracy": null,
+     "f1": null,
+     "fn": 0,
+     "fp": 0,
+     "n": 0,
+     "precision": null,
+     "recall": null,
+     "tn": 0,
+     "tp": 0
     },
     "map_burned": {
      "average_precision": 0.959844,
@@ -1644,6 +2043,18 @@
      "tn": 331,
      "tp": 145
     },
+    "footprint_unmapped": {
+     "average_precision": null,
+     "balanced_accuracy": null,
+     "f1": null,
+     "fn": 0,
+     "fp": 0,
+     "n": 0,
+     "precision": null,
+     "recall": null,
+     "tn": 0,
+     "tp": 0
+    },
     "map_burned": {
      "average_precision": 0.9805,
      "balanced_accuracy": 0.883092,
@@ -1682,6 +2093,18 @@
      "tn": 241,
      "tp": 156
     },
+    "footprint_unmapped": {
+     "average_precision": null,
+     "balanced_accuracy": null,
+     "f1": null,
+     "fn": 0,
+     "fp": 0,
+     "n": 0,
+     "precision": null,
+     "recall": null,
+     "tn": 0,
+     "tp": 0
+    },
     "map_burned": {
      "average_precision": null,
      "balanced_accuracy": 0.678502,
@@ -1719,6 +2142,18 @@
      "recall": 1.0,
      "tn": 181,
      "tp": 165
+    },
+    "footprint_unmapped": {
+     "average_precision": null,
+     "balanced_accuracy": null,
+     "f1": null,
+     "fn": 0,
+     "fp": 0,
+     "n": 0,
+     "precision": null,
+     "recall": null,
+     "tn": 0,
+     "tp": 0
     },
     "map_burned": {
      "average_precision": null,
@@ -1761,6 +2196,19 @@
      "tn": 36,
      "tp": 16
     },
+    "footprint_unmapped": {
+     "average_precision": null,
+     "balanced_accuracy": null,
+     "f1": null,
+     "fn": 0,
+     "fp": 0,
+     "n": 0,
+     "precision": null,
+     "recall": null,
+     "ties": 0,
+     "tn": 0,
+     "tp": 0
+    },
     "map_burned": {
      "average_precision": 0.986627,
      "balanced_accuracy": 0.833333,
@@ -1801,6 +2249,19 @@
      "ties": 0,
      "tn": 35,
      "tp": 17
+    },
+    "footprint_unmapped": {
+     "average_precision": null,
+     "balanced_accuracy": null,
+     "f1": null,
+     "fn": 0,
+     "fp": 0,
+     "n": 0,
+     "precision": null,
+     "recall": null,
+     "ties": 0,
+     "tn": 0,
+     "tp": 0
     },
     "map_burned": {
      "average_precision": 0.986627,
@@ -1843,6 +2304,19 @@
      "tn": 37,
      "tp": 17
     },
+    "footprint_unmapped": {
+     "average_precision": null,
+     "balanced_accuracy": null,
+     "f1": null,
+     "fn": 0,
+     "fp": 0,
+     "n": 0,
+     "precision": null,
+     "recall": null,
+     "ties": 0,
+     "tn": 0,
+     "tp": 0
+    },
     "map_burned": {
      "average_precision": 0.995833,
      "balanced_accuracy": 0.966667,
@@ -1884,6 +2358,19 @@
      "tn": 27,
      "tp": 17
     },
+    "footprint_unmapped": {
+     "average_precision": null,
+     "balanced_accuracy": null,
+     "f1": null,
+     "fn": 0,
+     "fp": 0,
+     "n": 0,
+     "precision": null,
+     "recall": null,
+     "ties": 0,
+     "tn": 0,
+     "tp": 0
+    },
     "map_burned": {
      "average_precision": null,
      "balanced_accuracy": 0.766667,
@@ -1924,6 +2411,19 @@
      "ties": 0,
      "tn": 20,
      "tp": 18
+    },
+    "footprint_unmapped": {
+     "average_precision": null,
+     "balanced_accuracy": null,
+     "f1": null,
+     "fn": 0,
+     "fp": 0,
+     "n": 0,
+     "precision": null,
+     "recall": null,
+     "ties": 0,
+     "tn": 0,
+     "tp": 0
     },
     "map_burned": {
      "average_precision": null,

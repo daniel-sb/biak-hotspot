@@ -10,7 +10,7 @@ security conditions, and F18 showed that no prompted segmentation model can stan
 
 | layer | what it is |
 |---|---|
-| **LABELS — draw here** | 67 boxes of 60 x 60 m, already placed; you fill in the class |
+| **LABELS — draw here** | 142 boxes of 60 x 60 m, already placed; you fill in the class |
 | samples | the 42 random points each box is centred on |
 | VIIRS footprints | 375 m circles round the detections — where the samples were drawn from, not truth |
 | VIIRS/MODIS detections | the individual satellite detections |
@@ -69,9 +69,9 @@ a small isolated object: those are the parts a super-resolution model invents.
 
 ## The job: judge the boxes
 
-There is nothing to draw. The label layer holds **67 boxes of 60 x 60 m**, 0.36 ha each,
+There is nothing to draw. The label layer holds **142 boxes of 60 x 60 m**, 0.36 ha each,
 which is 9 pixels of the 20 m product being tested. Your job is the judgement only: what is
-inside each box.
+inside each box. The 75 new boxes (`MAP26`–`MAP50`, `B01`–`B50`) are the ones still to do.
 
 Why fixed boxes rather than outlines: the sample location has to come from the random draw.
 Choosing where to draw, by eye, around a scar that is visible turns the reference into a
@@ -82,12 +82,20 @@ collection of obvious cases, and the agreement figure then measures the easy one
 | `sampling` | how many | drawn from |
 |---|---|---|
 | `random_box` | 42, judged | random points, 7 inside and 7 outside each event's VIIRS footprint |
-| `map_burned` | 25, to do | random points inside the dNBR+ polygons of the same three events |
+| `map_burned` | 50: 25 judged, 25 to do | random points inside the dNBR+ polygons of the same three events |
+| `footprint_unmapped` | 50, to do | random points inside the VIIRS footprints, on ground the polygons do not claim |
 
 The first 42 produced only 3 burned boxes, which is too few to say anything: the interval
 on 3 of 8 runs from about 14% to 69%. The second stratum samples the map being tested, so
 the burned class is well represented and the two strata together give a corrected area
 estimate with a confidence interval.
+
+The two drawn strata were raised to 50 boxes each in Task 23: at 20 and 10 judged boxes the
+95% interval on the burned area was too wide to say whether the map's own figure sat inside
+it, and which estimator you used decided the answer. Fifty per stratum is the floor
+Olofsson et al. 2014 recommends for a change stratum. The 42 original `random_box` boxes
+keep their place and are still used, but only for the stratum their own draw supports; the
+`footprint_unmapped` boxes are a separate design and are not mixed with them.
 
 Sampling by the map is not circular, because the map is never shown while judging. Judging
 by the map would be. That is why there is still no dNBR+ layer in the project.
@@ -167,8 +175,32 @@ polygons, it will just say so and carry a wider uncertainty.
 |---|---|---|
 | `scripts/label_prepare.py` | already run | builds the imagery for every downloaded date, the sample points and the 42 boxes |
 | `scripts/label_pre_imagery.py` | already run | pulls the 20 m before, mid and after chips from Earth Engine |
+| `scripts/label_add_boxes.py` | when a stratum needs more boxes | draws more `map_burned` or `footprint_unmapped` boxes at random, at least 150 m from any existing one |
 | `scripts/label_fill_ids.py` | only if you add polygons by hand | fills `sample_id` and `event_id` from the point inside each polygon |
+| `scripts/label_second_pass.py` | once the first pass is done | copies the boxes into a fresh file for a second interpreter, then compares the two |
 | `scripts/label_check.py` | any time | reports what is there and what is wrong |
 
 `scripts/label_qgis_project.py` rebuilds the `.qgz` itself. It never touches the
 GeoPackage, so polygons already drawn survive a rebuild.
+
+## The second interpreter
+
+Every agreement figure in the project so far comes from one person reading one set of
+images. That is the largest unmeasured uncertainty there is, larger than the choice of
+interval, so the boxes are judged a second time, blind.
+
+```
+python scripts/label_second_pass.py            # build the second file
+python scripts/label_second_pass.py --compare  # kappa, agreement, disagreements
+```
+
+The first command writes `data/labels/biak_labels_pass2.gpkg`: the same boxes, the same
+imagery, with `class`, `confidence` and `notes` emptied. Nothing of the first pass is in
+that file, so the second interpreter cannot see the first answers. Open the **pass-2**
+GeoPackage in a new QGIS project (`label_qgis_project.py` builds only the first one),
+judge the boxes the same way, and save.
+
+Run the compare once both are filled in. It reports Cohen's kappa and the raw agreement,
+per stratum, and lists every box the two readers disagreed on with both answers. **Neither
+answer wins automatically.** The disagreement rate is the result; deciding a reconciled
+label is the owner's job, box by box, with a reason recorded.

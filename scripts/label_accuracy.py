@@ -4,14 +4,17 @@
 
 Writes data/processed/label_accuracy.json.
 
-**Two strata, both of which carry area.** The area under test is the union of the
-event footprints, split by what the map says:
+**Two strata, both of which carry area.** The area under test is the part of
+the event footprints that the interpreter can see, split by what the map says:
 
   A  mapped by dNBR+              sampled by `map_burned`, points drawn inside
                                   the polygons
-  B  inside a footprint, unmapped sampled by the `random_box` points that fell
-                                  inside a footprint on ground the map does not
-                                  claim
+  B  inside a footprint, unmapped sampled by two designs: the `random_box`
+                                  points that fell inside a footprint on
+                                  ground the map does not claim, and the
+                                  `footprint_unmapped` boxes drawn by area
+                                  alone (Task 23). How many came from each is
+                                  reported beside the stratum.
 
 Burned area is `A * p_A + B * p_B`, and the interval has to carry both terms.
 An earlier version reported only the first, which made the map look wrong by a
@@ -21,6 +24,10 @@ Zero of ten is not zero: its 95% upper bound is 28%, and 28% of 813 ha is 226 ha
 Boxes outside the footprints are counted and reported but carry no area here:
 their stratum has no defined area short of the whole island, and nothing in this
 sample supports extrapolating to it.
+
+The weights are the areas the strata actually cover: land inside the S2DR4 1 m
+imagery, because a box the interpreter cannot see is not a sample unit. The
+ground excluded from the frame is reported, not silently folded in.
 
 Intervals are Wilson score intervals at 95%, which behave at zero successes
 where the normal approximation collapses to a point. The estimator published
@@ -96,8 +103,70 @@ def footprint_union(to_utm):
     return unary_union(parts)
 
 
+def land_union():
+    """Desa boundaries for Biak Numfor and Supiori, in degrees."""
+    from shapely.geometry import shape
+    from shapely.ops import unary_union
+    return unary_union([shape(f["geometry"]) for f in json.loads(
+        (ROOT / "data/boundaries/biak_desa.geojson").read_text(
+            encoding="utf-8"))["features"]])
+
+
+def imagery_union():
+    """The S2DR4 1 m chips' rectangles, in UTM: what the interpreter can see."""
+    import rasterio
+    from shapely.geometry import box
+    from shapely.ops import unary_union
+    tiles = []
+    for eid in EVENTS:
+        path = ROOT / f"data/labels/imagery/{eid}_swir.tif"
+        if not path.exists():
+            raise SystemExit(f"missing imagery {path} - run scripts/label_prepare.py")
+        with rasterio.open(path) as r:
+            tiles.append(box(*r.bounds))
+    return unary_union(tiles)
+
+
+def stratum_areas(to_utm, mapped, footprints):
+    """The areas the estimator weights by, in ha.
+
+    Both frames are clipped to land inside the S2DR4 1 m chips: that is where
+    boxes can be drawn and judged, so it is the ground the sample speaks for.
+    scripts/label_add_boxes.py draws from these same frames; the ground left
+    out is returned so it can be reported rather than quietly counted.
+    """
+    from shapely.ops import transform as shp_transform
+    land = shp_transform(to_utm, land_union()).intersection(imagery_union())
+    area_A = mapped.intersection(land).area / 1e4
+    unmapped = footprints.difference(mapped)
+    area_B = unmapped.intersection(land).area / 1e4
+    return area_A, area_B, unmapped.difference(land).area / 1e4
+
+
+def stratum_frames(judged):
+    """The four design groups of judged boxes, as pandas frames.
+
+    Stratum membership follows the draw, not the box: every map_burned box was
+    drawn from a point inside the polygons, so all of them belong to A even
+    where the 60 m box overruns the polygon edge; every footprint_unmapped box
+    was drawn from a point outside them, so all of them belong to B. Filtering
+    either by how much of the box the polygons cover would drop exactly the
+    edge cases the assessment is about, in the direction that flatters the map.
+
+    Kept out of main() so the rule can be checked with pandas alone - no
+    geopandas, and no GeoPackage, is needed to test it.
+    """
+    a = judged[judged.sampling == "map_burned"]
+    b_random = judged[(judged.sampling == "random_box") & (judged.map_share < 0.5)
+                      & judged.in_footprint]
+    b_plain = judged[judged.sampling == "footprint_unmapped"]
+    out_fp = judged[(judged.sampling == "random_box") & ~judged.in_footprint]
+    return a, b_random, b_plain, out_fp
+
+
 def main() -> int:
     import geopandas as gpd
+    import pandas as pd
     from pyproj import Transformer
     from shapely.ops import unary_union
 
@@ -109,29 +178,31 @@ def main() -> int:
     mapped = unary_union(burned.geometry.tolist())
     fp = footprint_union(to_utm)
 
-    area_A = mapped.area / 1e4
-    area_fp = fp.area / 1e4
-    area_B = area_fp - area_A
+    area_A, area_B, area_off = stratum_areas(to_utm, mapped, fp)
+    area_fp = area_A + area_B
 
-    judged = labels[labels["class"] != "unsure"].copy()
+    # A box with no class has not been judged yet and is not a zero. Counting
+    # it would move every rate in the file, in the direction that flatters the
+    # map. Only `burned` and `unburned` are judgements; `unsure` is an answer
+    # that carries no class and is dropped, and both are reported.
+    unjudged = labels[labels["class"].isna()]
+    judged = labels[labels["class"].isin(("burned", "unburned"))].copy()
     judged["map_share"] = [float(burned.intersection(g).area.sum() / g.area)
                            for g in judged.geometry]
-    judged["in_footprint"] = [g.centroid.within(fp) for g in judged.geometry]
+    judged["in_footprint"] = [fp.intersects(g.centroid) for g in judged.geometry]
 
-    # Stratum A is sampled by map_burned alone, stratum B by random_box alone:
-    # the two designs have different inclusion probabilities, so a box is only
-    # used for the stratum its own design drew it for.
-    # Stratum membership follows the draw, not the box: every map_burned box was
-    # drawn from a point inside the polygons, so all of them belong to A even
-    # where the 60 m box overruns the polygon edge. Filtering them by coverage
-    # afterwards would drop the hardest cases and flatter the map.
-    a = judged[judged.sampling == "map_burned"]
-    b = judged[(judged.sampling == "random_box") & (judged.map_share < 0.5)
-               & judged.in_footprint]
-    out_fp = judged[(judged.sampling == "random_box") & ~judged.in_footprint]
+    # Stratum A is sampled by map_burned alone; stratum B by two designs, the
+    # `random_box` points that fell inside a footprint outside the polygons and
+    # the Task 23 `footprint_unmapped` boxes drawn from that frame by area
+    # alone. A design is only used for the stratum it drew for; the rule and
+    # its reasons live on stratum_frames().
+    a, b_random, b_plain, out_fp = stratum_frames(judged)
+    b = pd.concat([b_random, b_plain])
 
     kA, nA = int((a["class"] == "burned").sum()), len(a)
     kB, nB = int((b["class"] == "burned").sum()), len(b)
+    kB1, nB1 = int((b_random["class"] == "burned").sum()), len(b_random)
+    kB2, nB2 = int((b_plain["class"] == "burned").sum()), len(b_plain)
     kO, nO = int((out_fp["class"] == "burned").sum()), len(out_fp)
     pA, pB = (kA / nA if nA else 0.0), (kB / nB if nB else 0.0)
     loA, hiA = wilson(kA, nA)
@@ -154,15 +225,24 @@ def main() -> int:
         "what": ("The Task 18 dNBR+ product measured against hand labels on 1 m imagery, "
                  f"over the footprints of {', '.join(EVENTS)}."),
         "areas_ha": {"footprints": round(area_fp, 1), "mapped": round(area_A, 1),
-                     "inside_footprint_unmapped": round(area_B, 1)},
+                     "inside_footprint_unmapped": round(area_B, 1),
+                     "footprint_off_land_or_imagery": round(area_off, 1),
+                     "note": ("mapped and unmapped are land inside the S2DR4 1 m "
+                              "imagery, which is where boxes can be judged")},
         "strata": {
             "A_mapped": {"sample": "map_burned", "burned": kA, "judged": nA,
                          "rate": round(pA, 3), "ci95": [round(loA, 3), round(hiA, 3)],
                          "area_ha": round(area_A, 1)},
-            "B_unmapped_in_footprint": {"sample": "random_box", "burned": kB, "judged": nB,
-                                        "rate": round(pB, 3),
-                                        "ci95": [round(loB, 3), round(hiB, 3)],
-                                        "area_ha": round(area_B, 1)},
+            "B_unmapped_in_footprint": {
+                "sample": "random_box and footprint_unmapped",
+                "burned": kB, "judged": nB, "rate": round(pB, 3),
+                "ci95": [round(loB, 3), round(hiB, 3)],
+                "area_ha": round(area_B, 1),
+                "designs": {
+                    "random_box": {"burned": kB1, "judged": nB1},
+                    "footprint_unmapped": {"burned": kB2, "judged": nB2},
+                },
+            },
         },
         "burned_area_ha": {
             "estimate": round(area_A * pA + area_B * pB, 1),
@@ -184,13 +264,21 @@ def main() -> int:
                                "ci95": [round(loO, 3), round(hiO, 3)],
                                "note": "counted only; this stratum carries no area here"},
         "unsure_dropped": int((labels["class"] == "unsure").sum()),
+        "unjudged_boxes": {
+            "total": int(len(unjudged)),
+            "by_stratum": {str(k): int(v) for k, v in
+                           unjudged["sampling"].value_counts().sort_index().items()},
+            "note": ("boxes drawn but not yet judged; not counted as unburned "
+                     "anywhere in this file"),
+        },
         "caveats": [
             ("The reference is one interpreter's reading of S2DR4 1 m imagery, which is "
              "model output rather than observation. These are agreement figures, not "
              "accuracy against the ground."),
             (f"Stratum B holds {nB} judged boxes. Published good practice for map accuracy "
              "assessment asks for 50 to 100 per stratum, so the interval is wide enough "
-             "that the map's own figure sits inside it."),
+             "that whether the map's own figure sits inside it is decided by the "
+             "estimator, not by the sample."),
             ("The estimate covers the footprints of three events of August 2026, not the "
              "23 events F11 reports, and not the island."),
             ("Boxes are 60 m and the product is 20 m, so a box can hold both classes; "
@@ -205,7 +293,11 @@ def main() -> int:
     print(f"A mapped    {A['burned']}/{A['judged']} burned = {A['rate']:.0%}"
           f"  CI {A['ci95'][0]:.0%} to {A['ci95'][1]:.0%}")
     print(f"B unmapped  {B['burned']}/{B['judged']} burned = {B['rate']:.0%}"
-          f"  CI {B['ci95'][0]:.0%} to {B['ci95'][1]:.0%}")
+          f"  CI {B['ci95'][0]:.0%} to {B['ci95'][1]:.0%}"
+          f"  ({kB1}/{nB1} random_box + {kB2}/{nB2} footprint_unmapped)")
+    print(f"  frame off land or imagery and carrying no area: {area_off:.0f} ha")
+    print(f"  unjudged boxes, counted nowhere: {len(unjudged)} "
+          f"{doc['unjudged_boxes']['by_stratum']}")
     print(f"\nburned area {ba_['estimate']:.0f} ha  95% CI {ba_['ci95'][0]:.0f} "
           f"to {ba_['ci95'][1]:.0f} ha")
     inside = ba_["ci95"][0] <= area_A <= ba_["ci95"][1]
