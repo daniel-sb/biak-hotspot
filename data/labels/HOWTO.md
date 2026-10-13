@@ -185,9 +185,17 @@ GeoPackage, so polygons already drawn survive a rebuild.
 
 ## The second interpreter
 
+**Nobody is doing this at the moment, and F24 records that as a permanent limitation.** The
+section stays because the machinery works the day a second reader is available, for part of
+the boxes as well as all of them.
+
 Every agreement figure in the project so far comes from one person reading one set of
 images. That is the largest unmeasured uncertainty there is, larger than the choice of
-interval, so the boxes are judged a second time, blind.
+interval, which is why a blind second judging would be worth having.
+
+**It has to be a different person.** The same person re-judging measures how consistent one
+reader is with themselves, which is a different thing and must be written as that, never as
+agreement between interpreters.
 
 ```
 python scripts/label_second_pass.py            # build the second file

@@ -1279,3 +1279,31 @@ boundary, and that is a deviation to declare in any write-up rather than smooth 
 **What does not change.** The per-stratum rates, the classifier comparison in F21, and the
 observation that commission concentrates at polygon edges. None of those depend on the area
 estimator.
+
+## F24 - No second interpreter is available, and that is now a permanent limitation (2026-10-13)
+
+Supersedes the last sentence of F23's deviation 4, which said Task 23 would add a second
+pass and a kappa. There is no second person to do it. The owner is the only interpreter this
+project has, and a blind re-judge by the same person measures self-consistency, not
+agreement between readers, so it is not a substitute and will not be presented as one.
+
+**What this costs.** Every figure in F20, F21, F22 and F23 rests on one person's reading of
+S2DR4 1 m imagery, and the project has no measurement of how much a second reader would
+disagree. Published good practice (Olofsson et al. 2014, section 5.2) has three analysts
+inspect each unit, and its worked example treats the reference labelling as the higher-quality
+source precisely because of that redundancy. Ours is a single reading of model output.
+
+This is a limitation to state in any write-up, not a gap to fill quietly later. The wording
+to use: **the reference is one interpreter's reading, and inter-interpreter agreement was not
+measured.** Not "labels were validated", not "ground truth".
+
+**What stays.** `scripts/label_second_pass.py`, `data/labels/biak_labels_pass2.gpkg` with 142
+unjudged boxes, and `data/processed/label_agreement.json` reporting `compared: 0` and a null
+kappa. The machinery cost nothing to keep and works the day someone is available, including
+for a part of the boxes rather than all of them: `--compare` counts only boxes both passes
+judged and reports the rest as `not_compared`. The nulls in that file are the honest state,
+and nothing should fill them with a number drawn from one reader.
+
+**What this does not change.** The 75 boxes still unjudged in pass 1 (25 `map_burned`, 50
+`footprint_unmapped`) are a different matter and still decide the open question: whether the
+819 ha the map claims sits inside the interval. That work needs one interpreter, not two.

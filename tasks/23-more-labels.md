@@ -1,4 +1,4 @@
-# Task 23 — Enough labels to say something: more boxes, and a second interpreter
+# Task 23 — Enough labels to say something
 
 F22 and F23 settle what the reference sample can and cannot do. With 20 judged boxes in the
 mapped stratum and 10 in the unmapped one, the burned-area estimate for three events is
@@ -13,8 +13,9 @@ disagree:
 The gap is stratum B. Zero of ten gives the normal approximation exactly zero variance for
 ground that is half the study area; the Wilson upper bound of 28% gives it 226 ha. F23 keeps
 the wider figure, and says the sample is too small to settle it. **This task is what settles
-it**, and adds the one check the reference has never had: a second person judging the same
-boxes.
+it**, by raising both strata to 50 judged boxes. The second-interpreter check it originally
+carried is off: no second person is available, and F24 records that as a permanent
+limitation rather than a gap to fill later.
 
 It does not change any published figure, and it does not touch `docs/`, the brief or the cron.
 
@@ -85,24 +86,16 @@ pattern to the unmapped stratum, and raise both toward 50 judged boxes each:
 Report the areas the strata cover after the draw, because the estimator weights by area and
 those weights are what the figures rest on.
 
-### 2. A second interpreter
+### 2. A second interpreter - NOT HAPPENING, see F24
 
-Every agreement figure in F20, F21 and F22 comes from one person reading one set of images.
-That is the largest unmeasured uncertainty in the project, larger than the estimator choice.
+The owner decided on 2026-10-13 that no second person is available. Do not build toward
+this and do not fill `data/processed/label_agreement.json` with a number: `compared: 0` and
+a null kappa are the honest state, and a blind re-judge by the same person measures
+self-consistency, not agreement between readers.
 
-- Build `scripts/label_second_pass.py`: it copies the label boxes into a **new GeoPackage**
-  with `class`, `confidence` and `notes` emptied, and the first pass invisible. Same imagery,
-  same manual.
-- The second interpreter judges the same boxes without seeing the first pass.
-- Then report **Cohen's kappa** and the raw agreement between the two passes, per stratum,
-  and list every box they disagree on with both answers. Put the comparison in
-  `data/processed/label_agreement.json`.
-- Where they disagree, neither answer wins automatically. The disagreement rate is the
-  result; a reconciled label is a separate decision for the owner, taken box by box and
-  recorded with a reason.
-
-Keep the second pass in its own file: `data/labels/biak_labels_pass2.gpkg`. Do not write
-into the first pass under any circumstance.
+What already exists stays and is not to be removed: `scripts/label_second_pass.py`,
+`data/labels/biak_labels_pass2.gpkg` with its 142 unjudged boxes, and the `--compare` path.
+They work the day someone is available, for part of the boxes as well as all of them.
 
 ### 3. Rerun what rests on the labels
 
