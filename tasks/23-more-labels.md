@@ -35,6 +35,25 @@ of about plus or minus 115 ha. That separates 614 from 819, or fails to, for a r
 than sample size. Going further is a judging-time decision, not a statistical one: say in
 your final message what the achieved S(p) turned out to be.
 
+## Before you start: which Python runs this
+
+`.venv` has shapely but **no geopandas**, so every script under `scripts/label_*.py` fails
+there with `ModuleNotFoundError: No module named 'geopandas'`. They run under the QGIS 3.44
+LTR interpreter, which has geopandas 1.1.4:
+
+```
+& "C:\Program Files\QGIS 3.44.13in\python-qgis-ltr.bat" scripts\label_accuracy.py
+```
+
+Tests that import only the estimators run anywhere, because the geo imports live inside
+`main()`. Keep it that way: a new test must not force geopandas into `.venv`.
+
+**Never invent a label, a geometry or a coverage number.** If a box cannot be drawn, a file
+cannot be read or a count does not come out, exit non-zero and say which one. No placeholder
+rows, no synthetic judgements, not to make a test pass and not labelled as synthetic either.
+A fabricated reference label is worse than a missing one: it moves the accuracy figure and
+leaves no trace that it did.
+
 ## What to build
 
 ### 1. More boxes, in the stratum that binds
