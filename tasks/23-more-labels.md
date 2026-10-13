@@ -42,7 +42,7 @@ there with `ModuleNotFoundError: No module named 'geopandas'`. They run under th
 LTR interpreter, which has geopandas 1.1.4:
 
 ```
-& "C:\Program Files\QGIS 3.44.13in\python-qgis-ltr.bat" scripts\label_accuracy.py
+& "C:\Program Files\QGIS 3.44.13\bin\python-qgis-ltr.bat" scripts\label_accuracy.py
 ```
 
 Tests that import only the estimators run anywhere, because the geo imports live inside
