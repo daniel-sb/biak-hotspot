@@ -60,9 +60,36 @@ def inline(text: str) -> str:
     return out
 
 
+def unwrap(lines: list[str]) -> list[str]:
+    """Join a soft-wrapped paragraph or list item back into one logical line.
+
+    Markdown wraps prose at the margin and this renderer reads line by line, so
+    a **bold span** or a [link](url) broken across two lines came out as literal
+    asterisks, and every wrapped line of a bullet became a bullet of its own.
+    Joining first is cheaper than teaching the loop to look ahead.
+    """
+    out: list[str] = []
+    in_code = False
+    for line in lines:
+        if line.startswith("```"):
+            in_code = not in_code
+            out.append(line)
+            continue
+        opens_block = (in_code or not line.strip()
+                       or line.startswith(("|", "#", ">"))
+                       or re.match(r"^\s*([-*] |\d+\. )", line))
+        joinable = (out and out[-1].strip()
+                    and not out[-1].startswith(("|", "#", "```")))
+        if opens_block or not joinable:
+            out.append(line)
+        else:
+            out[-1] = out[-1].rstrip() + " " + line.strip()
+    return out
+
+
 def to_html(md: str, title: str = "") -> str:
     body: list[str] = []
-    lines = md.splitlines()
+    lines = unwrap(md.splitlines())
     i, in_list, in_code = 0, False, False
     while i < len(lines):
         line = lines[i]
@@ -79,7 +106,9 @@ def to_html(md: str, title: str = "") -> str:
             i += 1
             continue
         if in_code:
-            body.append(html.escape(line))
+            # with the newline: <pre> keeps it, and without one the whole block
+            # printed as a single unreadable line running off the page
+            body.append(html.escape(line) + "\n")
             i += 1
             continue
 

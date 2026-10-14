@@ -1,18 +1,63 @@
 # Judging the burn-scar labels
 
-The project file is `data/labels/biak_labels.qgz`. Open it in QGIS 3.44 LTR, not 4.2.
+**75 boxes are waiting for a judgement, and they decide the project's headline number.**
+Open `data/labels/biak_labels.qgz` in QGIS 3.44 LTR, not 4.2, and fill in the `class` and
+`confidence` of every box that still has neither.
 
-These labels become the reference that the Task 18 burned-area product is measured against
-(Task 22). Nothing else in this project can do that: the field survey was stopped by
-security conditions, and F18 showed that no prompted segmentation model can stand in.
+These labels are the reference that the Task 18 burned-area product is measured against.
+Nothing else in this project can do that job: the field survey was stopped by security
+conditions, and F18 showed that no prompted segmentation model can stand in.
+
+## What the 75 boxes settle
+
+The burned-area estimate for the three events is **614 ha**. The map being tested claims
+**819 ha**. Whether those two figures agree depends on which interval you put round the 614,
+and with the sample as it stands the two defensible intervals disagree:
+
+| treatment | 95% interval | the map's 819 ha |
+|---|---|---|
+| Wilson per stratum (F22) | 435 to 950 ha | inside |
+| Olofsson et al. 2014, normal approximation (F23) | 455 to 774 ha | outside |
+
+The gap comes from one stratum. Ten judged boxes on the unmapped half of the ground, none
+of them burned, give the normal approximation no variance at all there, while Wilson's
+upper bound of 28% gives it 222 ha. Fifty judged boxes per stratum is the floor Olofsson et
+al. 2014 recommends, and reaching it narrows the interval to roughly plus or minus 115 ha.
+**That is what the judging is for**: at that width, 614 and 819 either separate or they do
+not, for a reason other than sample size.
+
+So the work is not cosmetic, and partial work still helps. Every box judged narrows the
+interval a little.
+
+## Before you start: which Python
+
+Three Python interpreters are installed on this machine and only one runs these scripts.
+
+| interpreter | has | use it for |
+|---|---|---|
+| `.venv` | shapely, no geopandas | nothing here. Scripts die with `ModuleNotFoundError: No module named 'geopandas'` |
+| **conda env `geolibre`** | geopandas, rasterio, pyproj, sklearn, pytest | **every script in this guide** |
+| QGIS 3.44 LTR python | geopandas, osgeo, no rasterio | only `label_qgis_project.py` and `label_second_pass.py`, which import `qgis.core` |
+
+Set two environment variables with it, or pyogrio warns `Could not detect GDAL data files`
+and the CRS work becomes unreliable:
+
+```
+GDAL_DATA=C:/Users/User/.conda/envs/geolibre/Library/share/gdal
+PROJ_LIB=C:/Users/User/.conda/envs/geolibre/Library/share/proj
+C:/Users/User/.conda/envs/geolibre/python.exe scripts/label_check.py
+```
+
+Where this guide says `python scripts/…`, it means that interpreter with those two
+variables set, except for the two scripts the table sends to QGIS.
 
 ## What you are looking at
 
 | layer | what it is |
 |---|---|
-| **LABELS — draw here** | 142 boxes of 60 x 60 m, already placed; you fill in the class |
-| samples | the 42 random points each box is centred on |
-| VIIRS footprints | 375 m circles round the detections — where the samples were drawn from, not truth |
+| **LABELS — draw here** | 142 boxes of 60 x 60 m, already placed. You fill in the class |
+| random_box seed points, 42 of them | the points the first 42 boxes were centred on. The other 100 boxes have no point here |
+| VIIRS footprints (strata, not truth) | 375 m circles round the detections, the frame two strata were drawn from |
 | VIIRS/MODIS detections | the individual satellite detections |
 | S2DR4 1 m imagery | SWIR and true colour, three dates per event |
 | Sentinel-2 20 m | before the event, 23 August, 28 August |
@@ -71,47 +116,54 @@ a small isolated object: those are the parts a super-resolution model invents.
 
 There is nothing to draw. The label layer holds **142 boxes of 60 x 60 m**, 0.36 ha each,
 which is 9 pixels of the 20 m product being tested. Your job is the judgement only: what is
-inside each box. The 75 new boxes (`MAP26`–`MAP50`, `B01`–`B50`) are the ones still to do.
+inside each box.
 
 Why fixed boxes rather than outlines: the sample location has to come from the random draw.
 Choosing where to draw, by eye, around a scar that is visible turns the reference into a
 collection of obvious cases, and the agreement figure then measures the easy ones only.
 
-### Two strata, and why
+### Three strata, and what is left in each
 
-| `sampling` | how many | drawn from |
-|---|---|---|
-| `random_box` | 42, judged | random points, 7 inside and 7 outside each event's VIIRS footprint |
-| `map_burned` | 50: 25 judged, 25 to do | random points inside the dNBR+ polygons of the same three events |
-| `footprint_unmapped` | 50, to do | random points inside the VIIRS footprints, on ground the polygons do not claim |
+| `sampling` | how many | judged | drawn from |
+|---|---|---|---|
+| `random_box` | 42 | 42, done | random points, 7 inside and 7 outside each event's VIIRS footprint |
+| `map_burned` | 50 | 25, **25 left** (`MAP26`–`MAP50`) | random points inside the dNBR+ polygons of the three events |
+| `footprint_unmapped` | 50 | 0, **50 left** (`B01`–`B50`) | random points inside the footprints, on ground the polygons do not claim |
 
-The first 42 produced only 3 burned boxes, which is too few to say anything: the interval
-on 3 of 8 runs from about 14% to 69%. The second stratum samples the map being tested, so
-the burned class is well represented and the two strata together give a corrected area
-estimate with a confidence interval.
+The first 42 produced only 3 burned boxes, and all 3 sit on ground the map already claims.
+Only 10 of the 42 land in the stratum that matters most — inside a footprint, on ground the
+map does not claim — and none of those 10 is burned, which is why the omission term rests on
+a Wilson upper bound of 28% rather than on evidence. `map_burned` samples the map being
+tested, so the burned class is well represented there. `footprint_unmapped` samples the
+unclaimed ground directly, which is where omission shows up. Together the strata give a
+corrected area estimate with an interval.
 
-The two drawn strata were raised to 50 boxes each in Task 23: at 20 and 10 judged boxes the
-95% interval on the burned area was too wide to say whether the map's own figure sat inside
-it, and which estimator you used decided the answer. Fifty per stratum is the floor
-Olofsson et al. 2014 recommends for a change stratum. The 42 original `random_box` boxes
-keep their place and are still used, but only for the stratum their own draw supports; the
-`footprint_unmapped` boxes are a separate design and are not mixed with them.
+The three strata are never pooled. Each came from its own frame, so each carries its own
+inclusion probability, and mixing them would make those probabilities unknowable. The 42
+`random_box` boxes keep their place and are still used, but only for the stratum their own
+draw supports.
 
 Sampling by the map is not circular, because the map is never shown while judging. Judging
 by the map would be. That is why there is still no dNBR+ layer in the project.
 
-1. Open the project, select **LABELS — draw here**, open the attribute table (**F6**).
+### The steps
+
+1. Open the project, select **LABELS — draw here**, and open the attribute table (**F6**).
 2. Toggle editing (**Ctrl+E**).
-3. Click a row, then the **Zoom to feature** button, so the map shows that box.
-4. **Look at the dates in turn**, which is the part that decides the answer:
-   - 1 m SWIR, 23 August: is the box orange, meaning freshly burnt?
-   - 1 m SWIR, 28 August: has it gone dull brown, as a scar does in five days?
-   - 20 m before: was it already open and bare before the event?
-5. Fill two columns:
-   - `class` — `burned`, `unburned` or `unsure`;
-   - `confidence` — `high`, `medium` or `low`;
-   - `notes` — only if something needs saying.
-6. Save (**Ctrl+S**) often.
+3. Sort by `class` to bring the empty rows together, or filter the table to them.
+4. Click a row, then **Zoom to feature**, so the map shows that box.
+5. **Look at the three dates in turn**, which is the part that decides the answer.
+6. Fill `class` with `burned`, `unburned` or `unsure`, and `confidence` with `high`,
+   `medium` or `low`. Use `notes` only if something needs saying.
+7. Save (**Ctrl+S**) often.
+
+Step 5 is three questions, in this order:
+
+| look at | ask |
+|---|---|
+| 1 m SWIR, 23 August | is the box orange, meaning freshly burnt? |
+| 1 m SWIR, 28 August | has it gone dull brown, as a scar does in five days? |
+| 20 m before | was it already open and bare before the event? |
 
 The table also has a **form view** at the bottom right, which shows one box at a time if
 that reads more comfortably than the grid.
@@ -135,8 +187,8 @@ is for.
 ## The rules that keep this honest
 
 - **`unsure` is a real answer.** Thin smoke, cloud shadow, a patch you would argue about —
-  mark it `unsure` and move on. Task 22 drops those and reports how many there were. A
-  guessed label is worse than no label, because it silently moves the accuracy figure.
+  mark it `unsure` and move on. The estimator drops those and reports how many there were.
+  A guessed label is worse than no label, because it silently moves the accuracy figure.
 - **Do not move a box** to somewhere easier to judge, and do not resize it. The points were
   drawn at random from a fixed seed; shifting them onto convenient ground is exactly the
   bias the random draw exists to prevent. A box on water, on a roof or under cloud gets
@@ -146,6 +198,10 @@ is for.
   precisely what the labels are meant to establish. Judge each patch on the imagery.
 - **Outside the footprint does not mean unburned** either. If it looks burned, label it
   burned.
+- **Inside a dNBR+ polygon does not mean burned.** You cannot see the polygons, which is the
+  point, but 25 of the boxes left are inside one. Five of the 25 already judged in that
+  stratum came back `unburned`. The stratum is where the map says it burned, not where it
+  did.
 - **Do not use the detections as evidence.** They tell you where heat was seen, which is
   the very thing the product is trying to convert into area. Use them to orient yourself,
   not to decide.
@@ -156,59 +212,75 @@ is for.
   If a box reads differently with the sequence in front of you, change it and say why in
   `notes`. Nothing is gained by defending an earlier call.
 
-## When you are done
+## When you are done, or partway through
 
 ```
 python scripts/label_check.py
+python scripts/label_accuracy.py
 ```
 
-It reports how many polygons exist, whether each holds its own sample point, the class
-counts by stratum, the polygon sizes, and anything malformed or misspelled. It changes
-nothing.
+`label_check.py` reports how many boxes exist, the class counts by stratum, the polygon
+sizes, and anything malformed or misspelled. It changes nothing.
 
-Partial work is fine — the check tells you what is left. Task 22 can run on fewer than 42
-polygons, it will just say so and carry a wider uncertainty.
+`label_accuracy.py` is the one that produces the answer. It prints the two-stratum estimate
+with **both** intervals, the Wilson one and the Olofsson one, says whether each puts the
+map's 819 ha inside or outside, and reports how many boxes are still unjudged and therefore
+counted nowhere. It writes `data/processed/label_accuracy.json`.
 
-## The three scripts, in the order you need them
+Partial work is fine. Both scripts say what is left and the interval simply stays wider.
 
-| script | when | what it does |
+When all 100 drawn boxes are judged, re-run `src/burn_classifier.py` as well: more
+positives in the unmapped stratum is what its weakest fold needed. **Do not retune it**
+because the sample grew — same features, same defaults, same leave-one-event-out folds.
+
+## The scripts, in the order you need them
+
+| script | interpreter | what it does |
 |---|---|---|
-| `scripts/label_prepare.py` | already run | builds the imagery for every downloaded date, the sample points and the 42 boxes |
-| `scripts/label_pre_imagery.py` | already run | pulls the 20 m before, mid and after chips from Earth Engine |
-| `scripts/label_add_boxes.py` | when a stratum needs more boxes | draws more `map_burned` or `footprint_unmapped` boxes at random, at least 150 m from any existing one |
-| `scripts/label_fill_ids.py` | only if you add polygons by hand | fills `sample_id` and `event_id` from the point inside each polygon |
-| `scripts/label_second_pass.py` | once the first pass is done | copies the boxes into a fresh file for a second interpreter, then compares the two |
-| `scripts/label_check.py` | any time | reports what is there and what is wrong |
+| `scripts/label_prepare.py` | geolibre | already run: builds the 1 m imagery, the sample points and the first 42 boxes |
+| `scripts/label_pre_imagery.py` | geolibre | already run: pulls the 20 m before, mid and after chips from Earth Engine |
+| `scripts/label_qgis_project.py` | **QGIS** | rebuilds `biak_labels.qgz`. Never touches the GeoPackage, so judgements survive a rebuild. Refuses to run if the project holds polygon annotations, unless you pass `--force` |
+| `scripts/label_add_boxes.py` | geolibre | draws more `map_burned` or `footprint_unmapped` boxes at random, at least 150 m from any existing one |
+| `scripts/label_fill_ids.py` | geolibre | only if you add polygons by hand: fills `sample_id` and `event_id` from the point inside each polygon |
+| `scripts/label_check.py` | geolibre | reports what is there and what is wrong. Changes nothing |
+| `scripts/label_accuracy.py` | geolibre | the estimate and both intervals. Changes nothing but its own JSON |
+| `scripts/label_second_pass.py` | **QGIS** | the second-interpreter machinery. Nobody is running it — see below |
 
-`scripts/label_qgis_project.py` rebuilds the `.qgz` itself. It never touches the
-GeoPackage, so polygons already drawn survive a rebuild.
+Never invent a label, a geometry or a coverage number to get a script to finish. If a box
+cannot be drawn, a file cannot be read or a count does not come out, the script exits
+non-zero and names the problem. A fabricated reference label is worse than a missing one: it
+moves the accuracy figure and leaves no trace that it did.
 
-## The second interpreter
+## The second interpreter: not happening
 
-**Nobody is doing this at the moment, and F24 records that as a permanent limitation.** The
-section stays because the machinery works the day a second reader is available, for part of
-the boxes as well as all of them.
+**No second person is available, and F24 records that as a permanent limitation rather than
+a gap to be filled later.** Do not build towards it, and do not fill
+`data/processed/label_agreement.json` with a number: `compared: 0` and a null kappa are the
+honest state.
 
-Every agreement figure in the project so far comes from one person reading one set of
-images. That is the largest unmeasured uncertainty there is, larger than the choice of
-interval, which is why a blind second judging would be worth having.
+Every figure in this project comes from one person reading one set of images. The write-up
+says so in these words: *the reference is one interpreter's reading, and inter-interpreter
+agreement was not measured.* Not "the labels were validated", and not "ground truth".
 
-**It has to be a different person.** The same person re-judging measures how consistent one
-reader is with themselves, which is a different thing and must be written as that, never as
-agreement between interpreters.
+**A second pass has to be a different person.** The same person re-judging measures how
+consistent one reader is with themselves. That is a real thing to measure and it may be
+worth doing, but it is not agreement between interpreters and must never be reported as one.
+
+The machinery stays, because it costs nothing to keep and works the day someone is
+available, for part of the boxes as well as all of them:
 
 ```
-python scripts/label_second_pass.py            # build the second file
-python scripts/label_second_pass.py --compare  # kappa, agreement, disagreements
+python scripts/label_second_pass.py            # build the second file and its project
+python scripts/label_second_pass.py --compare   # kappa, agreement, disagreements
 ```
 
-The first command writes `data/labels/biak_labels_pass2.gpkg`: the same boxes, the same
-imagery, with `class`, `confidence` and `notes` emptied. Nothing of the first pass is in
-that file, so the second interpreter cannot see the first answers. Open the **pass-2**
-GeoPackage in a new QGIS project (`label_qgis_project.py` builds only the first one),
-judge the boxes the same way, and save.
+The first command writes `data/labels/biak_labels_pass2.gpkg` and `biak_labels_pass2.qgz`:
+the same 142 boxes and the same imagery, with `class`, `confidence` and `notes` emptied, so
+the second reader cannot see the first answers. **Do not open the pass-2 project for your
+own judging** — the boxes you are filling in live in `biak_labels.qgz`, and anything entered
+in the pass-2 file is either lost or mistaken later for a second reader's work.
 
-Run the compare once both are filled in. It reports Cohen's kappa and the raw agreement,
-per stratum, and lists every box the two readers disagreed on with both answers. **Neither
-answer wins automatically.** The disagreement rate is the result; deciding a reconciled
-label is the owner's job, box by box, with a reason recorded.
+`--compare` counts only the boxes both passes judged and reports the rest as `not_compared`,
+so a partial second pass still gives a usable figure. Neither answer wins automatically:
+the disagreement rate is the result, and deciding a reconciled label is the owner's job, box
+by box, with a reason recorded.
