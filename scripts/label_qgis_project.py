@@ -6,8 +6,8 @@ Run with QGIS's own python, after scripts/label_prepare.py:
         scripts/label_qgis_project.py
 
 Writes data/labels/biak_labels.qgz: the S2DR4 SWIR and true-colour images, the
-VIIRS detections, the event footprints, the 42 sample points, and the empty
-label layer with its form ready.
+VIIRS detections, the event footprints, the Task 22 random_box seed points, and
+the label layer with its form ready.
 
 **No dNBR+ layer, on purpose.** These labels are the reference the dNBR+ product
 will be judged against, so seeing it while drawing would make the comparison
@@ -137,7 +137,12 @@ def main() -> int:
     project.addMapLayer(labels)
 
     # --- what to draw against, all read-only ----------------------------
-    samples = vector("samples", "samples — one polygon each, 42 of them")
+    # Named from the count, not from a literal: the layer holds the Task 22
+    # random_box seed points only, and the LABELS layer has long since grown
+    # past them with the map_burned and footprint_unmapped boxes of Task 23.
+    samples = vector("samples", "samples")
+    samples.setName(f"random_box seed points, {samples.featureCount()} of them"
+                    " — not the box set, see LABELS")
     samples.setRenderer(QgsSingleSymbolRenderer(QgsMarkerSymbol.createSimple(
         {"name": "cross_fill", "color": "#00e5ff", "size": "3.5",
          "outline_color": "white", "outline_width": "0.4"})))
@@ -199,7 +204,9 @@ def main() -> int:
     project.write(str(OUT))
     qgs.exitQgis()
     print("written", OUT)
-    print("open it, select LABELS, toggle editing, and draw one polygon per sample point.")
+    print("open it, select LABELS, toggle editing, and judge the boxes that")
+    print("have no class yet. The boxes are already drawn by")
+    print("scripts/label_add_boxes.py: this is a judging pass, not a digitising one.")
     return 0
 
 
