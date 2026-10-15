@@ -4,7 +4,7 @@ Every 1 m chip in `data/labels/imagery/` came from one route: the
 `s2dr4-20260126.1-cp312` wheel, run on Colab's free scene tier in
 `notebooks/s2dr4_biak_colab.ipynb`. The 142 label boxes were judged on those
 chips, and F20 to F23 rest on those labels. The owner now holds a Gamma Earth
-balance of **85 km²** and a second route exists: the REST API.
+balance of **6,085 credits** on the academic researcher tier, and a second route exists: the REST API.
 
 **The question is whether the two routes give the same pixels.** If they do, the
 labels and every figure resting on them are route-independent, and the API
@@ -21,29 +21,30 @@ Read on 2026-10-15 from gamma.earth and help.gamma.earth.
 | | wheel, as the project ran it | REST API v1.0 |
 |---|---|---|
 | unit of work | fixed 4100 x 4100 px tile at 1 m = **16.81 km²**, centred on a point | `aoi` bounding box, `minx miny maxx maxy`, up to 150 km² |
-| date | requested date is **silently substituted**. Asking 23 Aug returned 25 Aug on all three tiles; asking 20 Aug returned 23 Aug. Undocumented, notebook section 7c | `date` is the exact scene date and **the request fails if no scene exists**. `date_range` and `max_clouds` widen the search on purpose |
+| date | requested date is **silently substituted**. Asking 23 Aug returned 25 Aug on all three tiles; asking 20 Aug returned 23 Aug. Undocumented, notebook section 7c | `date_range` defaults to **7**, so a request that omits it searches a week back and substitutes too. Sending `date_range: 0` asks for the date itself, and even then the catalogue may return up to three days after it. Check the returned `date` |
 | cost | free scene tier, 20 scenes | bills the balance, per area per date. Reprocessing a date already run is free |
 | provenance | a hashed tile id in the path, nothing citable | `job_id` and `pid` returned, and a job row in the dashboard |
 | credential | none | `GE_API_KEY`, in the URL path |
-| model | S2DR4. Output is named `S2L3Ax10_*` | the v1.0 page documents **S2DR3** and names its output `S2L2Ax10_*`. Whether the same endpoint serves S2DR4 is not stated |
+| model | S2DR4. Output is named `S2L3Ax10_*` | **S2DR3**, output `S2L2Ax10_*` |
 
-That last row is the one to settle first. If the API returns S2DR3, this is a
-comparison of two models and not of two routes, and it has to be reported as
-that.
+**The model row is settled, and it settles the task.** REST API v1.1, read
+2026-10-15, documents S2DR3 and `S2L2Ax10_*`; S2DR4 is reached only through its
+own wheel, which needs a CUDA GPU. So this is a comparison of two models and not
+of two routes, and it has to be reported as that. The newer S2DR4 wheel
+(`s2dr4-20261014.1-cp313`) now spends credits too, which makes it, and not this
+API, the route to more 1 m imagery of the kind the labels were judged on.
 
-## The budget, and the cheaper balance that may exist
+## The budget
 
-85 km² is about **five** wheel-sized tiles, and the three events already
-downloaded at three dates each would be 151 km². So the balance cannot repeat
-what the free tier has already produced, and this task does not try to.
+**The academic application was granted on 2026-10-15**: the dashboard reads
+**6,085 credits** on the RESEARCHER tier, against the 85 it held before. In
+Region C, where Biak falls, that is roughly 12,000 km² — about 720 wheel-sized
+tiles, where the old balance was five. The nine km² this task spends is now
+noise, and the constraint it was written around is gone.
 
-**Before spending any of it**: Gamma Earth's academic programme grants a
-researcher tier **6,000 credits a year at no cost** — in Region C, which is where
-Biak falls, that is about 12,000 km². Eligibility is faculty or teaching staff at
-an accredited institution, applied for from an institutional email address, for
-non-commercial research, with a required citation of Akhtman 2023. The owner is
-a lecturer at Institut Seni Budaya Indonesia Tanah Papua and appears to qualify.
-Applying first is worth more than every experiment below put together.
+What the grant costs: non-commercial research and teaching only, no resale, and
+a citation of Akhtman 2023 in anything published from it. That citation is a
+condition of use, not a courtesy, and it belongs in the write-up.
 
 ## What to build
 
@@ -57,10 +58,16 @@ and a download. `scripts/s2dr4_api.py` is that client: standard library only,
 
 ### 1. A probe, before anything else
 
-One small AOI, one date, on an event already covered by the wheel. It answers
-the questions no document does: what the endpoint actually returns, whether it
-is S2DR3 or S2DR4, what it bills for a 1 km² request, and whether the output
-file naming matches the wheel's.
+First, the free call. It proves the key works and reserves nothing:
+
+```
+python scripts/s2dr4_api.py --balance
+```
+
+Then one small AOI, one date, on an event already covered by the wheel. It
+answers the questions no document does: what it bills for a 1 km² request, which
+scene date comes back for `date_range: 0`, and whether the output naming is the
+documented `S2L2Ax10_*`.
 
 ```
 python scripts/s2dr4_api.py --label probe --date 2026-08-28     --aoi "136.035105 -1.138913 136.044089 -1.129864" --submit     # 1 km2
@@ -114,9 +121,10 @@ of burning did.
 
 ### 3. The date question, only if step 2 says the routes agree
 
-The wheel substitutes dates without saying so. The API documents an exact date
-that fails rather than substitutes. Same 4 km² AOI, `date 2026-08-23`, which is
-the date the wheel refused to give:
+The wheel substitutes dates without saying so, and the API does too unless
+`date_range` is pinned to 0. Same 4 km² AOI, `date 2026-08-23`, which is the
+date the wheel refused to give, and `--date_range 0`. Read the `date` the
+response returns rather than the one that was asked for:
 
 - a 23 August scene comes back — the API honours what the wheel would not, and
   that is the route for any future date, the September 2026 episode included;
@@ -130,12 +138,12 @@ two routes agree on a date they both have.
 
 | step | area | running balance |
 |---|---|---|
-| start | | 85 km² |
-| 1. probe | 1 km² | 84 |
-| 2. comparison | 4 km² | 80 |
-| 3. date question | 4 km² | 76 |
+| start | | about 12,000 km² (6,085 credits) |
+| 1. probe | 1 km² | 6,084.5 credits |
+| 2. comparison | 4 km² | 6,082.5 |
+| 3. date question | 4 km² | 6,080.5 |
 
-Nine km², about a tenth, and the rest stays for the September 2026 episode,
+Nine km², under a tenth of one percent, and the rest stays for the September 2026 episode,
 which has no polygon and no area yet.
 
 ## Constraints

@@ -8,6 +8,7 @@ paths taken from a response rather than guessed.
 """
 from __future__ import annotations
 
+import argparse
 import importlib.util
 import sys
 from pathlib import Path
@@ -64,6 +65,16 @@ def test_product_paths_come_from_the_response():
     assert len(urls) == len(set(urls))
 
 
+def test_the_submission_body_always_pins_the_date_range():
+    """The server's own default is 7 days, so a body that leaves date_range out
+    asks for a week-wide search and gets back a date nobody requested - the same
+    silent substitution the wheel does."""
+    args = argparse.Namespace(aoi=PROBE, date="2026-08-28", date_range=0, max_clouds=None)
+    assert api.job_body(args) == {"aoi": PROBE, "date": "2026-08-28", "date_range": 0}
+    args.max_clouds = 10
+    assert api.job_body(args)["max_clouds"] == 10
+
+
 def test_a_response_with_no_paths_yields_nothing_rather_than_a_guess():
     assert api.product_urls({"job_id": "j1", "state": "completed"}) == []
 
@@ -73,6 +84,7 @@ def demo() -> None:
     test_a_box_given_backwards_is_refused_rather_than_billed()
     test_the_key_never_survives_into_a_printed_line()
     test_product_paths_come_from_the_response()
+    test_the_submission_body_always_pins_the_date_range()
     test_a_response_with_no_paths_yields_nothing_rather_than_a_guess()
     print("s2dr4 api: ok")
 

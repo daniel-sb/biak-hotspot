@@ -1,5 +1,6 @@
 """Submit and collect one Gamma Earth job over the REST API (Task 24).
 
+    python scripts/s2dr4_api.py --balance             # free: spends nothing
     python scripts/s2dr4_api.py --aoi "136.035105 -1.138913 136.044089 -1.129864" \
                                 --date 2026-08-28 --label probe
     python scripts/s2dr4_api.py ... --submit          # actually spends the balance
@@ -8,6 +9,13 @@
 **This runs on this laptop, not in Colab.** The wheel needed Colab for its CUDA
 GPU; the API does the processing on Gamma Earth's side, so all this does is two
 HTTP calls and a download. Standard library only.
+
+**The API serves S2DR3, not S2DR4.** Documentation v1.1, read 2026-10-15: the
+REST endpoint runs S2DR3 and writes `S2L2Ax10_*`, while the wheel that produced
+every chip in data/labels/imagery/ runs S2DR4 and writes `S2L3Ax10_*`. S2DR4 is
+reached only through its own wheel, which needs a CUDA GPU. So a comparison
+between this route and the wheel is a comparison of two models, not of two
+routes, and it has to be reported as that.
 
 **Without --submit nothing is sent and nothing is billed.** The default prints
 the AOI area and what the request would be, which is the only safe default for a
@@ -83,9 +91,17 @@ def aoi_km2(aoi: str) -> tuple[float, float, float]:
     return w * h, w, h
 
 
-def call(url: str, key: str, timeout: int = 120) -> tuple[int, str]:
-    """(status, body). A transport failure is an exception, never an empty body."""
-    req = urllib.request.Request(url, headers={"Accept": "application/json"})
+def call(url: str, key: str, timeout: int = 120, body: dict | None = None) -> tuple[int, str]:
+    """(status, body). A transport failure is an exception, never an empty body.
+
+    A body makes it a POST, which is what job submission takes; without one it
+    is a GET, which is what polling and the balance take.
+    """
+    data = json.dumps(body).encode() if body is not None else None
+    headers = {"Accept": "application/json"}
+    if data is not None:
+        headers["Content-Type"] = "application/json"
+    req = urllib.request.Request(url, data=data, headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
             return r.status, r.read().decode("utf-8", errors="replace")
@@ -110,21 +126,44 @@ def parsed(body: str, path: Path) -> dict:
         raise SystemExit(f"the API did not return JSON. The response is at {path}")
 
 
+def job_body(args) -> dict:
+    """The POST body for a submission.
+
+    date_range is always sent. Its server-side default is 7, so leaving it out
+    silently widens the search by a week and returns a date nobody asked for -
+    the same substitution the wheel does without saying so. Sending 0 asks for
+    the date itself; note that the documentation still allows images up to three
+    days after it, so even 0 is not a guarantee. Check the returned `date`.
+    """
+    out = {"aoi": args.aoi, "date": args.date, "date_range": args.date_range}
+    if args.max_clouds is not None:
+        out["max_clouds"] = args.max_clouds
+    return out
+
+
 def submit(key: str, args) -> dict:
-    params = {"aoi": args.aoi, "date": args.date}
-    for name in ("date_range", "max_clouds", "bands_out"):
-        if getattr(args, name) is not None:
-            params[name] = str(getattr(args, name))
-    if args.cogs:
-        params["cogs"] = "true"
-    url = f"{BASE}/{key}?{urllib.parse.urlencode(params)}"
-    print("POST", mask(url, key))
-    status, body = call(url, key)
+    url = f"{BASE}/{key}"
+    params = job_body(args)
+    print("POST", mask(url, key), json.dumps(params))
+    status, body = call(url, key, body=params)
     path = persist(f"submit_{args.label}", body)
     print(f"  status {status}, response saved to {path.relative_to(ROOT)}")
     if status >= 400:
         raise SystemExit(f"the submission failed with status {status}. "
                          f"The response is at {path}, and nothing was downloaded.")
+    return parsed(body, path)
+
+
+def balance(key: str, limit: int = 20) -> dict:
+    """The account's credit balance and recent jobs. Free, and the only call
+    that proves the key works without reserving anything."""
+    url = f"{BASE}/{key}?limit={limit}"
+    status, body = call(url, key)
+    path = persist("balance", body)
+    print(f"GET {mask(url, key)} -> status {status}, saved to {path.relative_to(ROOT)}")
+    if status >= 400:
+        raise SystemExit(f"the balance call failed with status {status}; "
+                         f"the response is at {path}")
     return parsed(body, path)
 
 
@@ -188,11 +227,12 @@ def main() -> int:
     ap.add_argument("--aoi", help='"minx miny maxx maxy" in degrees')
     ap.add_argument("--date", help="exact Sentinel-2 scene date, YYYY-MM-DD")
     ap.add_argument("--label", default="job", help="name for the saved response files")
-    ap.add_argument("--date_range", type=int, default=None,
-                    help="days back to search; without it the date must exist exactly")
-    ap.add_argument("--max_clouds", type=int, default=None)
-    ap.add_argument("--bands_out", default=None, help="bands in Sentinel-2 names")
-    ap.add_argument("--cogs", action="store_true", help="also produce TCI/NDVI/IRP COGs")
+    ap.add_argument("--date_range", type=int, default=0,
+                    help="days before --date to search. The server's own default is 7, "
+                         "so this sends 0 unless told otherwise (0-90)")
+    ap.add_argument("--max_clouds", type=int, default=None, help="percent, 0-100")
+    ap.add_argument("--balance", action="store_true",
+                    help="print the credit balance and recent jobs, and stop. Free")
     ap.add_argument("--job", default=None, help="poll an existing job id instead of submitting")
     ap.add_argument("--submit", action="store_true",
                     help="actually send the job. Without it nothing is spent")
@@ -203,6 +243,13 @@ def main() -> int:
     load_env_file()
     key = os.environ.get("GE_API_KEY", "").strip()
     out = args.out or (RAW / args.label)
+
+    if args.balance:
+        if not key:
+            raise SystemExit("GE_API_KEY is not set; put it in .env (see .env.example)")
+        info = balance(key)
+        print(json.dumps(info, indent=1, sort_keys=True)[:2000])
+        return 0
 
     if args.job:
         if not key:
@@ -224,8 +271,10 @@ def main() -> int:
     print(f"AOI {args.aoi}")
     print(f"  {w:.3f} x {h:.3f} km = {area:.2f} km2, about "
           f"{area / KM2_PER_CREDIT:.2f} credits at Region C")
-    print(f"  date {args.date}" + ("" if args.date_range is None else
-                                   f", searching back {args.date_range} days"))
+    print(f"  date {args.date}, date_range {args.date_range}"
+          + (" (the date itself, though the catalogue may still return up to "
+             "three days after it)" if args.date_range == 0
+             else f" (searching back {args.date_range} days)"))
 
     if not args.submit:
         print("\nnothing sent. Re-run with --submit to spend "
