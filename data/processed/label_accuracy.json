@@ -8,40 +8,40 @@
  },
  "burned_area_ha": {
   "ci95": [
-   435.2,
-   949.5
+   698.1,
+   1111.9
   ],
   "commission_term_only": {
    "ci95": [
-    435.2,
-    727.5
+    609.9,
+    775.5
    ],
-   "estimate": 614.3
+   "estimate": 719.2
   },
-  "estimate": 614.3,
+  "estimate": 903.8,
   "mapped": 819.1,
   "omission_term_only": {
    "ci95": [
-    0.0,
-    222.1
+    88.3,
+    336.4
    ],
-   "estimate": 0.0
+   "estimate": 184.6
   }
  },
  "caveats": [
   "The reference is one interpreter's reading of S2DR4 1 m imagery, which is model output rather than observation. These are agreement figures, not accuracy against the ground.",
-  "Stratum B holds 10 judged boxes. Published good practice for map accuracy assessment asks for 50 to 100 per stratum, so the interval is wide enough that whether the map's own figure sits inside it is decided by the estimator, not by the sample.",
+  "Stratum B holds 26 judged boxes. Published good practice for map accuracy assessment asks for 50 to 100 per stratum, so the interval is wide enough that whether the map's own figure sits inside it is decided by the estimator, not by the sample.",
   "The estimate covers the footprints of three events of August 2026, not the 23 events F11 reports, and not the island.",
   "Boxes are 60 m and the product is 20 m, so a box can hold both classes; those were judged by majority and the doubtful ones marked unsure."
  ],
  "olofsson_2014": {
   "ci95": [
-   454.8,
-   773.8
+   747.8,
+   1059.9
   ],
-  "estimate_ha": 614.3,
+  "estimate_ha": 903.8,
   "note": "Eqs. 9 to 11 of Olofsson et al. 2014, which use the normal approximation. At 0 of 10 that gives stratum B zero variance although it carries half the area, so this interval is narrower than the sample supports. F23 says to quote the Wilson one above.",
-  "se_ha": 81.4
+  "se_ha": 79.6
  },
  "outside_footprints": {
   "burned": 0,
@@ -56,45 +56,44 @@
  "strata": {
   "A_mapped": {
    "area_ha": 819.1,
-   "burned": 15,
+   "burned": 36,
    "ci95": [
-    0.531,
-    0.888
+    0.745,
+    0.947
    ],
-   "judged": 20,
-   "rate": 0.75,
+   "judged": 41,
+   "rate": 0.878,
    "sample": "map_burned"
   },
   "B_unmapped_in_footprint": {
    "area_ha": 800.1,
-   "burned": 0,
+   "burned": 6,
    "ci95": [
-    0.0,
-    0.278
+    0.11,
+    0.421
    ],
    "designs": {
     "footprint_unmapped": {
-     "burned": 0,
-     "judged": 0
+     "burned": 6,
+     "judged": 16
     },
     "random_box": {
      "burned": 0,
      "judged": 10
     }
    },
-   "judged": 10,
-   "rate": 0.0,
+   "judged": 26,
+   "rate": 0.231,
    "sample": "random_box and footprint_unmapped"
   }
  },
  "unjudged_boxes": {
   "by_stratum": {
-   "footprint_unmapped": 50,
-   "map_burned": 25
+   "footprint_unmapped": 28
   },
   "note": "boxes drawn but not yet judged; not counted as unburned anywhere in this file",
-  "total": 75
+  "total": 28
  },
- "unsure_dropped": 11,
+ "unsure_dropped": 21,
  "what": "The Task 18 dNBR+ product measured against hand labels on 1 m imagery, over the footprints of E0301, E0313, E0368."
 }
