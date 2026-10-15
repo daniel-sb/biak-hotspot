@@ -47,6 +47,14 @@ Applying first is worth more than every experiment below put together.
 
 ## What to build
 
+### 0. Where this runs
+
+**On the laptop, not in Colab.** The wheel needed Colab for its CUDA GPU; the
+API does the processing on Gamma Earth's side, so the client is two HTTP calls
+and a download. `scripts/s2dr4_api.py` is that client: standard library only,
+`GE_API_KEY` from the environment or `.env`, and it sends nothing without
+`--submit`.
+
 ### 1. A probe, before anything else
 
 One small AOI, one date, on an event already covered by the wheel. It answers
@@ -55,8 +63,7 @@ is S2DR3 or S2DR4, what it bills for a 1 km² request, and whether the output
 file naming matches the wheel's.
 
 ```
-aoi  "136.035105 -1.138913 136.044089 -1.129864"     # 1 km², E0313 centre
-date 2026-08-28
+python scripts/s2dr4_api.py --label probe --date 2026-08-28     --aoi "136.035105 -1.138913 136.044089 -1.129864" --submit     # 1 km2
 ```
 
 Report the job's `state`, the returned `pid`, the file names, and the balance
@@ -68,8 +75,7 @@ and say so** — every number below assumes it does.
 A 2 km box on the same event and date, well inside the wheel tile:
 
 ```
-aoi  "136.030613 -1.143438 136.048581 -1.125340"     # 4 km², E0313 centre
-date 2026-08-28
+python scripts/s2dr4_api.py --label compare --date 2026-08-28     --aoi "136.030613 -1.143438 136.048581 -1.125340" --submit     # 4 km2
 ```
 
 The wheel's file for that ground is
