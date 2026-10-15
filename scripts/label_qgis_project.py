@@ -36,6 +36,9 @@ LAB = ROOT / "data/labels"
 GPKG = LAB / "biak_labels.gpkg"
 OUT = LAB / "biak_labels.qgz"
 EVENTS = {"E0301": "Anjareuw", "E0313": "Yendidori", "E0368": "Insumarires"}
+# The date the project opens on: 0.4% cloud, mid-episode, and the basemap the
+# field survey used. Every other date starts switched off.
+DEFAULT_DATE = "20260823"
 
 CLASSES = {"burned": "burned — changed like a burn",
            "unburned": "unburned — no such change",
@@ -164,9 +167,45 @@ def main() -> int:
     detections.setReadOnly(True)
     project.addMapLayer(detections)
 
+    # --- imagery, one group per date -------------------------------------
+    # Grouped by date rather than by event, so a date can be switched on and off
+    # in one click and two dates compared over all three events at once. Within
+    # a date the 1 m reconstruction sits above the native pixels it was made
+    # from, which is the comparison worth having in front of you: S2DR4 removes
+    # cloud, haze and smoke, and the native chip is where that shows.
+    dated = sorted({p.stem.split("_")[-1]
+                    for p in (LAB / "imagery").glob("*_swir_2026*.tif")}, reverse=True)
+    for date in dated:
+        pretty = f"{date[6:]}/{date[4:6]}/{date[:4]}"
+        dgroup = root.insertGroup(len(root.children()), pretty)
+        for eid, desa in EVENTS.items():
+            for kind, title in (
+                    (f"swir_{date}", "SWIR B12/B8A/B4 — 1 m"),
+                    (f"tci_{date}", "true colour — 1 m"),
+                    (f"s2n_swir_{date}", "SWIR B12/B8A/B4 — 20 m, as the sensor saw it"),
+                    (f"s2n_tci_{date}", "true colour — 10 m, as the sensor saw it")):
+                path = LAB / "imagery" / f"{eid}_{kind}.tif"
+                if not path.exists():
+                    continue
+                rl = QgsRasterLayer(str(path), f"{eid} {desa} — {title}")
+                if not rl.isValid():
+                    print("raster not valid:", path)
+                    continue
+                project.addMapLayer(rl, False)
+                dgroup.addLayer(rl).setItemVisibilityChecked(
+                    date == DEFAULT_DATE and kind == f"swir_{date}")
+        dgroup.setItemVisibilityChecked(date == DEFAULT_DATE)
+        dgroup.setExpanded(date == DEFAULT_DATE)
+        print(f"  group {pretty}: {len(dgroup.children())} layers")
+
     # --- native Sentinel-2, the pair dNBR+ actually compared --------------
+    # Kept below the dated groups and switched off: these three came from
+    # Earth Engine with only "pre", "mid" and "post" for provenance, and the
+    # dated groups above now carry the same ground with the acquisition named.
     pair = root.insertGroup(len(root.children()),
-                            "Sentinel-2 20 m: before, mid-episode, after")
+                            "Sentinel-2 20 m: before, mid-episode, after (older, undated)")
+    pair.setItemVisibilityChecked(False)
+    pair.setExpanded(False)
     for eid, desa in EVENTS.items():
         for tag, title in (("post", "after, 28 Aug"),
                            ("mid", "mid-episode, 23 Aug"),
@@ -181,25 +220,6 @@ def main() -> int:
                 continue
             project.addMapLayer(rl, False)
             pair.addLayer(rl).setItemVisibilityChecked(False)
-
-    # --- imagery, SWIR on top of true colour ----------------------------
-    group = root.insertGroup(len(root.children()), "S2DR4 1 m imagery")
-    dated = sorted({p.stem.split("_")[-1] for p in (LAB / "imagery").glob("*_swir_2026*.tif")},
-                   reverse=True)
-    for eid, desa in EVENTS.items():
-        for kind, title in [(f"swir_{d}", f"SWIR B12/B8A/B4, {d[6:]} {d[4:6]}") for d in dated]                 + [(f"tci_{d}", f"true colour, {d[6:]} {d[4:6]}") for d in dated]:
-            path = LAB / "imagery" / f"{eid}_{kind}.tif"
-            if not path.exists():
-                print("missing imagery:", path)
-                continue
-            rl = QgsRasterLayer(str(path), f"{eid} {desa} — {title}")
-            if not rl.isValid():
-                print("raster not valid:", path)
-                continue
-            project.addMapLayer(rl, False)
-            node = group.addLayer(rl)
-            node.setItemVisibilityChecked(
-                eid == "E0313" and kind == f"swir_{dated[0]}" if dated else False)
 
     project.write(str(OUT))
     qgs.exitQgis()
