@@ -167,18 +167,24 @@ def main() -> int:
     detections.setReadOnly(True)
     project.addMapLayer(detections)
 
-    # --- imagery, one group per date -------------------------------------
-    # Grouped by date rather than by event, so a date can be switched on and off
-    # in one click and two dates compared over all three events at once. Within
-    # a date the 1 m reconstruction sits above the native pixels it was made
+    # --- imagery, one group per date, then one per area -------------------
+    # Date first, so a date can be switched on and off in one click and two
+    # dates compared over all three events at once. Area second, so one event
+    # can be isolated within a date. Both resolutions sit in the same area
+    # subgroup, the 1 m reconstruction above the native pixels it was made
     # from, which is the comparison worth having in front of you: S2DR4 removes
     # cloud, haze and smoke, and the native chip is where that shows.
     dated = sorted({p.stem.split("_")[-1]
                     for p in (LAB / "imagery").glob("*_swir_2026*.tif")}, reverse=True)
     for date in dated:
         pretty = f"{date[6:]}/{date[4:6]}/{date[:4]}"
+        default = date == DEFAULT_DATE
         dgroup = root.insertGroup(len(root.children()), pretty)
+        count = 0
         for eid, desa in EVENTS.items():
+            # The area name lives on the subgroup, so the layer keeps only what
+            # distinguishes it from its three siblings.
+            egroup = dgroup.addGroup(f"{eid} {desa}")
             for kind, title in (
                     (f"swir_{date}", "SWIR B12/B8A/B4 — 1 m"),
                     (f"tci_{date}", "true colour — 1 m"),
@@ -187,16 +193,19 @@ def main() -> int:
                 path = LAB / "imagery" / f"{eid}_{kind}.tif"
                 if not path.exists():
                     continue
-                rl = QgsRasterLayer(str(path), f"{eid} {desa} — {title}")
+                rl = QgsRasterLayer(str(path), title)
                 if not rl.isValid():
                     print("raster not valid:", path)
                     continue
                 project.addMapLayer(rl, False)
-                dgroup.addLayer(rl).setItemVisibilityChecked(
-                    date == DEFAULT_DATE and kind == f"swir_{date}")
-        dgroup.setItemVisibilityChecked(date == DEFAULT_DATE)
-        dgroup.setExpanded(date == DEFAULT_DATE)
-        print(f"  group {pretty}: {len(dgroup.children())} layers")
+                egroup.addLayer(rl).setItemVisibilityChecked(
+                    default and kind == f"swir_{date}")
+                count += 1
+            egroup.setItemVisibilityChecked(True)
+            egroup.setExpanded(default)
+        dgroup.setItemVisibilityChecked(default)
+        dgroup.setExpanded(default)
+        print(f"  group {pretty}: {len(dgroup.children())} areas, {count} layers")
 
     # --- native Sentinel-2, the pair dNBR+ actually compared --------------
     # Kept below the dated groups and switched off: these three came from

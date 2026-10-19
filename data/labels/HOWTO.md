@@ -62,7 +62,7 @@ variables set, except for the two scripts the table sends to QGIS.
 ## What you are looking at
 
 The project holds 85 layers. Four are vectors, and the rest are imagery grouped by
-acquisition date.
+acquisition date and then by area.
 
 | layer | what it is |
 |---|---|
@@ -70,20 +70,38 @@ acquisition date.
 | random_box seed points, 42 of them | the points the first 42 boxes were centred on. The other 100 boxes have no point here |
 | VIIRS footprints (strata, not truth) | 375 m circles round the detections, the frame two strata were drawn from |
 | VIIRS/MODIS detections | the individual satellite detections |
-| one group per date: `17/09/2026` … `13/08/2026` | the imagery, 12 layers each |
+| one group per date: `17/09/2026` … `13/08/2026` | the imagery, 3 area subgroups of 4 layers each |
 | Sentinel-2 20 m: before, mid-episode, after (older, undated) | superseded, switched off, kept only because the dNBR+ product compared these particular chips |
 
-Each date group holds the same 12 layers: for each of the three events, four images.
+Each date group holds one subgroup per event, and each subgroup holds the same four images.
+Both resolutions are in the same subgroup, so the pair to compare is always together:
 
-| layer in a date group | resolution | what it is |
+```
+23/08/2026
+  E0301 Anjareuw
+    SWIR B12/B8A/B4 — 1 m
+    true colour — 1 m
+    SWIR B12/B8A/B4 — 20 m, as the sensor saw it
+    true colour — 10 m, as the sensor saw it
+  E0313 Yendidori
+    …
+  E0368 Insumarires
+    …
+```
+
+| layer in an area subgroup | resolution | what it is |
 |---|---|---|
-| `E0313 Yendidori — SWIR B12/B8A/B4 — 1 m` | 1 m | S2DR4 super-resolved, the one to judge from |
-| `E0313 Yendidori — true colour — 1 m` | 1 m | S2DR4 super-resolved, for identifying features |
-| `E0313 Yendidori — SWIR B12/B8A/B4 — 20 m, as the sensor saw it` | 20 m | **native Sentinel-2, unprocessed** |
-| `E0313 Yendidori — true colour — 10 m, as the sensor saw it` | 10 m | **native Sentinel-2, unprocessed** |
+| `SWIR B12/B8A/B4 — 1 m` | 1 m | S2DR4 super-resolved, the one to judge from |
+| `true colour — 1 m` | 1 m | S2DR4 super-resolved, for identifying features |
+| `SWIR B12/B8A/B4 — 20 m, as the sensor saw it` | 20 m | **native Sentinel-2, unprocessed** |
+| `true colour — 10 m, as the sensor saw it` | 10 m | **native Sentinel-2, unprocessed** |
 
-The project opens on the `23/08/2026` group with the three 1 m SWIR layers switched on.
-Every other group starts collapsed and off. Tick them as you go.
+The event is named by the subgroup, not repeated on every layer.
+
+The project opens on the `23/08/2026` group, expanded, with all three area subgroups on and
+the 1 m SWIR layer of each switched on. Every other date starts collapsed and off, with its
+own area subgroups already ticked, so switching a date on shows it without further clicks.
+Tick them as you go, and untick a whole area when you want one event on its own.
 
 **There is no dNBR+ layer, on purpose.** These labels judge that product, so seeing it
 while judging would make the comparison worthless. Do not add it.
@@ -318,7 +336,7 @@ against F20, written at review, as this project's convention requires.
 | `scripts/label_prepare.py` | geolibre | already run, and **must not be run again**. It rewrites the sample points and renames the dated chips to plain names, which would break both the draw and the date groups |
 | `scripts/label_imagery_add.py` | geolibre | the way to add or refresh imagery now. Writes the dated 1 m pairs and the native chips beside them. Leaves existing 1 m chips alone unless you pass `--force` |
 | `scripts/label_pre_imagery.py` | geolibre | already run: pulled the undated 20 m before, mid and after chips from Earth Engine. Superseded by the dated groups |
-| `scripts/label_qgis_project.py` | **QGIS** | rebuilds `biak_labels.qgz`, one group per date. Never touches the GeoPackage, so judgements survive a rebuild. Refuses to run if the project holds polygon annotations, unless you pass `--force` |
+| `scripts/label_qgis_project.py` | **QGIS** | rebuilds `biak_labels.qgz`, one group per date and one subgroup per area. Never touches the GeoPackage, so judgements survive a rebuild. Refuses to run if the project holds polygon annotations, unless you pass `--force` |
 | `scripts/label_add_boxes.py` | geolibre | draws more `map_burned` or `footprint_unmapped` boxes at random, at least 150 m from any existing one |
 | `scripts/label_fill_ids.py` | geolibre | only if you add polygons by hand: fills `sample_id` and `event_id` from the point inside each polygon |
 | `scripts/label_check.py` | geolibre | reports what is there and what is wrong. Changes nothing |

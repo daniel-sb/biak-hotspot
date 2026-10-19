@@ -188,12 +188,34 @@ def main() -> int:
     with tempfile.TemporaryDirectory() as tmp:
         src_html = Path(tmp) / "howto.html"
         src_html.write_text(page, encoding="utf-8")
-        args.out = args.out.resolve()   # Chrome needs an absolute --print-to-pdf path
-        args.out.parent.mkdir(parents=True, exist_ok=True)
-        subprocess.run([find_chrome(), "--headless", "--disable-gpu", f"--print-to-pdf={args.out}",
-                        src_html.as_uri()], check=True, capture_output=True)
-    size = args.out.stat().st_size
-    print(f"written {args.out.relative_to(ROOT)} ({size / 1024:.0f} KB)")
+        out = args.out.resolve()        # Chrome needs an absolute --print-to-pdf path
+        out.parent.mkdir(parents=True, exist_ok=True)
+        # Print to a fresh file, then move it into place. Printing straight onto the
+        # target cannot tell a real render from a Chrome that exits 0 having written
+        # nothing, and the old PDF's size then gets reported as a new one - which
+        # happened on 2026-10-19 and published a guide two edits out of date.
+        fresh = Path(tmp) / "out.pdf"
+        chrome = find_chrome()
+        subprocess.run([chrome, "--headless", "--disable-gpu",
+                        # Its own profile, or Chrome hands the command to the
+                        # instance the user already has open, which exits 0 and
+                        # prints nothing at all.
+                        f"--user-data-dir={Path(tmp) / 'profile'}",
+                        f"--print-to-pdf={fresh}", src_html.as_uri()],
+                       check=True, capture_output=True)
+        if not fresh.exists():
+            raise SystemExit(f"{Path(chrome).name} wrote no PDF; {out} is unchanged")
+        try:
+            shutil.copyfile(fresh, out)
+        except PermissionError:
+            raise SystemExit(f"{out} is open in another program and Windows has it "
+                             "locked; close the PDF viewer and run this again")
+    size = out.stat().st_size
+    try:
+        shown = out.relative_to(ROOT)   # --out may point outside the repository
+    except ValueError:
+        shown = out
+    print(f"written {shown} ({size / 1024:.0f} KB)")
     return 0
 
 
