@@ -14,15 +14,36 @@ measured: the Automated Temporal Burn Index.
 
 > Bilal, M. (2025). *The automated temporal burn index (ATBI) for accurate and scalable
 > burned area mapping.* International Journal of Applied Earth Observation and
-> Geoinformation, 144, 104866. https://doi.org/10.1016/j.jag.2025.104866
+> Geoinformation, 144, 104866. https://doi.org/10.1016/j.jag.2025.104866 —
+> `References/1-s2.0-S1569843225005138-main.pdf`, read 2026-10-20.
 
 The index multiplies NBR by the SWIR/NIR ratio, so a pixel scores high only when both
 spectral conditions of burning hold at once — NIR down and SWIR up. Cloud shadow (both
-down) and phenological change (NIR up, SWIR down) fail one of them and are suppressed. The
-author reports precision 0.919 against dNBR's 0.729 and F1 0.946 against 0.836 on the 2024
-Park Fire. **That is the index author's own figure on one chaparral fire in California, and
-it is not evidence about humid tropical Papua.** It is a reason to test the index here. It
-is not a result to quote.
+down) and phenological change (NIR up, SWIR down) fail one of them and are suppressed.
+
+**What the paper actually establishes, from the PDF.** It maps 50 wildfire events worldwide
+on Landsat in Earth Engine, events 1–32 with the bi-temporal dATBI against dNBR and events
+33–50 with the multi-temporal dATBItm against dNBRtm, across boreal, Mediterranean,
+temperate, subtropical and tropical biomes. The quantitative validation against a Random
+Forest reference is **one fire**, the Park Fire 2024 in California: Table 4 gives dATBI
+precision 0.919, recall 0.975, F1 0.946 against dNBR's 0.729, 0.979, 0.836, and Table 5
+gives separability M 1.38 against 1.29. The other 49 events are judged by eye against
+post-fire composites.
+
+Two limits of that evidence matter for this island, and both come from the paper itself:
+
+- **No humid equatorial forest is in the 50.** Its tropical sites are seasonally dry —
+  Chiang Mai dipterocarp, Western Terai Sal, Cerrado and Chiquitano savanna, Miombo
+  woodland. Biak is humid tropical with small-scale shifting cultivation, and nothing here
+  has been tested on it.
+- **The headline gap is measured across two different atmospheric corrections.** Section
+  2.4 states that dATBI was computed from SREM-corrected reflectance while dNBR and dNBRtm
+  used Landsat Level-2 LEDAPS and LaSRC, which the author describes as ensuring an
+  independent comparison. Section 3 then shows SREM yields cleaner dATBI than LaSRC. A
+  cross-comparison under both corrections is reported, but the 0.919-against-0.729 pair is
+  the mixed-correction one.
+
+So this is a reason to test the index here and not a result to quote.
 
 This task adds the index and measures it. It does not replace NBR+ anywhere, and it
 publishes no map and no area.
@@ -45,13 +66,16 @@ and each is a trap this task must avoid:
 | `.filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 20)).mosaic()` | a scene-level filter, then `mosaic()` takes the last image per pixel. `SCL` is never consulted, so no pixel is ever cloud-masked. Over Biak that is fatal, and F7's cloud stratum exists because of it |
 | `mosaic()` over a three-month pre window and a one-month post window | no scene pair, so no provenance. Task 15 requires both scene identifiers recorded |
 | `B8` for NIR, exported at `scale: 10` | mixes a 10 m band with a 20 m `B12` and resamples the result to 10 m. Everything here is 20 m |
-| thresholds 0.20 / 0.27 / 0.66 | inherited from a dNBR convention calibrated in California. Its own README admits this under *Keterbatasan*. This task chooses no threshold at all |
+| thresholds 0.20 / 0.27 / 0.66 | transcribed faithfully from the paper, and the paper itself says they are borrowed. Section 3.1.1: it raised the unburned/low break from Key & Benson's 0.10 to 0.20 to suppress dNBR's commission, kept 0.27–0.66 and >0.66 unchanged, adopted them for dATBI "to enable direct comparison with dNBR results and MTBS/BAER products", and states that future work should calibrate dATBI against field Composite Burn Index data. There is no dATBI-specific severity calibration anywhere. This task chooses no threshold at all |
 | `SWIR/NIR` with no guard | see **The division** below |
 
-The paper itself is **not** in `References/`. Obtain it before trusting any claim attributed
-to it above. If it cannot be obtained, say so in the final message and state plainly that
-the formula was taken from the algebra in this task and the third-party README, not from the
-source publication.
+The source paper is in `References/1-s2.0-S1569843225005138-main.pdf` and every claim
+attributed to it above was checked against it on 2026-10-20. Equation (1), its band
+definitions, equation (2), the worked numeric example, the thresholds and Tables 4 and 5
+are all as quoted here. The third-party README transcribed them faithfully; its only
+additions are the Sentinel-2 substitution and the five defects above. Read sections 2.4 and
+3.1 of the PDF before writing the expression anyway, because the sign convention below
+depends on reading equation (1) in its own terms rather than this repository's.
 
 ## The formula, and the sign that will be got wrong
 
@@ -84,8 +108,8 @@ dATBI     = ATBI(post) - ATBI(pre)
           = dATBI_pub                                     as published
 ```
 
-Check it against the worked example in the third-party README, which uses the published
-convention throughout:
+Check it against the worked example in section 2.4 of the paper, which uses the published
+convention throughout and which the README reproduces:
 
 ```
 pre   NIR 0.5, SWIR 0.2    ATBI_pub = +0.17    this file's ATBI = -0.1714
@@ -93,8 +117,11 @@ post  NIR 0.1, SWIR 0.3    ATBI_pub = -1.50    this file's ATBI = +1.5
                            dATBI_pub = 1.67    this file's dATBI = +1.671
 ```
 
-**Bands: `B8A`, not `B8`.** The paper uses Landsat B5 and B7; the Sentinel-2 equivalents at
-a single resolution are `B8A` (865 nm, 20 m) and `B12`. Both are already in `BANDS`.
+**Bands: `B8A`, not `B8`.** The paper is Landsat only — NIR is B5 on L8-9 OLI and B4 on
+L5 TM and L7 ETM+, SWIR is B7 throughout — and it never uses Sentinel-2. Carrying the index
+to Sentinel-2 is this project's decision, not the paper's, and it should be named as such
+wherever the result is reported. The equivalents at a single resolution are `B8A` (865 nm,
+20 m) and `B12` (2190 nm, 20 m). Both are already in `BANDS`.
 
 **Scaling does not matter for this index and must still be applied.** ATBI is a product of
 two ratios, so it is invariant to the `/10000`. Compute it from `scaled()` anyway, like
@@ -169,6 +196,14 @@ samples 20 m features inside the label boxes and already drops `unsure`. Sample 
 - the share of `unburned` pixels above the `burned` 5th percentile, which is the commission
   that F20 measured, expressed at pixel level rather than in hectares.
 
+**Hold the atmospheric correction fixed, and say so.** Both indices come from the same
+Sen2Cor L2A scene pair, so the comparison here is free of the confound in the paper's own
+headline, where dATBI was computed on SREM and dNBR on LaSRC. That makes this a cleaner
+test than the published one and it is worth a sentence in the manuscript. The cost is the
+mirror image: SREM is not available for Sentinel-2 L2A, so if ATBI underperforms here, the
+paper's section 3 claim that correction quality matters for this index cannot be ruled out
+as the cause. State both halves; neither one alone is honest.
+
 **Strata are never pooled.** `random_box`, `map_burned` and `footprint_unmapped` are
 different populations with different inclusion probabilities, and `map_burned` was drawn
 from inside the dNBR+ polygons, so it is biased in dNBR+'s favour by construction. Report
@@ -227,9 +262,13 @@ pixel counts in the final message; the `FINDINGS.md` entry is written at review.
 ## Out of scope
 
 - **`dATBIt` and `dATBItm`**, the multi-temporal detection-count and mean-composite forms
-  (equations 4 and 5 of the source). They need a post-event time series this AOI does not
-  have without the cloud problem Task 15 was built around. A separate task if Part A and B
-  are favourable.
+  (equations 3 to 6 of the source). They need a post-event time series this AOI does not
+  have without the cloud problem Task 15 was built around, and they are threshold-dependent
+  by construction: the composite averages only the dates where `dATBIt >= 0.20`, so it
+  cannot be computed at all without adopting the borrowed threshold this task refuses. The
+  paper evaluates them on events 33–50, a different set from the dATBI events, so its
+  bi-temporal and multi-temporal results are not two measurements of the same ground. A
+  separate task if Part A and B are favourable.
 - Adding ATBI to `src/burn_classifier.py`'s `FEATURES`. That would change F21's model and
   needs its own task and its own leave-one-event-out run.
 - Severity classes, burn perimeters, thresholds, or any area in hectares.
@@ -241,8 +280,8 @@ pixel counts in the final message; the `FINDINGS.md` entry is written at review.
 
 Per the AGENTS closing rule: what you built, what you deliberately did not, how to run the
 check, and every decision this task left open — in particular how the `B8A <= 0` mask was
-defined and how many pixels it removed from each stratum, whether the source paper was
-obtained or the formula rests on the algebra here, and which label boxes Part B ran on.
+defined and how many pixels it removed from each stratum, and which label boxes Part B ran
+on.
 
 State plainly which of these the numbers support, **including the case where this AOI cannot
 separate ATBI from NBR+**, which with one event and one scene pair is a legitimate outcome
@@ -254,5 +293,8 @@ and more useful than a ranking the data does not carry:
 - **ATBI is equivalent here** — the two are inside each other's spread. Then the paper gains
   a sentence saying a 2025 index designed against commission did not beat NBR+ on this
   island, which is a finding, and NBR+ stays.
-- **ATBI is worse here** — it flags sea, cloud, or sediment-laden water, which its own
-  author lists as a known failure. Then say so and stop.
+- **ATBI is worse here** — it flags sea, cloud, or turbid water. The paper reports that last
+  one as a failure of its own: sediment-laden rivers were flagged as burned because their
+  dark reflectance resembles char, and seasonal water-level changes in river courses and
+  wetlands did the same. On an AOI that is mostly ocean with a mangrove coast, that is the
+  failure mode to expect. Then say so and stop.
