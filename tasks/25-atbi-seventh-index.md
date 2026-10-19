@@ -156,20 +156,76 @@ credential boundary, and the two halves carry different hand-off risk:
 
 | | needs | may be handed to another agent |
 |---|---|---|
-| **A1** the code edit and the two offline tests | nothing but the repository | yes. No network, no credential, deterministic, and `python -m pytest tests/` proves it on its own |
+| **A1** the code edit and its offline tests | nothing but the repository | yes. No network, no credential, deterministic, and `python -m pytest tests/` proves it on its own |
 | **A2** the Earth Engine run and the identical-six check | `~/.config/earthengine/credentials` or `GEE_SERVICE_ACCOUNT_JSON`, and a Cloud project id | **no.** Those credentials live on the owner's laptop, and `src/s2_scene_survey.py` calls Earth Engine too when it re-derives the pair |
 
 A1 is pure arithmetic and can be verified without ever reaching a satellite. Finish and test
 it separately, then run A2 where the credentials are.
 
-One entry in `indices_of()` and one name in `INDICES`. Nothing else in that file changes.
+**A1 is one entry in `indices_of()` and one name in `INDICES`, and nothing else.** A2 may
+additionally harden `pair_stats` as described below, and nothing else again.
 
-**Both existing callers select by name** — `src/burn_classifier.py:490-492` takes
-`["NBR+"]`, `["NBR"]` and `["NBRSWIR"]`, and `src/burned_area_gee.py:205` takes `["NBR+"]`
-— so a seventh key reaches neither. Verify that before editing and say so; if it were
-otherwise, this change would silently alter F21's feature set and F11's published product.
+#### A1 is done (2026-10-20)
 
-Re-run the script and regenerate `docs/data/burn_indices.json`:
+Implemented by a handed-off agent and verified here. `INDICES` is now
+`("NBR", "NBRSWIR", "NDSWIR", "MIRBI", "BAIS2", "NBR+", "ATBI")` with ATBI appended rather
+than inserted, so the six published columns keep their order and the JSON diff can only add.
+The entry is
+
+```python
+"ATBI": b["B12"].subtract(b["B8A"]).divide(b["B12"].add(b["B8A"]))
+    .multiply(b["B12"].divide(b["B8A"]))
+    .updateMask(b["B8A"].gt(0)),
+```
+
+`tests/test_atbi.py` holds three offline checks — the worked example, the mask behaviour,
+and `INDICES` against `indices_of()` — and calls the real `indices_of()` with a stand-in
+`ee` module rather than re-implementing the formula. The arithmetic was re-derived by hand:
+ATBI pre -0.1714286, post 1.5, dATBI 1.6714286, BAIS2 0.5507193. Both callers were
+confirmed to select by name, so F11's product and F21's feature set are untouched.
+
+The masked count turned out to be recoverable without a new JSON field, and more directly
+than expected: `pair_stats` writes `strata[s]["n"]` from an unmasked `anypx` band and
+`dist["n"]` per index per stratum, so a stratum's loss is
+`strata[s]["n"] - indices[form]["ATBI"][s]["n"]`.
+
+### A2 — the Earth Engine run, and two guards it needs first
+
+**Harden `pair_stats` before spending a single reduce.** Masking one index broke two
+assumptions that held while all six were unmasked, and both failures land *after* the
+expensive `reduceRegion` calls rather than before them. Neither is reachable by an offline
+test, which is why A1 could not have caught them.
+
+The first is the likely one. In the false-alarm block:
+
+```python
+fa[form].setdefault(k, {})[sname] = \
+    round(got.get(k.replace("+", "_plus")), 4)
+```
+
+`ee.Reducer.mean()` over a fully masked band returns `None`, and `round(None, 4)` raises
+`TypeError`. The `water` stratum is WorldCover class 80, which on this AOI is mostly open
+sea, and B8A at 865 nm over clear deep water comes out at or below zero routinely after
+Sen2Cor. So the stratum most likely to be entirely masked is the one that trips it.
+
+The second shares the root cause:
+
+```python
+thr = {k: out["indices"][form][k]["adjacent"]["p95"] for k in INDICES}
+```
+
+This raises `KeyError: 'ATBI'` when the adjacent stratum carries no ATBI distribution,
+because the guard above it tests `NBR` alone. Less likely, since `adjacent` is land, but it
+is the same hole.
+
+Fix both by treating a fully masked index as the absence of a measurement rather than as a
+zero: skip the index for that stratum, record that it was skipped and why, and leave every
+other index's number exactly as it is. **A masked-out stratum must never be reported as a
+0.0% false-alarm share** — that is the difference between "ATBI did not flag the sea" and
+"ATBI could not be computed over the sea", and reading the first where the second is true
+would hand ATBI a win on the one stratum that disqualified MIRBI and BAIS2.
+
+Then re-run the script and regenerate `docs/data/burn_indices.json`:
 
 ```
 python src/burn_indices_gee.py <google-cloud-project-id>
@@ -179,21 +235,37 @@ python src/burn_indices_gee.py <google-cloud-project-id>
 F7 and F8 quote that file at commit `272edb5` and FINDINGS is append-only, so the six
 columns of F7's false-alarm table have to stay reproducible. Diff the regenerated file
 against `git show HEAD:docs/data/burn_indices.json` and confirm that the only additions are
-the ATBI blocks and the new `B8A <= 0` counts. **If any of the six moves, stop and report
-it rather than committing** — something drifted in the scene selection or in Earth Engine's
-own reprocessing, and that is a larger finding than this task.
+the ATBI blocks, plus whatever the two guards record where a stratum was skipped. **If any
+of the six moves, stop and report it rather than committing** — something drifted in the
+scene selection or in Earth Engine's own reprocessing, and that is a larger finding than
+this task.
 
-Report ATBI as a seventh row of F7's table, in the same four columns:
+Report ATBI as a seventh row of F7's table, in the same four columns, **and never without
+the denominator beside it**:
 
 | index | uni, open sea | uni, cloud | bi, open sea (primary) | bi, cloud (check pair) |
 |---|---|---|---|---|
 | NBR+ | 0.0% | 1.0% | 1.5% | 5.1% |
 | ATBI | | | | |
 
+| stratum | `strata` n | ATBI n | lost to `B8A <= 0` |
+|---|---|---|---|
+| water | | | |
+| cloud | | | |
+| adjacent | | | |
+| far | | | |
+
+The second table is what makes the first readable. ATBI's share is computed over the pixels
+it could be computed on, so a sea column of 0.1% means one thing when the mask took 2% of
+the stratum and something else entirely when it took 90%. Print both tables together or
+neither.
+
 NBR+'s 5.1% over cloud is the bar. An index that beats it over cloud and sea, on this AOI,
 is worth the second half of this task; one that flags the sea the way NBRSWIR, MIRBI and
 BAIS2 do is disqualified here whatever it scored in California, and the task stops at Part
-A with that stated.
+A with that stated. An index whose sea column rests on a tenth of the stratum has not been
+measured over the sea at all, and that is a third outcome — state it rather than ranking on
+it.
 
 ### Part B — scored against the 114 judged boxes
 
@@ -275,6 +347,8 @@ pixel counts in the final message; the `FINDINGS.md` entry is written at review.
   so the two cannot drift apart.
 - `tests/test_burn_indices.py` passes unchanged: it iterates whatever the file contains, so
   ATBI's distributions are covered by its existing ordering and non-emptiness checks.
+- A2 prints the false-alarm row and the denominator table together, and a stratum where
+  ATBI could not be computed appears as skipped with its reason, never as a 0.0% share.
 - `python -m pytest tests/` passes. `python scripts/render_check.py` passes unchanged.
 - `git status` shows no modification under `docs/` other than `docs/data/burn_indices.json`.
 - One commit for the index and the regenerated data, one for Part B's output.
