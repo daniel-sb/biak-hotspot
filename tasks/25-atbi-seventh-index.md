@@ -151,6 +151,17 @@ clamp them.
 
 ### Part A — the seventh index in `src/burn_indices_gee.py`
 
+**Part A does not depend on the labels.** Part B does, and may wait. Part A splits at the
+credential boundary, and the two halves carry different hand-off risk:
+
+| | needs | may be handed to another agent |
+|---|---|---|
+| **A1** the code edit and the two offline tests | nothing but the repository | yes. No network, no credential, deterministic, and `python -m pytest tests/` proves it on its own |
+| **A2** the Earth Engine run and the identical-six check | `~/.config/earthengine/credentials` or `GEE_SERVICE_ACCOUNT_JSON`, and a Cloud project id | **no.** Those credentials live on the owner's laptop, and `src/s2_scene_survey.py` calls Earth Engine too when it re-derives the pair |
+
+A1 is pure arithmetic and can be verified without ever reaching a satellite. Finish and test
+it separately, then run A2 where the credentials are.
+
 One entry in `indices_of()` and one name in `INDICES`. Nothing else in that file changes.
 
 **Both existing callers select by name** — `src/burn_classifier.py:490-492` takes
@@ -221,6 +232,15 @@ It is not a new burned-area figure, and the 904 ha estimate in
 ## Constraints
 
 - **Copy no code from the unlicensed repository.** Formula only, written fresh.
+- **No data file without data, and no number without a run.** If Earth Engine is
+  unreachable, unauthenticated, or the survey no longer reports the same pair,
+  `docs/data/burn_indices.json` is left exactly as it is and the script says why and exits
+  non-zero. AGENTS never-2: an empty response and a failed request are different facts.
+  Never write a placeholder, a synthetic distribution, a stand-in percentile, or a
+  plausible-looking seventh row that no run produced. **This applies in full to any agent
+  this task is handed to**, and it is the reason A2 is not handed off: being blocked at the
+  credential is the moment a fabricated figure gets written, and this repository has already
+  published synthetic data once that way.
 - **No new dependency** (AGENTS never-7). `earthengine-api`, `numpy` and `pandas` cover it.
 - **Keep cloud pixels.** Cloud is a stratum being measured; a global cloud mask deletes the
   experiment. F7's constraint, unchanged.
