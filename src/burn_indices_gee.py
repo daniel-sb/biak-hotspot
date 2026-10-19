@@ -1,4 +1,4 @@
-"""Six burned-area indices over the August 2026 corridor, judged by where
+"""Seven burned-area indices over the August 2026 corridor, judged by where
 they are certainly wrong (Task 15; PLAN.md Phase 4; paper: Alcaras et al.,
 Remote Sens. 14(8):1727, 2022, References/remotesensing-14-01727-v2.pdf).
 
@@ -34,10 +34,18 @@ Read from the paper (2026-09-03, from the PDF):
   - Equation (1) defines NBR = (B12-B8A)/(B12+B8A): HIGH means burned.
     The paper's own section 3.1.1 prose ("high NBR ... healthy vegetation")
     describes the USGS convention and contradicts its equation; this
-    script follows the equation, so all six indices are mutually
+    script follows the equation, so all seven indices are mutually
     comparable with HIGH = burned, and the bi-temporal form (eq 7,
     post minus pre) is HIGH where the ground changed toward burned.
     Mixing these numbers with USGS dNBR literature inverts the scale.
+  - ATBI (Bilal 2025, Eq. 1) is NBR * (B12/B8A) in this file's sign
+    convention, so its post-minus-pre is the paper's dATBI. The paper is
+    Landsat-only; B8A and B12 at 20 m are this project's substitution,
+    not the paper's. Pixels with B8A <= 0 are masked, never floored:
+    L2A reflectance is legitimately negative over dark water and the
+    ratio would flip sign there. ATBI's per-stratum `n` is the count it
+    could be computed on; the gap from another index's `n` is how many
+    pixels that stratum lost.
   - Section 3.2 motivates NBR+ = (B12-B8A-B3-B2)/(B12+B8A+B3+B2): water
     reflects strongly in blue-green, so subtracting B3 and B2 sends water
     dark, and clouds go negative because their B12 is far below the sum
@@ -78,7 +86,7 @@ DET = ROOT / "data" / "processed" / "detections.parquet"
 # The survey measured its shares at 60 m; scene selection reuses exactly
 # that, so this script's pair cannot drift from the survey's numbers.
 SELECT_SCALE = 60
-SCALE = 20                    # all six indices are 20 m band products
+SCALE = 20                    # all seven indices are 20 m band products
 ADJ_M = 1500                  # hotspot-adjacent radius (VIIRS 375 m pixel
                               # plus geolocation jitter, rounded up)
 FAR_M = 3000                  # far-land: beyond this distance from every
@@ -88,7 +96,7 @@ SURVEY_START, SURVEY_END = "2026-06-01", "2026-09-04"   # survey's window
 CHECK_CAP_MIN = 0.999         # a check pair must capture (almost) all of it
 
 BANDS = ["B2", "B3", "B4", "B6", "B7", "B8A", "B11", "B12"]
-INDICES = ("NBR", "NBRSWIR", "NDSWIR", "MIRBI", "BAIS2", "NBR+")
+INDICES = ("NBR", "NBRSWIR", "NDSWIR", "MIRBI", "BAIS2", "NBR+", "ATBI")
 
 
 def scaled(img):
@@ -97,7 +105,8 @@ def scaled(img):
 
 
 def indices_of(b):
-    """The six indices, on scaled band images b, per the paper's eqs (1)-(6)."""
+    """The seven indices, on scaled band images b, per the paper's eqs (1)-(6)
+    plus ATBI (Bilal 2025, eq 1)."""
     import ee
     return {
         "NBR": b["B12"].subtract(b["B8A"]).divide(b["B12"].add(b["B8A"])),
@@ -116,12 +125,17 @@ def indices_of(b):
         "NBR+": b["B12"].subtract(b["B8A"]).subtract(b["B3"])
             .subtract(b["B2"])
             .divide(b["B12"].add(b["B8A"]).add(b["B3"]).add(b["B2"])),
+        # ATBI (Bilal 2025, eq 1) in this file's convention: NBR*B12/B8A,
+        # high = burned. B8A <= 0 is masked, not floored.
+        "ATBI": b["B12"].subtract(b["B8A"]).divide(b["B12"].add(b["B8A"]))
+            .multiply(b["B12"].divide(b["B8A"]))
+            .updateMask(b["B8A"].gt(0)),
     }
 
 
 def index_bands(post_img, pre_img=None):
-    """Multi-band image: six uni-temporal on the post scene, and when a
-    pre scene is given six bi-temporal (post minus pre, the paper's eq 7).
+    """Multi-band image: seven uni-temporal on the post scene, and when a
+    pre scene is given seven bi-temporal (post minus pre, the paper's eq 7).
     Band names avoid '+', which EE band names dislike."""
     import ee
     sp = scaled(post_img)
@@ -228,26 +242,54 @@ def pair_stats(post_id, pre_id, region, strata, late=None):
     # false-alarm share: share of each non-burnable stratum exceeding the
     # adjacent stratum's 95th percentile, per index and temporal form.
     # A share against a weak reference, never an accuracy.
+    # A masked index can be absent where the other six are present, which
+    # ATBI made possible: it is masked where B8A <= 0 and they are not. Both
+    # ways that absence arrives are recorded and never filled in. A share of
+    # 0.0 would say the index looked and found nothing, when in fact it could
+    # not look - and over open sea, where L2A B8A is routinely at or below
+    # zero, that is the difference between refusing the sea and not seeing it.
     fa = {"uni": {}, "bi": {}}
+    skipped = []
     for form, prefix in (("uni", ""), ("bi", "d")):
         # "adjacent" is a stratum under each index, not an index itself
-        if not out["indices"][form].get("NBR", {}).get("adjacent"):
+        measured = [k for k in INDICES
+                    if out["indices"][form].get(k, {}).get("adjacent")]
+        for k in INDICES:
+            if k not in measured:
+                skipped.append(f"{form}/{k}: no adjacent reference "
+                               f"percentile, so no false-alarm share")
+                print(f"  note: {k} has no distribution over the adjacent "
+                      f"stratum in the {form} form, so it gets no "
+                      f"false-alarm share at all")
+        if not measured:
             print(f"  note: adjacent stratum empty, no false-alarm "
                   f"reference for the {form} form")
             continue
         thr = {k: out["indices"][form][k]["adjacent"]["p95"]
-               for k in INDICES}
+               for k in measured}
         exc = ee.Image.cat([
             img.select(prefix + k.replace("+", "_plus")).gt(thr[k])
-            .rename(k.replace("+", "_plus")) for k in INDICES])
+            .rename(k.replace("+", "_plus")) for k in measured])
         for sname in ("water", "cloud", "far"):
             got = exc.updateMask(strata[sname]).reduceRegion(
                 ee.Reducer.mean(), region, SCALE, maxPixels=int(1e13),
                 bestEffort=False, tileScale=4).getInfo()
-            for k in INDICES:
-                fa[form].setdefault(k, {})[sname] = \
-                    round(got.get(k.replace("+", "_plus")), 4)
+            for k in measured:
+                v = got.get(k.replace("+", "_plus"))
+                if v is None:
+                    # The stratum key is left out rather than set to null:
+                    # the printer and the share check both read what is
+                    # there, and an absent share cannot be mistaken for a
+                    # low one.
+                    skipped.append(f"{form}/{k}/{sname}: no pixel the index "
+                                   f"could be computed on")
+                    print(f"  note: {k} could be computed on no {sname} "
+                          f"pixel at all ({form} form); its share there is "
+                          f"absent, not zero")
+                    continue
+                fa[form].setdefault(k, {})[sname] = round(v, 4)
     out["false_alarm"] = fa
+    out["false_alarm_skipped"] = skipped
 
     if late is not None:
         got = img.updateMask(late).reduceRegion(
@@ -503,6 +545,7 @@ def main(project: str) -> None:
                      "check_adjacent_source": None}
     res["indices_primary"] = prim["indices"]
     res["false_alarm_primary"] = prim["false_alarm"]
+    res["false_alarm_skipped_primary"] = prim["false_alarm_skipped"]
     print_dist("primary pair", prim["indices"])
 
     print("\ncomputing strata distributions (check pair) ...")
@@ -523,6 +566,7 @@ def main(project: str) -> None:
     res["indices_check"] = chk["indices"]
     res["indices_check_late_burning"] = chk["late_burning"]
     res["false_alarm_check"] = chk["false_alarm"]
+    res["false_alarm_skipped_check"] = chk["false_alarm_skipped"]
     print_dist("check pair", chk["indices"])
     print_dist("check pair, late-burning clusters only "
                f"({len(ev_late)} detections of "
@@ -539,6 +583,29 @@ def main(project: str) -> None:
                 print(f"  {nm} {form} {k:<8} " + "  ".join(
                     f"{s} {fa[k][s]:.3f}" for s in ("water", "cloud", "far")
                     if s in fa[k]))
+    for nm in ("primary", "check"):
+        for line in res[f"false_alarm_skipped_{nm}"]:
+            print(f"  {nm} skipped: {line}")
+
+    # The share above is a fraction of the pixels an index could be computed
+    # on. For six of them that is the whole stratum; for ATBI it is the part
+    # where B8A > 0. A sea column of 0.1% means one thing when the mask took
+    # 2% of the stratum and another when it took 90%, so the two tables are
+    # printed together or not at all.
+    print("\nATBI's denominator (pixels it could be computed on, against "
+          "the whole stratum):")
+    for nm, key in (("primary", "indices_primary"),
+                    ("check", "indices_check")):
+        for sname in ("water", "cloud", "adjacent", "far"):
+            n_all = res["strata"][nm][sname]["n"]
+            cells = []
+            for form in ("uni", "bi"):
+                got = res[key][form].get("ATBI", {}).get(sname)
+                n = got["n"] if got else 0
+                pct = 100.0 * (n_all - n) / n_all if n_all else 0.0
+                cells.append(f"{form} {n} of {n_all}, "
+                             f"{n_all - n} lost ({pct:.1f}%)")
+            print(f"  {nm} {sname:<9} " + "  ".join(cells))
 
     res["coverage"] = {
         "region": f"MGRS {tile} footprint within the survey corridor",
