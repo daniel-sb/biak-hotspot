@@ -1,6 +1,6 @@
 """Checks for the HOWTO renderer, offline and with no geo imports.
 
-Both cases here were real defects in data/labels/panduan-digitasi-label.pdf: a
+Both cases here were real defects in data/labels/panduan-penilaian-label.pdf: a
 bold span broken across two source lines printed its asterisks, and a fenced
 block printed as one long line that ran off the page.
 

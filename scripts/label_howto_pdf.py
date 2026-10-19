@@ -20,7 +20,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "data/labels/HOWTO.md"
-OUT = ROOT / "data/labels/panduan-digitasi-label.pdf"
+# "penilaian", not "digitasi": the boxes are already drawn and the job is to judge
+# what is inside them, which the old file name contradicted.
+OUT = ROOT / "data/labels/panduan-penilaian-label.pdf"
 
 CHROME = [
     r"C:\Program Files\Google\Chrome\Application\chrome.exe",
