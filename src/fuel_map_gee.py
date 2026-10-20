@@ -132,8 +132,13 @@ def gpkg_geometry(blob):
 
 def read_label_notes(path=GPKG):
     """Boxes with a non-empty note, at their centroid. The note text stays
-    verbatim; nothing is scored against it."""
-    con = sqlite3.connect(path)
+    verbatim; nothing is scored against it.
+
+    Opened read-only, the way scripts/label_second_pass.py:49 does. A
+    read-write connection to a WAL GeoPackage checkpoints it on close, which
+    rewrites the main file while QGIS has it open and the judgements are
+    being edited. This function only ever issues SELECT."""
+    con = sqlite3.connect(f"file:{Path(path).as_posix()}?mode=ro", uri=True)
     try:
         rows = con.execute(
             'SELECT sample_id, event_id, notes, geom FROM labels '
