@@ -1,0 +1,454 @@
+{
+ "burned_area": {
+  "area_ha_by_class": {
+   "1": 304.4034,
+   "2": 752.1781,
+   "3": 0.0,
+   "4": 1266.8334,
+   "5": 0.0,
+   "6": 11.3861
+  },
+  "events_outside_corridor": [],
+  "land_ha": 2334.801,
+  "n_features": 1050,
+  "n_features_outside_corridor": 0,
+  "n_features_used": 1050,
+  "share_by_class": {
+   "1": 0.130377,
+   "2": 0.322159,
+   "3": 0.0,
+   "4": 0.542587,
+   "5": 0.0,
+   "6": 0.004877
+  }
+ },
+ "confusion_matrix_ha": {
+  "columns": "Dynamic World-based fuel",
+  "matched_ha": 93352.5136,
+  "matrix": {
+   "1": {
+    "1": 249.3548,
+    "2": 991.9504,
+    "3": 1.0825,
+    "4": 672.7628,
+    "5": 0.0,
+    "6": 389.7775
+   },
+   "2": {
+    "1": 107.993,
+    "2": 4632.0641,
+    "3": 1.9664,
+    "4": 0.1887,
+    "5": 0.0,
+    "6": 392.5706
+   },
+   "3": {
+    "1": 0.0,
+    "2": 0.5661,
+    "3": 0.0,
+    "4": 0.0993,
+    "5": 0.0,
+    "6": 0.1291
+   },
+   "4": {
+    "1": 182.6758,
+    "2": 385.6381,
+    "3": 22.0775,
+    "4": 83365.0739,
+    "5": 0.0,
+    "6": 1495.2229
+   },
+   "5": {
+    "1": 0.0,
+    "2": 0.0099,
+    "3": 0.0,
+    "4": 30.26,
+    "5": 0.0,
+    "6": 16.3466
+   },
+   "6": {
+    "1": 4.2306,
+    "2": 20.0671,
+    "3": 0.0397,
+    "4": 15.7424,
+    "5": 0.0,
+    "6": 374.6237
+   }
+  },
+  "rows": "WorldCover-based fuel"
+ },
+ "corridor": {
+  "area_ha_by_class": {
+   "1": 3857.4924,
+   "2": 8056.3131,
+   "3": 2.1849,
+   "4": 128321.6235,
+   "5": 106.5105,
+   "6": 797.2576
+  },
+  "land_ha": 141141.3819,
+  "share_by_class": {
+   "1": 0.027331,
+   "2": 0.05708,
+   "3": 1.5e-05,
+   "4": 0.909171,
+   "5": 0.000755,
+   "6": 0.005649
+  }
+ },
+ "detections": {
+  "2026": {
+   "by_class": {
+    "1": {
+     "frp_median_mw": 4.355,
+     "frp_sum_mw": 498.68,
+     "n": 98,
+     "share": 0.108287
+    },
+    "2": {
+     "frp_median_mw": 5.53,
+     "frp_sum_mw": 1825.11,
+     "n": 229,
+     "share": 0.253039
+    },
+    "3": {
+     "frp_median_mw": null,
+     "frp_sum_mw": 0.0,
+     "n": 0,
+     "share": 0.0
+    },
+    "4": {
+     "frp_median_mw": 4.83,
+     "frp_sum_mw": 3617.73,
+     "n": 565,
+     "share": 0.624309
+    },
+    "5": {
+     "frp_median_mw": 5.82,
+     "frp_sum_mw": 5.82,
+     "n": 1,
+     "share": 0.001105
+    },
+    "6": {
+     "frp_median_mw": 2.965,
+     "frp_sum_mw": 43.61,
+     "n": 12,
+     "share": 0.01326
+    }
+   },
+   "date_wit_range": [
+    "2026-01-10",
+    "2026-09-23"
+   ],
+   "n": 905
+  },
+  "all": {
+   "by_class": {
+    "1": {
+     "frp_median_mw": 3.15,
+     "frp_sum_mw": 648.61,
+     "n": 163,
+     "share": 0.139794
+    },
+    "2": {
+     "frp_median_mw": 5.4,
+     "frp_sum_mw": 2067.83,
+     "n": 272,
+     "share": 0.233276
+    },
+    "3": {
+     "frp_median_mw": null,
+     "frp_sum_mw": 0.0,
+     "n": 0,
+     "share": 0.0
+    },
+    "4": {
+     "frp_median_mw": 4.6,
+     "frp_sum_mw": 4340.41,
+     "n": 689,
+     "share": 0.590909
+    },
+    "5": {
+     "frp_median_mw": 5.82,
+     "frp_sum_mw": 5.82,
+     "n": 1,
+     "share": 0.000858
+    },
+    "6": {
+     "frp_median_mw": 1.46,
+     "frp_sum_mw": 86.04,
+     "n": 41,
+     "share": 0.035163
+    }
+   },
+   "date_wit_range": [
+    "2023-09-01",
+    "2026-09-23"
+   ],
+   "n": 1166
+  }
+ },
+ "dynamicworld": {
+  "scenes": 30,
+  "unmapped_ha": 47788.8683,
+  "unmapped_pixels": 4811846
+ },
+ "fuel_classes": {
+  "1": {
+   "behaviour": "fast surface burning, residence time in minutes",
+   "name": "grass_savanna"
+  },
+  "2": {
+   "behaviour": "surface burning with low shrub, the secondary-growth fuel",
+   "name": "shrub_regrowth"
+  },
+  "3": {
+   "behaviour": "the clearing fuel, burned on purpose and repeatedly",
+   "name": "cultivation_mosaic"
+  },
+  "4": {
+   "behaviour": "closed canopy, low flammability, rarely carries burning",
+   "name": "forest_closed"
+  },
+  "5": {
+   "behaviour": "saline coastal fringe, effectively non-fuel",
+   "name": "mangrove"
+  },
+  "6": {
+   "behaviour": "built, bare rock and karst outcrop, open water",
+   "name": "nonfuel"
+  }
+ },
+ "judgement_calls_ha": {
+  "forest_closed_from_degraded_ha": 15418.7921,
+  "forest_closed_from_tmf_fallback_ha": 4365.4513,
+  "nonfuel_from_wetland_ha": 0.4568
+ },
+ "label_notes": [
+  {
+   "event_id": "E0301",
+   "fuel_class": 4,
+   "lat": -1.167663,
+   "lon": 136.134912,
+   "note": "75% unburned 25% burned",
+   "sample_id": "B09"
+  },
+  {
+   "event_id": "E0301",
+   "fuel_class": 1,
+   "lat": -1.179983,
+   "lon": 136.140999,
+   "note": "inn 20 meters 3 pixels have green brownish color, in s2dr4 1 m brwon patch very light ",
+   "sample_id": "B10"
+  },
+  {
+   "event_id": "E0301",
+   "fuel_class": 4,
+   "lat": -1.176597,
+   "lon": 136.155506,
+   "note": "in 20 meters sentinel gereen brownish more than 50% of pixels",
+   "sample_id": "B11"
+  },
+  {
+   "event_id": "E0313",
+   "fuel_class": 4,
+   "lat": -1.140919,
+   "lon": 136.02925,
+   "note": "build up area",
+   "sample_id": "B22"
+  },
+  {
+   "event_id": "E0301",
+   "fuel_class": 4,
+   "lat": -1.192609,
+   "lon": 136.143551,
+   "note": "most of this square patch is unburned only around a quarter are burned on the top part of the squre",
+   "sample_id": "E0301-IN01"
+  },
+  {
+   "event_id": "E0301",
+   "fuel_class": 2,
+   "lat": -1.180303,
+   "lon": 136.135782,
+   "note": "some pixels of unburned three but around half is burned",
+   "sample_id": "E0301-IN02"
+  },
+  {
+   "event_id": "E0301",
+   "fuel_class": 4,
+   "lat": -1.18405,
+   "lon": 136.152644,
+   "note": "1709 anjereuw very obviously burned",
+   "sample_id": "E0301-IN03"
+  },
+  {
+   "event_id": "E0301",
+   "fuel_class": 1,
+   "lat": -1.168343,
+   "lon": 136.128939,
+   "note": "17 septmber image show became more obvious",
+   "sample_id": "E0301-IN07"
+  },
+  {
+   "event_id": "E0301",
+   "fuel_class": 2,
+   "lat": -1.194046,
+   "lon": 136.151884,
+   "note": "on google sat image this patches has houses in it",
+   "sample_id": "E0301-OUT03"
+  },
+  {
+   "event_id": "E0301",
+   "fuel_class": 4,
+   "lat": -1.175934,
+   "lon": 136.15895,
+   "note": "burned on s2dr4  september",
+   "sample_id": "E0301-OUT04"
+  },
+  {
+   "event_id": "E0301",
+   "fuel_class": 4,
+   "lat": -1.186853,
+   "lon": 136.160268,
+   "note": "beach lines",
+   "sample_id": "E0301-OUT05"
+  },
+  {
+   "event_id": "E0301",
+   "fuel_class": 1,
+   "lat": -1.166919,
+   "lon": 136.129234,
+   "note": "the pixel color is not dark brown and when checked on google satellite imagery and esri imagery it seems like an open field",
+   "sample_id": "E0301-OUT06"
+  },
+  {
+   "event_id": "E0313",
+   "fuel_class": 6,
+   "lat": -1.143928,
+   "lon": 136.029551,
+   "note": "it contain roads/man ,man made feature",
+   "sample_id": "E0313-IN01"
+  },
+  {
+   "event_id": "E0313",
+   "fuel_class": 4,
+   "lat": -1.132763,
+   "lon": 136.042823,
+   "note": "in image 2 september and 17 septmber it became more clear burned",
+   "sample_id": "E0313-IN02"
+  },
+  {
+   "event_id": "E0313",
+   "fuel_class": 4,
+   "lat": -1.122174,
+   "lon": 136.029725,
+   "note": "in 17 september 2026 it became more celar burned",
+   "sample_id": "E0313-IN03"
+  },
+  {
+   "event_id": "E0313",
+   "fuel_class": 1,
+   "lat": -1.145552,
+   "lon": 136.034918,
+   "note": "build up area",
+   "sample_id": "E0313-IN04"
+  },
+  {
+   "event_id": "E0313",
+   "fuel_class": 4,
+   "lat": -1.130076,
+   "lon": 136.048467,
+   "note": "in 17 september image light brown so appear burn but on 02 september image not so clear and on 28 august image clearly unburned",
+   "sample_id": "E0313-IN05"
+  },
+  {
+   "event_id": "E0313",
+   "fuel_class": 4,
+   "lat": -1.125435,
+   "lon": 136.043447,
+   "note": "in 17 september burned is clear",
+   "sample_id": "E0313-IN06"
+  },
+  {
+   "event_id": "E0313",
+   "fuel_class": 2,
+   "lat": -1.12889,
+   "lon": 136.032123,
+   "note": "appear to be burned on S2DR image 28 august and 25 August",
+   "sample_id": "E0313-IN07"
+  },
+  {
+   "event_id": "E0313",
+   "fuel_class": 4,
+   "lat": -1.136003,
+   "lon": 136.042185,
+   "note": "clearly appear burned in image 17 september and 02 september",
+   "sample_id": "E0313-OUT01"
+  },
+  {
+   "event_id": "E0313",
+   "fuel_class": 1,
+   "lat": -1.116537,
+   "lon": 136.057774,
+   "note": "in 17 september image some pixels in the box appear to be burned just a little bit but image befor that is unburned",
+   "sample_id": "E0313-OUT03"
+  },
+  {
+   "event_id": "E0368",
+   "fuel_class": 4,
+   "lat": -1.151971,
+   "lon": 136.225978,
+   "note": "17 september and 02 september is covered by clouds in 20 meter image, i confirmed this as burned based on 28 august image",
+   "sample_id": "E0368-IN04"
+  },
+  {
+   "event_id": "E0368",
+   "fuel_class": 2,
+   "lat": -1.154018,
+   "lon": 136.241755,
+   "note": "overlapping with burned area but most of the feature in the box is unburned vegetation",
+   "sample_id": "E0368-IN06"
+  },
+  {
+   "event_id": "E0301",
+   "fuel_class": 4,
+   "lat": -1.184982,
+   "lon": 136.136714,
+   "note": "within anjereuew burned area the and the box also contain burned area but unburned  vegetation more dominant",
+   "sample_id": "MAP01"
+  }
+ ],
+ "notes": [
+  "FGBFM 40 (Scott & Burgan 2005) is deliberately not used: it is calibrated on US fuels and has no Papuan analogue.",
+  "The map is a reclassification of three global products, not a classification. There is no fuel ground truth for Biak, so no accuracy or validation is claimed.",
+  "Dynamic World is reduced to its per-pixel mode over a window that ends before the first August 2026 detection, because the product reads burned ground as bare. Land pixels with no Dynamic World scene in the window are counted separately and excluded from the 6x6 matrix.",
+  "TMF is 30 m and is upsampled to the 10 m output grid with nearest neighbour. The closed-forest/regrowth split is therefore blocky at 30 m; the WorldCover and Dynamic World classes keep 10 m detail.",
+  "WorldCover class 90 (herbaceous wetland) is mapped to nonfuel. It can carry burning when dry, and its area is reported separately so the choice can be re-cut.",
+  "TMF class 2 (degraded) is mapped to closed forest as the conservative choice; its area is reported separately. Tree cover that TMF does not resolve also stays closed forest and is reported separately.",
+  "Hotspots are where satellites saw heat, not a random sample of land. A class over-represented among them is an association, not a cause, and no significance test is computed.",
+  "The class names describe expected burning behaviour. They are not fuel load, moisture, rate of spread, flame length, or inputs to a spread model.",
+  "The free-text notes are one interpreter's incidental remarks, written for a different question. The fuel class at each noted box is printed as a spot-check only; no agreement figure is computed from it."
+ ],
+ "parameters": {
+  "corridor_bounds_wsen": [
+   135.83584,
+   -1.23333,
+   136.29376,
+   -0.82415
+  ],
+  "dynamicworld_asset": "GOOGLE/DYNAMICWORLD/V1",
+  "dynamicworld_window": [
+   "2026-06-01",
+   "2026-08-07"
+  ],
+  "dynamicworld_window_end_exclusive": true,
+  "first_august_2026_detection": "2026-08-07",
+  "land_mask": "WorldCover Map != 80",
+  "scale_m": 10,
+  "tmf_asset": "projects/JRC/TMF/v1_2024/AnnualChanges",
+  "tmf_band": "Dec2024",
+  "tmf_resampling": "30 m TMF upsampled to the 10 m output grid with nearest neighbour",
+  "tmf_year": 2024,
+  "worldcover_asset": "ESA/WorldCover/v200/2021"
+ }
+}
