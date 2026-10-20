@@ -187,6 +187,28 @@ burn_classifier:
   # tuned on the held-out event.
   random_state: 42
 
+# Fuel map for the survey corridor (Task 27; PLAN.md 2.3). Six classes cut
+# by expected burning behaviour, reclassified from three global products -
+# no training points and no new imagery. Run by hand with Earth Engine:
+# python src/fuel_map_gee.py <project>.
+fuel:
+  # Base: ESA WorldCover v200 2021, 10 m, band Map. Same asset as the water
+  # mask in drought_gee.py and burn_indices_gee.py.
+  worldcover_asset: ESA/WorldCover/v200/2021
+  # Independent second reading, 10 m. Per-pixel mode over the window below.
+  dynamicworld_asset: GOOGLE/DYNAMICWORLD/V1
+  # JRC TMF, 30 m, splits WorldCover's single tree class into closed forest
+  # and regrowth. The band is Dec<burned_area.tmf_latest_year>, so the year
+  # is capped in one place, not two.
+  tmf_asset: projects/JRC/TMF/v1_2024/AnnualChanges
+  # End-exclusive. 2026-08-07 is the first August 2026 detection in the
+  # tracked store, so the window stops before it: Dynamic World reads
+  # burned ground as bare and a post-fire map would erase the fuel.
+  dynamicworld_window: ["2026-06-01", "2026-08-07"]
+  # WorldCover and Dynamic World are 10 m; TMF is upsampled to this grid
+  # with nearest neighbour rather than coarsening the output to 30 m.
+  scale_m: 10
+
 output_paths:
   raw_dir: data/raw
   processed: data/processed/detections.parquet
