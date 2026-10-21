@@ -148,6 +148,13 @@ geolibre_data/
 data/labels/imagery/
 data/labels/*.qgz
 !data/labels/biak_labels.gpkg
+# SQLite write-ahead log and shared-memory sidecars. QGIS leaves these beside
+# the GeoPackage while it has it open, and they are never committed: a -wal
+# holds judgements that are not yet in the .gpkg, so a commit pairing one with
+# a stale main file would be read back as a state that never existed. Close
+# QGIS, which checkpoints the -wal into the .gpkg, then commit the .gpkg alone.
+*.gpkg-wal
+*.gpkg-shm
 # SAM pilot scores, collected from the gitignored Colab result folders.
 !data/processed/sam_pilot.json
 
