@@ -58,6 +58,9 @@ data/raw/labels_features/*
 # is held to. Deterministic from the tracked store, but committed so later
 # models can be compared against the same printed bar.
 !data/processed/baseline_eval.json
+# Stale pre-look audit (Task 28): deterministic from the tracked store and
+# the by-hand Earth Engine product, so it travels with the repo.
+!data/processed/pre_look_staleness.json
 # Fuel map (Task 27): a by-hand Earth Engine run over three global products,
 # so it travels with the repo rather than being regenerated on demand.
 !data/processed/fuel_map.json
