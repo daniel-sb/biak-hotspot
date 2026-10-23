@@ -125,8 +125,12 @@ def gpkg_geometry(blob):
 
 def read_labels(path=GPKG):
     """The labels layer: one record per 60 x 60 m box, geometry included.
-    An unjudged box carries no class and is not guessed either way."""
-    con = sqlite3.connect(path)
+    An unjudged box carries no class and is not guessed either way.
+
+    Opened read-only, the way scripts/label_second_pass.py:49 does: a
+    read-write connection checkpoints a WAL GeoPackage on close, rewriting
+    the main file while QGIS may have it open. This only ever SELECTs."""
+    con = sqlite3.connect(f"file:{Path(path).as_posix()}?mode=ro", uri=True)
     try:
         rows = con.execute('SELECT sample_id, event_id, sampling, "class", '
                            "geom FROM labels ORDER BY sample_id").fetchall()

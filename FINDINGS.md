@@ -1495,3 +1495,75 @@ scenes.
 
 The 126-box shortlist is a mechanical lookup, not 126 cases of burning. A VIIRS pixel locates a
 thermal anomaly, not a perimeter, so these distances and dates say only where to look first.
+
+## F30 - Correcting F21: the classifier's advantage was never in precision (2026-10-24)
+
+`src/burn_classifier.py --fetch deeplearning-370412` ->
+`data/raw/labels_features/features_2026-10-24.csv` and
+`data/processed/burn_classifier.json`. Earth Engine extraction of all 142 boxes against the
+same Task 18 windows, masking and 20 m scale, followed by the same leave-one-event-out
+comparison. 1,293 label pixels sampled, 1,230 modelled, 142 boxes across three strata, where
+F21 had 612 pixels and 67 boxes across two.
+
+**F21's headline is withdrawn. It was right that the learned rules beat the threshold and
+wrong about why.**
+
+F21 reported that in the stratum the map did not choose, the Task 18 threshold was right
+about a quarter of the time it claimed burning (`random_box` precision 0.27) against 1.00 for
+a random forest, and read that as a classifier refusing unburned ground better. That rested
+on 3 burned boxes of 35, from the labels as they stood on 2026-10-12. The second
+interpretation pass (`8ca26ff`) changed 28 of those 67 boxes, and the same stratum now holds
+19 burned of 40.
+
+**Polygon level, precision and recall per stratum, on the finished sample:**
+
+| rule | `random_box` | `map_burned` | `footprint_unmapped` |
+|---|---|---|---|
+| trivial: all of the footprint burned | 0.68 / 0.68 | 0.98 / 1.00 | 0.57 / 1.00 |
+| Task 18 threshold | **0.86** / 0.63 | 1.00 / 0.90 | 0.88 / **0.27** |
+| decision tree, depth 3 | 0.77 / 0.89 | 1.00 / 1.00 | 0.87 / 1.00 |
+| hist gradient boosting | 0.74 / 0.89 | 1.00 / 0.98 | 0.86 / 0.96 |
+| random forest | 0.80 / 0.84 | 1.00 / 0.98 | 0.87 / 1.00 |
+
+The threshold's precision in `random_box` is **0.86, not 0.27**, and all three classifiers are
+*worse* than it on precision in that stratum, at 0.74 to 0.80. The finding inverts: the
+threshold is not claiming ground that did not burn. It is missing ground that did.
+
+**Where it misses is `footprint_unmapped`, and the number is stark.** Recall 0.27: of 26
+burned boxes inside footprints on ground the map does not claim, the threshold finds 7 and
+misses 19. Every classifier recovers essentially all of them, at 0.96 to 1.00, while holding
+precision near 0.87. That stratum did not exist when F21 ran, which is why F21 could not see
+this at all.
+
+**This is F28's omission, visible at box level.** F28 estimates 427.6 ha unmapped inside the
+footprints from the same labels by a different route, stratified area estimation rather than
+per-pixel classification. Two independent readings of the finished sample now say the same
+thing: the product under-maps. F21 said the opposite, and the tension recorded between them
+is resolved in F28's favour.
+
+**A second correction, independent of the labels.** F21 wrote that `in_footprint` *"scores
+exactly zero in all three"* folds, *"so the models are not quietly learning the sampling
+design"*. That sentence is wrong on its own terms. `in_footprint` is not in `FEATURES` and
+never was, at `6ca2ef1` or since; it appears in the feature CSV and is used only to build the
+`trivial_footprint` baseline. Both runs report 24 feature columns and 24 importance entries,
+neither including it. The guard F21 claimed as a measurement is a design choice: the column
+was never given to a model, so it could not have scored anything. The conclusion that the
+models are not learning the design still holds, but it holds by construction, not by evidence.
+
+**The feature ranking also moved.** F21 put `dnbr_swir`, `dnbr` and post-fire B8A first in
+every fold. On the finished sample `post_B12` leads in five of the six model-fold
+combinations, with `dnbr` first only for hist gradient boosting on E0301. Raw post-fire
+short-wave infrared, not a difference index, is what the models key on now.
+
+**What has not changed.** The direction of the comparison: learned rules on a dozen spectral
+features beat a single local threshold, at box level, on three events of one island in one
+season. And the caveat F21 closed with, which this entry does not repeal: the labels are one
+interpreter's reading of S2DR4 1 m imagery, inter-interpreter agreement was never measured
+(F24), and the 60 m box is a cluster treated as one unit (F23).
+
+**What this entry does not claim.** No published area changes. The classifiers are not
+proposed as a replacement for the threshold in the Task 18 product, and no classifier-derived
+burned-area figure exists anywhere in the repository. `data/processed/burn_classifier.json`
+is overwritten by this run; the 2026-10-12 version stays reachable at commit `6ca2ef1`, and
+`features_2026-10-12.csv` stays tracked beside the new table so F21's numbers can be
+reproduced exactly.
