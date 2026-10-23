@@ -32,6 +32,8 @@ The burning regime is daytime and repetitive. In the first full season examined,
 
 A corridor of 141,141 ha of land, defined by the field survey targets with a 5 km buffer, frames every area figure below.
 
+![**Figure 1.** The study area. (a) Biak, Supiori and Numfor with all 1,166 stored detections, 2023 to 2026; the box marks the detail in (b). (b) The dNBR+ burned area for the assessed events, with the 142 reference boxes by sampling design. Boxes are drawn at their centroids and are 60 m across, so they are not to scale at this zoom.](figures/fig1_study_area.png)
+
 ### 2.1 Two episodes, corroborated from the ground
 
 An independent record confirms that the 2026 burning was exceptional and locates it in time. The airport meteorological station at Biak reported smoke (`FU`) on no day in 2023, 2024 or 2025, and on 17 days in 2026, in two runs: 14 and 22 to 29 August, then 3 and 12 to 18 September. Of 488 events tested against 51,838 reports, 124 are corroborated by smoke from the right direction within 50 km, and every one of them began in August or September 2026.
@@ -181,6 +183,8 @@ ATBI, added later, inverts the pattern in the one place that matters here:
 
 All seven indices separate the burning-plausible stratum from never-detected land in the bi-temporal form, so the separation the indices exist for is present on the scar side as well.
 
+![**Figure 2.** False alarms where burning is impossible or near impossible, as a percentage of each stratum above the burning-plausible stratum's 95th percentile. NBR+ is highlighted. Uni-temporally, three indices flag essentially the whole sea; differencing cancels that, and then cloud breaks five of the seven on a cloudy pair. ATBI is the only index whose water false alarms rise after NBR+'s fall to zero.](figures/fig3_false_alarms.png)
+
 ### 6.2 Burned area
 
 23 of 31 eligible events carry an area; 8 lack a sufficient local reference stratum.
@@ -253,6 +257,8 @@ Across the 23 assessed events:
 
 Those seven events carry 620.66 ha of the 2,414.9 ha total, the worst at 29.1 days. The asymmetry has a plain cause: the post window searches forward into clear dry-season skies while the pre window searches backwards through the cloudier build-up.
 
+![**Figure 3.** Each assessed event's burned area against the age of the clear look the pipeline chose for its median pixel, before the fire (a) and after it (b). Marker shape and colour give the direction defined in the text. The shaded band is more than 14 days from the event: seven events carrying 620.66 ha fall inside it on the pre-event side and none does on the post-event side.](figures/fig2_look_lag.png)
+
 Writing `P` for the pre look, `D` for the most recent prior detection inside the footprint, and `F` for `first_seen`:
 
 | condition | interpretation | events | ha |
@@ -320,6 +326,8 @@ One practical trap deserves recording, because it cost us a complete set of expe
 S2DR4 infers ground conditions beneath cloud by drawing on acquisitions across a 180 day window. On a date with 37.5% tile cloud, a substantial share of any chip is reconstruction rather than observation, and reconstruction grows more confident as the window fills with post-burn scenes. A box that reads as more obviously burned on a later chip may reflect ground change, delayed severity development as rain strips bright ash to expose dark char, or the model's increasing confidence. Separating those needs an interpreter comparing the native 20 m series against the 1 m one, which we did not do.
 
 We also observed the resolution artefact in the opposite direction: a 20 m pixel averages 400 m² of ground, so surviving green patches smaller than that vanish into a brown mean, and the 1 m chip shows them. This makes 20 m overstate burn completeness within a box. It is not a regrowth signal, since it appears between two resolutions of the same date.
+
+![**Figure 4.** The same ground on the same date at two resolutions, short-wave infrared composite. (a) Sentinel-2 at 20 m. (b) The S2DR4 reconstruction at 1 m. The yellow square is one 60 m reference box. At 20 m the box reads as a nearly uniform brown; at 1 m, surviving green is visible inside and around it. Both panels are the imagery as delivered, with no re-stretching.](figures/fig4_resolution.png)
 
 There is no second interpreter. A blind re-judge by the same person measures self-consistency, not agreement between readers, and we do not present one as a substitute. Published good practice has three analysts inspect each unit. The correct wording for our result is that the reference is one interpreter's reading and that inter-interpreter agreement was not measured. Not "validated", not "ground truth".
 
