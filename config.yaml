@@ -321,6 +321,9 @@ burned_area:
 # interpreter's reading of S2DR4 1 m imagery (F18), so every figure drawn
 # from them is agreement with that reading, never accuracy against ground.
 labels:
+  # The hand-drawn boxes. Read-only in scripts/label_late_detections.py:
+  # mode=ro, SELECT only, so the finished 142 judgements cannot be touched.
+  gpkg: data/labels/biak_labels.gpkg
   # The label unit: a 60 m box is nine 20 m pixels of the product being
   # tested - small enough to stay one cover type, large enough to judge on
   # 1 m imagery. Fixed at its sample point; never drawn or resized by hand.

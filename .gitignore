@@ -61,6 +61,9 @@ data/raw/labels_features/*
 # Stale pre-look audit (Task 28): deterministic from the tracked store and
 # the by-hand Earth Engine product, so it travels with the repo.
 !data/processed/pre_look_staleness.json
+# Late-detection lookup for the label boxes (Task 26): deterministic from
+# the tracked store and the read-only label GeoPackage.
+!data/processed/label_late_detections.json
 # Fuel map (Task 27): a by-hand Earth Engine run over three global products,
 # so it travels with the repo rather than being regenerated on demand.
 !data/processed/fuel_map.json
