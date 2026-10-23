@@ -1307,3 +1307,191 @@ and nothing should fill them with a number drawn from one reader.
 **What this does not change.** The 75 boxes still unjudged in pass 1 (25 `map_burned`, 50
 `footprint_unmapped`) are a different matter and still decide the open question: whether the
 819 ha the map claims sits inside the interval. That work needs one interpreter, not two.
+
+## F25 - ATBI is the seventh index, and it refuses water where NBR+ does not (2026-10-20)
+
+`src/burn_indices_gee.py`, commit `86a6b63`. ATBI (Bilal 2025, *International Journal of
+Applied Earth Observation and Geoinformation* 144, 104866) is NBR multiplied by the SWIR/NIR
+ratio. The source implementation found for it is an unlicensed GEE repository; only the
+formula was taken, written fresh, and its five defects are recorded in
+`tasks/25-atbi-seventh-index.md` rather than inherited.
+
+**The sign algebra cancels.** That repository uses Alcaras' NBR, `(B12-B8A)/(B12+B8A)`, where
+high means burned, and differences the pair as post minus pre. Both are inverted against the
+publication, and the two inversions cancel exactly, so its dATBI matches the paper's despite
+disagreeing with it twice.
+
+**ATBI has an analytic floor and no ceiling.** Writing `r = B12/B8A`, ATBI is `r(r-1)/(r+1)`,
+minimised at `r = sqrt(2)-1` with value `-(3-2*sqrt(2)) = -0.171573`. The published far-stratum
+minimum is exactly -0.1716, which is the arithmetic confirming itself on real data. Upward it
+is unbounded: the water maximum is 32.06.
+
+**Where it fails is water.** False-alarm share above each index's own threshold, primary pair:
+
+| index | water | cloud | far |
+|---|---|---|---|
+| NBR+ | 0.0000 | 0.0099 | 0.0002 |
+| ATBI | **0.4352** | 0.0090 | 0.0006 |
+
+43.5% of water pixels clear ATBI's threshold against none of NBR+'s. The
+`B8A > 0` mask the formula needs to avoid dividing by zero removed 1,576 of 1,482,657 water
+pixels, 0.1%, and nothing outside water - a prediction that it would bias the water column was
+made before the run and was wrong.
+
+**The far stratum shrank, and nothing published moved.** Regenerating `docs/data/burn_indices.json`
+moved 14 false-alarm shares and 42 of 45 distribution values, all of them in `far`, whose count
+fell from 303,572 to 289,129 pixels - 14,443 pixels, 5.78 km2 at the 20 m scale. The cause is not ATBI: 41 of the
+1,166 stored detections were acquired after 2026-09-03, so ground that was never-detected land
+when F7 ran is now hotspot-adjacent and leaves the stratum by definition. No figure quoted in
+F7 or F8 changed.
+
+ATBI is published as a distribution, not as a threshold or an area. Scoring it against the
+label boxes, with the separability `M` the paper reports as 1.38 against dNBR's 1.29, is Part B
+of Task 25 and has not been run.
+
+## F26 - The corridor is forest; what burns is not (2026-10-21)
+
+`src/fuel_map_gee.py`, commits `9f53c87`, `ffb7cd9` and `ad1dbee`. A six-class fuel map built by
+reclassifying three products already read here - ESA WorldCover v200 2021, Dynamic World, and
+JRC TMF December 2024 - with TMF splitting WorldCover's single tree class into closed forest and
+regrowth. No supervised classification, no training set, no fuel ground truth, so **nothing here
+is an accuracy**.
+
+**`PLAN.md` 2.3 expects savanna, grassland, secondary shrub and shifting-cultivation plots.
+Over corridor land, 141,141.4 ha:**
+
+| fuel class | ha | share |
+|---|---|---|
+| grass_savanna | 3,857.5 | 2.73% |
+| shrub_regrowth | 8,056.3 | 5.71% |
+| cultivation_mosaic | 2.2 | 0.0015% |
+| forest_closed | 128,321.6 | **90.92%** |
+| mangrove | 106.5 | 0.08% |
+| nonfuel | 797.3 | 0.56% |
+
+Moving all 15,418.8 ha of TMF-degraded forest into shrub still leaves forest at 79.99% against
+shrub at 16.63%. No reclassification rescues the expectation.
+
+**But the detections do not follow the land.** Grass is 2.73% of the corridor and 13.98% of the
+1,166 detections; shrub is 5.71% against 23.33%; forest is 90.92% against 59.09%. Over the
+2,334.8 ha of mapped burned area the shares are 13.04%, 32.22% and 54.26%.
+
+So 2.3 is wrong about what is there and right about what burns. Those are different claims and
+the entry keeps them apart. This is association, not cause: the detections are where satellites
+saw heat, not a random sample of land, and no significance test is offered.
+
+**Limits that bound every figure above.** Dynamic World labels only 66.14% of corridor land
+(47,788.9 ha unlabelled), and the coverage is uneven - 66.6% over forest but 59.8% over grass,
+43.8% over mangrove - so the two-product comparison is thinnest exactly where the products
+disagree most. The largest off-diagonal is WorldCover forest read as Dynamic World nonfuel,
+1,495.2 ha. TMF is 30 m upsampled to a 10 m grid, so the forest/regrowth split is blocky.
+`cultivation_mosaic` at 2.2 ha is a product limitation, not evidence that no gardens exist;
+TMF deforested and regrowth, 8,056.3 ha, is the likely home of shifting cultivation.
+
+The mapped-area denominator here is 2,334.8 ha against the 2,414.9 ha that `burned_areas.json`
+sums for the same 22 events. The 80.1 ha gap, 3.3%, is the water mask and 10 m rasterisation of
+polygons derived at 20 m. FGBFM 40 (Scott and Burgan 2005) was deliberately not used: it is
+calibrated on US fuels and importing it would repeat the peat-frame error in another form.
+
+## F27 - The "before" image is staler than the "after" image (2026-10-22)
+
+`scripts/pre_look_staleness.py`, commit `5fa8029`. `nearest_look` in `src/burned_area_gee.py:175`
+takes, per pixel, the latest clear look before `first_seen` within 60 days and the earliest clear
+look after `last_seen` within 30 days, masked by Cloud Score+ `cs_cdf >= 0.6`. The 30 days is a
+search window, not an averaging window. Over the 23 assessed events the two sides are not alike:
+
+| | p50 median | p50 max | events with p50 > 14 d |
+|---|---|---|---|
+| `post_lag` | 2.9 d | 12.4 d | **0** |
+| `pre_lag` | 12.2 d | 29.1 d | **7** |
+
+Those seven carry 620.66 ha of 2,414.9 ha: E0371 (29.1 d), E0322 (28.1), E0311 (27.1), E0079
+(22.6), E0361 (18.1), E0315 (18.1), E0373 (14.1). The asymmetry has a plain cause - the post
+window searches forward into clear dry-season skies, the pre window backwards through the
+cloudier build-up.
+
+**The consequence runs two ways and they are never summed.** Writing `P` for the pre look, `D`
+for the most recent prior detection inside the footprint, `F` for `first_seen`:
+
+| direction | condition | events | ha | effect on area |
+|---|---|---|---|---|
+| `scar_in_pre` | `D < P < F` | 14 | 1,367.8 | understated |
+| `earlier_burn_included` | `P < D < F` | 5 | 828.3 | overstated |
+| `no_prior_detection` | - | 4 | 218.8 | - |
+
+Fifty-seven per cent of the assessed hectares sit in `scar_in_pre`, where the before image may
+already be dark and dNBR+ therefore measures from burned ground. R001 at Saramom, 74 distinct
+detection days between 2023-09-01 and 2026-08-21, is where that is most likely.
+
+**Two limits that stop this being a correction.** `burned_areas.json` stores `pre_lag` only as
+p50 and p90 over each event's pixels, never per pixel and never as a date, so every pre-look date
+here is a percentile estimate and the JSON marks it `pre_look_date_is_estimated`. And a VIIRS
+pixel is 375 m: a prior detection inside a footprint makes contamination possible, not
+established. No `changed_ha` was recomputed and no correction is proposed.
+
+## F28 - Correcting F20, F22 and F23: on 136 judged boxes the map under-maps (2026-10-24)
+
+`scripts/label_accuracy.py`, commits `8ca26ff` (the labels) and `05b5afb` (the run). The second
+label pass, prompted by boxes reading as burned far more obviously on the 17 September S2DR4 chip
+than on 28 August, changed 91 of the 142 rows and left 136 decided across three strata.
+`label_accuracy.json` had still been resting on 67 boxes from two.
+
+| | 67 boxes | 136 boxes |
+|---|---|---|
+| A `map_burned` | 36/41 = 87.8% | 49/50 = **98.0%** |
+| B unmapped | 6/26 = 23.1% | 31/58 = **53.4%** |
+| - `random_box` | 0/10 | 5/12 |
+| - `footprint_unmapped` | 6/16 | 26/46 |
+| burned area | 903.8 ha | **1,230.3 ha** |
+| 95% CI | 698 - 1,112 ha | **1,060 - 1,342 ha** |
+| the map's 819 ha | inside | **outside** |
+| `unsure` dropped | 21 | 6 |
+
+**The conclusion reverses rather than shifts.** Commission falls to almost nothing - the map
+claims 49 of 50 correctly - and omission rises to 427.6 ha (CI 326 to 525) from 184.6 ha.
+Olofsson's normal approximation agrees at 1,230 ha, CI 1,122 to 1,339, and for the first time the
+two estimators do not disagree about whether 819 ha is inside: both put it outside. F23's
+zero-count problem is gone because stratum B is no longer 0 of 10.
+
+**This supersedes F20's "over-claims by about a quarter", F22's withdrawal of it, and F23's
+reconciliation.** Those numbers stay visible above; they were right about the sample they had.
+The reading now is the opposite one: the product under-maps.
+
+What does not change: F21's classifier comparison, and F23's structural criticisms. The 60 m box
+is still a cluster treated as one unit, so both intervals remain optimistic, and there is still
+one interpreter (F24). The doubt this entry raised about September contamination is settled in
+F29.
+
+## F29 - Burning near the label boxes stopped on 3 September (2026-10-24)
+
+`scripts/label_late_detections.py`, commit `00af8e8`. F28's reversal rests on boxes re-judged
+largely on the 17 September chip, while the product was computed from looks a few days after the
+August burning. If those boxes burned in September, counting them as omission would penalise the
+map for burning that had not happened. This measures that, by arithmetic alone.
+
+**The latest detection within 375 m of any of the 142 boxes is 2026-09-03.** No box has a
+detection postdating the 17 September chip. Seventeen boxes have one postdating the 28 August
+chip: 9 `footprint_unmapped`, 5 `map_burned`, 3 `random_box`.
+
+Upper bound on how much of each stratum's burned count could be post-28-August ground:
+
+| stratum | judged | burned | also post-28-Aug |
+|---|---|---|---|
+| `footprint_unmapped` | 46 | 26 | 4 (B16, B18, B27, B39) |
+| `map_burned` | 50 | 49 | 5 |
+| `random_box` | 40 | 19 | 1 (E0301-OUT02) |
+
+Removing all four from stratum B still leaves 27 of 58, 47%, against the 23% that F20 to F23
+rested on, and 819 ha still falls outside the interval. **F28's omission term survives.** The
+September 2026 episode, which runs to 2026-09-23, happened away from the label boxes.
+
+**One named case is refuted outright.** `E0301-IN03`, whose note reads `1709 anjereuw very
+obviously burned`, has its latest detection within 375 m on 2026-08-24 and its nearest on
+2026-08-23 at 19.4 m. Nothing burned near it after the 28 August chip, so continued burning
+cannot explain why it sharpened by 17 September. Two mechanisms remain, both out of this scope:
+delayed severity development as rain strips bright ash to expose dark char, and the S2DR4
+reconstruction growing more confident as its 180-day inspection window fills with post-burn
+scenes.
+
+The 126-box shortlist is a mechanical lookup, not 126 cases of burning. A VIIRS pixel locates a
+thermal anomaly, not a perimeter, so these distances and dates say only where to look first.
