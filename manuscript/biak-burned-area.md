@@ -32,6 +32,27 @@ The burning regime is daytime and repetitive. In the first full season examined,
 
 A corridor of 141,141 ha of land, defined by the field survey targets with a 5 km buffer, frames every area figure below.
 
+### 2.1 Two episodes, corroborated from the ground
+
+An independent record confirms that the 2026 burning was exceptional and locates it in time. The airport meteorological station at Biak reported smoke (`FU`) on no day in 2023, 2024 or 2025, and on 17 days in 2026, in two runs: 14 and 22 to 29 August, then 3 and 12 to 18 September. Of 488 events tested against 51,838 reports, 124 are corroborated by smoke from the right direction within 50 km, and every one of them began in August or September 2026.
+
+The corroboration is of episodes, not of events. The median corroborated event shares its reports with 120 others, and only 6 share with five or fewer. Two events 44 degrees apart as seen from the station are corroborated by the same two reports, because the upwind test uses a 90 degree sector. A smoke report is strong evidence that smoke reached the airport; its absence is close to no evidence at all.
+
+### 2.2 What limits observation
+
+Dry days are clear days, and an optical or thermal sensor sees more on them. Any association between dryness and detected burning is therefore confounded with observability, and we measured the size of that confound rather than assuming it away.
+
+Splitting 1,076 scored days by the airport's reported sky at the time of the afternoon overpass:
+
+| sky at the day pass | days | days with a detection | share |
+|---|---|---|---|
+| no broken or overcast layer | 734 | 101 | 13.8% |
+| broken or overcast | 342 | 3 | 0.9% |
+
+On a cloudy day there is almost never a detection, whatever burned. Restricting to clear days removes the obvious part of the confound, and the association survives it: fuel dryness indices from the Canadian Fire Weather Index system, computed from ERA5-Land, still rank days with burning well above a day-of-year climatology, with average precision of 0.701 against 0.207 in 2023 and 0.623 against 0.258 in 2026. The airport is one point and its sky is not the sky over every plot, so this removes the obvious part of the confound rather than all of it.
+
+The practical consequence for this study is that absence of detection is weak evidence of absence of burning, and the burned-area footprints inherit that weakness, since they are built from detections.
+
 ## 3. Data
 
 ### 3.1 Active fire detections
@@ -260,6 +281,8 @@ We report both. A zero-count stratum carrying half the study area produced, unde
 
 The reference is one interpreter's reading of reconstructed imagery. Both halves of that sentence are limitations.
 
+One practical trap deserves recording, because it cost us a complete set of experiments before it was caught. S2DR4 writes its ten bands in the order B2, B3, B4, B8, B5, B6, B7, B11, B12, B8A, the four 10 m bands first and then the 20 m ones, and labels none of them. Reading the file in documented Sentinel-2 band order puts near-infrared in the red channel. We verified the true order against native Sentinel-2 medians over water, canopy and burnt ground for the same date and tile: band 9 matches B12 to within 5%, band 8 matches B11 to within 7%, and band 10 is B8A. The error was first noticed visually, as vegetation rendering orange where it should be green, not by any numerical check. Anyone building a short-wave infrared composite from this product should confirm the order before trusting it.
+
 S2DR4 infers ground conditions beneath cloud by drawing on acquisitions across a 180 day window. On a date with 37.5% tile cloud, a substantial share of any chip is reconstruction rather than observation, and reconstruction grows more confident as the window fills with post-burn scenes. A box that reads as more obviously burned on a later chip may reflect ground change, delayed severity development as rain strips bright ash to expose dark char, or the model's increasing confidence. Separating those needs an interpreter comparing the native 20 m series against the 1 m one, which we did not do.
 
 We also observed the resolution artefact in the opposite direction: a 20 m pixel averages 400 m² of ground, so surviving green patches smaller than that vanish into a brown mean, and the 1 m chip shows them. This makes 20 m overstate burn completeness within a box. It is not a regrowth signal, since it appears between two resolutions of the same date.
@@ -312,7 +335,9 @@ Akhtman, Y. (2023). [S2DR4; complete citation required by the grant terms before
 
 ## Notes for the author, not part of the manuscript
 
-Citations needing completion before submission: Akhtman (2023), the full author list and title for Alcaras et al. (2022), the exact title and author initials for Bilal (2025), and added entries for CHIRPS, Dynamic World, JRC TMF, ESA WorldCover, Cloud Score+, and Key and Benson's dNBR severity breaks. Each is cited in the text above by name and none should go to a journal with the placeholder standing.
+Citations needing completion before submission: Akhtman (2023), the full author list and title for Alcaras et al. (2022), the exact title and author initials for Bilal (2025), and added entries for CHIRPS, Dynamic World, JRC TMF, ESA WorldCover, Cloud Score+, Key and Benson's dNBR severity breaks, ERA5-Land, the Canadian Fire Weather Index system, and Lawson and Armitage (2008) for the day-length factor. Each is cited in the text above by name and none should go to a journal with the placeholder standing.
+
+A separate check is owed before submission. The learned-classifier comparison recorded in the project's findings as F21 concluded that a classifier refuses unburned ground better than the single local threshold, with threshold precision of 0.27 in the random-sample stratum. That figure rests on 3 burned boxes of 35, from the label set as it stood before the second interpretation pass. The same stratum now holds 19 burned boxes of 40. The comparison is not cited in this manuscript and should not be until it has been recomputed on the finished labels, or withdrawn.
 
 Figures not yet made: the corridor map with event footprints and reference boxes; the per-event burned area against pre-event lag, which carries Section 6.6; the index false-alarm chart from the table in Section 6.1; and the two-panel 20 m against 1 m chip comparison supporting Section 7.4.
 
