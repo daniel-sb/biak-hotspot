@@ -6,7 +6,7 @@ Draft manuscript. Every figure traces to a numbered entry in `FINDINGS.md` and t
 
 Burned-area products are usually validated where fires are large, fuels are well described, and reference imagery is plentiful. Biak, a raised coral island in Papua, Indonesia, meets none of those conditions: burning is small, deliberate, and daytime; cloud dominates every optical scene; and no local fuel map or burn-scar reference exists. We mapped burned area for 23 burning events between 2023 and 2026 by thresholding bi-temporal NBR+ against a locally estimated, false-alarm-controlled threshold, and then audited the result against 142 hand-labelled 60 m boxes read on 1 m reconstructed Sentinel-2 imagery.
 
-Three results matter beyond this island. First, index choice is decided by where an index is certainly wrong, not by where it looks right: of seven burned-area indices tested over open sea and cloud, only NBR+ kept false alarms near zero in both conditions. ATBI, a recently published index, flagged 43.5% of water pixels against NBR+'s 0.0%. Second, the product under-maps rather than over-maps. The stratified estimate is 1,230 ha (95% CI 1,060 to 1,342 ha) against 819 ha mapped, with commission almost absent (49 of 50 mapped boxes confirmed) and omission at 428 ha. Third, the "before" image is staler than the "after" image. The per-pixel clear look preceding an event lagged by a median of 12.2 days against 2.9 days after it, and on 14 events carrying 1,368 ha a prior hotspot predates that before-image, so the reference scene may already hold an older scar.
+Three results matter beyond this island. First, index choice is decided by where an index is certainly wrong, not by where it looks right: of seven burned-area indices tested over open sea and cloud, only NBR+ kept false alarms near zero in both conditions. ATBI, a recently published index, flagged 43.5% of water pixels against NBR+'s 0.0%. Second, the product under-maps rather than over-maps. The stratified estimate is 1,230 ha (95% CI 1,060 to 1,342 ha) against 819 ha mapped, with commission almost absent (49 of 50 mapped boxes confirmed) and omission at 428 ha. Reading the same labels as a classification problem agrees: the threshold's recall on unclaimed ground inside footprints is 0.27 against 0.96 or better for classifiers on the identical bands. Third, the "before" image is staler than the "after" image. The per-pixel clear look preceding an event lagged by a median of 12.2 days against 2.9 days after it, and on 14 events carrying 1,368 ha a prior hotspot predates that before-image, so the reference scene may already hold an older scar.
 
 We argue that the pre-image selection step, rarely reported in burned-area work, is a first-order source of omission in cloudy tropical settings, and that its audit costs nothing beyond the lag statistics most compositing pipelines already compute.
 
@@ -117,6 +117,16 @@ Burned area is estimated as the area-weighted sum over two area-carrying strata:
 Weights are the areas each stratum actually covers, restricted to land inside the 1 m imagery frame: a box the interpreter cannot see is not a sample unit.
 
 Intervals are reported two ways. Wilson score intervals at 95% behave at zero successes, where the normal approximation collapses to a point. The Olofsson et al. (2014) estimator, which uses the normal approximation, is reported beside them. In the first assessment the two disagreed about whether the mapped figure lay inside the interval, and that disagreement was the result (Section 6.4).
+
+### 4.5 A second view of the same labels
+
+Area estimation reads the labels one way. To read them another way, we also treated the problem as per-pixel classification and asked a different question: given the same spectral evidence the threshold sees, how much of what the threshold decides is forced by the data rather than by the threshold.
+
+Features are the native 20 m reflectance the product itself uses, from the same pre- and post-event looks: six bands before, six after, their six differences, four difference indices (dNBR+, dNBR, dNDVI, dNBR over the short-wave infrared pair), and the two look lags. That is 24 columns. The 1 m imagery is only ever the reference and is never an input. Three classifiers were fitted, a depth-3 decision tree, histogram gradient boosting, and a random forest, with folds leaving one event out, so no event is scored by a model that saw it.
+
+Two rules are scored beside them: the Task 18 threshold itself, and a trivial rule that claims the whole footprint burned. Results are reported per stratum and never pooled, for the reason given in Section 4.3, and at box level as well as pixel level, since the box is the unit the reference was judged on.
+
+This is a diagnostic, not a proposed replacement. No burned-area figure in this paper is derived from a classifier.
 
 ## 5. The fuel question
 
@@ -255,6 +265,30 @@ Writing `P` for the pre look, `D` for the most recent prior detection inside the
 
 Two limits stop this being a correction. The pipeline stores the pre-event lag only as two percentiles over each event's pixels, never per pixel and never as a date, so each pre-look date here is a percentile estimate and is labelled as one. And a VIIRS pixel is 375 m: a prior detection inside a footprint makes contamination possible, not established. No area was recomputed and no correction is proposed.
 
+### 6.7 The same omission seen from per-pixel classification
+
+Section 6.4 measures omission by stratified area estimation. This subsection measures it a second way, from the same labels but by classification rather than by area, and the two agree.
+
+Box-level precision and recall, pooled over leave-one-event-out folds, on 1,230 modelled pixels in 142 boxes:
+
+| rule | `random_box` | `map_burned` | `footprint_unmapped` |
+|---|---|---|---|
+| trivial: all of the footprint burned | 0.68 / 0.68 | 0.98 / 1.00 | 0.57 / 1.00 |
+| Task 18 threshold | 0.86 / 0.63 | 1.00 / 0.90 | 0.88 / 0.27 |
+| decision tree, depth 3 | 0.77 / 0.89 | 1.00 / 1.00 | 0.87 / 1.00 |
+| histogram gradient boosting | 0.74 / 0.89 | 1.00 / 0.98 | 0.86 / 0.96 |
+| random forest | 0.80 / 0.84 | 1.00 / 0.98 | 0.87 / 1.00 |
+
+The threshold's precision is high everywhere: 0.86 in the random sample, 1.00 inside its own polygons, 0.88 on unclaimed ground inside footprints. All three classifiers are worse than it on precision in the random stratum. Whatever is wrong with the product, it is not that it claims ground which did not burn.
+
+Recall is where it fails, and the figure that matters is 0.27 in `footprint_unmapped`. Of 26 boxes that burned inside a footprint on ground the map does not claim, the threshold finds 7 and misses 19. Every classifier recovers essentially all of them, at 0.96 to 1.00, while holding precision near 0.87. The spectral evidence to separate those boxes is present in the same 20 m bands the threshold reads; a single local cut on one index does not extract it.
+
+This is the 427.6 ha of Section 6.4 seen from a different direction. The two methods share only the labels: one estimates area from stratum weights and sample proportions, the other fits per-pixel decision rules and scores them per box. They are not independent of the reference, and they are independent of each other in everything else.
+
+Permutation importance puts raw post-event short-wave infrared, `post_B12`, first in five of six model and fold combinations. The difference indices that the threshold is built on rank below it.
+
+We draw no product change from this. A classifier trained on three events of one island in one season, against one interpreter's labels, is a diagnostic of where the threshold loses information, not a replacement for it.
+
 ## 7. Discussion
 
 ### 7.1 Negative validation is enough to choose an index
@@ -297,7 +331,7 @@ A reader may reasonably ask why a prompted segmentation foundation model was not
 
 ## 8. Conclusions
 
-A conventional bi-temporal index threshold works on this island, in the sense that what it claims is almost always burned: 49 of 50 reference boxes inside mapped polygons were confirmed. It fails in the other direction. The stratified estimate of 1,230 ha (95% CI 1,060 to 1,342) excludes the mapped 819 ha, and roughly 428 ha of burning inside the event footprints went unmapped.
+A conventional bi-temporal index threshold works on this island, in the sense that what it claims is almost always burned: 49 of 50 reference boxes inside mapped polygons were confirmed. It fails in the other direction. The stratified estimate of 1,230 ha (95% CI 1,060 to 1,342) excludes the mapped 819 ha, and roughly 428 ha of burning inside the event footprints went unmapped. Read as per-pixel classification rather than as area, the same labels say the same thing: the threshold's box-level recall on unclaimed ground inside footprints is 0.27, where classifiers on the identical 20 m bands reach 0.96 or better at comparable precision. The information needed to find that ground is in the imagery the product already reads.
 
 Three findings generalise beyond Biak.
 
@@ -337,7 +371,7 @@ Akhtman, Y. (2023). [S2DR4; complete citation required by the grant terms before
 
 Citations needing completion before submission: Akhtman (2023), the full author list and title for Alcaras et al. (2022), the exact title and author initials for Bilal (2025), and added entries for CHIRPS, Dynamic World, JRC TMF, ESA WorldCover, Cloud Score+, Key and Benson's dNBR severity breaks, ERA5-Land, the Canadian Fire Weather Index system, and Lawson and Armitage (2008) for the day-length factor. Each is cited in the text above by name and none should go to a journal with the placeholder standing.
 
-A separate check is owed before submission. The learned-classifier comparison recorded in the project's findings as F21 concluded that a classifier refuses unburned ground better than the single local threshold, with threshold precision of 0.27 in the random-sample stratum. That figure rests on 3 burned boxes of 35, from the label set as it stood before the second interpretation pass. The same stratum now holds 19 burned boxes of 40. The comparison is not cited in this manuscript and should not be until it has been recomputed on the finished labels, or withdrawn.
+Section 6.7 replaces an earlier version of this comparison, recorded in the project's findings as F21, which was computed on 67 boxes in two strata before the second interpretation pass and reported threshold precision of 0.27 in the random-sample stratum against 1.00 for a classifier. On the finished labels that precision is 0.86 and the classifiers are worse than the threshold on precision, so the earlier reading, that a classifier refuses unburned ground better, was the wrong explanation of a real effect. The numbers in Section 6.7 come from the rerun on all 142 boxes.
 
 Figures not yet made: the corridor map with event footprints and reference boxes; the per-event burned area against pre-event lag, which carries Section 6.6; the index false-alarm chart from the table in Section 6.1; and the two-panel 20 m against 1 m chip comparison supporting Section 7.4.
 
