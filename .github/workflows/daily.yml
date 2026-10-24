@@ -97,6 +97,14 @@ jobs:
       # site/ has not changed it rewrites the same bytes. It runs before the
       # tests because one of them asserts the published pages match site/,
       # and a forgotten local build must not take the daily brief down.
+      # The map draws the whole detection record, not the seven-day file,
+      # so the record has to be rebuilt whenever the store gains a day or
+      # yesterday's detections never reach the map. Only the detections:
+      # roads and administrative boundaries come from inputs that never
+      # change, and a scheduled job must not rewrite those (adr/0003).
+      - name: Rebuild the detection record the map draws
+        run: python scripts/export_vector_layers.py --only detections
+
       - name: Assemble the published pages from site/
         run: python src/build_site.py
 

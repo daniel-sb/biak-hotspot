@@ -202,14 +202,14 @@ def main() -> int:
             # timeout is part of what this check is for.
             try:
                 page.wait_for_function(
-                    "() => ['desa-lines','hotspots','burned-fill',"
-                    "'labels-fill'].every(id => map.getLayer(id))",
+                    "() => ['admin-desa','detections','burned-fill',"
+                    "'labels-fill','roads-lines'].every(id => map.getLayer(id))",
                     timeout=30000)
                 check("every local layer exists after the basemap upgrade", True)
             except Exception as exc:
                 missing = page.evaluate(
-                    "['desa-lines','hotspots','burned-fill','labels-fill']"
-                    ".filter(id => !map.getLayer(id))")
+                    "['admin-desa','detections','burned-fill','labels-fill',"
+                    "'roads-lines'].filter(id => !map.getLayer(id))")
                 check("every local layer exists after the basemap upgrade",
                       False, f"missing {missing} ({type(exc).__name__})")
 
@@ -232,20 +232,84 @@ def main() -> int:
             })""")
             try:
                 page.wait_for_function(
-                    "() => ['desa-lines','hotspots','burned-fill',"
+                    "() => ['admin-desa','detections','burned-fill',"
                     "'labels-fill','survey-dot'].every(id => map.getLayer(id))",
                     timeout=20000)
                 check("local layers come back after a forced style swap", True)
             except Exception:
                 missing = page.evaluate(
-                    "['desa-lines','hotspots','burned-fill','labels-fill',"
+                    "['admin-desa','detections','burned-fill','labels-fill',"
                     "'survey-dot'].filter(id => !map.getLayer(id))")
                 check("local layers come back after a forced style swap",
                       False, f"missing {missing}")
 
+            # --- the detection record and its date filter ---
+            # The map used to draw only the seven-day file, so a quiet week
+            # put two dots under a headline reading 905.
+            drawn = page.evaluate("""() => {
+              const src = map.getSource('detections');
+              return src && src._data ? src._data.features.length : 0;
+            }""")
+            check("the map carries the whole detection record, not a week",
+                  drawn > 500, f"{drawn} detections in the source")
+            count = page.inner_text("#det-count")
+            check("the date filter says how many of how many are shown",
+                  " of " in count and "detections" in count, count[:120])
+            check("the filter opens on the season the page reports",
+                  page.evaluate(
+                      "document.getElementById('det-from').value")
+                  .startswith("2026"),
+                  page.evaluate(
+                      "document.getElementById('det-from').value"))
+            season = page.evaluate("""() => {
+              const f = map.getFilter('detections');
+              return JSON.stringify(f);
+            }""")
+            check("a MapLibre filter is actually set on the layer",
+                  season and "date_wit" in season, (season or "")[:120])
+            before = page.evaluate(
+                "map.queryRenderedFeatures({layers:['detections']}).length")
+            page.click('#det-presets button[data-from="first"]')
+            page.wait_for_timeout(900)
+            after_all = page.inner_text("#det-count")
+            check("the All years preset widens the range",
+                  after_all != count, f"{count[:40]} -> {after_all[:40]}")
+            page.click('#det-presets button[data-from="2026-08-01"]')
+            page.wait_for_timeout(900)
+            aug = page.inner_text("#det-count")
+            check("a narrower preset shows fewer detections",
+                  int(aug.split(" of ")[0].replace(",", ""))
+                  < int(after_all.split(" of ")[0].replace(",", "")),
+                  f"{aug[:40]} vs {after_all[:40]}")
+            page.click('#det-presets button[data-from="2026-01-01"]')
+            page.wait_for_timeout(900)
+
+            # --- roads and the SNI administrative lines ---
+            check("the roads layer is present",
+                  page.evaluate("!!map.getLayer('roads-lines')"))
+            check("every administrative level has its own line layer",
+                  page.evaluate(
+                      "['admin-kabupaten','admin-distrik','admin-desa']"
+                      ".every(id => !!map.getLayer(id))"))
+            dashes = page.evaluate("""() => ({
+              kab: map.getPaintProperty('admin-kabupaten','line-dasharray'),
+              dis: map.getPaintProperty('admin-distrik','line-dasharray'),
+              desa: map.getPaintProperty('admin-desa','line-dasharray'),
+            })""")
+            check("each level carries a different SNI dash pattern",
+                  len({str(v) for v in dashes.values()}) == 3, str(dashes))
+            check("the kabupaten line starts switched off, since it is the "
+                  "coast",
+                  not page.evaluate(
+                      "document.querySelector('#layers "
+                      "input[data-layer=\"kabupaten\"]').checked"))
+            labels = page.inner_text("#layers")
+            check("the survey layer is named for what it is",
+                  "Field survey" in labels, labels[:200])
+
             boxes = page.evaluate(
                 "document.querySelectorAll('#layers input[data-layer]').length")
-            check("layer switch rendered", boxes >= 5, f"{boxes} checkboxes")
+            check("layer switch rendered", boxes >= 8, f"{boxes} checkboxes")
             legend_before = page.evaluate(
                 "document.querySelectorAll('#legend li').length")
             check("legend lists the layers that are on", legend_before >= 4,
@@ -388,6 +452,23 @@ def main() -> int:
                 else:
                     check("field plot rendered for identify", False,
                           "no features returned")
+                kinds = page.evaluate("""() => {
+                  const d = map.getSource('survey')._data;
+                  const k = {};
+                  d.features.forEach(f => {
+                    k[f.properties.jenis] = (k[f.properties.jenis] || 0) + 1;
+                  });
+                  return k;
+                }""")
+                check("the survey layer carries both plots and roadside "
+                      "photographs", kinds.get("plot") == 3
+                      and kinds.get("observasi", 0) >= 10, str(kinds))
+                classed = page.evaluate("""() => map.getSource('survey')
+                  ._data.features.filter(f =>
+                    f.properties.jenis === 'observasi' &&
+                    f.properties.kelas).length""")
+                check("a roadside photograph is never given a class",
+                      classed == 0, f"{classed} classified observations")
                 page.keyboard.press("Escape")
 
             # --- the Sentinel-2 scenes from the labelling project ---
@@ -578,6 +659,10 @@ def main() -> int:
                   "never cast to a number" in mtxt)
             check("methods states the S2DR4 band order",
                   "B11, B12, B8A" in mtxt)
+            check("methods names the SNI the boundaries follow",
+                  "SNI 6502.2:2010" in mtxt)
+            check("methods says the boundaries are not an official reference",
+                  "are not an official reference" in mtxt)
             check("methods says what is held back",
                   "notes written during interpretation are not published"
                   in mtxt)

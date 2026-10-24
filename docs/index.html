@@ -17,6 +17,11 @@
     --color-ember: #c96a2e;
     --color-sea: #7fa9b8;
     --color-rule: #d2d6cf;
+    --color-night: #16201d;
+    --color-nightline: #2f3e39;
+    --color-nightink: #e7e9e4;
+    --color-nightsoft: #9aa69f;
+    --color-flame: #e2714a;
     --font-prose: "Source Serif 4", Georgia, serif;
     --font-chrome: "IBM Plex Sans Condensed", system-ui, sans-serif;
   }
@@ -63,6 +68,20 @@
         <h2>Data layers</h2>
         <div id="layers"></div>
 
+        <h2>Detections: date range (WIT)</h2>
+        <div id="detfilter">
+          <div class="row2">
+            <label>From <input type="date" id="det-from"></label>
+            <label>To <input type="date" id="det-to"></label>
+          </div>
+          <div id="det-presets" class="btns">
+            <button type="button" data-from="2026-01-01" data-to="last">2026</button>
+            <button type="button" data-from="2026-08-01" data-to="2026-08-31">Aug 2026</button>
+            <button type="button" data-from="first" data-to="last">All years</button>
+          </div>
+          <span id="det-count" class="tnum"></span>
+        </div>
+
         <h2>Legend</h2>
         <div id="legend"></div>
 
@@ -82,60 +101,60 @@
           <select id="scene-kind" aria-label="Band combination"></select>
           <input type="range" id="scene-date" min="0" max="0" value="0"
                  aria-label="Acquisition date">
-          <div class="flex items-center justify-between gap-2">
+          <div class="row2">
             <span id="scene-date-label" class="tnum"></span>
             <button type="button" id="scene-zoom">Zoom to scene</button>
           </div>
           <span id="scene-note"></span>
         </div>
 
-        <p class="mt-3 text-inksoft">Click any detection, polygon, box or survey plot for
-          its record.</p>
+        <p class="pnote mt-3">Click any detection, polygon, box, plot, boundary or road
+          for its record.</p>
       </div>
     </details>
   </div>
 
-  <div class="flex flex-col gap-3">
-    <p id="status" class="font-chrome border border-rule bg-paper px-3 py-2 text-[0.84rem] leading-snug">
-      <span class="text-inksoft">Loading&hellip;</span></p>
+  <div class="rail flex flex-col gap-3">
+    <p id="status" class="rail-card font-chrome text-[0.84rem] leading-snug">
+      <span class="pnote">Loading&hellip;</span></p>
 
-    <div id="figures" class="font-chrome border border-rule bg-paper">
-      <div id="tile-counts" class="border-b border-rule px-3 py-2">
-        <span class="tile-k block text-[0.72rem] font-semibold tracking-[0.06em] text-inksoft">Detections and events</span>
+    <div id="figures" class="rail-card rail-stack font-chrome">
+      <div id="tile-counts" class="rail-row">
+        <span class="tile-k block text-[0.72rem] font-semibold tracking-[0.06em]">Detections and events</span>
         <span id="fig-counts" class="tnum block text-[1.45rem] leading-tight">&mdash;</span>
-        <span id="fig-counts-prior" class="block text-[0.76rem] text-inksoft"></span>
+        <span id="fig-counts-prior" class="pnote block text-[0.76rem]"></span>
       </div>
-      <div id="tile-mapped" class="border-b border-rule px-3 py-2">
-        <span class="tile-k block text-[0.72rem] font-semibold tracking-[0.06em] text-inksoft">Mapped extent</span>
+      <div id="tile-mapped" class="rail-row">
+        <span class="tile-k block text-[0.72rem] font-semibold tracking-[0.06em]">Mapped extent</span>
         <span id="fig-mapped" class="tnum block text-[1.45rem] leading-tight">&mdash;</span>
-        <span id="fig-mapped-note" class="block text-[0.76rem] text-inksoft"></span>
+        <span id="fig-mapped-note" class="pnote block text-[0.76rem]"></span>
       </div>
-      <div id="tile-validated" class="px-3 py-2">
-        <span class="tile-k block text-[0.72rem] font-semibold tracking-[0.06em] text-inksoft">Estimated burned, labelled footprints</span>
+      <div id="tile-validated" class="rail-row">
+        <span class="tile-k block text-[0.72rem] font-semibold tracking-[0.06em]">Estimated burned, labelled footprints</span>
         <span id="fig-validated" class="tnum block text-[1.45rem] leading-tight">&mdash;</span>
         <svg id="fig-interval" viewBox="0 0 300 34" role="img" class="mt-1"
              aria-label="Estimate with its 95 percent interval and the mapped extent"></svg>
-        <span id="fig-validated-note" class="block text-[0.76rem] text-inksoft"></span>
+        <span id="fig-validated-note" class="pnote block text-[0.76rem]"></span>
       </div>
     </div>
 
-    <p id="figures-error" class="text-[0.84rem] text-scar"></p>
+    <p id="figures-error" class="text-[0.84rem]"></p>
 
-    <p id="read-first" class="border border-rule bg-paper px-3 py-2 text-[0.84rem] leading-snug">
+    <p id="read-first" class="rail-card text-[0.84rem] leading-snug">
       <span class="font-semibold">These two area figures are not the same quantity.</span>
       One is what the product drew; the other is what a sample of hand-interpreted 1&nbsp;m
       imagery says actually burned inside three footprints. Neither is a count of fires, and
       nothing here says who lit anything. Read
-      <a class="underline decoration-rule underline-offset-2 hover:decoration-ember" href="methods.html">how these numbers were made</a> and
-      <a class="underline decoration-rule underline-offset-2 hover:decoration-ember" href="results.html">what they do and do not support</a>
+      <a href="methods.html">how these numbers were made</a> and
+      <a href="results.html">what they do and do not support</a>
       before quoting any of them.</p>
 
-    <p id="gap">
+    <p id="gap" class="rail-card text-[0.84rem] leading-snug">
       <span class="font-semibold">Observation gap.</span>
       Nothing observes Biak between 15:00 and 00:31 WIT. Himawari-9 covers those hours from geostationary orbit at
       2&nbsp;km resolution &mdash; 28 times the pixel area of VIIRS &mdash; so it sees only
       larger or hotter fires. The
-      <a class="underline decoration-rule underline-offset-2 hover:decoration-ember" href="brief.html">daily brief</a>
+      <a href="brief.html">daily brief</a>
       carries each evening's result.</p>
   </div>
 </section>

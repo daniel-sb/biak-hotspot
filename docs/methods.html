@@ -17,6 +17,11 @@
     --color-ember: #c96a2e;
     --color-sea: #7fa9b8;
     --color-rule: #d2d6cf;
+    --color-night: #16201d;
+    --color-nightline: #2f3e39;
+    --color-nightink: #e7e9e4;
+    --color-nightsoft: #9aa69f;
+    --color-flame: #e2714a;
     --font-prose: "Source Serif 4", Georgia, serif;
     --font-chrome: "IBM Plex Sans Condensed", system-ui, sans-serif;
   }
@@ -111,6 +116,37 @@ sensor-level detail buys nobody anything.</p>
 </section>
 
 <section class="block">
+  <h2>The map&rsquo;s base layers</h2>
+  <p><strong>Which detections are drawn.</strong> The map reads
+  <code>data/detections.geojson</code>, which is the whole store the project holds &mdash;
+  every detection from 2023 onward &mdash; and filters it on the page by WIT day. It opens on
+  2026 because that is the season this page is a record of. The seven-day file,
+  <code>hotspots_latest.geojson</code>, is still what the status strip and the daily brief
+  cover, and the detections inside that window are ringed on the map so the current state
+  stays visible whatever range is chosen. Before this, the map drew only the seven-day file,
+  so in a quiet week it showed two points under a headline reading 905.</p>
+
+  <p><strong>Administrative boundaries.</strong> Drawn from
+  <code>data/biak_desa.geojson</code>, the BIG desa and kelurahan extraction, dissolved to
+  kabupaten, distrik and desa level and symbolised to
+  <strong>SNI 6502.2:2010 Lampiran A(e)</strong>: black lines, 0,3&nbsp;mm for
+  kabupaten/kota with a dash-dot-dot pattern, 0,2&nbsp;mm for kecamatan and for
+  kelurahan/desa with their own dash-and-dot sequences. Where two levels share an edge the
+  lower one is left undrawn, which is the rule in section&nbsp;6.3 of the same standard. A
+  screen has no millimetres, so the patterns here keep the standard&rsquo;s ratios at a
+  legible size rather than claiming a printed scale.</p>
+
+  <p>The same section of SNI 6502.2:2010 states that administrative boundary lines on a
+  rupabumi map <strong>are not an official reference</strong>. Nothing on this site should be
+  used to settle where a boundary runs. The kabupaten line is switched off by default because
+  on Biak it follows the coast: Biak Numfor and Supiori are separate islands and share no
+  land edge, so drawing it only doubles the shoreline the basemap already has.</p>
+
+  <p><strong>Roads.</strong> OpenStreetMap, fetched once by
+  <code>scripts/fetch_osm_roads.py</code> and grouped into arteri, kolektor and lokal for
+  drawing. &copy; OpenStreetMap contributors, ODbL. It is a snapshot of what mappers had
+  recorded, not a survey, and an unmapped track is not an absent track.</p>
+
   <h2>What is published, and what is held back</h2>
   <p>Detection coordinates are published, because a located thermal anomaly is an observation.
   Inferred responsibility is never published: a 375&nbsp;m pixel cannot attribute burning to a

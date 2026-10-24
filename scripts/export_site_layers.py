@@ -8,6 +8,9 @@ published map can load:
 
   fieldwork/biak_ground_truth.gpkg   the three plots visited on 2026-09-03,
                                      with the photograph taken at each one
+  fieldwork/foto_timestamp/          the timestamped field photographs and
+                                     observasi.csv, which carries the fix for
+                                     each one
   data/labels/imagery/*.tif          the S2DR4 1 m scenes that data/labels/
                                      biak_labels.qgz drapes under the labels
 
@@ -42,6 +45,7 @@ is already published beside it at the accuracy the surveyor recorded.
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import sqlite3
 import struct
@@ -55,6 +59,8 @@ from rasterio.warp import Resampling, calculate_default_transform, reproject
 
 ROOT = Path(__file__).resolve().parents[1]
 GPKG = ROOT / "fieldwork" / "biak_ground_truth.gpkg"
+PHOTOS = ROOT / "fieldwork" / "foto_timestamp"
+OBSERVASI = PHOTOS / "observasi.csv"
 IMAGERY_SRC = ROOT / "data" / "labels" / "imagery"
 DOCS = ROOT / "docs"
 
@@ -154,6 +160,63 @@ def write_photo(src, dst):
     return dst.stat().st_size
 
 
+def read_observations():
+    """The timestamped photographs, with the fix recorded for each.
+
+    Four of the eighteen rows carry no latitude or longitude: the phone had
+    no fix when the shutter went. They are reported and left off the map
+    rather than placed at a guessed position - an observation without a
+    position is not an observation at an approximate position.
+    """
+    rows, unlocated = [], []
+    with open(OBSERVASI, encoding="utf-8", newline="") as fh:
+        for r in csv.DictReader(fh):
+            if not (r["lat"] and r["lon"]):
+                unlocated.append((r["foto"], r["catatan"]))
+                continue
+            rows.append(r)
+    return rows, unlocated
+
+
+def export_observations(out_dir):
+    """Photographs taken along the road on 2026-09-03 and 2026-09-04.
+
+    These are not plots: nothing was classified, no target was visited, and
+    the surveyor did not stand on a sample. They are what the ground looked
+    like at a place and a minute, which is the weakest and most direct kind
+    of evidence this project has.
+    """
+    rows, unlocated = read_observations()
+    features, missing = [], []
+    for r in rows:
+        src = PHOTOS / "asli" / r["foto"]
+        if not src.exists():
+            missing.append(r["foto"])
+            continue
+        name = pathlib_stem(r["foto"]) + ".webp"
+        write_photo(src, out_dir / name)
+        features.append({
+            "type": "Feature",
+            "geometry": {"type": "Point",
+                         "coordinates": [round(float(r["lon"]), 6),
+                                         round(float(r["lat"]), 6)]},
+            "properties": {
+                "jenis": "observasi",
+                "plot_id": pathlib_stem(r["foto"]),
+                "waktu": r["waktu_wit"],
+                "tempat": r["tempat"],
+                "catatan": r["catatan"],
+                "photos": [{"file": f"photos/{name}", "arah": None,
+                            "keterangan": r["catatan"]}],
+            },
+        })
+    return features, missing, unlocated
+
+
+def pathlib_stem(name):
+    return name.rsplit(".", 1)[0]
+
+
 def export_survey():
     rows = read_survey()
     out_dir = DOCS / "photos"
@@ -176,6 +239,7 @@ def export_survey():
                          "coordinates": [round(r["lon"], 6),
                                          round(r["lat"], 6)]},
             "properties": {
+                "jenis": "plot",
                 "plot_id": r["plot_id"], "target_id": r["target_id"],
                 "kelas": r["kelas"], "tingkat_yakin": r["tingkat_yakin"],
                 "bukti": r["bukti"], "akurasi_m": r["akurasi_m"],
@@ -183,11 +247,13 @@ def export_survey():
                 "photos": shots,
             },
         })
-    fc = {"type": "FeatureCollection", "features": features}
+    obs, obs_missing, unlocated = export_observations(out_dir)
+    fc = {"type": "FeatureCollection", "features": features + obs,
+          "unlocated": [{"foto": f, "catatan": c} for f, c in unlocated]}
     path = DOCS / "data" / "survey.geojson"
     path.write_text(json.dumps(fc, ensure_ascii=False, indent=1),
                     encoding="utf-8")
-    return fc, missing
+    return fc, missing + obs_missing
 
 
 # --------------------------------------------------------------- imagery ----
@@ -301,7 +367,12 @@ def demo():
     """Assert the things a reader of the map would notice if they broke."""
     fc = json.loads((DOCS / "data" / "survey.geojson").read_text("utf-8"))
     feats = fc["features"]
-    assert len(feats) == 3, f"expected 3 visited plots, got {len(feats)}"
+    plots = [f for f in feats if f["properties"]["jenis"] == "plot"]
+    obs = [f for f in feats if f["properties"]["jenis"] == "observasi"]
+    assert len(plots) == 3, f"expected 3 visited plots, got {len(plots)}"
+    assert len(obs) >= 10, f"only {len(obs)} located observations"
+    # A photograph without a fix is listed, not placed.
+    assert fc["unlocated"], "no unlocated photographs recorded"
     for f in feats:
         p = f["properties"]
         assert p["photos"], f'{p["plot_id"]} has no photograph'
@@ -315,6 +386,13 @@ def demo():
             f'{p["plot_id"]} is outside Biak'
     # The planned targets must not have leaked into the published file.
     assert "target_bakar" not in json.dumps(fc), "planned targets published"
+    # Only the plots carry a class read on the ground; an observation along a
+    # road was never classified and must not look as though it was.
+    for f in obs:
+        assert "kelas" not in f["properties"], \
+            f'observation {f["properties"]["plot_id"]} carries a class'
+    for f in plots:
+        assert f["properties"]["kelas"], "a plot lost its class"
 
     man = json.loads((DOCS / "data" / "imagery.json").read_text("utf-8"))
     assert man["tiles"], "no imagery tiles"
@@ -330,8 +408,10 @@ def demo():
             f"{t['id']} is not scene-sized: {e - w:.4f} x {n - s:.4f}"
     dates = {t["date"] for t in man["tiles"]}
     assert len(dates) >= 2, "a single date cannot show a change"
-    print(f"survey: {len(feats)} plots, "
-          f"{sum(len(f['properties']['photos']) for f in feats)} photographs")
+    print(f"survey: {len(plots)} plots and {len(obs)} located "
+          f"observations, "
+          f"{sum(len(f['properties']['photos']) for f in feats)} photographs; "
+          f"{len(fc['unlocated'])} photographs had no fix and are listed only")
     print(f"imagery: {len(man['tiles'])} tiles over {len(dates)} dates, "
           f"{sum((DOCS / t['file']).stat().st_size for t in man['tiles']) / 1e6:.1f} MB")
     print("all assertions passed")

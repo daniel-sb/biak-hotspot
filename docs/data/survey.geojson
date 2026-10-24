@@ -11,6 +11,7 @@
     ]
    },
    "properties": {
+    "jenis": "plot",
     "plot_id": "20260903-161249",
     "target_id": "T027",
     "kelas": "bakar",
@@ -38,6 +39,7 @@
     ]
    },
    "properties": {
+    "jenis": "plot",
     "plot_id": "20260903-161554",
     "target_id": "T027",
     "kelas": "bakar",
@@ -65,6 +67,7 @@
     ]
    },
    "properties": {
+    "jenis": "plot",
     "plot_id": "20260903-164136",
     "target_id": "T053",
     "kelas": "bakar",
@@ -81,6 +84,360 @@
      }
     ]
    }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.06263,
+     -1.1621
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260903_063958",
+    "waktu": "2026-09-03 06:39:58",
+    "tempat": "Sorido, Biak Kota",
+    "catatan": "kabut asap tebal di permukiman",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260903_063958.webp",
+      "arah": null,
+      "keterangan": "kabut asap tebal di permukiman"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.064952,
+     -1.136122
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260903_162823",
+    "waktu": "2026-09-03 16:28:23",
+    "tempat": "Adainasnosen, Samofa",
+    "catatan": "bekas bakar arang basah",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260903_162823.webp",
+      "arah": null,
+      "keterangan": "bekas bakar arang basah"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.074172,
+     -1.13321
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260903_163034",
+    "waktu": "2026-09-03 16:30:34",
+    "tempat": "Samofa",
+    "catatan": "tunas hijau di atas bekas bakar",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260903_163034.webp",
+      "arah": null,
+      "keterangan": "tunas hijau di atas bekas bakar"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.090313,
+     -1.141163
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260903_163744",
+    "waktu": "2026-09-03 16:37:44",
+    "tempat": "Jalan Adibai, Maryendi, Samofa",
+    "catatan": "bekas bakar tepi jalan",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260903_163744.webp",
+      "arah": null,
+      "keterangan": "bekas bakar tepi jalan"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.034357,
+     -1.142677
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260904_123707",
+    "waktu": "2026-09-04 12:37:07",
+    "tempat": "Biak-Adoki, Yendidori",
+    "catatan": "bekas bakar tepi jalan",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260904_123707.webp",
+      "arah": null,
+      "keterangan": "bekas bakar tepi jalan"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.030997,
+     -1.140883
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260904_124124",
+    "waktu": "2026-09-04 12:41:24",
+    "tempat": "Jalan Raya Sorido, Yendidori",
+    "catatan": "bekas bakar sekitar tiang listrik",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260904_124124.webp",
+      "arah": null,
+      "keterangan": "bekas bakar sekitar tiang listrik"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.05858,
+     -1.124888
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260904_125114",
+    "waktu": "2026-09-04 12:51:14",
+    "tempat": "Jalan Raya Sorido, Sorido, Biak Kota",
+    "catatan": "bekas bakar lereng karst",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260904_125114.webp",
+      "arah": null,
+      "keterangan": "bekas bakar lereng karst"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.058767,
+     -1.119992
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260904_125318",
+    "waktu": "2026-09-04 12:53:17",
+    "tempat": "Dafuar, Samofa",
+    "catatan": "paku-pakuan pulih di bekas bakar",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260904_125318.webp",
+      "arah": null,
+      "keterangan": "paku-pakuan pulih di bekas bakar"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.067492,
+     -1.145085
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260904_125911",
+    "waktu": "2026-09-04 12:59:11",
+    "tempat": "Adainasnosen, Samofa",
+    "catatan": "bekas bakar lereng",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260904_125911.webp",
+      "arah": null,
+      "keterangan": "bekas bakar lereng"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.11348,
+     -1.161227
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260904_134016",
+    "waktu": "2026-09-04 13:40:16",
+    "tempat": "Sumberker, Samofa",
+    "catatan": "bekas bakar tepi jalan",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260904_134016.webp",
+      "arah": null,
+      "keterangan": "bekas bakar tepi jalan"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.116057,
+     -1.162533
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260904_134113",
+    "waktu": "2026-09-04 13:41:13",
+    "tempat": "Jalan Raya Maraw, Sumberker",
+    "catatan": "permukaan arang",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260904_134113.webp",
+      "arah": null,
+      "keterangan": "permukaan arang"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.13047,
+     -1.168285
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260904_135320",
+    "waktu": "2026-09-04 13:53:20",
+    "tempat": "Jalan Raya Maraw, Sumberker",
+    "catatan": "ASAP AKTIF sedang mengepul",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260904_135320.webp",
+      "arah": null,
+      "keterangan": "ASAP AKTIF sedang mengepul"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.14487,
+     -1.17084
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260904_135617",
+    "waktu": "2026-09-04 13:56:17",
+    "tempat": "Sumberker, Samofa",
+    "catatan": "bekas bakar luas",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260904_135617.webp",
+      "arah": null,
+      "keterangan": "bekas bakar luas"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.18014,
+     -1.168912
+    ]
+   },
+   "properties": {
+    "jenis": "observasi",
+    "plot_id": "TimePhoto_20260904_140526",
+    "waktu": "2026-09-04 14:05:26",
+    "tempat": "Jalan Raya Maraw, Rim, Biak Timur",
+    "catatan": "pembukaan lahan konstruksi - bukan bakar",
+    "photos": [
+     {
+      "file": "photos/TimePhoto_20260904_140526.webp",
+      "arah": null,
+      "keterangan": "pembukaan lahan konstruksi - bukan bakar"
+     }
+    ]
+   }
+  }
+ ],
+ "unlocated": [
+  {
+   "foto": "TimePhoto_20260903_064003.jpg",
+   "catatan": "lanjutan 063958 - overlay belum dibaca"
+  },
+  {
+   "foto": "TimePhoto_20260904_134108.jpg",
+   "catatan": "tanpa fix GPS - 5 detik sebelum 134113"
+  },
+  {
+   "foto": "TimePhoto_20260904_134335.jpg",
+   "catatan": "tanpa fix GPS"
+  },
+  {
+   "foto": "20260904_141459.jpg",
+   "catatan": "tanpa overlay - bukan pengamatan lahan"
   }
  ]
 }

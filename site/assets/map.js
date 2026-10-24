@@ -68,8 +68,9 @@ map.on("error", (e) => {
    addLocalLayers is idempotent: after a basemap upgrade replaces the style
    (setStyle drops everything the page added), the layers are rebuilt from
    the cached GeoJSON objects. */
-const localData = { desa: null, hotspots: null, recurrent: null,
-                    burned: null, labels: null, survey: null };
+const localData = { admin: null, roads: null, detections: null,
+                    hotspots: null, recurrent: null, burned: null,
+                    labels: null, survey: null };
 
 /* ---------- NASA GIBS imagery ----------
    Google's tile terms forbid use outside Google's own APIs and Esri's
@@ -181,8 +182,8 @@ function addImagery() {
    The Sentinel-2 scene is in this list too, so a background mosaic never
    lands on top of the scene the reader asked for. */
 function firstVectorLayer() {
-  for (const id of ["burned-fill", "labels-fill", "desa-lines", "hotspots",
-                    "survey-dot"])
+  for (const id of ["roads-lines", "burned-fill", "labels-fill",
+                    "admin-desa", "detections", "survey-dot"])
     if (map.getLayer(id)) return id;
   return undefined;
 }
@@ -329,25 +330,152 @@ function zoomToScene() {
   map.fitBounds([[w, s], [e, n]], { padding: 24, duration: 600 });
 }
 
+/* ---------- the date filter ----------
+   docs/data/detections.geojson is the whole store, 2023 onward. Showing all
+   of it at once buries the season the page is about under three years of
+   background, and showing only the seven-day window - which is what the map
+   used to do - put two dots under a headline reading 905. So the record is
+   published in full and filtered on the page, opening on the season.
+
+   date_wit is an ISO day string, so a string comparison is a date
+   comparison, and the filter needs no date parsing at all. */
+let detFrom = "";
+let detTo = "";
+
+function detectionFilter() {
+  if (!detFrom && !detTo) return null;
+  const clauses = ["all"];
+  if (detFrom) clauses.push([">=", ["get", "date_wit"], detFrom]);
+  if (detTo) clauses.push(["<=", ["get", "date_wit"], detTo]);
+  return clauses;
+}
+
+function applyDetectionFilter() {
+  const f = detectionFilter();
+  for (const id of ["detections"])
+    if (map.getLayer(id)) map.setFilter(id, f);
+  const el = $("det-count");
+  if (!el || !localData.detections) return;
+  const total = localData.detections.features.length;
+  const shown = localData.detections.features.filter((d) => {
+    const day = d.properties.date_wit;
+    return (!detFrom || day >= detFrom) && (!detTo || day <= detTo);
+  }).length;
+  el.textContent = shown.toLocaleString("en-GB") + " of " +
+    total.toLocaleString("en-GB") + " detections" +
+    (detFrom || detTo ? ", " + (detFrom || "start") + " to " +
+     (detTo || "end") + " (WIT)" : "");
+}
+
+function setDetectionRange(from, to) {
+  detFrom = from || "";
+  detTo = to || "";
+  const a = $("det-from"), b = $("det-to");
+  if (a) a.value = detFrom;
+  if (b) b.value = detTo;
+  applyDetectionFilter();
+}
+
+function initDateFilter() {
+  const meta = localData.detections || {};
+  const first = meta.first_day || "2023-01-01";
+  const last = meta.last_day || "2026-12-31";
+  for (const id of ["det-from", "det-to"]) {
+    const el = $(id);
+    if (!el) continue;
+    el.min = first;
+    el.max = last;
+    el.addEventListener("change", () =>
+      setDetectionRange($("det-from").value, $("det-to").value));
+  }
+  const presets = $("det-presets");
+  if (presets)
+    presets.querySelectorAll("button[data-from]").forEach((b) => {
+      b.addEventListener("click", () => {
+        const from = b.dataset.from === "first" ? first : b.dataset.from;
+        const to = b.dataset.to === "last" ? last : b.dataset.to;
+        setDetectionRange(from, to);
+      });
+    });
+  // Open on the season this page is a record of, not on the whole store.
+  setDetectionRange(String(SEASON_YEAR) + "-01-01", last);
+}
+
+/* The season the front page reports. Kept here rather than read from the
+   data, so a quiet start to a later year cannot silently move it. */
+const SEASON_YEAR = 2026;
+
+/* Administrative boundary lines, SNI 6502.2:2010 Lampiran A(e), table e)
+   rows 3 to 5. The standard gives each level a line weight in millimetres
+   and a dash pattern in millimetres, all black (CMYK 0/0/0/100):
+
+     kabupaten/kota    0,3 mm   dash 3,0  gap 1,0  dot  gap 0,4  dot
+     kecamatan         0,2 mm   dash 2,0  gap 0,5  four dots at 0,2
+     kelurahan/desa    0,2 mm   dash 3,0  gap 0,8  three dots at 0,2
+
+   MapLibre measures line-dasharray in multiples of the line width, so each
+   pattern below is its millimetres divided by that level's weight. A screen
+   has no millimetres, so the weights are the standard's ratios rendered at a
+   legible size rather than a claim of printed scale.
+
+   SNI 6502.2:2010 section 6.3: administrative boundaries on a rupabumi map
+   are not an official reference. The methodology page says so too. */
+const ADMIN_STYLES = [
+  ["admin-kabupaten", "kabupaten", 1.5,
+   [10, 3.33, 1, 1.33, 1, 3.33]],
+  ["admin-distrik", "distrik", 1.1,
+   [10, 2.5, 1, 2.5, 1, 2.5, 1, 2.5, 1, 2.5]],
+  ["admin-desa", "desa", 1.0,
+   [15, 4, 1, 4, 1, 4, 1, 4]],
+];
+
 function addLocalLayers() {
   addImagery();
   addScene();
-  if (localData.desa) {
-    if (!map.getSource("desa"))
-      map.addSource("desa", { type: "geojson", data: localData.desa });
-    if (!map.getLayer("desa-lines"))
+  /* Roads, under everything else: they are context, not evidence. OSM
+     classes are grouped into the three that matter for reaching a fire. */
+  if (localData.roads) {
+    if (!map.getSource("roads"))
+      map.addSource("roads", { type: "geojson", data: localData.roads });
+    if (!map.getLayer("roads-lines"))
       map.addLayer({
-        id: "desa-lines", type: "line", source: "desa",
-        paint: { "line-color": "#8a8a8a", "line-width": 0.7,
-                 "line-opacity": 0.8 },
+        id: "roads-lines", type: "line", source: "roads",
+        layout: { "line-cap": "round", "line-join": "round" },
+        paint: {
+          "line-color": ["match", ["get", "kelas"],
+            "arteri", "#8a5a2b", "kolektor", "#a8763f", "lokal", "#b9936a",
+            "#c9b49a"],
+          "line-width": ["interpolate", ["linear"], ["zoom"],
+            9, ["match", ["get", "kelas"], "arteri", 1.2, "kolektor", 0.8, 0.4],
+            14, ["match", ["get", "kelas"], "arteri", 3.5, "kolektor", 2.4,
+                 "lokal", 1.4, 0.8]],
+          "line-opacity": 0.85,
+        },
       });
   }
-  if (localData.hotspots) {
-    if (!map.getSource("hotspots"))
-      map.addSource("hotspots", { type: "geojson", data: localData.hotspots });
-    if (!map.getLayer("hotspots"))
+  /* Administrative boundaries, SNI 6502.2:2010 Lampiran A(e). One line per
+     level, black, with the dash pattern the standard specifies; a shared
+     edge belongs to the higher level only, which is done in the export. */
+  if (localData.admin) {
+    if (!map.getSource("admin"))
+      map.addSource("admin", { type: "geojson", data: localData.admin });
+    for (const [id, level, width, dash] of ADMIN_STYLES)
+      if (!map.getLayer(id))
+        map.addLayer({
+          id, type: "line", source: "admin",
+          filter: ["==", ["get", "level"], level],
+          paint: { "line-color": "#000000", "line-width": width,
+                   "line-dasharray": dash, "line-opacity": 0.75 },
+        });
+  }
+  if (localData.detections) {
+    if (!map.getSource("detections"))
+      map.addSource("detections",
+                    { type: "geojson", data: localData.detections });
+    if (!map.getLayer("detections"))
       map.addLayer({
-        id: "hotspots", type: "circle", source: "hotspots",
+        id: "detections", type: "circle", source: "detections",
+        filter: detectionFilter() || ["all"],
         paint: {
           // sized and coloured by FRP (MW); confidence is never an encoding
           "circle-radius": ["interpolate", ["linear"],
@@ -358,6 +486,22 @@ function addLocalLayers() {
           "circle-stroke-color": "#5a1408", "circle-stroke-width": 1,
           "circle-opacity": 0.85,
         },
+      });
+    applyDetectionFilter();
+  }
+  /* The seven-day window, ringed on top of the filtered record, so "what is
+     burning now" stays visible whatever range the reader has chosen. This is
+     the file the daily job rewrites; the record behind it is rebuilt from
+     the same store by scripts/export_vector_layers.py. */
+  if (localData.hotspots) {
+    if (!map.getSource("hotspots"))
+      map.addSource("hotspots", { type: "geojson", data: localData.hotspots });
+    if (!map.getLayer("hotspots-recent"))
+      map.addLayer({
+        id: "hotspots-recent", type: "circle", source: "hotspots",
+        paint: { "circle-radius": 9, "circle-color": "transparent",
+                 "circle-stroke-color": "#c22e12",
+                 "circle-stroke-width": 2 },
       });
   }
   /* Burn polygons: an observation of ground state, published at native
@@ -413,14 +557,21 @@ function addLocalLayers() {
     if (!map.getLayer("survey-halo"))
       map.addLayer({
         id: "survey-halo", type: "circle", source: "survey",
-        paint: { "circle-radius": 11, "circle-color": "#ffffff",
-                 "circle-opacity": 0.55 },
+        paint: { "circle-radius": ["match", ["get", "jenis"], "plot", 11, 9],
+                 "circle-color": "#ffffff", "circle-opacity": 0.55 },
       });
     if (!map.getLayer("survey-dot"))
       map.addLayer({
         id: "survey-dot", type: "circle", source: "survey",
-        paint: { "circle-radius": 6, "circle-color": "#a3341f",
-                 "circle-stroke-color": "#ffffff", "circle-stroke-width": 2 },
+        paint: {
+          // A classified plot is a square-shouldered mark; a roadside
+          // photograph is a smaller dot, because nothing was classified
+          // there and the two must not read as the same evidence.
+          "circle-radius": ["match", ["get", "jenis"], "plot", 6, 4.5],
+          "circle-color": ["match", ["get", "jenis"],
+            "plot", "#a3341f", "#1b6ec2"],
+          "circle-stroke-color": "#ffffff", "circle-stroke-width": 2,
+        },
       });
   }
   if (localData.recurrent) {
@@ -452,6 +603,22 @@ function addLocalLayers() {
    dismiss three records to read the one they clicked. The order below is how
    specific the layer is: a plot somebody stood on beats a box somebody
    interpreted, which beats a polygon covering half a square kilometre. */
+
+function roadPopup(p) {
+  return "<strong>Road</strong><br>" +
+    "Class here: " + esc(p.kelas) + " (OpenStreetMap <code>highway=" +
+    esc(p.highway) + "</code>)<br>" +
+    "<em>OpenStreetMap contributors, ODbL. Road geometry is a snapshot of " +
+    "what mappers had recorded, not a survey.</em>";
+}
+
+function adminPopup(p) {
+  return "<strong>" + esc(p.label) + "</strong><br>" +
+    "Drawn to SNI 6502.2:2010 Lampiran A(e)." +
+    "<br><em>SNI 6502.2:2010 section 6.3: an administrative boundary on a " +
+    "rupabumi map is not an official reference. Use it to read the map, " +
+    "never to settle where a boundary runs.</em>";
+}
 
 function hotspotPopup(p) {
   const distrik = p.distrik ? p.distrik : "outside mapped desa (offshore/water)";
@@ -508,6 +675,15 @@ function surveyPopup(p) {
     esc(p.plot_id) + '">' +
     '<span class="muted">Looking ' + esc(s.arah) +
     (s.keterangan ? " - " + esc(s.keterangan) : "") + "</span>").join("");
+  if (p.jenis === "observasi")
+    return "<strong>Field photograph</strong><br>" + shots +
+      "<br>" + esc(p.waktu) + " WIT" +
+      (p.tempat ? " &middot; " + esc(p.tempat) : "") + "<br>" +
+      (p.catatan ? esc(p.catatan) + "<br>" : "") +
+      "<em>A photograph taken from the road, not a sample. Nothing here was " +
+      "classified and no plot was laid out: it records what the ground " +
+      "looked like at this place and minute, and nothing beyond the frame." +
+      "</em>";
   return "<strong>Field plot " + esc(p.plot_id) + "</strong><br>" + shots +
     "<br>Read on the ground as: " + esc(p.kelas) + " (" +
     esc(p.tingkat_yakin) + ")<br>" +
@@ -524,8 +700,11 @@ const IDENTIFY = [
   { layer: "survey-dot", html: surveyPopup },
   { layer: "labels-fill", html: labelPopup },
   { layer: "recurrent-ring", html: recurrentPopup },
-  { layer: "hotspots", html: hotspotPopup },
+  { layer: "detections", html: hotspotPopup },
   { layer: "burned-fill", html: burnedPopup },
+  { layer: "admin-desa", html: adminPopup },
+  { layer: "admin-distrik", html: adminPopup },
+  { layer: "roads-lines", html: roadPopup },
 ];
 
 const identifiable = () =>
@@ -559,21 +738,31 @@ map.on("mousemove", (e) => {
    missing from the legend, or the reverse. `ids` are the MapLibre layers the
    checkbox owns; `swatch` is the legend mark. */
 const LAYERS = [
-  { key: "hotspots", label: "Thermal anomaly detections", on: true,
-    ids: ["hotspots"], swatch: "dot-frp",
-    note: "size and colour by FRP (MW)" },
+  { key: "detections", label: "Thermal anomaly detections", on: true,
+    ids: ["detections"], swatch: "dot-frp",
+    note: "size and colour by FRP (MW); the date filter above sets which" },
+  { key: "recent", label: "Detected in the last 7 days", on: true,
+    ids: ["hotspots-recent"], swatch: "recent",
+    note: "the window the status strip and the brief cover" },
   { key: "burned", label: "Mapped burn polygons", on: true,
     ids: ["burned-fill", "burned-line"], swatch: "#8c2f10" },
-  { key: "survey", label: "Field plots, with photographs", on: true,
-    ids: ["survey-halo", "survey-dot"], swatch: "pin",
-    note: "3 plots visited 2026-09-03" },
+  { key: "survey", label: "Field survey", on: true,
+    ids: ["survey-halo", "survey-dot"], swatch: "survey",
+    note: "3 classified plots, 14 roadside photographs" },
   { key: "labels", label: "Interpretation boxes", on: false,
     ids: ["labels-fill", "labels-line"], swatch: "class",
     note: "blue read as burned, green as unburned, olive unsure" },
   { key: "recurrent", label: "Recurrent locations", on: true,
     ids: ["recurrent-ring", "recurrent-label"], swatch: "ring" },
-  { key: "desa", label: "Desa / kelurahan boundaries", on: true,
-    ids: ["desa-lines"], swatch: "#8a8a8a" },
+  { key: "admin", label: "Batas kecamatan dan desa", on: true,
+    ids: ["admin-distrik", "admin-desa"], swatch: "admin",
+    note: "SNI 6502.2:2010; not an official boundary reference" },
+  { key: "kabupaten", label: "Batas kabupaten/kota", on: false,
+    ids: ["admin-kabupaten"], swatch: "admin-kab",
+    note: "follows the coast: Biak Numfor and Supiori share no land edge" },
+  { key: "roads", label: "Roads (OpenStreetMap)", on: true,
+    ids: ["roads-lines"], swatch: "roads",
+    note: "arteri, kolektor, lokal" },
 ];
 const layerOn = new Map(LAYERS.map((l) => [l.key, l.on]));
 
@@ -597,8 +786,20 @@ function swatchHtml(l) {
       .join("");
   if (l.swatch === "ring")
     return '<span class="sw ring"></span>';
-  if (l.swatch === "pin")
-    return '<span class="sw pin"></span>';
+  if (l.swatch === "recent")
+    return '<span class="sw ring recent"></span>';
+  if (l.swatch === "survey")
+    return '<span class="sw dot" style="background:#a3341f"></span>' +
+           '<span class="sw dot small" style="background:#1b6ec2"></span>';
+  if (l.swatch === "roads")
+    return ["#8a5a2b", "#a8763f", "#b9936a"]
+      .map((c) => '<span class="sw rule" style="background:' + c + '"></span>')
+      .join("");
+  if (l.swatch === "admin")
+    return '<span class="sw sni distrik"></span>' +
+           '<span class="sw sni desa"></span>';
+  if (l.swatch === "admin-kab")
+    return '<span class="sw sni kab"></span>';
   return '<span class="sw box" style="background:' + l.swatch + '"></span>';
 }
 
@@ -634,12 +835,19 @@ buildLayerSwitch();
 
 map.on("load", async () => {
   const fetches = [
-    ["desa", "data/biak_desa.geojson",
-     "District boundaries (biak_desa.geojson) failed to load — desa " +
-     "boundaries are not drawn."],
+    ["admin", "data/admin_lines.geojson",
+     "Administrative boundaries (admin_lines.geojson) failed to load \u2014 " +
+     "no desa or distrik lines are drawn."],
+    ["roads", "data/roads.geojson",
+     "Roads (roads.geojson) failed to load \u2014 that layer is " +
+     "unavailable."],
+    ["detections", "data/detections.geojson",
+     "The detection record (detections.geojson) failed to load \u2014 the " +
+     "map shows no detections, which is not a statement that there were " +
+     "none."],
     ["hotspots", "data/hotspots_latest.geojson",
-     "Hotspot data (hotspots_latest.geojson) failed to load — the map shows " +
-     "boundaries only."],
+     "The seven-day window (hotspots_latest.geojson) failed to load \u2014 " +
+     "recent detections are not ringed."],
     ["recurrentRaw", "data/recurrent_sites.json",
      "Recurrent sites (recurrent_sites.json) failed to load — the " +
      "recurrent-location layer is unavailable."],
@@ -682,6 +890,7 @@ map.on("load", async () => {
     }
   }));
   if (scenes) initSceneUI();
+  initDateFilter();
   addLocalLayers();
 });
 
@@ -703,7 +912,7 @@ map.on("load", async () => {
    everything in place costs a dozen getLayer() calls. */
 (() => {
   const reapply = () => {
-    if (!map.isStyleLoaded() || !localData.desa) return;
+    if (!map.isStyleLoaded() || !localData.admin) return;
     addLocalLayers();
   };
   const reapplyTimer = setInterval(reapply, 400);

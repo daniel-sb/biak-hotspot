@@ -253,3 +253,77 @@ main a { color: inherit; text-decoration: underline;
   text-decoration-color: var(--rule); text-underline-offset: 2px; }
 main a:hover { text-decoration-color: var(--ember); }
 code { font-size: .9em; background: rgba(23, 32, 31, .06); padding: 0 .2em; }
+
+/* ---------- dark surfaces ----------
+   The map is the light thing on this page and the instruments around it are
+   dark, which is the AICC arrangement the brief started from and the reason
+   the figures stop competing with the map for attention. Every pairing below
+   was checked rather than eyeballed: nightink on night is 13.6:1, nightsoft
+   on night 6.6:1, flame on night 5.3:1. scar is too dark to sit on night at
+   all, which is what flame exists for. */
+:root {
+  --night: #16201d;
+  --night-line: #2f3e39;
+  --night-ink: #e7e9e4;
+  --night-soft: #9aa69f;
+  --flame: #e2714a;
+}
+
+.rail { color: var(--night-ink); }
+.rail-card {
+  background: var(--night);
+  border: 1px solid var(--night-line);
+  padding: .5rem .75rem;
+}
+.rail-stack { padding: 0; }
+.rail-row { padding: .5rem .75rem; border-bottom: 1px solid var(--night-line); }
+.rail-row:last-child { border-bottom: 0; }
+.rail .tile-k { color: var(--night-soft); }
+.rail a { color: var(--night-ink); text-decoration-color: var(--night-line); }
+.rail a:hover { text-decoration-color: var(--flame); }
+.rail #gap { background: var(--night); border-color: var(--night-line);
+  color: var(--night-ink); font-size: .84rem; }
+.rail #figures-error { color: var(--flame); }
+.pnote { color: var(--night-soft); font-size: .8rem; }
+body > *:not(.rail) .pnote, .pad .pnote { color: var(--night-soft); }
+
+/* The map panel is the same instrument surface as the rail. */
+#mappanel {
+  background: rgba(22, 32, 29, .94);
+  border-color: var(--night-line);
+  color: var(--night-ink);
+}
+#mappanel h2 { color: var(--night-soft); border-bottom-color: var(--night-line); }
+#mappanel select, #mappanel button, #mappanel input[type="date"] {
+  background: #1f2b27;
+  color: var(--night-ink);
+  border: 1px solid var(--night-line);
+}
+#mappanel button:hover { background: var(--night-line); }
+#mappanel input[type="checkbox"], #mappanel input[type="radio"],
+#mappanel input[type="range"] { accent-color: var(--flame); }
+#mappanel .muted { color: var(--night-soft); }
+#imagery-note, #scene-note, #det-count { color: var(--night-soft); }
+#mappanel .unavailable { color: #f1a08c !important; }
+#mappanel .row2 { display: flex; align-items: center; gap: .4rem;
+  justify-content: space-between; }
+#mappanel .row2 label { display: flex; align-items: center; gap: .25rem;
+  flex: 1 1 0; }
+#mappanel .row2 input[type="date"] { width: 100%; font: inherit;
+  padding: .1rem .2rem; }
+#mappanel .btns { display: flex; gap: .3rem; margin: .3rem 0 .2rem; }
+#mappanel .btns button { flex: 1 1 0; }
+
+/* legend marks that only exist on the dark panel */
+.sw.dot.small { width: .5rem; height: .5rem; align-self: center; }
+/* Zero-height marks are centred on the flex line by default, which on a
+   two-line legend entry drops them opposite the second line. Pin them to the
+   first. */
+.sw.rule { height: 0; border-top: 2px solid; width: .9rem;
+  align-self: flex-start; margin-top: .5em; }
+.sw.ring.recent { border-color: #e2714a; }
+.sw.sni { height: 0; width: 1.1rem; align-self: flex-start;
+  margin-top: .5em; border-top: 1.5px solid var(--night-ink); }
+.sw.sni.kab { border-top-style: dashed; }
+.sw.sni.distrik { border-top-style: dotted; }
+.sw.sni.desa { border-top-style: dashed; border-top-width: 1px; }
