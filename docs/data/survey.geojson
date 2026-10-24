@@ -1,0 +1,86 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.045207,
+     -1.148496
+    ]
+   },
+   "properties": {
+    "plot_id": "20260903-161249",
+    "target_id": "T027",
+    "kelas": "bakar",
+    "tingkat_yakin": "pasti",
+    "bukti": "arang",
+    "akurasi_m": 1.5,
+    "waktu": "2026-09-03 16:12:49",
+    "catatan": null,
+    "photos": [
+     {
+      "file": "photos/20260903-161249_barat.webp",
+      "arah": "barat",
+      "keterangan": null
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.045577,
+     -1.148585
+    ]
+   },
+   "properties": {
+    "plot_id": "20260903-161554",
+    "target_id": "T027",
+    "kelas": "bakar",
+    "tingkat_yakin": "pasti",
+    "bukti": "abu",
+    "akurasi_m": 1.48,
+    "waktu": "2026-09-03 16:15:54",
+    "catatan": "Asap",
+    "photos": [
+     {
+      "file": "photos/20260903-161554_utara.webp",
+      "arah": "utara",
+      "keterangan": "Asap inggiri"
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     136.090288,
+     -1.141257
+    ]
+   },
+   "properties": {
+    "plot_id": "20260903-164136",
+    "target_id": "T053",
+    "kelas": "bakar",
+    "tingkat_yakin": "pasti",
+    "bukti": "batang hangus",
+    "akurasi_m": 1.68,
+    "waktu": "2026-09-03 16:41:36",
+    "catatan": "400 meter dari titk 53,susah dicapai",
+    "photos": [
+     {
+      "file": "photos/20260903-164136_selatan.webp",
+      "arah": "selatan",
+      "keterangan": "400 meter dr titik 53"
+     }
+    ]
+   }
+  }
+ ]
+}

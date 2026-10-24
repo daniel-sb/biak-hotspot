@@ -1,65 +1,98 @@
-<aside id="ethics">
-  <strong>What a hotspot is — and is not.</strong>
-  A hotspot is a thermal anomaly detected by a satellite sensor. It is not a confirmed fire,
-  and it cannot identify who started anything: a 375&nbsp;m pixel cannot attribute burning to
-  any person, landowner or village. Small-scale shifting cultivation is a long-standing and
-  lawful practice in Papua; a monitoring product that frames every detection as illegal
-  misrepresents the data. False-positive caveats are published with the counts, every time.
+<aside id="ethics" class="border-y border-rule bg-paper">
+  <p class="mx-auto max-w-[1600px] px-4 py-2 text-[0.83rem] leading-snug">
+    <span class="font-semibold">A hotspot is a thermal anomaly detected by a satellite sensor.</span>
+    It is not a confirmed fire, and it cannot identify who started anything: a 375&nbsp;m pixel
+    cannot attribute burning to any person, landowner or village. Small-scale shifting
+    cultivation is a long-standing and lawful practice in Papua; a monitoring product that
+    frames every detection as illegal misrepresents the data. False-positive caveats are
+    published with the counts, every time.
+  </p>
 </aside>
 
-<p id="status"><span class="muted">Loading&hellip;</span></p>
+<section class="mx-auto grid max-w-[1600px] gap-3 px-4 pt-3 lg:grid-cols-[minmax(0,1fr)_23rem]">
 
-<div id="figures">
-  <div class="tile" id="tile-counts">
-    <span class="tile-k">Detections and events</span>
-    <span class="tile-v" id="fig-counts">&mdash;</span>
-    <span class="tile-n" id="fig-counts-prior"></span>
-  </div>
-  <div class="tile" id="tile-mapped">
-    <span class="tile-k">Mapped extent</span>
-    <span class="tile-v" id="fig-mapped">&mdash;</span>
-    <span class="tile-n" id="fig-mapped-note"></span>
-  </div>
-  <div class="tile" id="tile-validated">
-    <span class="tile-k">Estimated burned, labelled footprints</span>
-    <span class="tile-v" id="fig-validated">&mdash;</span>
-    <svg id="fig-interval" viewBox="0 0 300 34" role="img"
-         aria-label="Estimate with its 95 percent interval and the mapped extent"></svg>
-    <span class="tile-n" id="fig-validated-note"></span>
-  </div>
-</div>
+  <div id="maparea"
+       class="relative h-[66vh] min-h-[24rem] border border-rule lg:h-[calc(100vh-11.5rem)] lg:min-h-[34rem]">
+    <div id="map"></div>
+    <details id="mappanel" open>
+      <summary>Layers and imagery</summary>
+      <div class="pad">
+        <h2>Data layers</h2>
+        <div id="layers"></div>
 
-<p id="figures-error"></p>
+        <h2>Legend</h2>
+        <div id="legend"></div>
 
-<p id="read-first"><strong>These two area figures are not the same quantity.</strong>
-  One is what the product drew; the other is what a sample of hand-interpreted 1&nbsp;m
-  imagery says actually burned inside three footprints. Neither is a count of fires, and
-  nothing here says who lit anything. Read
-  <a href="methods.html">how these numbers were made</a> and
-  <a href="results.html">what they do and do not support</a> before quoting any of them.</p>
+        <h2>Background imagery</h2>
+        <div id="imagery">
+          <label><input type="radio" name="imagery" value="" checked> None</label>
+          <label><input type="radio" name="imagery" value="truecolor"> True colour (VIIRS)</label>
+          <label><input type="radio" name="imagery" value="swir"> False colour (M11-I2-I1)</label>
+          <label><input type="radio" name="imagery" value="esri"> Esri World Imagery</label>
+          <span id="imagery-note"></span>
+        </div>
 
-<p id="gap"><strong>Observation gap.</strong> Nothing observes Biak between 15:00 and 00:31 WIT.
-Himawari-9 covers those hours from geostationary orbit at 2&nbsp;km resolution — 28 times the
-pixel area of VIIRS — so it sees only larger or hotter fires. The
-<a href="brief.html">daily brief</a> carries each evening's result.</p>
+        <h2>Sentinel-2 scenes</h2>
+        <div id="scenes">
+          <label><input type="checkbox" id="scene-on"> Drape a scene on the map</label>
+          <select id="scene-event" aria-label="Which event's scene"></select>
+          <select id="scene-kind" aria-label="Band combination"></select>
+          <input type="range" id="scene-date" min="0" max="0" value="0"
+                 aria-label="Acquisition date">
+          <div class="flex items-center justify-between gap-2">
+            <span id="scene-date-label" class="tnum"></span>
+            <button type="button" id="scene-zoom">Zoom to scene</button>
+          </div>
+          <span id="scene-note"></span>
+        </div>
 
-<div id="maparea">
-  <div id="map"></div>
-  <div id="mappanel">
-    <h2>Layers</h2>
-    <div id="layers"></div>
-    <div id="imagery">
-      <div class="row">
-        <strong>Imagery:</strong>
-        <label><input type="radio" name="imagery" value="" checked> None</label>
-        <label><input type="radio" name="imagery" value="truecolor"> True colour (VIIRS)</label>
-        <label><input type="radio" name="imagery" value="swir"> False colour (M11-I2-I1)</label>
-        <label><input type="radio" name="imagery" value="esri"> Esri World Imagery</label>
+        <p class="mt-3 text-inksoft">Click any detection, polygon, box or survey plot for
+          its record.</p>
       </div>
-      <span id="imagery-note"></span>
-    </div>
-    <h2>Legend</h2>
-    <div id="legend"></div>
-    <p class="muted">Click any detection, polygon or box on the map for its record.</p>
+    </details>
   </div>
-</div>
+
+  <div class="flex flex-col gap-3">
+    <p id="status" class="font-chrome border border-rule bg-paper px-3 py-2 text-[0.84rem] leading-snug">
+      <span class="text-inksoft">Loading&hellip;</span></p>
+
+    <div id="figures" class="font-chrome border border-rule bg-paper">
+      <div id="tile-counts" class="border-b border-rule px-3 py-2">
+        <span class="tile-k block text-[0.72rem] font-semibold tracking-[0.06em] text-inksoft">Detections and events</span>
+        <span id="fig-counts" class="tnum block text-[1.45rem] leading-tight">&mdash;</span>
+        <span id="fig-counts-prior" class="block text-[0.76rem] text-inksoft"></span>
+      </div>
+      <div id="tile-mapped" class="border-b border-rule px-3 py-2">
+        <span class="tile-k block text-[0.72rem] font-semibold tracking-[0.06em] text-inksoft">Mapped extent</span>
+        <span id="fig-mapped" class="tnum block text-[1.45rem] leading-tight">&mdash;</span>
+        <span id="fig-mapped-note" class="block text-[0.76rem] text-inksoft"></span>
+      </div>
+      <div id="tile-validated" class="border-l-2 border-l-scar px-3 py-2">
+        <span class="tile-k block text-[0.72rem] font-semibold tracking-[0.06em] text-inksoft">Estimated burned, labelled footprints</span>
+        <span id="fig-validated" class="tnum block text-[1.45rem] leading-tight">&mdash;</span>
+        <svg id="fig-interval" viewBox="0 0 300 34" role="img" class="mt-1"
+             aria-label="Estimate with its 95 percent interval and the mapped extent"></svg>
+        <span id="fig-validated-note" class="block text-[0.76rem] text-inksoft"></span>
+      </div>
+    </div>
+
+    <p id="figures-error" class="text-[0.84rem] text-scar"></p>
+
+    <p id="read-first" class="border border-rule bg-paper px-3 py-2 text-[0.84rem] leading-snug">
+      <span class="font-semibold">These two area figures are not the same quantity.</span>
+      One is what the product drew; the other is what a sample of hand-interpreted 1&nbsp;m
+      imagery says actually burned inside three footprints. Neither is a count of fires, and
+      nothing here says who lit anything. Read
+      <a class="underline decoration-rule underline-offset-2 hover:decoration-ember" href="methods.html">how these numbers were made</a> and
+      <a class="underline decoration-rule underline-offset-2 hover:decoration-ember" href="results.html">what they do and do not support</a>
+      before quoting any of them.</p>
+
+    <p id="gap">
+      <span class="font-semibold">Observation gap.</span>
+      Nothing observes Biak between 15:00 and 00:31 WIT. Himawari-9 covers those hours from geostationary orbit at
+      2&nbsp;km resolution &mdash; 28 times the pixel area of VIIRS &mdash; so it sees only
+      larger or hotter fires. The
+      <a class="underline decoration-rule underline-offset-2 hover:decoration-ember" href="brief.html">daily brief</a>
+      carries each evening's result.</p>
+  </div>
+</section>

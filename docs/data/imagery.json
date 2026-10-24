@@ -1,0 +1,596 @@
+{
+ "source": "Sentinel-2 L2A (Copernicus), super-resolved to 1 m by S2DR4 and republished here at about 3 m per pixel.",
+ "published_px": 1280,
+ "events": [
+  {
+   "event": "E0301",
+   "desa": "Anjareuw"
+  },
+  {
+   "event": "E0313",
+   "desa": "Yendidori"
+  },
+  {
+   "event": "E0368",
+   "desa": "Insumarires"
+  }
+ ],
+ "tiles": [
+  {
+   "id": "E0301-tci-20260813",
+   "event": "E0301",
+   "desa": "Anjareuw",
+   "kind": "tci",
+   "date": "2026-08-13",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0301_tci_20260813.webp",
+   "bounds": [
+    136.123994,
+    -1.196319,
+    136.160852,
+    -1.159217
+   ]
+  },
+  {
+   "id": "E0301-tci-20260823",
+   "event": "E0301",
+   "desa": "Anjareuw",
+   "kind": "tci",
+   "date": "2026-08-23",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0301_tci_20260823.webp",
+   "bounds": [
+    136.123994,
+    -1.196319,
+    136.160852,
+    -1.159217
+   ]
+  },
+  {
+   "id": "E0301-tci-20260825",
+   "event": "E0301",
+   "desa": "Anjareuw",
+   "kind": "tci",
+   "date": "2026-08-25",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0301_tci_20260825.webp",
+   "bounds": [
+    136.123994,
+    -1.196319,
+    136.160852,
+    -1.159217
+   ]
+  },
+  {
+   "id": "E0301-tci-20260828",
+   "event": "E0301",
+   "desa": "Anjareuw",
+   "kind": "tci",
+   "date": "2026-08-28",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0301_tci_20260828.webp",
+   "bounds": [
+    136.123994,
+    -1.196319,
+    136.160852,
+    -1.159217
+   ]
+  },
+  {
+   "id": "E0301-tci-20260902",
+   "event": "E0301",
+   "desa": "Anjareuw",
+   "kind": "tci",
+   "date": "2026-09-02",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0301_tci_20260902.webp",
+   "bounds": [
+    136.123994,
+    -1.196319,
+    136.160852,
+    -1.159217
+   ]
+  },
+  {
+   "id": "E0301-tci-20260917",
+   "event": "E0301",
+   "desa": "Anjareuw",
+   "kind": "tci",
+   "date": "2026-09-17",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0301_tci_20260917.webp",
+   "bounds": [
+    136.123994,
+    -1.196319,
+    136.160852,
+    -1.159217
+   ]
+  },
+  {
+   "id": "E0301-swir-20260813",
+   "event": "E0301",
+   "desa": "Anjareuw",
+   "kind": "swir",
+   "date": "2026-08-13",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0301_swir_20260813.webp",
+   "bounds": [
+    136.123994,
+    -1.196319,
+    136.160852,
+    -1.159217
+   ]
+  },
+  {
+   "id": "E0301-swir-20260823",
+   "event": "E0301",
+   "desa": "Anjareuw",
+   "kind": "swir",
+   "date": "2026-08-23",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0301_swir_20260823.webp",
+   "bounds": [
+    136.123994,
+    -1.196319,
+    136.160852,
+    -1.159217
+   ]
+  },
+  {
+   "id": "E0301-swir-20260825",
+   "event": "E0301",
+   "desa": "Anjareuw",
+   "kind": "swir",
+   "date": "2026-08-25",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0301_swir_20260825.webp",
+   "bounds": [
+    136.123994,
+    -1.196319,
+    136.160852,
+    -1.159217
+   ]
+  },
+  {
+   "id": "E0301-swir-20260828",
+   "event": "E0301",
+   "desa": "Anjareuw",
+   "kind": "swir",
+   "date": "2026-08-28",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0301_swir_20260828.webp",
+   "bounds": [
+    136.123994,
+    -1.196319,
+    136.160852,
+    -1.159217
+   ]
+  },
+  {
+   "id": "E0301-swir-20260902",
+   "event": "E0301",
+   "desa": "Anjareuw",
+   "kind": "swir",
+   "date": "2026-09-02",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0301_swir_20260902.webp",
+   "bounds": [
+    136.123994,
+    -1.196319,
+    136.160852,
+    -1.159217
+   ]
+  },
+  {
+   "id": "E0301-swir-20260917",
+   "event": "E0301",
+   "desa": "Anjareuw",
+   "kind": "swir",
+   "date": "2026-09-17",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0301_swir_20260917.webp",
+   "bounds": [
+    136.123994,
+    -1.196319,
+    136.160852,
+    -1.159217
+   ]
+  },
+  {
+   "id": "E0313-tci-20260813",
+   "event": "E0313",
+   "desa": "Yendidori",
+   "kind": "tci",
+   "date": "2026-08-13",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0313_tci_20260813.webp",
+   "bounds": [
+    136.021167,
+    -1.152941,
+    136.058026,
+    -1.115838
+   ]
+  },
+  {
+   "id": "E0313-tci-20260823",
+   "event": "E0313",
+   "desa": "Yendidori",
+   "kind": "tci",
+   "date": "2026-08-23",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0313_tci_20260823.webp",
+   "bounds": [
+    136.021167,
+    -1.152941,
+    136.058026,
+    -1.115838
+   ]
+  },
+  {
+   "id": "E0313-tci-20260825",
+   "event": "E0313",
+   "desa": "Yendidori",
+   "kind": "tci",
+   "date": "2026-08-25",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0313_tci_20260825.webp",
+   "bounds": [
+    136.021167,
+    -1.152941,
+    136.058026,
+    -1.115838
+   ]
+  },
+  {
+   "id": "E0313-tci-20260828",
+   "event": "E0313",
+   "desa": "Yendidori",
+   "kind": "tci",
+   "date": "2026-08-28",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0313_tci_20260828.webp",
+   "bounds": [
+    136.021167,
+    -1.152941,
+    136.058026,
+    -1.115838
+   ]
+  },
+  {
+   "id": "E0313-tci-20260902",
+   "event": "E0313",
+   "desa": "Yendidori",
+   "kind": "tci",
+   "date": "2026-09-02",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0313_tci_20260902.webp",
+   "bounds": [
+    136.021167,
+    -1.152941,
+    136.058026,
+    -1.115838
+   ]
+  },
+  {
+   "id": "E0313-tci-20260917",
+   "event": "E0313",
+   "desa": "Yendidori",
+   "kind": "tci",
+   "date": "2026-09-17",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0313_tci_20260917.webp",
+   "bounds": [
+    136.021167,
+    -1.152941,
+    136.058026,
+    -1.115838
+   ]
+  },
+  {
+   "id": "E0313-swir-20260813",
+   "event": "E0313",
+   "desa": "Yendidori",
+   "kind": "swir",
+   "date": "2026-08-13",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0313_swir_20260813.webp",
+   "bounds": [
+    136.021167,
+    -1.152941,
+    136.058026,
+    -1.115838
+   ]
+  },
+  {
+   "id": "E0313-swir-20260823",
+   "event": "E0313",
+   "desa": "Yendidori",
+   "kind": "swir",
+   "date": "2026-08-23",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0313_swir_20260823.webp",
+   "bounds": [
+    136.021167,
+    -1.152941,
+    136.058026,
+    -1.115838
+   ]
+  },
+  {
+   "id": "E0313-swir-20260825",
+   "event": "E0313",
+   "desa": "Yendidori",
+   "kind": "swir",
+   "date": "2026-08-25",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0313_swir_20260825.webp",
+   "bounds": [
+    136.021167,
+    -1.152941,
+    136.058026,
+    -1.115838
+   ]
+  },
+  {
+   "id": "E0313-swir-20260828",
+   "event": "E0313",
+   "desa": "Yendidori",
+   "kind": "swir",
+   "date": "2026-08-28",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0313_swir_20260828.webp",
+   "bounds": [
+    136.021167,
+    -1.152941,
+    136.058026,
+    -1.115838
+   ]
+  },
+  {
+   "id": "E0313-swir-20260902",
+   "event": "E0313",
+   "desa": "Yendidori",
+   "kind": "swir",
+   "date": "2026-09-02",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0313_swir_20260902.webp",
+   "bounds": [
+    136.021167,
+    -1.152941,
+    136.058026,
+    -1.115838
+   ]
+  },
+  {
+   "id": "E0313-swir-20260917",
+   "event": "E0313",
+   "desa": "Yendidori",
+   "kind": "swir",
+   "date": "2026-09-17",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0313_swir_20260917.webp",
+   "bounds": [
+    136.021167,
+    -1.152941,
+    136.058026,
+    -1.115838
+   ]
+  },
+  {
+   "id": "E0368-tci-20260813",
+   "event": "E0368",
+   "desa": "Insumarires",
+   "kind": "tci",
+   "date": "2026-08-13",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0368_tci_20260813.webp",
+   "bounds": [
+    136.215827,
+    -1.170952,
+    136.252684,
+    -1.133852
+   ]
+  },
+  {
+   "id": "E0368-tci-20260823",
+   "event": "E0368",
+   "desa": "Insumarires",
+   "kind": "tci",
+   "date": "2026-08-23",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0368_tci_20260823.webp",
+   "bounds": [
+    136.215827,
+    -1.170952,
+    136.252684,
+    -1.133852
+   ]
+  },
+  {
+   "id": "E0368-tci-20260825",
+   "event": "E0368",
+   "desa": "Insumarires",
+   "kind": "tci",
+   "date": "2026-08-25",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0368_tci_20260825.webp",
+   "bounds": [
+    136.215827,
+    -1.170952,
+    136.252684,
+    -1.133852
+   ]
+  },
+  {
+   "id": "E0368-tci-20260828",
+   "event": "E0368",
+   "desa": "Insumarires",
+   "kind": "tci",
+   "date": "2026-08-28",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0368_tci_20260828.webp",
+   "bounds": [
+    136.215827,
+    -1.170952,
+    136.252684,
+    -1.133852
+   ]
+  },
+  {
+   "id": "E0368-tci-20260902",
+   "event": "E0368",
+   "desa": "Insumarires",
+   "kind": "tci",
+   "date": "2026-09-02",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0368_tci_20260902.webp",
+   "bounds": [
+    136.215827,
+    -1.170952,
+    136.252684,
+    -1.133852
+   ]
+  },
+  {
+   "id": "E0368-tci-20260917",
+   "event": "E0368",
+   "desa": "Insumarires",
+   "kind": "tci",
+   "date": "2026-09-17",
+   "label": "True colour",
+   "note": "Sentinel-2 true colour, super-resolved to 1 m by S2DR4 and published here at about 3 m, with one contrast stretch applied across all six dates of this event so the series stays comparable. Burn scars read as dull grey-brown; so does bare coral rubble, and so does cloud shadow.",
+   "file": "imagery/E0368_tci_20260917.webp",
+   "bounds": [
+    136.215827,
+    -1.170952,
+    136.252684,
+    -1.133852
+   ]
+  },
+  {
+   "id": "E0368-swir-20260813",
+   "event": "E0368",
+   "desa": "Insumarires",
+   "kind": "swir",
+   "date": "2026-08-13",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0368_swir_20260813.webp",
+   "bounds": [
+    136.215827,
+    -1.170952,
+    136.252684,
+    -1.133852
+   ]
+  },
+  {
+   "id": "E0368-swir-20260823",
+   "event": "E0368",
+   "desa": "Insumarires",
+   "kind": "swir",
+   "date": "2026-08-23",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0368_swir_20260823.webp",
+   "bounds": [
+    136.215827,
+    -1.170952,
+    136.252684,
+    -1.133852
+   ]
+  },
+  {
+   "id": "E0368-swir-20260825",
+   "event": "E0368",
+   "desa": "Insumarires",
+   "kind": "swir",
+   "date": "2026-08-25",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0368_swir_20260825.webp",
+   "bounds": [
+    136.215827,
+    -1.170952,
+    136.252684,
+    -1.133852
+   ]
+  },
+  {
+   "id": "E0368-swir-20260828",
+   "event": "E0368",
+   "desa": "Insumarires",
+   "kind": "swir",
+   "date": "2026-08-28",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0368_swir_20260828.webp",
+   "bounds": [
+    136.215827,
+    -1.170952,
+    136.252684,
+    -1.133852
+   ]
+  },
+  {
+   "id": "E0368-swir-20260902",
+   "event": "E0368",
+   "desa": "Insumarires",
+   "kind": "swir",
+   "date": "2026-09-02",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0368_swir_20260902.webp",
+   "bounds": [
+    136.215827,
+    -1.170952,
+    136.252684,
+    -1.133852
+   ]
+  },
+  {
+   "id": "E0368-swir-20260917",
+   "event": "E0368",
+   "desa": "Insumarires",
+   "kind": "swir",
+   "date": "2026-09-17",
+   "label": "False colour (B12/B8A/B4)",
+   "note": "Shortwave infrared in red, near infrared in green. Burned ground is magenta to orange, living vegetation is green, and cloud is white. A band combination, not a fire detection.",
+   "file": "imagery/E0368_swir_20260917.webp",
+   "bounds": [
+    136.215827,
+    -1.170952,
+    136.252684,
+    -1.133852
+   ]
+  }
+ ]
+}

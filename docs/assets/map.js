@@ -14,15 +14,37 @@ const FALLBACK_STYLE = {
   layers: [{ id: "background", type: "background",
              paint: { "background-color": "#dfe7ee" } }],
 };
+
+/* Biak island proper: the extent of its ten districts plus a margin, the same
+   box scripts/render_biak_poster.py frames its plates with. The project AOI
+   is far wider — it reaches Supiori, Numfor and the Padaido islands, and a
+   handful of desa 300 km to the north-west — and opening on the whole of it
+   put the island the page is about in the middle third of the frame. */
+const BIAK_BOUNDS = [[135.70, -1.34], [136.42, -0.69]];
+
 const map = new maplibregl.Map({
   container: "map",
   style: FALLBACK_STYLE,
-  center: [135.5, -0.2],
-  zoom: 7.4,
+  bounds: BIAK_BOUNDS,
+  fitBoundsOptions: { padding: 16 },
   attributionControl: { compact: false },
 });
-map.addControl(new maplibregl.NavigationControl({ showCompass: false }));
-map.fitBounds([[134.25, -1.45], [136.76, 1.0]], { padding: 24, duration: 0 });
+map.addControl(new maplibregl.NavigationControl({ visualizePitch: false }),
+               "top-right");
+map.addControl(new maplibregl.FullscreenControl(), "top-right");
+map.addControl(new maplibregl.GeolocateControl({ trackUserLocation: false }),
+               "top-right");
+map.addControl(new maplibregl.ScaleControl({ maxWidth: 110, unit: "metric" }),
+               "bottom-left");
+
+/* The panel is open on a desktop, where it costs a corner of a wide map, and
+   shut on a phone, where 17 rem of panel over a 360 px map is the whole map.
+   A <details> cannot be opened by media query, so it is done once here. */
+(() => {
+  const panel = document.getElementById("mappanel");
+  if (panel && window.matchMedia("(max-width: 48rem)").matches)
+    panel.open = false;
+})();
 
 const mapErrorsShown = new Set();
 map.on("error", (e) => {
@@ -47,7 +69,7 @@ map.on("error", (e) => {
    (setStyle drops everything the page added), the layers are rebuilt from
    the cached GeoJSON objects. */
 const localData = { desa: null, hotspots: null, recurrent: null,
-                    burned: null, labels: null };
+                    burned: null, labels: null, survey: null };
 /* Every source addLocalLayers() can create. The basemap-upgrade timer stops
    re-adding layers once they all exist, so this list has to be derived from
    localData rather than written out: naming three of five here is how the two
@@ -160,9 +182,12 @@ function addImagery() {
 }
 
 /* Imagery is inserted beneath whichever vector layer currently sits lowest,
-   so it never covers the data regardless of which layers are switched on. */
+   so it never covers the data regardless of which layers are switched on.
+   The Sentinel-2 scene is in this list too, so a background mosaic never
+   lands on top of the scene the reader asked for. */
 function firstVectorLayer() {
-  for (const id of ["burned-fill", "labels-fill", "desa-lines", "hotspots"])
+  for (const id of ["burned-fill", "labels-fill", "desa-lines", "hotspots",
+                    "survey-dot"])
     if (map.getLayer(id)) return id;
   return undefined;
 }
@@ -203,8 +228,115 @@ document.querySelectorAll('input[name="imagery"]').forEach((el) => {
   el.addEventListener("change", () => setImagery(el.value));
 });
 
+/* ---------- Sentinel-2 scenes ----------
+   data/imagery.json lists one WebP per event, band combination and date,
+   already warped to WGS84, so each one is an ordinary MapLibre image source
+   pinned to its own corner quad. These are the scenes the labelling project
+   drew its boxes over (data/labels/biak_labels.qgz), republished at about
+   3 m per pixel instead of the 1 m the archive holds. */
+const SCENE_ID = "s2-scene";
+let scenes = null;               // the manifest, once it loads
+let sceneDates = [];             // the dates available for the current choice
+let sceneOn = false;
+
+
+function sceneMatches() {
+  if (!scenes) return [];
+  const ev = $("scene-event").value;
+  const kind = $("scene-kind").value;
+  return scenes.tiles
+    .filter((t) => t.event === ev && t.kind === kind)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+function sceneCurrent() {
+  const matches = sceneMatches();
+  if (!matches.length) return null;
+  const i = Math.min(matches.length - 1,
+                     Math.max(0, Number($("scene-date").value)));
+  return matches[i];
+}
+
+function addScene() {
+  if (map.getLayer(SCENE_ID)) map.removeLayer(SCENE_ID);
+  if (map.getSource(SCENE_ID)) map.removeSource(SCENE_ID);
+  if (!sceneOn) return;
+  const tile = sceneCurrent();
+  if (!tile) return;
+  const [w, s, e, n] = tile.bounds;
+  map.addSource(SCENE_ID, {
+    type: "image",
+    url: tile.file,
+    coordinates: [[w, n], [e, n], [e, s], [w, s]],
+  });
+  map.addLayer({ id: SCENE_ID, type: "raster", source: SCENE_ID,
+                 paint: { "raster-opacity": 1, "raster-fade-duration": 0 } },
+               firstVectorLayer());
+}
+
+function drawSceneUI() {
+  const matches = sceneMatches();
+  sceneDates = matches.map((t) => t.date);
+  const slider = $("scene-date");
+  slider.max = String(Math.max(0, matches.length - 1));
+  if (Number(slider.value) > Number(slider.max)) slider.value = slider.max;
+  const tile = sceneCurrent();
+  $("scene-date-label").textContent = tile
+    ? tile.date + "  (" + (Number(slider.value) + 1) + " of " + matches.length + ")"
+    : "no scene for this choice";
+  const note = $("scene-note");
+  if (!tile) {
+    note.textContent = "";
+    return;
+  }
+  note.textContent = tile.label + ", " + tile.desa + " (" + tile.event + "), " +
+    tile.date + ". " + tile.note + " " + scenes.source;
+}
+
+function refreshScene() {
+  drawSceneUI();
+  addScene();
+}
+
+function initSceneUI() {
+  const evSel = $("scene-event");
+  evSel.innerHTML = scenes.events
+    .map((e) => '<option value="' + esc(e.event) + '">' + esc(e.desa) +
+                " (" + esc(e.event) + ")</option>").join("");
+  const kinds = [];
+  for (const t of scenes.tiles)
+    if (!kinds.some((k) => k.kind === t.kind))
+      kinds.push({ kind: t.kind, label: t.label });
+  $("scene-kind").innerHTML = kinds
+    .map((k) => '<option value="' + esc(k.kind) + '">' + esc(k.label) +
+                "</option>").join("");
+  // A range input clamps its value against its max, so max has to be set
+  // before value or the series silently starts on the oldest date.
+  const slider = $("scene-date");
+  slider.max = String(Math.max(0, sceneMatches().length - 1));
+  slider.value = slider.max;        // the look furthest after the fires
+  $("scene-event").addEventListener("input", refreshScene);
+  $("scene-kind").addEventListener("input", refreshScene);
+  $("scene-date").addEventListener("input", refreshScene);
+  $("scene-on").addEventListener("change", (e) => {
+    sceneOn = e.target.checked;
+    addScene();
+    if (sceneOn) zoomToScene();
+  });
+  $("scene-zoom").addEventListener("click", zoomToScene);
+  drawSceneUI();
+}
+
+function zoomToScene() {
+  const tile = sceneCurrent();
+  if (!tile) return;
+  const [w, s, e, n] = tile.bounds;
+  map.fitBounds([[w, s], [e, n]], { padding: 24, duration: 600 });
+}
+
 function addLocalLayers() {
   addImagery();
+  addScene();
   if (localData.desa) {
     if (!map.getSource("desa"))
       map.addSource("desa", { type: "geojson", data: localData.desa });
@@ -276,6 +408,26 @@ function addLocalLayers() {
         },
       });
   }
+  /* Survey plots: the three places a surveyor stood on 2026-09-03 and
+     photographed the ground. The 361 planned targets in the same GeoPackage
+     are not published — nobody ever visited them, and a dot labelled "burn
+     target" beside somebody's garden is a claim this project cannot make. */
+  if (localData.survey) {
+    if (!map.getSource("survey"))
+      map.addSource("survey", { type: "geojson", data: localData.survey });
+    if (!map.getLayer("survey-halo"))
+      map.addLayer({
+        id: "survey-halo", type: "circle", source: "survey",
+        paint: { "circle-radius": 11, "circle-color": "#ffffff",
+                 "circle-opacity": 0.55 },
+      });
+    if (!map.getLayer("survey-dot"))
+      map.addLayer({
+        id: "survey-dot", type: "circle", source: "survey",
+        paint: { "circle-radius": 6, "circle-color": "#a3341f",
+                 "circle-stroke-color": "#ffffff", "circle-stroke-width": 2 },
+      });
+  }
   if (localData.recurrent) {
     if (!map.getSource("recurrent"))
       map.addSource("recurrent", { type: "geojson",
@@ -298,60 +450,114 @@ function addLocalLayers() {
   applyVisibility();
 }
 
-/* Layer-aware click/hover handlers are registered once: they fire whenever
-   the layers exist, including after a basemap upgrade re-adds them. */
-map.on("click", "hotspots", (e) => {
-  const p = e.features[0].properties;
+/* ---------- identify ----------
+   One click handler, not one per layer. Where layers overlap - and a burn
+   polygon overlaps nearly everything else on this map - a handler per layer
+   opens one popup per layer, stacked on each other, and the reader has to
+   dismiss three records to read the one they clicked. The order below is how
+   specific the layer is: a plot somebody stood on beats a box somebody
+   interpreted, which beats a polygon covering half a square kilometre. */
+
+function hotspotPopup(p) {
   const distrik = p.distrik ? p.distrik : "outside mapped desa (offshore/water)";
-  new maplibregl.Popup()
-    .setLngLat(e.lngLat)
-    .setHTML(
-      "<strong>" + esc(p.acq_date) + "</strong> — " +
-      esc((p.datetime_wit || "").slice(11, 16)) + " WIT<br>" +
-      "Satellite: " + esc(p.satellite) + "<br>" +
-      "Confidence: " + esc(p.confidence) + " (raw instrument code)<br>" +
-      "FRP: " + esc(p.frp) + " MW<br>" +
-      "Distrik: " + esc(distrik))
-    .addTo(map);
-});
-map.on("mouseenter", "hotspots", () => map.getCanvas().style.cursor = "pointer");
-map.on("mouseleave", "hotspots", () => map.getCanvas().style.cursor = "");
-map.on("click", "recurrent-ring", (e) => {
-  const p = e.features[0].properties;
-  new maplibregl.Popup().setLngLat(e.lngLat).setHTML(
-    "<strong>Recurrent location</strong><br>" +
+  return "<strong>" + esc(p.acq_date) + "</strong> - " +
+    esc((p.datetime_wit || "").slice(11, 16)) + " WIT<br>" +
+    "Satellite: " + esc(p.satellite) + "<br>" +
+    "Confidence: " + esc(p.confidence) + " (raw instrument code)<br>" +
+    "FRP: " + esc(p.frp) + " MW<br>" +
+    "Distrik: " + esc(distrik);
+}
+
+function recurrentPopup(p) {
+  return "<strong>Recurrent location</strong><br>" +
     "Hotspots on " + esc(p.days) + " distinct days, " +
     esc(p.first) + " to " + esc(p.last) +
     ".<br><em>Recurrent location</em> describes how often hotspots have " +
-    "appeared here. It does not say what is here.").addTo(map);
-});
+    "appeared here. It does not say what is here.";
+}
 
-map.on("click", "burned-fill", (e) => {
-  const p = e.features[0].properties;
-  new maplibregl.Popup().setLngLat(e.lngLat).setHTML(
-    "<strong>Mapped burn polygon</strong><br>" +
+function burnedPopup(p) {
+  return "<strong>Mapped burn polygon</strong><br>" +
     "Event: " + esc(p.event_id) + "<br>" +
     "dNBR+ threshold: " + esc(p.threshold) +
     "<br><em>A change like a burn is not proof of burning, and says nothing " +
     "about why. Per-event areas and their caveats are on the results page." +
-    "</em>").addTo(map);
-});
-map.on("click", "labels-fill", (e) => {
-  const p = e.features[0].properties;
-  new maplibregl.Popup().setLngLat(e.lngLat).setHTML(
-    "<strong>Interpretation box " + esc(p.sample_id) + "</strong><br>" +
+    "</em>";
+}
+
+function labelPopup(p) {
+  return "<strong>Interpretation box " + esc(p.sample_id) + "</strong><br>" +
     "Read as: " + esc(p["class"]) + " (interpreter confidence " +
     esc(p.confidence) + ")<br>" +
-    "Event: " + esc(p.event_id) + " · stratum: " + esc(p.sampling) +
+    "Event: " + esc(p.event_id) + " \u00b7 stratum: " + esc(p.sampling) +
     "<br><em>One interpreter's reading of 1 m imagery for this 60 m sample " +
     "box. No second interpreter checked it, so agreement between " +
     "interpreters was never measured. It is evidence about the product, not " +
-    "a statement about this land or anyone on it.</em>").addTo(map);
-});
-for (const id of ["burned-fill", "labels-fill", "recurrent-ring"]) {
-  map.on("mouseenter", id, () => map.getCanvas().style.cursor = "pointer");
-  map.on("mouseleave", id, () => map.getCanvas().style.cursor = "");
+    "a statement about this land or anyone on it.</em>";
 }
+
+/* The only layer on the map whose evidence is a person standing on the
+   ground, so the popup leads with the photograph. GeoJSON properties survive
+   MapLibre as strings, so the photo list arrives JSON-encoded. */
+function surveyPopup(p) {
+  let photos = [];
+  try {
+    photos = typeof p.photos === "string"
+      ? JSON.parse(p.photos) : (p.photos || []);
+  } catch (err) {
+    photos = [];
+  }
+  const shots = photos.map((s) =>
+    '<img class="popup-photo" loading="lazy" src="' + esc(s.file) +
+    '" alt="Ground photograph looking ' + esc(s.arah) + ' from plot ' +
+    esc(p.plot_id) + '">' +
+    '<span class="muted">Looking ' + esc(s.arah) +
+    (s.keterangan ? " - " + esc(s.keterangan) : "") + "</span>").join("");
+  return "<strong>Field plot " + esc(p.plot_id) + "</strong><br>" + shots +
+    "<br>Read on the ground as: " + esc(p.kelas) + " (" +
+    esc(p.tingkat_yakin) + ")<br>" +
+    "Evidence: " + esc(p.bukti) + "<br>" +
+    "Visited " + esc(p.waktu) + " WIT, GNSS accuracy " +
+    esc(p.akurasi_m) + " m<br>" +
+    (p.catatan ? "Note: " + esc(p.catatan) + "<br>" : "") +
+    "<em>One of three plots visited on 2026-09-03. Three plots cannot " +
+    "validate a map of the island; they say what the ground looked like at " +
+    "three points, eleven days after the detections stopped.</em>";
+}
+
+const IDENTIFY = [
+  { layer: "survey-dot", html: surveyPopup },
+  { layer: "labels-fill", html: labelPopup },
+  { layer: "recurrent-ring", html: recurrentPopup },
+  { layer: "hotspots", html: hotspotPopup },
+  { layer: "burned-fill", html: burnedPopup },
+];
+
+const identifiable = () =>
+  IDENTIFY.map((i) => i.layer).filter((id) => map.getLayer(id));
+
+/* Registered once, on the map rather than on a layer, so they keep working
+   after the basemap upgrade replaces every layer the page added. */
+map.on("click", (e) => {
+  for (const entry of IDENTIFY) {
+    if (!map.getLayer(entry.layer)) continue;
+    const hits = map.queryRenderedFeatures(e.point, {
+      layers: [entry.layer] });
+    if (!hits.length) continue;
+    new maplibregl.Popup({ maxWidth: "320px" })
+      .setLngLat(e.lngLat)
+      .setHTML(entry.html(hits[0].properties))
+      .addTo(map);
+    return;
+  }
+});
+
+map.on("mousemove", (e) => {
+  const layers = identifiable();
+  const over = layers.length > 0 &&
+    map.queryRenderedFeatures(e.point, { layers }).length > 0;
+  map.getCanvas().style.cursor = over ? "pointer" : "";
+});
 
 /* ---------- layer switch and legend ----------
    One registry drives both, so a layer can never appear in the switch and be
@@ -363,6 +569,9 @@ const LAYERS = [
     note: "size and colour by FRP (MW)" },
   { key: "burned", label: "Mapped burn polygons", on: true,
     ids: ["burned-fill", "burned-line"], swatch: "#8c2f10" },
+  { key: "survey", label: "Field plots, with photographs", on: true,
+    ids: ["survey-halo", "survey-dot"], swatch: "pin",
+    note: "3 plots visited 2026-09-03" },
   { key: "labels", label: "Interpretation boxes", on: false,
     ids: ["labels-fill", "labels-line"], swatch: "class",
     note: "blue read as burned, green as unburned, olive unsure" },
@@ -393,6 +602,8 @@ function swatchHtml(l) {
       .join("");
   if (l.swatch === "ring")
     return '<span class="sw ring"></span>';
+  if (l.swatch === "pin")
+    return '<span class="sw pin"></span>';
   return '<span class="sw box" style="background:' + l.swatch + '"></span>';
 }
 
@@ -402,9 +613,9 @@ function drawLegend() {
   const el = $("legend");
   if (!el) return;
   const rows = LAYERS.filter((l) => layerOn.get(l.key)).map((l) =>
-    '<li>' + swatchHtml(l) + esc(l.label) +
-    (l.note ? ' <span class="muted">' + esc(l.note) + "</span>" : "") +
-    "</li>");
+    "<li>" + swatchHtml(l) + "<span>" + esc(l.label) +
+    (l.note ? ' <span class="muted">— ' + esc(l.note) + "</span>" : "") +
+    "</span></li>");
   el.innerHTML = rows.length
     ? "<ul>" + rows.join("") + "</ul>"
     : '<p class="muted">No data layers switched on.</p>';
@@ -444,6 +655,12 @@ map.on("load", async () => {
     ["labels", "data/labels.geojson",
      "Interpretation boxes (labels.geojson) failed to load — that layer is " +
      "unavailable."],
+    ["survey", "data/survey.geojson",
+     "Field plots (survey.geojson) failed to load — the ground photographs " +
+     "are unavailable."],
+    ["scenes", "data/imagery.json",
+     "The Sentinel-2 scene index (imagery.json) failed to load — no scene " +
+     "can be draped on the map."],
   ];
   await Promise.all(fetches.map(async ([key, url, errText]) => {
     try {
@@ -460,6 +677,8 @@ map.on("load", async () => {
                           first: s.first_date, last: s.last_date },
           })),
         };
+      } else if (key === "scenes") {
+        scenes = json;
       } else {
         localData[key] = json;
       }
@@ -467,6 +686,7 @@ map.on("load", async () => {
       dataError(key, errText + " " + e.message);
     }
   }));
+  if (scenes) initSceneUI();
   addLocalLayers();
 });
 

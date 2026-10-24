@@ -70,6 +70,10 @@ PAGES = [
      "Biak hotspot monitor — methodology",
      "How these numbers were made",
      ["core.js", "methods.js"], False),
+    ("gallery", "Burn atlas",
+     "Biak hotspot monitor — the burn atlas",
+     "Burn atlas: three footprints, six dates",
+     ["core.js", "gallery.js"], False),
     ("brief", "Daily brief",
      "Biak hotspot monitor — the daily brief",
      "Daily brief and the previous evening",
@@ -77,18 +81,36 @@ PAGES = [
 ]
 
 
+# The front page is the map and manages its own full-width layout. Every
+# other page is prose, and gets one measured column with a shared type scale,
+# so a new page does not have to restate it.
+WIDE = {"index"}
+PROSE_MAIN = ('<main class="mx-auto max-w-[72rem] px-4 pt-4 pb-2 '
+              '[&_h2]:font-chrome [&_h2]:text-[1.1rem] [&_h2]:font-semibold '
+              '[&_h2]:mt-6 [&_h2]:mb-1 [&_p]:my-2 [&_p]:max-w-[68ch]">')
+
+NAV_LINK = ("inline-block border-b-2 px-2 py-1 font-chrome text-[0.82rem] "
+            "no-underline")
+NAV_REST = "border-transparent text-paper/70 hover:text-paper"
+NAV_HERE = "border-ember text-paper font-semibold"
+
+
 def nav_html(current):
     """Ordinary links, so the nav works with JavaScript switched off."""
     out = []
     for name, label, _title, _h1, _scripts, _map in PAGES:
         href = f"{name}.html"
-        mark = ' aria-current="page"' if name == current else ""
-        out.append(f'<a href="{href}"{mark}>{label}</a>')
+        here = name == current
+        mark = ' aria-current="page"' if here else ""
+        cls = f"{NAV_LINK} {NAV_HERE if here else NAV_REST}"
+        out.append(f'<a class="{cls}" href="{href}"{mark}>{label}</a>')
     return "\n  ".join(out)
 
 
 def render(name, title, h1, scripts, needs_map, skeleton):
     body = (SITE / "pages" / f"{name}.body.html").read_text(encoding="utf-8")
+    if name not in WIDE:
+        body = PROSE_MAIN + "\n" + body.strip("\n") + "\n</main>"
     tags = "\n".join(f'<script src="assets/{s}"></script>' for s in scripts)
     page = skeleton
     for slot, value in (("{{TITLE}}", title),
@@ -132,7 +154,7 @@ def demo():
             assert f'href="{other}.html"' in page, f"{name} lost {other}"
         assert page.count('aria-current="page"') == 1, name
         # the chrome every page needs
-        assert '<ul id="data-errors"></ul>' in page, name
+        assert 'id="data-errors"' in page, name
         assert 'id="generated"' in page, name
         # MapLibre is pinned where it is loaded, and absent where it is not
         if "map.js" in page:
@@ -158,6 +180,7 @@ def demo():
         assert target.removesuffix(".html") in pages, target
 
     # the panels landed where they were sent
+    assert 'id="gallery"' in pages["gallery"]
     assert 'id="timeline"' in pages["history"]
     assert 'id="drought"' in pages["conditions"]
     assert 'id="veg"' in pages["conditions"]

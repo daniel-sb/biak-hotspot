@@ -1,0 +1,73 @@
+{
+ "covers_events": [
+  "E0301",
+  "E0313",
+  "E0368"
+ ],
+ "note": "Three of the season's events. They are the three with hand-drawn interpretation boxes and 1 m imagery, which is why the validated area figure covers these footprints and no others.",
+ "plates": [
+  {
+   "event": "E0301",
+   "desa": "Anjareuw",
+   "date": "2026-09-17",
+   "detections": 142,
+   "first_seen_wit": "2026-08-19T12:47:00+09:00",
+   "last_seen_wit": "2026-08-25T13:17:00+09:00",
+   "changed_ha": 502.85,
+   "footprint_ha": 924.39,
+   "n_label_boxes": 70,
+   "n_burn_polygons": 75,
+   "series_dates": [
+    "2026-08-13",
+    "2026-08-23",
+    "2026-08-25",
+    "2026-08-28",
+    "2026-09-02",
+    "2026-09-17"
+   ],
+   "file": "gallery/E0301.webp"
+  },
+  {
+   "event": "E0313",
+   "desa": "Yendidori",
+   "date": "2026-09-17",
+   "detections": 41,
+   "first_seen_wit": "2026-08-20T14:08:00+09:00",
+   "last_seen_wit": "2026-08-25T13:53:00+09:00",
+   "changed_ha": 235.97,
+   "footprint_ha": 412.83,
+   "n_label_boxes": 41,
+   "n_burn_polygons": 52,
+   "series_dates": [
+    "2026-08-13",
+    "2026-08-23",
+    "2026-08-25",
+    "2026-08-28",
+    "2026-09-02",
+    "2026-09-17"
+   ],
+   "file": "gallery/E0313.webp"
+  },
+  {
+   "event": "E0368",
+   "desa": "Insumarires",
+   "date": "2026-09-17",
+   "detections": 31,
+   "first_seen_wit": "2026-08-22T12:34:00+09:00",
+   "last_seen_wit": "2026-08-25T13:53:00+09:00",
+   "changed_ha": 82.23,
+   "footprint_ha": 280.61,
+   "n_label_boxes": 31,
+   "n_burn_polygons": 42,
+   "series_dates": [
+    "2026-08-13",
+    "2026-08-23",
+    "2026-08-25",
+    "2026-08-28",
+    "2026-09-02",
+    "2026-09-17"
+   ],
+   "file": "gallery/E0368.webp"
+  }
+ ]
+}

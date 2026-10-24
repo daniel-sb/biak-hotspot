@@ -1,0 +1,18 @@
+Webfonts bundled with this site
+==============================
+
+assets/sourceserif4-400-600.woff2
+    Source Serif 4, latin subset, variable weight 400-600.
+    Copyright 2014-2023 Adobe (http://www.adobe.com/), with Reserved Font
+    Name 'Source'. Licensed under the SIL Open Font License, Version 1.1.
+
+assets/plexcondensed-400.woff2
+assets/plexcondensed-600.woff2
+    IBM Plex Sans Condensed, latin subset.
+    Copyright 2017 IBM Corp. Licensed under the SIL Open Font License,
+    Version 1.1.
+
+Both files were taken from the Google Fonts latin subsets and are served from
+this site's own origin rather than a font CDN, so that reading this page does
+not send a request to a third party. The full licence text is at
+https://openfontlicense.org/ and permits this redistribution.

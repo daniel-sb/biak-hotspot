@@ -4,24 +4,43 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{TITLE}}</title>
-{{HEAD_EXTRA}}<link href="assets/site.css" rel="stylesheet">
-</head>
+<link href="assets/site.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.1.18"></script>
+<style type="text/tailwindcss">
+  @theme {
+    --color-karst: #ede9e1;
+    --color-paper: #f7f5f0;
+    --color-ink: #17201f;
+    --color-inksoft: #5c6460;
+    --color-canopy: #2f5d53;
+    --color-scar: #a3341f;
+    --color-ember: #c96a2e;
+    --color-sea: #7fa9b8;
+    --color-rule: #d5cfc3;
+    --font-prose: "Source Serif 4", Georgia, serif;
+    --font-chrome: "IBM Plex Sans Condensed", system-ui, sans-serif;
+  }
+</style>
+{{HEAD_EXTRA}}</head>
 <body>
-<header>
-  <h1>{{H1}}</h1>
-  <p class="sub">{{SUB}}</p>
+<header class="bg-canopy text-paper">
+  <div class="mx-auto flex max-w-[1600px] flex-wrap items-baseline gap-x-4 gap-y-1 px-4 pt-3 pb-1">
+    <h1 class="font-chrome text-[1.15rem] font-semibold tracking-[0.01em] m-0">{{H1}}</h1>
+    <p class="font-chrome m-0 text-[0.78rem] leading-snug text-paper/70 basis-full sm:basis-auto sm:flex-1">{{SUB}}</p>
+  </div>
+  <nav id="nav" class="mx-auto flex max-w-[1600px] flex-wrap gap-x-1 px-2">{{NAV}}</nav>
 </header>
 
-<nav id="nav">{{NAV}}</nav>
-
-<ul id="data-errors"></ul>
+<ul id="data-errors" class="m-0 list-none px-4 pt-2"></ul>
 
 {{BODY}}
-<footer>
+<footer class="mx-auto max-w-[1600px] px-4 pt-5 pb-8 text-[0.76rem] leading-relaxed text-inksoft">
   Boundaries: desa/kelurahan (BIG, via this project's extraction). Hotspots: NASA FIRMS
   (VIIRS S-NPP, NOAA-20, NOAA-21, MODIS) and Himawari-9 AHI. A hotspot is a thermal anomaly,
   not a confirmed fire; it cannot identify who started anything. Confidence values are shown
   as raw instrument codes and are not comparable between VIIRS and MODIS.
+  Webfonts: Source Serif 4 and IBM Plex Sans Condensed, SIL OFL 1.1
+  (<a class="underline" href="assets/FONTS-LICENSE.txt">licence</a>).
   <span id="generated"></span>
 </footer>
 {{SCRIPTS}}

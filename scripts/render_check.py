@@ -29,7 +29,7 @@ PORT = 8137
 BASE = f"http://127.0.0.1:{PORT}"
 URLS = {n: f"{BASE}/{n}.html"
         for n in ("index", "conditions", "history", "brief", "results",
-                  "methods")}
+                  "methods", "gallery")}
 
 try:
     from playwright.sync_api import sync_playwright
@@ -99,6 +99,35 @@ def main() -> int:
                 "!!document.querySelector('.maplibregl-canvas')")
             check("map canvas exists (maplibre initialised)", canvas)
 
+            # The project AOI is 2.5 degrees wide and reaches 300 km north-west
+            # of Biak; opening on it put the island this page is about in the
+            # middle third of the frame.
+            view = page.evaluate("""() => {
+              const b = map.getBounds();
+              return { w: b.getWest(), e: b.getEast(),
+                       s: b.getSouth(), n: b.getNorth() };
+            }""")
+            check("map opens on Biak island, not the whole AOI",
+                  (view["e"] - view["w"]) < 1.6
+                  and view["w"] > 135.0 and view["e"] < 137.2,
+                  f"{view['w']:.2f}..{view['e']:.2f} E, "
+                  f"{view['s']:.2f}..{view['n']:.2f} N")
+
+            inside = page.evaluate("""() => {
+              const m = document.getElementById('maparea');
+              const p = document.getElementById('mappanel');
+              return !!(m && p && m.contains(p));
+            }""")
+            check("the layer panel sits inside the map frame", inside)
+            for ctrl, label in (
+                    (".maplibregl-ctrl-scale", "scale bar"),
+                    (".maplibregl-ctrl-fullscreen", "fullscreen control"),
+                    (".maplibregl-ctrl-geolocate", "geolocate control"),
+                    (".maplibregl-ctrl-zoom-in", "zoom control")):
+                check(f"in-map {label} present",
+                      page.evaluate(
+                          f"!!document.querySelector('{ctrl}')"))
+
             err_text = page.inner_text("#data-errors")
             check("no data-error banners (all files loaded)",
                   err_text.strip() == "", err_text.strip()[:300])
@@ -149,6 +178,22 @@ def main() -> int:
                 check(f"front page links {href}",
                       page.evaluate(
                           f"!!document.querySelector('a[href=\"{href}\"]')"))
+
+            # --- the panel, which is shut on a narrow viewport ---
+            # This check runs at 360 px wide, where an open 17 rem panel is
+            # the whole map. Everything below drives the panel explicitly:
+            # open to reach a control, shut to reach the map under it.
+            check("the panel starts shut on a phone-width viewport",
+                  not page.evaluate(
+                      "document.getElementById('mappanel').open"))
+
+            def panel(open_it):
+                page.evaluate(
+                    "(v) => { document.getElementById('mappanel').open = v; }",
+                    open_it)
+                page.wait_for_timeout(250)
+
+            panel(True)
 
             # --- layer switch and legend ---
             # The basemap upgrade calls setStyle, which wipes every layer and
@@ -206,6 +251,7 @@ def main() -> int:
             page.wait_for_timeout(400)
 
             # --- identify ---
+            panel(False)
             # A 60 m box is sub-pixel at the AOI-wide view in a 360 px
             # viewport, so nothing is rendered to click until the map is over
             # one. Take the coordinate from the source data, not the screen.
@@ -232,9 +278,18 @@ def main() -> int:
                     layers: ['labels-fill'] });
                   if (!f.length) return null;
                   const c = map.project(map.getCenter());
-                  return { x: c.x, y: c.y };
+                  const r = map.getCanvas().getBoundingClientRect();
+                  return { x: r.left + c.x, y: r.top + c.y };
                 }""")
             if pop:
+                page.eval_on_selector(
+                    "#maparea", "el => el.scrollIntoView({block: 'start'})")
+                page.wait_for_timeout(400)
+                pop = page.evaluate("""() => {
+                  const c = map.project(map.getCenter());
+                  const r = map.getCanvas().getBoundingClientRect();
+                  return { x: r.left + c.x, y: r.top + c.y };
+                }""")
                 page.mouse.click(pop["x"], pop["y"])
                 page.wait_for_timeout(700)
                 txt = page.inner_text(".maplibregl-popup-content")
@@ -247,6 +302,96 @@ def main() -> int:
             else:
                 check("interpretation boxes rendered for identify", False,
                       "no features returned")
+
+            # --- the field survey, with its photographs ---
+            panel(False)
+            plot = page.evaluate("""() => {
+              const src = map.getSource('survey');
+              const data = src && src._data;
+              if (!data || !data.features.length) return null;
+              const c = data.features[0].geometry.coordinates;
+              map.jumpTo({ center: c, zoom: 15 });
+              return { lon: c[0], lat: c[1] };
+            }""")
+            check("the field survey layer loaded", bool(plot),
+                  "" if plot else "no survey source")
+            if plot:
+                page.wait_for_timeout(1400)
+                at = page.evaluate("""() => {
+                  const f = map.queryRenderedFeatures({
+                    layers: ['survey-dot'] });
+                  if (!f.length) return null;
+                  const c = map.project(map.getCenter());
+                  const r = map.getCanvas().getBoundingClientRect();
+                  return { x: r.left + c.x, y: r.top + c.y };
+                }""")
+                if at:
+                    page.eval_on_selector(
+                        "#maparea",
+                        "el => el.scrollIntoView({block: 'start'})")
+                    page.wait_for_timeout(400)
+                    at = page.evaluate("""() => {
+                      const c = map.project(map.getCenter());
+                      const r = map.getCanvas().getBoundingClientRect();
+                      return { x: r.left + c.x, y: r.top + c.y };
+                    }""")
+                    page.mouse.click(at["x"], at["y"])
+                    page.wait_for_timeout(900)
+                    txt = page.inner_text(".maplibregl-popup-content")
+                    check("identify on a field plot names what was read "
+                          "on the ground",
+                          "Field plot" in txt and "Evidence:" in txt,
+                          txt[:160].encode("ascii", "replace").decode())
+                    check("the field plot popup states what three plots "
+                          "cannot do",
+                          "cannot validate a map" in txt)
+                    shot = page.evaluate(
+                        """() => {
+                          const i = document.querySelector(
+                            '.maplibregl-popup-content img.popup-photo');
+                          return i ? { src: i.getAttribute('src'),
+                                       w: i.naturalWidth } : null;
+                        }""")
+                    check("the field plot popup shows its photograph",
+                          bool(shot) and shot["w"] > 0,
+                          (shot or {}).get("src", "no img element"))
+                else:
+                    check("field plot rendered for identify", False,
+                          "no features returned")
+                page.keyboard.press("Escape")
+
+            # --- the Sentinel-2 scenes from the labelling project ---
+            panel(True)
+            n_events = page.evaluate(
+                "document.querySelectorAll('#scene-event option').length")
+            check("the scene index offers every labelled event",
+                  n_events >= 3, f"{n_events} events")
+            page.check("#scene-on")
+            page.wait_for_timeout(2500)
+            check("a Sentinel-2 scene is draped on the map",
+                  page.evaluate("!!map.getLayer('s2-scene')"))
+            snote = page.inner_text("#scene-note")
+            check("the scene says which band combination and which date",
+                  "2026-" in snote
+                  and ("colour" in snote or "infrared" in snote),
+                  snote[:140].encode("ascii", "replace").decode())
+            check("the false-colour scene is never called a fire detection",
+                  "fire detection" not in snote
+                  or "not a fire detection" in snote,
+                  snote[:140].encode("ascii", "replace").decode())
+            first_label = page.inner_text("#scene-date-label")
+            page.evaluate(
+                "() => { const s = document.getElementById('scene-date');"
+                " s.value = '0';"
+                " s.dispatchEvent(new Event('input', {bubbles: true})); }")
+            page.wait_for_timeout(1500)
+            check("moving the date slider changes the scene",
+                  page.inner_text("#scene-date-label") != first_label,
+                  f"{first_label} -> {page.inner_text('#scene-date-label')}")
+            page.uncheck("#scene-on")
+            page.wait_for_timeout(600)
+            check("switching the scene off removes it",
+                  not page.evaluate("!!map.getLayer('s2-scene')"))
 
             # --- task 09: GIBS imagery, including past its zoom ceiling ---
             gibs = []
@@ -406,6 +551,32 @@ def main() -> int:
             check("methods says what is held back",
                   "notes written during interpretation are not published"
                   in mtxt)
+
+            # --- gallery.html: the burn atlas ---
+            page.goto(URLS["gallery"], wait_until="networkidle", timeout=60000)
+            page.wait_for_timeout(2500)
+            plates = page.evaluate(
+                "document.querySelectorAll('#gallery figure').length")
+            check("burn atlas renders a plate per labelled footprint",
+                  plates >= 3, f"{plates} plates")
+            drawn = page.evaluate(
+                "[...document.querySelectorAll('#gallery img')]"
+                ".every(i => i.naturalWidth > 100)")
+            check("every atlas plate image actually loaded", drawn)
+            gtxt = page.inner_text("#gallery")
+            check("atlas captions say the hectares are a mapped extent",
+                  "maps" in gtxt and "footprint" in gtxt, gtxt[:160])
+            check("atlas says why these plates were not laid out in "
+                  "Layout Composer",
+                  "no command line" in page.inner_text("#layout-note"))
+            check("every atlas plate links its GeoLibre project",
+                  page.evaluate(
+                      "document.querySelectorAll("
+                      "'#gallery a[href$=\".geolibre.json\"]').length")
+                  >= 3)
+            check("no data-error banners on gallery.html",
+                  page.inner_text("#data-errors").strip() == "",
+                  page.inner_text("#data-errors").strip()[:300])
 
             # A 404 on vegetation.json is the expected state before anyone
             # has run src/vegetation_gee.py, and the panel says so on the page.

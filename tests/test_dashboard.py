@@ -88,7 +88,7 @@ def test_confidence_not_used_for_encoding():
 
 
 def test_pinned_cdn_only():
-    """The site talks to three hosts and no others.
+    """The site talks to a short list of hosts and no others.
 
     gibs.earthdata.nasa.gov was added deliberately for task 09 imagery.
     services.arcgisonline.com was added for the Esri World Imagery basemap,
@@ -97,12 +97,26 @@ def test_pinned_cdn_only():
     them as XYZ outside Google's own APIs breaks their terms, and the licensed
     route needs a key, which cannot live in a public static page.
 
+    cdn.jsdelivr.net serves one pinned file: the Tailwind browser build that
+    compiles the utility classes the markup is written in. It is the only
+    script on the site not pinned to a copy in this repository, and it is the
+    price of having no JavaScript toolchain at all (adr/0002). Webfonts are
+    NOT fetched from a CDN - they are committed under site/assets/ and served
+    from this origin, so reading a page sends no request to a font host.
+
+    Two entries are hyperlinks a reader may follow rather than subresources a
+    page loads: worldview.earthdata.nasa.gov in the GIBS attribution, and
+    github.com/Defani/Layout-Composer in the burn atlas's note on how the
+    plates were laid out.
+
     The point of this list is that a new host is a decision someone made,
     not something that arrived with a copied snippet: extend it only
     alongside the reason, in the same commit.
     """
     allowed = ("maplibre-gl@4.7.1", "openfreemap", "gibs.earthdata.nasa.gov",
-               "worldview.earthdata.nasa.gov", "services.arcgisonline.com")
+               "worldview.earthdata.nasa.gov", "services.arcgisonline.com",
+               "cdn.jsdelivr.net/npm/@tailwindcss/browser@4.1.18",
+               "github.com/Defani/Layout-Composer")
     for path, text in pages() + scripts():
         srcs = [s for s in text.split(chr(34)) if s.startswith("http")]
         bad = [s for s in srcs if not any(a in s for a in allowed)]
@@ -273,7 +287,13 @@ def test_page_script_structural_integrity():
     # panel states that absence rather than drawing anything, so an absent file
     # is a correct state here - unlike every other path, where absence is a typo.
     generated_by_hand = {"data/vegetation.json"}
-    known = {"Map", "Popup", "NavigationControl"}
+    # ScaleControl, FullscreenControl and GeolocateControl were added when
+    # the layer switch moved inside the map frame: a map a reader can
+    # measure, fill the screen with and locate themselves on is the
+    # ordinary set of GIS controls, and all three ship with the pinned
+    # MapLibre build.
+    known = {"Map", "Popup", "NavigationControl", "ScaleControl",
+             "FullscreenControl", "GeolocateControl"}
     seen_paths = set()
 
     for path, html in pages():

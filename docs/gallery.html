@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biak hotspot monitor — the burn atlas</title>
+<link href="assets/site.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.1.18"></script>
+<style type="text/tailwindcss">
+  @theme {
+    --color-karst: #ede9e1;
+    --color-paper: #f7f5f0;
+    --color-ink: #17201f;
+    --color-inksoft: #5c6460;
+    --color-canopy: #2f5d53;
+    --color-scar: #a3341f;
+    --color-ember: #c96a2e;
+    --color-sea: #7fa9b8;
+    --color-rule: #d5cfc3;
+    --font-prose: "Source Serif 4", Georgia, serif;
+    --font-chrome: "IBM Plex Sans Condensed", system-ui, sans-serif;
+  }
+</style>
+</head>
+<body>
+<header class="bg-canopy text-paper">
+  <div class="mx-auto flex max-w-[1600px] flex-wrap items-baseline gap-x-4 gap-y-1 px-4 pt-3 pb-1">
+    <h1 class="font-chrome text-[1.15rem] font-semibold tracking-[0.01em] m-0">Burn atlas: three footprints, six dates</h1>
+    <p class="font-chrome m-0 text-[0.78rem] leading-snug text-paper/70 basis-full sm:basis-auto sm:flex-1">Thermal anomalies detected from satellite around Biak, Supiori and Numfor, Papua, Indonesia. Data: NASA FIRMS (VIIRS and MODIS) and Himawari-9.</p>
+  </div>
+  <nav id="nav" class="mx-auto flex max-w-[1600px] flex-wrap gap-x-1 px-2"><a class="inline-block border-b-2 px-2 py-1 font-chrome text-[0.82rem] no-underline border-transparent text-paper/70 hover:text-paper" href="index.html">The 2026 season</a>
+  <a class="inline-block border-b-2 px-2 py-1 font-chrome text-[0.82rem] no-underline border-transparent text-paper/70 hover:text-paper" href="conditions.html">Drought and vegetation</a>
+  <a class="inline-block border-b-2 px-2 py-1 font-chrome text-[0.82rem] no-underline border-transparent text-paper/70 hover:text-paper" href="history.html">Detection record</a>
+  <a class="inline-block border-b-2 px-2 py-1 font-chrome text-[0.82rem] no-underline border-transparent text-paper/70 hover:text-paper" href="results.html">Results</a>
+  <a class="inline-block border-b-2 px-2 py-1 font-chrome text-[0.82rem] no-underline border-transparent text-paper/70 hover:text-paper" href="methods.html">Methodology</a>
+  <a class="inline-block border-b-2 px-2 py-1 font-chrome text-[0.82rem] no-underline border-ember text-paper font-semibold" href="gallery.html" aria-current="page">Burn atlas</a>
+  <a class="inline-block border-b-2 px-2 py-1 font-chrome text-[0.82rem] no-underline border-transparent text-paper/70 hover:text-paper" href="brief.html">Daily brief</a></nav>
+</header>
+
+<ul id="data-errors" class="m-0 list-none px-4 pt-2"></ul>
+
+<main class="mx-auto max-w-[72rem] px-4 pt-4 pb-2 [&_h2]:font-chrome [&_h2]:text-[1.1rem] [&_h2]:font-semibold [&_h2]:mt-6 [&_h2]:mb-1 [&_p]:my-2 [&_p]:max-w-[68ch]">
+<p>Three of the 2026 season's events have both hand-drawn interpretation boxes and
+1&nbsp;m Sentinel-2 imagery. They are the three the validated area figure covers, and the
+three this atlas draws. Every other event on the front page is mapped from 20&nbsp;m bands
+and has no plate here, which is a limit of the imagery, not a judgement about those fires.</p>
+
+<p>Each plate puts the mapped burn polygon over the false-colour scene that produced it,
+with the interpretation boxes, the thermal anomalies detected while the event was running,
+and a strip of true-colour frames across six dates. One contrast stretch is applied to all
+six: stretching each date against its own histogram would brighten the burn straight back
+out of the series.</p>
+
+<p id="layout-note" class="border border-rule bg-paper px-3 py-2 text-[0.88rem]">
+  <span class="font-semibold">How these were laid out.</span>
+  The plan was to compose them in
+  <a class="underline decoration-rule underline-offset-2 hover:decoration-ember"
+     href="https://github.com/Defani/Layout-Composer">Layout Composer</a>, the cartographic
+  layout plugin for GeoLibre. That plugin is a hand-driven ribbon editor inside the GeoLibre
+  desktop app with no command line, so no script can call it. These plates carry the same
+  anatomy &mdash; map frame, locator inset, date series, scale bar, north arrow, legend,
+  title block &mdash; rendered from the data by
+  <code>scripts/burn_atlas.py</code>, so each one is reproducible and every number on it
+  traces to a file in the repository. Each plate also ships a GeoLibre project holding the
+  same layers at the same extent, so the hand-finished route stays open: open it in
+  GeoLibre, enable Layout Composer, and the frame is already set.</p>
+
+<p id="gallery-error" class="text-[0.88rem] text-scar"></p>
+<div id="gallery"></div>
+
+<h2>What a plate does not say</h2>
+<p>The hectares on a plate are a mapped extent: the area the dNBR+ product drew inside the
+event's footprint. That figure has no interval, and it is not the validated area. The
+validated estimate on the <a class="underline decoration-rule underline-offset-2 hover:decoration-ember"
+href="results.html">results page</a> covers these three footprints together and comes out
+below what the product maps across them. Neither number says who lit anything, and a burn
+scar in an image is not evidence of an offence.</p>
+</main>
+<footer class="mx-auto max-w-[1600px] px-4 pt-5 pb-8 text-[0.76rem] leading-relaxed text-inksoft">
+  Boundaries: desa/kelurahan (BIG, via this project's extraction). Hotspots: NASA FIRMS
+  (VIIRS S-NPP, NOAA-20, NOAA-21, MODIS) and Himawari-9 AHI. A hotspot is a thermal anomaly,
+  not a confirmed fire; it cannot identify who started anything. Confidence values are shown
+  as raw instrument codes and are not comparable between VIIRS and MODIS.
+  Webfonts: Source Serif 4 and IBM Plex Sans Condensed, SIL OFL 1.1
+  (<a class="underline" href="assets/FONTS-LICENSE.txt">licence</a>).
+  <span id="generated"></span>
+</footer>
+<script src="assets/core.js"></script>
+<script src="assets/gallery.js"></script>
+</body>
+</html>

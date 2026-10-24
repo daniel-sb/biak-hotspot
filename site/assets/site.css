@@ -1,113 +1,250 @@
-:root { --ink:#1c1c1c; --muted:#5a5a5a; --warn:#8a5a00; --line:#d8d4cc; --bg:#faf8f4; }
-* { box-sizing:border-box; }
-body { margin:0; font-family:Georgia,'Times New Roman',serif; color:var(--ink); background:var(--bg); }
-header { padding:14px 16px 6px; }
-h1 { font-size:1.5rem; margin:0 0 2px; }
-.sub { color:var(--muted); font-size:.85rem; margin:0; }
-#data-errors { margin:8px 16px; padding:0; list-style:none; }
-#data-errors li { background:#fde8e8; border:1px solid #e0a0a0; color:#7a1010;
-  padding:6px 10px; margin-bottom:4px; font-size:.85rem; }
-#ethics { margin:10px 16px; padding:10px 12px; background:#fff7ec; border:1px solid #e3cfa4;
-  font-size:.88rem; line-height:1.45; }
-#ethics strong { display:block; margin-bottom:4px; }
-#gap { margin:0 16px 10px; padding:8px 12px; background:#eef2f6; border:1px solid #c9d4de;
-  font-size:.85rem; line-height:1.45; }
-#layout { display:grid; grid-template-columns:minmax(0,3fr) minmax(0,2fr); gap:12px; padding:0 16px; }
-#map { height:480px; min-height:320px; border:1px solid var(--line); }
-#panel { border:1px solid var(--line); background:#fff; padding:10px 12px; overflow-wrap:anywhere; }
-#panel h2 { font-size:1.12rem; margin:2px 0 6px; }
-#panel h3 { font-size:.96rem; margin:10px 0 4px; }
-#timeline-wrap, #drought-wrap, #veg-wrap { margin:12px 16px; border:1px solid var(--line);
-  background:#fff; padding:8px 10px; }
-#timeline-wrap h2, #drought-wrap h2, #veg-wrap h2 { font-size:1.12rem; margin:2px 0 4px; }
-#timeline-wrap p, #drought-wrap p, #veg-wrap p { font-size:.82rem; color:var(--muted); margin:2px 0 6px; }
-#timeline, #drought, #veg { width:100%; height:auto; display:block; }
-#drought-wrap .lag { background:#eef2f6; border:1px solid #c9d4de; padding:6px 9px;
-  color:var(--ink); }
-#brief { background:#fff; }
-#brief table { border-collapse:collapse; font-size:.8rem; margin:4px 0; width:100%; }
-#brief th, #brief td { border:1px solid var(--line); padding:2px 5px; text-align:left; }
-#brief blockquote { margin:6px 0; padding:4px 10px; border-left:3px solid var(--line);
-  color:var(--muted); font-size:.85rem; }
-#brief ul { margin:4px 0; padding-left:18px; }
-/* Same idiom as the page's other callouts (#ethics, #gap, #data-errors):
-   a tinted panel inside a full 1px border. .warn alone used a left bar. */
-.warn { background:#fdeeee; border:1px solid #d9a2a2; padding:5px 9px; }
-.muted { color:var(--muted); font-size:.8rem; }
-/* used by the timeline and drought blocks when their data file does not load */
-.error { color:#7a1010; font-size:.85rem; margin:4px 0; }
-footer { padding:12px 16px 20px; font-size:.78rem; color:var(--muted); line-height:1.5; }
-#imagery { margin:6px 0 0; padding:6px 9px; border:1px solid var(--line); background:#fff;
-  font-size:.82rem; line-height:1.5; }
-#imagery .row { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
-#imagery label { cursor:pointer; }
-#imagery input { margin-right:4px; vertical-align:-1px; }
-#imagery-note { display:block; margin-top:5px; color:var(--muted); }
-#imagery-note.unavailable { color:#7a1010; }
-.legend { position:absolute; bottom:8px; left:8px; background:rgba(255,255,255,.92);
-  padding:6px 9px; font-size:.75rem; border:1px solid var(--line); z-index:2; }
-.legend .sw { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:4px; }
-.maplibregl-popup-content { font-size:.82rem; line-height:1.45; max-width:240px; }
-/* nav and status strip: added when the single page became five (adr/0002).
-   The nav is ordinary links, so it works with no JavaScript. */
-#nav { padding:0 16px 8px; font-size:.86rem; }
-#nav a { color:var(--ink); margin-right:14px; text-decoration:none;
-  border-bottom:1px solid var(--line); }
-#nav a[aria-current="page"] { border-bottom:2px solid var(--ink); font-weight:bold; }
-#status { margin:0 16px 10px; padding:8px 12px; border:1px solid var(--line);
-  background:#fff; font-size:.88rem; line-height:1.45; }
-#status strong { display:block; }
-@media (max-width:720px) {
-  #layout { grid-template-columns:1fr; }
-  #map { height:320px; }
-  h1 { font-size:1.28rem; }   /* still steps above the 1.12rem h2 at 360 px */
+/* Everything Tailwind cannot reach: the webfonts, the MapLibre widgets, and
+   the handful of rules that must apply before the browser build has compiled
+   anything. Layout, spacing and colour live in utility classes on the markup.
+
+   The palette is read off the project's own false-colour composite rather
+   than chosen from a swatch: karst is Biak's raised coral, canopy the standing
+   forest, scar the burn, ember the SWIR response, sea Cenderawasih Bay. */
+:root {
+  --karst: #ede9e1;
+  --paper: #f7f5f0;
+  --ink: #17201f;
+  --ink-soft: #5c6460;
+  --canopy: #2f5d53;
+  --scar: #a3341f;
+  --ember: #c96a2e;
+  --sea: #7fa9b8;
+  --rule: #d5cfc3;
 }
 
-/* Front page became map-first with headline tiles (adr/0010). The old
-   .legend box inside #map is gone: the legend now lists only the layers that
-   are switched on, so it lives beside the map where it can grow. */
-#figures { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:10px; margin:10px 16px; }
-.tile { border:1px solid var(--line); background:#fff; padding:9px 11px; }
-.tile-k { display:block; font-size:.76rem; color:var(--muted);
-  text-transform:uppercase; letter-spacing:.04em; }
-.tile-v { display:block; font-size:1.5rem; line-height:1.15; margin:2px 0; }
-.tile-n { display:block; font-size:.78rem; color:var(--muted); line-height:1.4; }
-#fig-interval { width:100%; height:auto; display:block; margin:2px 0 4px; }
-#read-first, #gap { margin:0 16px 10px; padding:8px 12px; background:#eef2f6;
-  border:1px solid #c9d4de; font-size:.85rem; line-height:1.45; }
-#read-first { background:#fff7ec; border-color:#e3cfa4; }
-#figures-error:empty { display:none; }
-#figures-error { margin:0 16px 10px; color:#7a1010; font-size:.85rem; }
-#maparea { display:grid; grid-template-columns:minmax(0,3fr) minmax(0,1fr);
-  gap:12px; padding:0 16px; }
-#mappanel { border:1px solid var(--line); background:#fff; padding:8px 11px; }
-#mappanel h2 { font-size:.95rem; margin:4px 0 5px; }
-#layers label { display:block; font-size:.84rem; cursor:pointer;
-  line-height:1.6; }
-#layers input { margin-right:5px; vertical-align:-1px; }
-#legend ul { list-style:none; margin:0; padding:0; font-size:.8rem; }
-#legend li { line-height:1.7; }
-#legend .sw { display:inline-block; width:10px; height:10px; margin-right:3px;
-  vertical-align:0; }
-#legend .sw.dot { border-radius:50%; }
-#legend .sw.box { border:1px solid rgba(0,0,0,.35); }
-#legend .sw.ring { border:2px solid #5b3fa8; border-radius:50%;
-  background:transparent; }
-@media (max-width:860px) {
-  #maparea { grid-template-columns:1fr; }
+/* Self-hosted so a reader in Biak fetches two files from this origin instead
+   of handing a font CDN a request per page view. Latin subsets, SIL OFL 1.1 —
+   see assets/FONTS-LICENSE.txt. Source Serif 4 is one variable file covering
+   both weights. */
+@font-face {
+  font-family: "Source Serif 4";
+  src: url("sourceserif4-400-600.woff2") format("woff2");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Sans Condensed";
+  src: url("plexcondensed-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Sans Condensed";
+  src: url("plexcondensed-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* prose pages: methods, results */
-.pagenote { margin:10px 16px; font-size:.82rem; color:var(--muted); }
-.block { margin:12px 16px; border:1px solid var(--line); background:#fff;
-  padding:10px 12px; }
-.block h2 { font-size:1.12rem; margin:2px 0 6px; }
-.block h3 { font-size:.96rem; margin:12px 0 4px; }
-.block p, .block li { font-size:.88rem; line-height:1.5; }
-.block table { border-collapse:collapse; font-size:.82rem; margin:6px 0;
-  width:100%; }
-.block th, .block td { border:1px solid var(--line); padding:3px 6px;
-  text-align:left; vertical-align:top; }
-#res-interval { width:100%; height:auto; display:block; margin:4px 0; }
-#results-error:empty { display:none; }
+/* Applied before Tailwind's browser build finishes compiling, so the page
+   never flashes Times on white. */
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--karst);
+  color: var(--ink);
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 16px;
+  line-height: 1.55;
+}
+.chrome, nav, table, .tnum {
+  font-family: "IBM Plex Sans Condensed", system-ui, sans-serif;
+}
+.tnum { font-variant-numeric: tabular-nums; }
+:focus-visible { outline: 2px solid var(--ember); outline-offset: 2px; }
+
+/* ---------- the map and its in-frame furniture ---------- */
+#maparea { position: relative; }
+#map { position: absolute; inset: 0; background: #dfe7ee; }
+#mappanel {
+  position: absolute;
+  top: .5rem;
+  left: .5rem;
+  z-index: 2;
+  width: 17rem;
+  max-width: calc(100% - 1rem);
+  max-height: calc(100% - 1rem);
+  overflow: auto;
+  background: rgba(247, 245, 240, .95);
+  backdrop-filter: blur(3px);
+  border: 1px solid var(--rule);
+  box-shadow: 0 1px 10px rgba(23, 32, 31, .18);
+  font-family: "IBM Plex Sans Condensed", system-ui, sans-serif;
+  font-size: .82rem;
+  line-height: 1.4;
+}
+#mappanel > summary {
+  cursor: pointer;
+  padding: .4rem .6rem;
+  background: var(--canopy);
+  color: var(--paper);
+  font-weight: 600;
+  letter-spacing: .01em;
+  list-style: none;
+}
+#mappanel > summary::-webkit-details-marker { display: none; }
+#mappanel > summary::after { content: " ▾"; float: right; }
+#mappanel[open] > summary::after { content: " ▴"; }
+#mappanel .pad { padding: .55rem .6rem .7rem; }
+#mappanel h2 {
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: var(--ink-soft);
+  margin: .75rem 0 .3rem;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: .15rem;
+}
+#mappanel h2:first-child { margin-top: 0; }
+#mappanel label { display: block; padding: .1rem 0; cursor: pointer; }
+#mappanel input[type="checkbox"],
+#mappanel input[type="radio"] { accent-color: var(--canopy); margin-right: .3rem; }
+#mappanel select,
+#mappanel input[type="range"] { width: 100%; font: inherit; }
+#mappanel select {
+  border: 1px solid var(--rule);
+  background: #fff;
+  padding: .15rem .25rem;
+  margin: .15rem 0;
+}
+#mappanel button {
+  font: inherit;
+  border: 1px solid var(--rule);
+  background: #fff;
+  padding: .15rem .5rem;
+  cursor: pointer;
+}
+#mappanel button:hover { background: var(--karst); }
+#legend ul { margin: 0; padding: 0; list-style: none; }
+#legend li { display: flex; align-items: baseline; gap: .35rem; padding: .08rem 0; }
+.sw { display: inline-block; width: .7rem; height: .7rem; flex: 0 0 auto; }
+.sw.dot { border-radius: 50%; border: 1px solid #5a1408; }
+.sw.ring { border: 2px solid #5b3fa8; border-radius: 50%; background: none; }
+.sw.pin { border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--scar); }
+#imagery-note, #scene-note { display: block; color: var(--ink-soft); margin-top: .3rem; }
+.unavailable { color: #7a1010 !important; }
+
+/* MapLibre's own widgets, brought into the page's palette. */
+.maplibregl-ctrl-group { border-radius: 0 !important; border: 1px solid var(--rule); }
+.maplibregl-ctrl-group button { border-radius: 0 !important; }
+.maplibregl-ctrl-scale {
+  border-color: var(--ink) !important;
+  background: rgba(247, 245, 240, .85) !important;
+  font-family: "IBM Plex Sans Condensed", system-ui, sans-serif;
+  font-size: .72rem;
+}
+.maplibregl-ctrl-attrib { font-size: .66rem; }
+.maplibregl-popup-content {
+  border-radius: 0;
+  border: 1px solid var(--rule);
+  padding: .55rem .7rem;
+  font-family: "IBM Plex Sans Condensed", system-ui, sans-serif;
+  font-size: .8rem;
+  line-height: 1.4;
+  max-width: 19rem;
+}
+.maplibregl-popup-content strong { font-size: .86rem; }
+.maplibregl-popup-content em { color: var(--ink-soft); font-style: normal; display: block; margin-top: .35rem; }
+.popup-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: .35rem 0 .2rem;
+  border: 1px solid var(--rule);
+}
+
+/* ---------- charts drawn as inline SVG ---------- */
+#timeline, #drought, #veg, #fig-interval { width: 100%; height: auto; display: block; }
+
+/* The brief is rendered from Markdown at runtime, so its tags carry no
+   classes and have to be styled by element. */
+#brief table { border-collapse: collapse; font-size: .8rem; margin: .4rem 0; width: 100%; }
+#brief th, #brief td { border: 1px solid var(--rule); padding: .15rem .35rem; text-align: left; }
+#brief th { background: var(--karst); font-weight: 600; }
+#brief blockquote {
+  margin: .4rem 0;
+  padding: .25rem .7rem;
+  border-left: 3px solid var(--rule);
+  color: var(--ink-soft);
+}
+#brief ul { margin: .25rem 0; padding-left: 1.1rem; }
+#brief h2 { font-size: 1.05rem; margin: .8rem 0 .2rem; }
+#brief h3 { font-size: .95rem; margin: .6rem 0 .2rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ---------- components the prose pages are written in ----------
+   Plain CSS, not Tailwind utilities, for two reasons: these are repeated
+   components rather than one-off layout, and the error banner in particular
+   has to stay visible when the Tailwind browser build does not load. A page
+   that fails to say a data file is missing is worse than an unstyled page. */
+#data-errors { margin: 0; padding: .5rem 1rem 0; list-style: none; }
+#data-errors li {
+  background: #fbeae6;
+  border: 1px solid #d9a899;
+  color: #7a1f10;
+  padding: .35rem .7rem;
+  margin-bottom: .25rem;
+  font-size: .85rem;
+}
+#data-errors:empty { display: none; }
+
+.card, #panel, #timeline-wrap, #drought-wrap, #veg-wrap {
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  padding: .6rem .8rem .8rem;
+  margin: 1rem 0;
+}
+#panel h2, #timeline-wrap h2, #drought-wrap h2, #veg-wrap h2 {
+  margin-top: .2rem;
+}
+
+/* Boxed asides: the observation gap on both pages it appears on, the
+   coverage-lag note, and anything flagged. */
+#gap, .lag {
+  border: 1px solid var(--rule);
+  background: rgba(127, 169, 184, .15);
+  padding: .5rem .75rem;
+  font-size: .86rem;
+  line-height: 1.45;
+}
+.warn {
+  border: 1px solid #d9a899;
+  background: #fbeae6;
+  padding: .4rem .7rem;
+}
+.error { color: #7a1f10; font-size: .86rem; margin: .3rem 0; }
+.error:empty { display: none; }
+.muted { color: var(--ink-soft); font-size: .82rem; }
+.pagenote { color: var(--ink-soft); font-size: .82rem; margin-top: 1.2rem; }
+.block { display: block; }
+
+main table {
+  border-collapse: collapse;
+  font-family: "IBM Plex Sans Condensed", system-ui, sans-serif;
+  font-size: .84rem;
+  margin: .5rem 0 1rem;
+  width: 100%;
+}
+main th, main td {
+  border: 1px solid var(--rule);
+  padding: .2rem .45rem;
+  text-align: left;
+  vertical-align: top;
+}
+main th { background: var(--karst); font-weight: 600; }
+main h3 { font-family: "IBM Plex Sans Condensed", system-ui, sans-serif;
+  font-size: .98rem; margin: 1rem 0 .2rem; }
+main a { color: inherit; text-decoration: underline;
+  text-decoration-color: var(--rule); text-underline-offset: 2px; }
+main a:hover { text-decoration-color: var(--ember); }
+code { font-size: .9em; background: rgba(23, 32, 31, .06); padding: 0 .2em; }

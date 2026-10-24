@@ -1,0 +1,35 @@
+<p>Three of the 2026 season's events have both hand-drawn interpretation boxes and
+1&nbsp;m Sentinel-2 imagery. They are the three the validated area figure covers, and the
+three this atlas draws. Every other event on the front page is mapped from 20&nbsp;m bands
+and has no plate here, which is a limit of the imagery, not a judgement about those fires.</p>
+
+<p>Each plate puts the mapped burn polygon over the false-colour scene that produced it,
+with the interpretation boxes, the thermal anomalies detected while the event was running,
+and a strip of true-colour frames across six dates. One contrast stretch is applied to all
+six: stretching each date against its own histogram would brighten the burn straight back
+out of the series.</p>
+
+<p id="layout-note" class="border border-rule bg-paper px-3 py-2 text-[0.88rem]">
+  <span class="font-semibold">How these were laid out.</span>
+  The plan was to compose them in
+  <a class="underline decoration-rule underline-offset-2 hover:decoration-ember"
+     href="https://github.com/Defani/Layout-Composer">Layout Composer</a>, the cartographic
+  layout plugin for GeoLibre. That plugin is a hand-driven ribbon editor inside the GeoLibre
+  desktop app with no command line, so no script can call it. These plates carry the same
+  anatomy &mdash; map frame, locator inset, date series, scale bar, north arrow, legend,
+  title block &mdash; rendered from the data by
+  <code>scripts/burn_atlas.py</code>, so each one is reproducible and every number on it
+  traces to a file in the repository. Each plate also ships a GeoLibre project holding the
+  same layers at the same extent, so the hand-finished route stays open: open it in
+  GeoLibre, enable Layout Composer, and the frame is already set.</p>
+
+<p id="gallery-error" class="text-[0.88rem] text-scar"></p>
+<div id="gallery"></div>
+
+<h2>What a plate does not say</h2>
+<p>The hectares on a plate are a mapped extent: the area the dNBR+ product drew inside the
+event's footprint. That figure has no interval, and it is not the validated area. The
+validated estimate on the <a class="underline decoration-rule underline-offset-2 hover:decoration-ember"
+href="results.html">results page</a> covers these three footprints together and comes out
+below what the product maps across them. Neither number says who lit anything, and a burn
+scar in an image is not evidence of an offence.</p>
