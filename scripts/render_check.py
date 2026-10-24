@@ -490,6 +490,42 @@ def main() -> int:
                   "fire detection" not in snote
                   or "not a fire detection" in snote,
                   snote[:140].encode("ascii", "replace").decode())
+            # The re-apply timer runs addLocalLayers() every 400 ms for two
+            # minutes, and addScene() used to tear the image source down and
+            # rebuild it on each tick, which is what made a draped scene
+            # blink. Hold the source and check it is the same object three
+            # ticks later.
+            page.evaluate(
+                "() => { window.__sceneSrc = map.getSource('s2-scene'); }")
+            page.wait_for_timeout(1500)
+            same = page.evaluate(
+                "() => window.__sceneSrc === map.getSource('s2-scene')")
+            check("the draped scene is not rebuilt on every timer tick",
+                  same, "source object was replaced: it will blink")
+
+            # Switching event is switching place: the camera has to follow,
+            # or the reader is left over Anjareuw looking at Yendidori's
+            # scene somewhere off screen.
+            before_centre = page.evaluate(
+                "() => [map.getCenter().lng, map.getCenter().lat]")
+            page.select_option("#scene-event", index=1)
+            page.wait_for_timeout(1800)
+            after_centre = page.evaluate(
+                "() => [map.getCenter().lng, map.getCenter().lat]")
+            in_bounds = page.evaluate("""() => {
+              const b = map.getSource('s2-scene');
+              if (!b) return false;
+              const c = b.coordinates, p = map.getCenter();
+              const xs = c.map(q => q[0]), ys = c.map(q => q[1]);
+              return p.lng >= Math.min(...xs) && p.lng <= Math.max(...xs) &&
+                     p.lat >= Math.min(...ys) && p.lat <= Math.max(...ys);
+            }""")
+            check("switching event moves the map to the new scene",
+                  before_centre != after_centre and in_bounds,
+                  f"{before_centre} -> {after_centre}, inside={in_bounds}")
+            page.select_option("#scene-event", index=0)
+            page.wait_for_timeout(1500)
+
             first_label = page.inner_text("#scene-date-label")
             page.evaluate(
                 "() => { const s = document.getElementById('scene-date');"
@@ -526,6 +562,21 @@ def main() -> int:
             # GIBS tops out at zoom 9; MapLibre must overzoom rather than
             # blank out, and the resulting tile errors must not raise the
             # honest-degradation banner (task 09).
+            # This block is about the map, not the panel. Shut the panel so
+            # a failure here means the tiles misbehaved and not that
+            # something was sitting over the button.
+            panel(False)
+            check("the zoom control is reachable with the panel open",
+                  page.evaluate("""() => {
+                    const p = document.getElementById('mappanel');
+                    p.open = true;
+                    const b = document.querySelector(
+                      '.maplibregl-ctrl-zoom-in').getBoundingClientRect();
+                    const r = p.getBoundingClientRect();
+                    p.open = false;
+                    return b.left >= r.right || b.right <= r.left ||
+                           b.top >= r.bottom || b.bottom <= r.top;
+                  }"""))
             for _ in range(5):
                 page.click(".maplibregl-ctrl-zoom-in")
                 page.wait_for_timeout(400)
@@ -534,6 +585,7 @@ def main() -> int:
             check("no error banner after zooming past the GIBS z9 ceiling",
                   over == "", over[:200])
 
+            panel(True)
             page.check('input[name="imagery"][value="esri"]')
             page.wait_for_timeout(5000)
             esri_note = page.inner_text("#imagery-note")

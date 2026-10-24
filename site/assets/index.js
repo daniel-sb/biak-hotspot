@@ -34,27 +34,46 @@ function fmtHa(n) {
 function drawInterval(v) {
   const svg = $("fig-interval");
   if (!svg) return;
-  const W = 300, H = 34, padL = 6, padR = 6, y = 15;
+  /* An unlabelled bar is not a chart. The first version drew two marks on an
+     invisible axis with "map 819" under one of them, and the question it got
+     back was what the picture meant. Every mark now says its number and the
+     caption says what the two colours are, because a reader should not have
+     to be told how to read it. The blue is lifted from the results page's
+     #2a78d6, which falls to 3.8:1 on the dark panel. */
+  const BLUE = "#5fa8e8", ORANGE = "#e2714a", INK = "#e7e9e4",
+        SOFT = "#9aa69f";
+  const W = 300, padL = 10, padR = 10, y = 34;
   const lo = v.ci95_ha[0], hi = v.ci95_ha[1], mapped = v.mapped_in_footprints_ha;
   const min = Math.min(lo, mapped), max = Math.max(hi, v.estimate_ha);
-  const pad = (max - min) * 0.12 || 1;
+  const pad = (max - min) * 0.1 || 1;
   const x = (val) => padL +
     ((val - (min - pad)) / ((max + pad) - (min - pad))) * (W - padL - padR);
-  const parts = [
+  const n = (val) => Math.round(val).toLocaleString("en-GB");
+  const text = (xx, yy, s, fill, size, anchor) =>
+    '<text x="' + xx + '" y="' + yy + '" font-size="' + size + '" fill="' +
+    fill + '" text-anchor="' + (anchor || "middle") + '">' + s + "</text>";
+  svg.innerHTML = [
+    // the interval, with a cap at each end and the estimate on it
     '<line x1="' + x(lo) + '" x2="' + x(hi) + '" y1="' + y + '" y2="' + y +
-      '" stroke="#2a78d6" stroke-width="3"/>',
-    '<line x1="' + x(lo) + '" x2="' + x(lo) + '" y1="' + (y - 5) + '" y2="' +
-      (y + 5) + '" stroke="#2a78d6" stroke-width="2"/>',
-    '<line x1="' + x(hi) + '" x2="' + x(hi) + '" y1="' + (y - 5) + '" y2="' +
-      (y + 5) + '" stroke="#2a78d6" stroke-width="2"/>',
-    '<circle cx="' + x(v.estimate_ha) + '" cy="' + y + '" r="4.5" fill="#2a78d6"/>',
-    '<line x1="' + x(mapped) + '" x2="' + x(mapped) + '" y1="' + (y - 7) +
-      '" y2="' + (y + 7) + '" stroke="#eb6834" stroke-width="2"/>',
-    '<text x="' + x(mapped) + '" y="' + (H - 1) +
-      '" font-size="9" fill="#5a5a5a" text-anchor="middle">map ' +
-      Math.round(mapped) + "</text>",
-  ];
-  svg.innerHTML = parts.join("");
+      '" stroke="' + BLUE + '" stroke-width="3"/>',
+    '<line x1="' + x(lo) + '" x2="' + x(lo) + '" y1="' + (y - 6) + '" y2="' +
+      (y + 6) + '" stroke="' + BLUE + '" stroke-width="2"/>',
+    '<line x1="' + x(hi) + '" x2="' + x(hi) + '" y1="' + (y - 6) + '" y2="' +
+      (y + 6) + '" stroke="' + BLUE + '" stroke-width="2"/>',
+    '<circle cx="' + x(v.estimate_ha) + '" cy="' + y + '" r="5" fill="' +
+      BLUE + '"/>',
+    // what the product mapped, on the same axis
+    '<line x1="' + x(mapped) + '" x2="' + x(mapped) + '" y1="' + (y - 10) +
+      '" y2="' + (y + 10) + '" stroke="' + ORANGE + '" stroke-width="2.5"/>',
+    // every mark says its number
+    text(x(v.estimate_ha), y - 13, n(v.estimate_ha), INK, 11),
+    text(x(mapped), y - 15, n(mapped), ORANGE, 10),
+    text(x(lo), y + 19, n(lo), SOFT, 9),
+    text(x(hi), y + 19, n(hi), SOFT, 9),
+    // and the caption says what the colours are
+    text(padL, y + 34, "orange: mapped by the product", ORANGE, 9.5, "start"),
+    text(W - padR, y + 34, "blue: estimate, 95% interval", BLUE, 9.5, "end"),
+  ].join("");
 }
 
 function drawFigures(doc) {

@@ -73,8 +73,11 @@ body {
   top: .5rem;
   left: .5rem;
   z-index: 2;
-  width: 17rem;
-  max-width: calc(100% - 1rem);
+  width: 21rem;
+  /* Leaves the right-hand control stack reachable. At 360 px an open panel
+     at calc(100% - 1rem) covered the zoom, fullscreen and geolocate buttons,
+     so opening the layer list cost the reader the map controls. */
+  max-width: calc(100% - 3.5rem);
   max-height: calc(100% - 1rem);
   overflow: auto;
   background: rgba(247, 245, 240, .95);
@@ -131,7 +134,9 @@ body {
 }
 #mappanel button:hover { background: var(--karst); }
 #legend ul { margin: 0; padding: 0; list-style: none; }
-#legend li { display: flex; align-items: baseline; gap: .35rem; padding: .08rem 0; }
+#legend li { display: flex; align-items: baseline; gap: .4rem;
+  padding: .15rem 0; line-height: 1.35; }
+#legend li + li { border-top: 1px solid rgba(47, 62, 57, .5); }
 .sw { display: inline-block; width: .7rem; height: .7rem; flex: 0 0 auto; }
 .sw.dot { border-radius: 50%; border: 1px solid #5a1408; }
 .sw.ring { border: 2px solid #5b3fa8; border-radius: 50%; background: none; }

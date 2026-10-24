@@ -253,11 +253,23 @@ function sceneCurrent() {
   return matches[i];
 }
 
+/* The tile currently on the map, so a rebuild only happens when the choice
+   actually changed. addLocalLayers() runs on a 400 ms timer for two minutes
+   after load - that is how the layers survive the basemap swap - and this
+   function used to remove and re-add the image source on every one of those
+   ticks, which is what made a draped scene blink. */
+let sceneShown = null;
+
 function addScene() {
+  const tile = sceneOn ? sceneCurrent() : null;
+  const want = tile ? tile.id : null;
+  // Nothing to do when the same tile is already drawn. After a setStyle the
+  // layer is gone while sceneShown still names it, so the layer is checked
+  // too rather than trusted.
+  if (want === sceneShown && (want === null || map.getLayer(SCENE_ID))) return;
   if (map.getLayer(SCENE_ID)) map.removeLayer(SCENE_ID);
   if (map.getSource(SCENE_ID)) map.removeSource(SCENE_ID);
-  if (!sceneOn) return;
-  const tile = sceneCurrent();
+  sceneShown = want;
   if (!tile) return;
   const [w, s, e, n] = tile.bounds;
   map.addSource(SCENE_ID, {
@@ -311,7 +323,12 @@ function initSceneUI() {
   const slider = $("scene-date");
   slider.max = String(Math.max(0, sceneMatches().length - 1));
   slider.value = slider.max;        // the look furthest after the fires
-  $("scene-event").addEventListener("input", refreshScene);
+  $("scene-event").addEventListener("input", () => {
+    refreshScene();
+    // A different event is a different place. Band and date are the same
+    // footprint, so those leave the camera alone.
+    if (sceneOn) zoomToScene();
+  });
   $("scene-kind").addEventListener("input", refreshScene);
   $("scene-date").addEventListener("input", refreshScene);
   $("scene-on").addEventListener("change", (e) => {
