@@ -1,0 +1,31 @@
+<div id="drought-wrap">
+  <h2>Drought context — monthly water balance <span class="muted" id="drought-coverage"></span></h2>
+  <p>Rainfall alone does not describe drying. The upper panel is precipitation minus
+  evapotranspiration: how much water the land actually gained or lost each month. The lower
+  panel puts the rainfall against the 1981&ndash;2025 average for the same calendar month, so
+  the reader can judge whether it was unusual rather than take the word for it.</p>
+  <div id="drought-error"></div>
+  <svg id="drought" viewBox="0 0 1000 274" role="img"
+       aria-label="Monthly water balance and precipitation against climatology"></svg>
+  <p class="lag" id="drought-lag"></p>
+  <p>Dry fuel makes burning easier. It does not start a fire, and this panel is not an
+  explanation of why Biak burned &mdash; the hotspots above it were lit by someone. Wet months
+  in this record contain hotspots too.</p>
+  <p>Vegetation indices are shown below with their composite-quality confound &mdash;
+  see that panel for the correlation between observation quality and the index itself.
+  Those indices cannot carry a drought claim here.</p>
+</div>
+
+<div id="veg-wrap">
+  <h2>Vegetation indices and their composite quality <span class="muted" id="veg-coverage"></span></h2>
+  <p>NDVI (MOD13A1) and NDMI (MOD09A1) departure from the 2001&ndash;2025 calendar-month mean,
+  plotted with the share of AOI land pixels passing each product&rsquo;s cloud test in the same
+  composites. The index and its quality series share an x&nbsp;axis because the index tracks
+  observation quality in the humid tropics: a dry month is also a less cloudy month, so its
+  composite is built from more and better observations.
+  <strong>These indices do not support a drought conclusion for this AOI.</strong></p>
+  <div id="veg-error"></div>
+  <svg id="veg" viewBox="0 0 1000 420" role="img"
+       aria-label="NDVI and NDMI anomalies with good-pixel share"></svg>
+  <p id="veg-corr" class="muted"></p>
+</div>

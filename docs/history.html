@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biak hotspot monitor — the detection record</title>
+<link href="assets/site.css" rel="stylesheet">
+</head>
+<body>
+<header>
+  <h1>The detection record</h1>
+  <p class="sub">Thermal anomalies detected from satellite around Biak, Supiori and Numfor, Papua, Indonesia. Data: NASA FIRMS (VIIRS and MODIS) and Himawari-9.</p>
+</header>
+
+<nav id="nav"><a href="index.html">The 2026 season</a>
+  <a href="conditions.html">Drought and vegetation</a>
+  <a href="history.html" aria-current="page">Detection record</a></nav>
+
+<ul id="data-errors"></ul>
+
+<div id="timeline-wrap">
+  <h2>Detections per day — full record (linear scale)</h2>
+  <p>The flat years are the point: before 2026 the baseline ran at roughly two detections per
+  week. A linear axis is the honest rendering of that; August 2026 is the exception, not the
+  rule.</p>
+  <div id="timeline-error"></div>
+  <svg id="timeline" viewBox="0 0 1000 200" role="img" aria-label="Daily hotspot counts, linear scale"></svg>
+</div>
+<footer>
+  Boundaries: desa/kelurahan (BIG, via this project's extraction). Hotspots: NASA FIRMS
+  (VIIRS S-NPP, NOAA-20, NOAA-21, MODIS) and Himawari-9 AHI. A hotspot is a thermal anomaly,
+  not a confirmed fire; it cannot identify who started anything. Confidence values are shown
+  as raw instrument codes and are not comparable between VIIRS and MODIS.
+  <span id="generated"></span>
+</footer>
+<script src="assets/core.js"></script>
+<script src="assets/timeline.js"></script>
+<script src="assets/history.js"></script>
+</body>
+</html>

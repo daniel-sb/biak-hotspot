@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+{{HEAD_EXTRA}}<link href="assets/site.css" rel="stylesheet">
+</head>
+<body>
+<header>
+  <h1>{{H1}}</h1>
+  <p class="sub">{{SUB}}</p>
+</header>
+
+<nav id="nav">{{NAV}}</nav>
+
+<ul id="data-errors"></ul>
+
+{{BODY}}
+<footer>
+  Boundaries: desa/kelurahan (BIG, via this project's extraction). Hotspots: NASA FIRMS
+  (VIIRS S-NPP, NOAA-20, NOAA-21, MODIS) and Himawari-9 AHI. A hotspot is a thermal anomaly,
+  not a confirmed fire; it cannot identify who started anything. Confidence values are shown
+  as raw instrument codes and are not comparable between VIIRS and MODIS.
+  <span id="generated"></span>
+</footer>
+{{SCRIPTS}}
+</body>
+</html>

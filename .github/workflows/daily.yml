@@ -84,6 +84,14 @@ jobs:
       - name: Build the daily brief and dashboard data
         run: python src/report_daily.py
 
+      # docs/*.html is stamped from site/ by this script (adr/0002). It
+      # reads nothing under docs/data/ and is deterministic, so on a day when
+      # site/ has not changed it rewrites the same bytes. It runs before the
+      # tests because one of them asserts the published pages match site/,
+      # and a forgotten local build must not take the daily brief down.
+      - name: Assemble the published pages from site/
+        run: python src/build_site.py
+
       - name: Run the test suite
         run: python -m pytest tests -q
 

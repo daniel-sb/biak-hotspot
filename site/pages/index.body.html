@@ -1,0 +1,44 @@
+<p id="status"><span class="muted">Loading…</span></p>
+
+
+<aside id="ethics">
+  <strong>What a hotspot is — and is not.</strong>
+  A hotspot is a thermal anomaly detected by a satellite sensor. It is not a confirmed fire,
+  and it cannot identify who started anything: a 375&nbsp;m pixel cannot attribute burning to
+  any person, landowner or village. Small-scale shifting cultivation is a long-standing and
+  lawful practice in Papua; a monitoring product that frames every detection as illegal
+  misrepresents the data. False-positive caveats are published with the counts, every time.
+</aside>
+
+<p id="gap"><strong>Observation gap.</strong> Nothing observes Biak between 15:00 and 00:31 WIT.
+Himawari-9 covers those hours from geostationary orbit at 2&nbsp;km resolution — 28 times the
+pixel area of VIIRS — so it sees only larger or hotter fires. The evening section below is an
+observation, never a reassurance.</p>
+
+<div id="layout">
+  <div>
+    <div id="map">
+      <div class="legend">
+        Hotspot size/colour by FRP (MW):
+        <span class="sw" style="background:#ffb14a"></span>small
+        <span class="sw" style="background:#f2762b"></span>moderate
+        <span class="sw" style="background:#c22e12"></span>high
+      </div>
+    </div>
+    <div id="imagery">
+      <div class="row">
+        <strong>Satellite imagery:</strong>
+        <label><input type="radio" name="imagery" value="" checked> None</label>
+        <label><input type="radio" name="imagery" value="truecolor"> True colour</label>
+        <label><input type="radio" name="imagery" value="swir"> False colour (M11-I2-I1)</label>
+      </div>
+      <span id="imagery-note"></span>
+    </div>
+  </div>
+  <div id="panel">
+    <h2>Latest brief <span class="muted" id="brief-date"></span></h2>
+    <div id="brief"><p class="muted">Loading…</p></div>
+    <h2>Previous evening (Himawari-9)</h2>
+    <div id="evening"><p class="muted">Loading…</p></div>
+  </div>
+</div>

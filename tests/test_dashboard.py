@@ -11,13 +11,36 @@ import codecs
 import json
 import re
 import shutil
+import subprocess
 import tempfile
 from pathlib import Path
 
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-INDEX = ROOT / "docs" / "index.html"
+DOCS = ROOT / "docs"
+INDEX = DOCS / "index.html"
+
+
+def pages():
+    """Every generated page, as (path, html). The site became three pages in
+    adr/0002, so a property asserted on one page is asserted on all of them."""
+    out = [(q, q.read_text(encoding="utf-8")) for q in sorted(DOCS.glob("*.html"))]
+    assert out, "no pages under docs/ - run python src/build_site.py"
+    return out
+
+
+def scripts():
+    """Every published asset script, as (path, source)."""
+    out = [(q, q.read_text(encoding="utf-8"))
+           for q in sorted((DOCS / "assets").glob("*.js"))]
+    assert out, "no scripts under docs/assets/ - run python src/build_site.py"
+    return out
+
+
+def site_text():
+    """Markup and scripts together: everything a reader can end up seeing."""
+    return "\n".join(s for _q, s in pages() + scripts())
 DAILY = ROOT / "docs" / "data" / "daily_counts.json"
 DESA = ROOT / "docs" / "data" / "biak_desa.geojson"
 DROUGHT = ROOT / "docs" / "data" / "drought.json"
@@ -39,56 +62,64 @@ def test_index_exists_with_ethics_and_gap():
 
 
 def test_no_all_clear_wording_in_page():
-    """Check 4: nothing on the page may read as an all-clear for the
-    evening. The mandated sentence is the strongest statement allowed."""
-    html = INDEX.read_text(encoding="utf-8")
-    assert ("No evening thermal anomaly above threshold after dark." in html)
-    for banned in ("all-clear", "was clear", "the evening was clear",
-                   "conditions improved", "nothing was burning",
-                   "fire-free", "no fires were"):
-        assert banned not in html, banned
-    import re
-    assert not re.search(r"\bsafe\b", html), "the word 'safe' appears"
-    assert not re.search(r"\bclear\b", html), "the word 'clear' appears"
+    """Check 4: nothing on any page, or in any script that writes to one, may
+    read as an all-clear for the evening. The mandated sentence is the
+    strongest statement allowed."""
+    assert "No evening thermal anomaly above threshold after dark." in site_text()
+    banned = ("all-clear", "was clear", "the evening was clear",
+              "conditions improved", "nothing was burning",
+              "fire-free", "no fires were")
+    for path, text in pages() + scripts():
+        for word in banned:
+            assert word not in text, f"{path.name}: {word}"
+        assert not re.search(r"\bsafe\b", text), f"{path.name}: the word 'safe'"
+        assert not re.search(r"\bclear\b", text), f"{path.name}: the word 'clear'"
 
 
 def test_confidence_not_used_for_encoding():
     """Check 5: confidence values are raw instrument codes, never comparable
     between VIIRS and MODIS - they appear only as popup text, never in a
     MapLibre paint expression."""
-    html = INDEX.read_text(encoding="utf-8")
-    assert '"confidence"' not in html          # maplibre ["get","confidence"]
-    assert "get', 'confidence" not in html
-    assert "circle-color" in html              # encoding exists...
-    assert "frp" in html                       # ...and is driven by FRP
+    text = site_text()
+    assert chr(34) + "confidence" + chr(34) not in text
+    assert "get', 'confidence" not in text
+    assert "circle-color" in text              # encoding exists...
+    assert "frp" in text                       # ...and is driven by FRP
 
 
 def test_pinned_cdn_only():
-    """The page talks to three hosts and no others.
+    """The site talks to three hosts and no others.
 
     gibs.earthdata.nasa.gov was added deliberately for task 09 imagery.
     The point of this list is that a new host is a decision someone made,
     not something that arrived with a copied snippet: extend it only
     alongside the reason, in the same commit.
     """
-    html = INDEX.read_text(encoding="utf-8")
-    assert "maplibre-gl@4.7.1" in html
     allowed = ("maplibre-gl@4.7.1", "openfreemap", "gibs.earthdata.nasa.gov",
                "worldview.earthdata.nasa.gov")
-    srcs = [l for l in html.split('"') if l.startswith("http")]
-    assert srcs == [s for s in srcs if any(a in s for a in allowed)]
+    for path, text in pages() + scripts():
+        srcs = [s for s in text.split(chr(34)) if s.startswith("http")]
+        bad = [s for s in srcs if not any(a in s for a in allowed)]
+        assert not bad, f"{path.name}: {bad}"
+    # the library is pinned on every page that loads the map, and absent from
+    # every page that does not
+    for path, text in pages():
+        if "assets/map.js" in text:
+            assert "maplibre-gl@4.7.1" in text, path.name
+        else:
+            assert "maplibre" not in text, f"{path.name} pulls MapLibre unused"
 
 
 def test_data_files_referenced_with_error_handling():
     """Check 3 (source level): every published file is referenced and a
     load failure has a stated on-page error path."""
-    html = INDEX.read_text(encoding="utf-8")
+    text = site_text()
     for name in ("hotspots_latest.geojson", "summary_latest.json",
                  "recurrent_sites.json", "daily_counts.json",
                  "biak_desa.geojson", "vegetation.json"):
-        assert name in html, name
-    assert html.count("dataError(") >= 4
-    assert "failed to load" in html
+        assert name in text, name
+    assert text.count("dataError(") >= 4
+    assert "failed to load" in text
 
 
 def test_daily_counts_dense_sorted_matches_store():
@@ -192,18 +223,16 @@ def test_vegetation_json_internal_consistency():
 
 
 def test_vegetation_page_has_qa_share_and_non_conclusion():
-    """The page drawing function references both the index and its QA share,
-    and the panel's copy states the non-conclusion."""
-    html = INDEX.read_text(encoding="utf-8")
-    # the drawing function uses both series
-    assert "ndvi_anomaly" in html
-    assert "ndvi_good_share" in html
-    assert "ndmi_anomaly" in html
-    assert "ndmi_good_share" in html
-    # the non-conclusion sentence is present
-    assert "do not support a drought conclusion" in html
-    # the correlation text is rendered on the panel
-    assert "qa_correlation" in html
+    """The drawing code uses both the index and its QA share, and the panel's
+    copy states the non-conclusion. The copy is on conditions.html; the series
+    names are in the script that page loads."""
+    panel = (DOCS / "conditions.html").read_text(encoding="utf-8")
+    code = (DOCS / "assets" / "climate.js").read_text(encoding="utf-8")
+    for series in ("ndvi_anomaly", "ndvi_good_share",
+                   "ndmi_anomaly", "ndmi_good_share"):
+        assert series in code, series
+    assert "qa_correlation" in code
+    assert "do not support a drought conclusion" in panel
 
 
 def test_render_check_vegetation_panel():
@@ -220,48 +249,91 @@ def test_render_check_vegetation_panel():
     assert "qa_correlation" in src or "Closest" not in src
 
 
+def page_scripts(html):
+    """The asset scripts a page actually loads, in load order."""
+    names = re.findall(r'<script src="assets/([^"]+)"></script>', html)
+    assert names, "page loads no scripts"
+    return names
+
+
 def test_page_script_structural_integrity():
     """Task 07b item 4: structural inspection catches the fault class that
     only breaks at runtime - unknown library globals, getElementById targets
     missing from the markup, and fetch paths that do not exist under docs/.
-    No browser, no JS execution."""
-    import re
-    html = INDEX.read_text(encoding="utf-8")
-    m = re.search(r"<script>\n(.*)\n</script>", html, re.S)
-    assert m, "inline script block not found"
-    script = m.group(1)
-
-    # the map initialises with the inline fallback style, not a remote URL,
-    # and an error handler surfaces basemap/tile failures
-    assert 'style: FALLBACK_STYLE' in script
-    assert not re.search(r'style:\s*"http', script)
-    assert 'map.on("error"' in script
-
-    # every maplibregl global used is one the pinned library defines
-    used = set(re.findall(r"new maplibregl\.(\w+)", script))
-    used |= set(re.findall(r"maplibregl\.(\w+)\(", script))
-    known = {"Map", "Popup", "NavigationControl"}
-    assert used <= known, f"unknown maplibregl members: {used - known}"
-
-    # every $()/getElementById target exists in the markup
-    ids_used = set(re.findall(r'\$\("([^"]+)"\)', script))
-    ids_used |= set(re.findall(r'getElementById\("([^"]+)"\)', script))
-    ids_defined = set(re.findall(r'id="([^"]+)"', html))
-    assert ids_used <= ids_defined, f"missing ids: {ids_used - ids_defined}"
-
-    # every literal fetch path exists under docs/
-    paths = re.findall(r'(?:loadJSON|loadText)\("([^"]+)"\)', script)
-    assert paths, "no literal data paths found"
+    Checked per page against the scripts that page loads, so a script may
+    only touch ids its own page defines. No browser, no JS execution."""
     # data/vegetation.json is written by an interactive Earth Engine run and is
     # absent until someone with credentials runs src/vegetation_gee.py. The
     # panel states that absence rather than drawing anything, so an absent file
     # is a correct state here - unlike every other path, where absence is a typo.
     generated_by_hand = {"data/vegetation.json"}
-    for p in paths:
-        if p in generated_by_hand:
-            continue
-        assert (ROOT / "docs" / p).exists(), f"fetch path missing: {p}"
-    assert (ROOT / "docs" / "briefs").is_dir(), "dynamic briefs/ path"
+    known = {"Map", "Popup", "NavigationControl"}
+    seen_paths = set()
+
+    for path, html in pages():
+        names = page_scripts(html)
+        script = "\n".join(
+            (DOCS / "assets" / n).read_text(encoding="utf-8") for n in names)
+
+        if "map.js" in names:
+            # the map initialises with the inline fallback style, not a remote
+            # URL, and an error handler surfaces basemap/tile failures
+            assert "style: FALLBACK_STYLE" in script, path.name
+            assert not re.search(r'style:\s*"http', script), path.name
+            assert 'map.on("error"' in script, path.name
+
+        # every maplibregl global used is one the pinned library defines
+        used = set(re.findall(r"new maplibregl\.(\w+)", script))
+        used |= set(re.findall(r"maplibregl\.(\w+)\(", script))
+        assert used <= known, f"{path.name}: unknown members {used - known}"
+
+        # every $()/getElementById target exists in THIS page's markup
+        ids_used = set(re.findall(r'\$\("([^"]+)"\)', script))
+        ids_used |= set(re.findall(r'getElementById\("([^"]+)"\)', script))
+        ids_defined = set(re.findall(r'id="([^"]+)"', html))
+        assert ids_used <= ids_defined, \
+            f"{path.name}: missing ids {ids_used - ids_defined}"
+
+        # every literal fetch path exists under docs/
+        paths = re.findall(r'(?:loadJSON|loadText)\("([^"]+)"\)', script)
+        assert paths, f"{path.name}: no literal data paths found"
+        seen_paths |= set(paths)
+        for q in paths:
+            if q in generated_by_hand:
+                continue
+            assert (DOCS / q).exists(), f"{path.name}: fetch path missing: {q}"
+
+    assert (DOCS / "briefs").is_dir(), "dynamic briefs/ path"
+    # the split must not have orphaned a data file nobody loads any more
+    for q in ("data/summary_latest.json", "data/hotspots_latest.geojson",
+              "data/daily_counts.json", "data/drought.json"):
+        assert q in seen_paths, f"no page loads {q} any more"
+
+
+def test_docs_pages_are_the_build_output():
+    """docs/*.html is generated from site/ by src/build_site.py. Editing the
+    published page by hand works until the next build silently reverts it, so
+    the committed output has to match what the sources produce."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "build_site", ROOT / "src" / "build_site.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    skeleton = (mod.SITE / "partials" / "page.html").read_text(encoding="utf-8")
+    for name, _label, title, h1, scripts_, needs_map in mod.PAGES:
+        expected = mod.render(name, title, h1, scripts_, needs_map, skeleton)
+        actual = (DOCS / f"{name}.html").read_text(encoding="utf-8")
+        assert actual == expected, \
+            f"docs/{name}.html is not what site/ builds - run src/build_site.py"
+    for src in sorted((mod.SITE / "assets").iterdir()):
+        if src.is_file():
+            out = DOCS / "assets" / src.name
+            assert out.exists(), f"docs/assets/{src.name} missing"
+            assert out.read_bytes() == src.read_bytes(), \
+                f"docs/assets/{src.name} differs from site/assets/"
+    published = {q.name for q in (DOCS / "assets").iterdir() if q.is_file()}
+    sources = {q.name for q in (mod.SITE / "assets").iterdir() if q.is_file()}
+    assert published == sources, f"stale assets: {published - sources}"
 
 
 def test_minimarkdown_renders_via_node():
@@ -279,8 +351,8 @@ def test_minimarkdown_renders_via_node():
     harness = Path(tempfile.mkdtemp()) / "md_harness.js"
     harness.write_text(
         'const fs = require("fs");\n'
-        'const html = fs.readFileSync(process.argv[2], "utf8");\n'
-        'const m = html.match(/function miniMarkdown\\([\\s\\S]*?\\n\\}/);\n'
+        'const src = fs.readFileSync(process.argv[2], "utf8");\n'
+        'const m = src.match(/function miniMarkdown\\([\\s\\S]*?\\n\\}/);\n'
         'if (!m) { console.error("miniMarkdown not found"); process.exit(100); }\n'
         '(0, eval)(m[0]);\n'
         'const inputs = JSON.parse(fs.readFileSync(0, "utf8"));\n'
@@ -295,7 +367,7 @@ def test_minimarkdown_renders_via_node():
     ]
     md = header + "\n" + separator + "\n" + "\n".join(rows) + "\n"
     r = subprocess.run(
-        [node, str(harness), str(INDEX)],
+        [node, str(harness), str(DOCS / "assets" / "core.js")],
         input=json.dumps([md]), capture_output=True, text=True,
         encoding="utf-8", timeout=60)
     assert r.returncode == 0, r.stderr
@@ -327,8 +399,8 @@ def test_minimarkdown_real_brief_tables():
     harness = Path(tempfile.mkdtemp()) / "md_harness.js"
     harness.write_text(
         'const fs = require("fs");\n'
-        'const html = fs.readFileSync(process.argv[2], "utf8");\n'
-        'const m = html.match(/function miniMarkdown\\([\\s\\S]*?\\n\\}/);\n'
+        'const src = fs.readFileSync(process.argv[2], "utf8");\n'
+        'const m = src.match(/function miniMarkdown\\([\\s\\S]*?\\n\\}/);\n'
         'if (!m) { console.error("miniMarkdown not found"); process.exit(100); }\n'
         '(0, eval)(m[0]);\n'
         'const inputs = JSON.parse(fs.readFileSync(0, "utf8"));\n'
@@ -336,7 +408,7 @@ def test_minimarkdown_real_brief_tables():
         encoding="utf-8")
     latest = briefs[-1]
     r = subprocess.run(
-        [node, str(harness), str(INDEX)],
+        [node, str(harness), str(DOCS / "assets" / "core.js")],
         input=json.dumps([latest.read_text(encoding="utf-8")]),
         capture_output=True, text=True, encoding="utf-8", timeout=60)
     assert r.returncode == 0, r.stderr
@@ -349,25 +421,80 @@ def test_minimarkdown_real_brief_tables():
     assert district_rows >= 24, "district body rows lost"
 
 
+STATUS_HARNESS = r"""
+const fs = require("fs");
+const core = fs.readFileSync(process.argv[2], "utf8");
+const page = fs.readFileSync(process.argv[3], "utf8");
+const s = page.match(/function statusText\([\s\S]*?\n\}/);
+if (!s) { console.error("statusText not found"); process.exit(100); }
+// core.js is evaluated whole and in the same scope, because esc is a const
+// and would not survive a separate eval. Nothing in core.js touches the DOM
+// until one of its functions is called, so node can load it as it stands.
+const calls = "JSON.stringify([" +
+  "statusText(2, '2026-09-23', 7, '2026-09-28')," +
+  "statusText(1, '2026-09-23', 7, '2026-09-28')," +
+  "statusText(0, null, 7, '2026-09-28')])";
+console.log(eval(core + "\n" + s[0] + "\n" + calls));
+"""
+
+
+def test_status_strip_states_via_node():
+    """The status strip is the only present-tense element on index.html, and
+    its wording is the one place a reader could be handed an all-clear.
+    Execute the real function: a plural count, a singular count, and a zero
+    that says the islands were observable without claiming more than that.
+    Skipped where node is unavailable."""
+    node = shutil.which("node")
+    if not node:
+        print("SKIP: node not on PATH - statusText not executed")
+        return
+    harness = Path(tempfile.mkdtemp()) / "status_harness.js"
+    harness.write_text(STATUS_HARNESS, encoding="utf-8")
+    r = subprocess.run(
+        [node, str(harness), str(DOCS / "assets" / "core.js"),
+         str(DOCS / "assets" / "index.js")],
+        capture_output=True, text=True, encoding="utf-8", timeout=60)
+    assert r.returncode == 0, r.stderr
+    many, one, none = json.loads(r.stdout)
+
+    assert "2 detections in the 7 days to 2026-09-28 (WIT)" in many
+    assert "Most recent: 2026-09-23." in many
+    assert "1 detection in the 7 days" in one, "plural not agreed"
+    assert "1 detections" not in one
+
+    # the zero state reports an absence of detections, never an absence of fire
+    assert "No detections in the 7 days to 2026-09-28 (WIT)" in none
+    assert "observable" in none
+    assert "Nothing observes Biak between 15:00 and 00:31 WIT" in none
+    for rendered in (many, one, none):
+        for banned in ("all-clear", "safe", "clear", "fire-free",
+                       "nothing was burning", "no fires"):
+            assert banned not in rendered, banned
+
+
 def test_page_text_is_not_mojibake():
-    """The page is the only public-facing file, and a cp1252/utf-8 round trip
+    """The site is the only public-facing output, and a cp1252/utf-8 round trip
     on Windows renders every em-dash as a stray sequence no terminal check
     catches. Guard the bytes, not the appearance."""
-    raw = INDEX.read_bytes()
-    assert not raw.startswith(codecs.BOM_UTF8), "byte-order mark before doctype"
-    text = raw.decode("utf-8")
-    suspect = re.compile("[" + chr(0xe2) + chr(0xc2) + "][" + chr(0x80) + "-" + chr(0xbf) + "]")
-    assert not suspect.search(text), "double-encoded characters in docs/index.html"
+    suspect = re.compile("[" + chr(0xe2) + chr(0xc2) + "][" + chr(0x80) +
+                         "-" + chr(0xbf) + "]")
+    for path, _text in pages() + scripts():
+        raw = path.read_bytes()
+        assert not raw.startswith(codecs.BOM_UTF8), f"{path.name}: BOM"
+        assert not suspect.search(raw.decode("utf-8")), \
+            f"double-encoded characters in docs/{path.name}"
 
 
 def test_map_global_name_is_correct():
     """The library global is maplibregl. A bare `maplibre.` reference throws
     on load and kills every later fetch, so the page renders blank while all
     source-level checks still pass."""
-    text = INDEX.read_text(encoding="utf-8")
+    text = site_text()
     assert "maplibregl.Map(" in text
-    stray = re.search(r"(?<!g)\bmaplibre\.", text)
-    assert stray is None, "bare maplibre. reference; the global is maplibregl"
+    for path, body in pages() + scripts():
+        stray = re.search(r"(?<!g)\bmaplibre\.", body)
+        assert stray is None, \
+            f"{path.name}: bare maplibre. reference; the global is maplibregl"
 
 
 def test_drought_json_internally_consistent():

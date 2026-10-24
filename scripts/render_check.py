@@ -1,12 +1,14 @@
-"""Headless render check for docs/index.html (added after Task 07b, whose
+"""Headless render check for the published pages (added after Task 07b, whose
 structural tests could not catch runtime faults).
 
-Serves docs/ over localhost, opens the page in headless Chromium, and asserts:
+Serves docs/ over localhost, opens index.html, history.html and conditions.html
+in headless Chromium, and asserts:
   - the page script runs to completion (no pageerror, no console errors)
   - the maplibre canvas exists and every local data file loads with no
     error banner (glyphs, recurrent FeatureCollection, fallback style)
   - the evening section states its result per the 06b/06c discipline
     (after-dark first, never an all-clear)
+  - the status strip states its window without reading as an all-clear
   - the brief renders with identifiers intact
   - the timeline draws the detection-carrying days
 
@@ -24,7 +26,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 PORT = 8137
-URL = f"http://127.0.0.1:{PORT}/index.html"
+BASE = f"http://127.0.0.1:{PORT}"
+URLS = {n: f"{BASE}/{n}.html"
+        for n in ("index", "conditions", "history")}
 
 try:
     from playwright.sync_api import sync_playwright
@@ -54,7 +58,8 @@ def main() -> int:
                     if m.type == "error" else None)
             page.on("pageerror", lambda e: failures.append(
                 f"pageerror: {e}"))
-            page.goto(URL, wait_until="networkidle", timeout=60000)
+            page.goto(URLS["index"], wait_until="networkidle",
+                      timeout=60000)
             page.wait_for_timeout(4000)   # tiles, glyphs, timeline render
 
             def check(name, ok, detail=""):
@@ -76,6 +81,20 @@ def main() -> int:
             check("no data-error banners (all files loaded)",
                   err_text.strip() == "", err_text.strip()[:300])
 
+            status = page.inner_text("#status")
+            check("status strip rendered past 'Loading'",
+                  "Loading" not in status,
+                  status[:160].encode("ascii", "replace").decode())
+            check("status strip names its window and the day it covers",
+                  "days to" in status and "(WIT)" in status,
+                  status[:160].encode("ascii", "replace").decode())
+            check("status strip reports detections, never an absence of fire",
+                  ("detection" in status)
+                  and not any(w in status.lower()
+                              for w in ("all-clear", "safe", "clear",
+                                        "fire-free", "no fires")),
+                  status[:160].encode("ascii", "replace").decode())
+
             evening = page.inner_text("#evening")
             check("evening panel rendered past 'Loading'",
                   "Loading" not in evening,
@@ -95,11 +114,58 @@ def main() -> int:
                   or "hotspots_latest.geojson" in brief
                   or "biak_desa.geojson" in brief)
 
+            # --- task 09: GIBS imagery, including past its zoom ceiling ---
+            gibs = []
+            page.on("response", lambda r: gibs.append(
+                (r.status, r.url)) if "gibs.earthdata.nasa.gov" in r.url
+                else None)
+
+            page.check('input[name="imagery"][value="truecolor"]')
+            page.wait_for_timeout(6000)
+            served = [s for s, u in gibs if s == 200]
+            check("GIBS imagery tiles served", bool(served),
+                  f"{len(served)} of {len(gibs)} responses ok")
+
+            note = page.inner_text("#imagery-note")
+            check("imagery labelled with product and date",
+                  "Corrected Reflectance" in note and "2026-" in note,
+                  note[:120].encode("ascii", "replace").decode())
+            check("imagery carries the not-an-all-clear caveat",
+                  "absence of visible smoke is not an absence" in note)
+
+            # GIBS tops out at zoom 9; MapLibre must overzoom rather than
+            # blank out, and the resulting tile errors must not raise the
+            # honest-degradation banner (task 09).
+            for _ in range(5):
+                page.click(".maplibregl-ctrl-zoom-in")
+                page.wait_for_timeout(400)
+            page.wait_for_timeout(4000)
+            over = page.inner_text("#data-errors").strip()
+            check("no error banner after zooming past the GIBS z9 ceiling",
+                  over == "", over[:200])
+
+            page.check('input[name="imagery"][value="swir"]')
+            page.wait_for_timeout(5000)
+            swir = page.inner_text("#imagery-note")
+            check("false colour is never called a fire detection",
+                  "not a fire detection" in swir and "fires" not in swir.lower())
+
+            # --- history.html: the full detection record ---
+            page.goto(URLS["history"], wait_until="networkidle",
+                      timeout=60000)
+            page.wait_for_timeout(2500)
             tl = page.evaluate(
                 "document.querySelectorAll('#timeline rect').length")
             check("timeline drawn (detection days present)", tl >= 150,
                   f"{tl} bars")
 
+            # --- conditions.html: vegetation and water balance ---
+            page.goto(URLS["conditions"], wait_until="networkidle",
+                      timeout=60000)
+            page.wait_for_timeout(2500)
+            check("no data-error banners on conditions.html",
+                  page.inner_text("#data-errors").strip() == "",
+                  page.inner_text("#data-errors").strip()[:300])
             # vegetation panel (Task 11): both index anomaly and
             # ndvi_good_share / ndmi_good_share series drawn, plus
             # qa_correlation text with a number.
@@ -138,42 +204,6 @@ def main() -> int:
                   lag[:140])
             check("drought panel does not read as a cause",
                   "does not start a fire" in page.inner_text("#drought-wrap"))
-
-            # --- task 09: GIBS imagery, including past its zoom ceiling ---
-            gibs = []
-            page.on("response", lambda r: gibs.append(
-                (r.status, r.url)) if "gibs.earthdata.nasa.gov" in r.url
-                else None)
-
-            page.check('input[name="imagery"][value="truecolor"]')
-            page.wait_for_timeout(6000)
-            served = [s for s, u in gibs if s == 200]
-            check("GIBS imagery tiles served", bool(served),
-                  f"{len(served)} of {len(gibs)} responses ok")
-
-            note = page.inner_text("#imagery-note")
-            check("imagery labelled with product and date",
-                  "Corrected Reflectance" in note and "2026-" in note,
-                  note[:120].encode("ascii", "replace").decode())
-            check("imagery carries the not-an-all-clear caveat",
-                  "absence of visible smoke is not an absence" in note)
-
-            # GIBS tops out at zoom 9; MapLibre must overzoom rather than
-            # blank out, and the resulting tile errors must not raise the
-            # honest-degradation banner (task 09).
-            for _ in range(5):
-                page.click(".maplibregl-ctrl-zoom-in")
-                page.wait_for_timeout(400)
-            page.wait_for_timeout(4000)
-            over = page.inner_text("#data-errors").strip()
-            check("no error banner after zooming past the GIBS z9 ceiling",
-                  over == "", over[:200])
-
-            page.check('input[name="imagery"][value="swir"]')
-            page.wait_for_timeout(5000)
-            swir = page.inner_text("#imagery-note")
-            check("false colour is never called a fire detection",
-                  "not a fire detection" in swir and "fires" not in swir.lower())
 
             # A 404 on vegetation.json is the expected state before anyone
             # has run src/vegetation_gee.py, and the panel says so on the page.
