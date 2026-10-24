@@ -10,6 +10,11 @@
 # desa polygon clip discards anything not on land.
 aoi_bbox_wsen: [134.25, -1.39, 136.76, 0.99]
 
+# The season the front page is a record of (adr/0008: index.html does not
+# rotate to the latest year). Every headline figure on that page is filtered to
+# this year by src/headline_figures.py.
+season_year: 2026
+
 sources:
   - VIIRS_SNPP_NRT
   - VIIRS_NOAA20_NRT

@@ -84,6 +84,14 @@ jobs:
       - name: Build the daily brief and dashboard data
         run: python src/report_daily.py
 
+      # The front page's figures track the store, so they are rebuilt here.
+      # This script only READS data/processed/, which this job never writes,
+      # so the burned-area figures it republishes are byte-identical and
+      # adr/0003 holds: no scheduled job changes a published burned-area
+      # figure. What does change daily is the detection and event counts.
+      - name: Rebuild the front page's figures and map layers
+        run: python src/headline_figures.py
+
       # docs/*.html is stamped from site/ by this script (adr/0002). It
       # reads nothing under docs/data/ and is deterministic, so on a day when
       # site/ has not changed it rewrites the same bytes. It runs before the

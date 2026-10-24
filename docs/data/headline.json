@@ -1,0 +1,64 @@
+{
+ "season_year": "2026",
+ "generated_utc": "2026-10-24T10:37:30Z",
+ "detections_by_year": {
+  "2023": 100,
+  "2024": 90,
+  "2025": 71,
+  "2026": 905
+ },
+ "events_by_year": {
+  "2023": 61,
+  "2024": 64,
+  "2025": 51,
+  "2026": 312
+ },
+ "events_multi_overpass_by_year": {
+  "2023": 16,
+  "2024": 14,
+  "2025": 10,
+  "2026": 107
+ },
+ "mapped": {
+  "ha": 2179.4,
+  "events_with_area": 20,
+  "events_listed": 25,
+  "events_no_local_reference": 5,
+  "scope": "dNBR+ polygons across assessed events first seen in 2026. A product output, with no confidence interval. Events the product could not assess are excluded, not counted as zero."
+ },
+ "validated": {
+  "estimate_ha": 1230.3,
+  "ci95_ha": [
+   1059.5,
+   1341.6
+  ],
+  "mapped_in_footprints_ha": 819.1,
+  "omission_ha": 427.6,
+  "strata": {
+   "A_mapped": {
+    "area_ha": 819.1,
+    "judged": 50,
+    "burned": 49,
+    "rate": 0.98,
+    "ci95": [
+     0.895,
+     0.996
+    ],
+    "sample": "map_burned"
+   },
+   "B_unmapped_in_footprint": {
+    "area_ha": 800.1,
+    "judged": 58,
+    "burned": 31,
+    "rate": 0.534,
+    "ci95": [
+     0.408,
+     0.657
+    ],
+    "sample": "random_box and footprint_unmapped"
+   }
+  },
+  "events": "The Task 18 dNBR+ product measured against hand labels on 1 m imagery, over the footprints of E0301, E0313, E0368.",
+  "scope": "Stratified estimate from the interpreted 1 m labels, covering the three labelled footprints only. Its mapped term is a subset of the mapped figure beside it, so the two are not alternative answers to one question."
+ }
+}

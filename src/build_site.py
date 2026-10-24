@@ -45,9 +45,7 @@ MAPLIBRE = (
     "</script>\n")
 
 # name, nav label, <title>, <h1>, the scripts it loads, and whether it needs
-# MapLibre. burned-area and methods are deliberately absent: they have no
-# content until step 3 of the rebuild, and an empty page on a public site is
-# worse than a nav that grows by one line later.
+# MapLibre.
 PAGES = [
     ("index", "The 2026 season",
      "Biak hotspot monitor — the 2026 season",
@@ -64,6 +62,18 @@ PAGES = [
      "Biak hotspot monitor — the detection record",
      "The detection record",
      ["core.js", "timeline.js", "history.js"], False),
+    ("results", "Results",
+     "Biak hotspot monitor — results",
+     "Results, and what they do not support",
+     ["core.js", "results.js"], False),
+    ("methods", "Methodology",
+     "Biak hotspot monitor — methodology",
+     "How these numbers were made",
+     ["core.js", "methods.js"], False),
+    ("brief", "Daily brief",
+     "Biak hotspot monitor — the daily brief",
+     "Daily brief and the previous evening",
+     ["core.js", "brief.js"], False),
 ]
 
 
@@ -130,11 +140,22 @@ def demo():
         else:
             assert "maplibre" not in page, f"{name} loads MapLibre it cannot use"
 
-    # the map, the brief and the evening product live on index and nowhere else
-    for ident in ('id="map"', 'id="brief"', 'id="evening"', 'id="status"'):
-        assert ident in pages["index"], ident
-        for name in ("conditions", "history"):
-            assert ident not in pages[name], f"{name} still has {ident}"
+    # the map and the status strip live on index, the brief and the evening
+    # product on their own page, and neither appears anywhere else
+    where = {'id="map"': "index", 'id="status"': "index",
+             'id="layers"': "index", 'id="legend"': "index",
+             'id="brief"': "brief", 'id="evening"': "brief"}
+    for ident, home in where.items():
+        assert ident in pages[home], f"{home} is missing {ident}"
+        for name in pages:
+            if name != home:
+                assert ident not in pages[name], f"{name} also has {ident}"
+
+    # the front page points at the pages its disclaimer names, and they exist,
+    # so the disclaimer is never a link to nothing
+    for target in ("methods.html", "results.html", "brief.html"):
+        assert f'href="{target}"' in pages["index"], target
+        assert target.removesuffix(".html") in pages, target
 
     # the panels landed where they were sent
     assert 'id="timeline"' in pages["history"]

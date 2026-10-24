@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biak hotspot monitor — methodology</title>
+<link href="assets/site.css" rel="stylesheet">
+</head>
+<body>
+<header>
+  <h1>How these numbers were made</h1>
+  <p class="sub">Thermal anomalies detected from satellite around Biak, Supiori and Numfor, Papua, Indonesia. Data: NASA FIRMS (VIIRS and MODIS) and Himawari-9.</p>
+</header>
+
+<nav id="nav"><a href="index.html">The 2026 season</a>
+  <a href="conditions.html">Drought and vegetation</a>
+  <a href="history.html">Detection record</a>
+  <a href="results.html">Results</a>
+  <a href="methods.html" aria-current="page">Methodology</a>
+  <a href="brief.html">Daily brief</a></nav>
+
+<ul id="data-errors"></ul>
+
+<p class="pagenote">This page is in English only. Its readers are reviewers, and translating the
+sensor-level detail buys nobody anything.</p>
+
+<section class="block">
+  <h2>Detections</h2>
+  <p>Thermal anomalies come from NASA FIRMS: VIIRS on Suomi NPP, NOAA-20 and NOAA-21 at
+  375&nbsp;m, and MODIS on Terra and Aqua at 1&nbsp;km. Timestamps are stored in UTC and a WIT
+  (UTC+9) column is derived from them; every daily aggregation is on WIT local days, because
+  treating a night overpass as the previous day shifts detections into the wrong date.</p>
+  <p>The <code>confidence</code> column is published as the raw instrument code and is never
+  cast to a number. VIIRS returns <code>l</code>, <code>n</code> or <code>h</code> and MODIS
+  returns 0 to 100 in the same field, so the two are not comparable and a numeric cast would
+  silently discard most rows. Confidence is never used to size or colour anything on the map;
+  that encoding is Fire Radiative Power.</p>
+  <p>Quality control adds boolean flag columns. It never deletes rows, so every filter is
+  reversible and auditable, and an offshore or over-water detection is kept and flagged rather
+  than dropped.</p>
+  <p>A failed fetch and an empty response are different facts and stay distinguishable in the
+  stored output and in the exit code. A day with no detections and a day we failed to retrieve
+  never render as the same thing.</p>
+</section>
+
+<section class="block">
+  <h2>Events</h2>
+  <p>Detections are clustered into events by DBSCAN on distance and time. An event carries a
+  first-seen and last-seen WIT timestamp, a detection count, an overpass count and FRP
+  statistics. Events whose detections come from a single overpass are flagged as singletons,
+  because one overpass cannot establish duration.</p>
+  <p>An event is a cluster of thermal anomalies. It is not a confirmed fire, and the word fire
+  is reserved for episodes corroborated by an independent source.</p>
+</section>
+
+<section class="block">
+  <h2>Burned area: the mapped extent</h2>
+  <p>Burned area is mapped with dNBR+, following Alcaras et al. (2022), on Sentinel-2 Level-2A.
+  NBR+ is <code>(B12 &minus; B8A &minus; B3 &minus; B2) / (B12 + B8A + B3 + B2)</code>:
+  subtracting the blue and green bands sends water dark and pushes cloud negative, which is why
+  this index refuses the sea where a plain NBR does not.</p>
+  <p>Scene selection is per pixel, not per scene. For each pixel the product takes the latest
+  usable observation before the event started, within 60 days, and the earliest after it ended,
+  within 30 days, keeping only observations where Cloud Score+ <code>cs_cdf &ge; 0.6</code>.
+  Those are search windows, not averaging windows: no composite is formed. The lag between each
+  pixel's observation and the event is recorded, and the before side is systematically staler
+  than the after side, because the search runs backwards into the cloudier build-up.</p>
+  <p>The threshold is local, not global: a pixel is called changed when its dNBR+ exceeds the
+  99th percentile of never-detected land in a reference ring around the same event. This
+  controls false alarms on ground that never burned. It is not an accuracy, and light burns
+  below the local noise are missed.</p>
+</section>
+
+<section class="block">
+  <h2>Burned area: the validated estimate</h2>
+  <p>The product was measured against hand labels on 1&nbsp;m imagery reconstructed by S2DR4
+  (Gamma Earth). Sample boxes of 60&nbsp;m were drawn in three strata: boxes where the product
+  claims burning, boxes inside an event footprint where it claims nothing, and boxes drawn at
+  random within the footprint. Each box was read as burned, unburned or unsure by one
+  interpreter, with a stated confidence. Unsure boxes are dropped from the estimate rather than
+  forced into a class.</p>
+  <p>Area is then estimated by stratified estimation following Olofsson et al. (2014), with the
+  per-stratum rates carrying Wilson intervals rather than the normal approximation. The normal
+  approximation gives a stratum with an extreme rate zero variance, which produces an interval
+  narrower than the sample can support; the published interval is the wider, honest one. Strata
+  are never pooled.</p>
+  <p>One caution on the imagery, recorded because it produced a wrong result before it was
+  caught: the S2DR4 reconstruction returns its bands in the order B2, B3, B4, B8, B5, B6, B7,
+  B11, B12, B8A, and the file carries no band descriptions. Reading those as an ordinary
+  Sentinel-2 stack puts the wrong wavelengths into every index. Rendered chips are already
+  8-bit RGB and must not be stretched again.</p>
+</section>
+
+<section class="block">
+  <h2>What is published, and what is held back</h2>
+  <p>Detection coordinates are published, because a located thermal anomaly is an observation.
+  Inferred responsibility is never published: a 375&nbsp;m pixel cannot attribute burning to a
+  person, a landowner or a village, and small-scale shifting cultivation is lawful and
+  long-established in Papua.</p>
+  <p>Burn polygons are published at native resolution with no attribute table beyond the event
+  they belong to, and no join to land ownership or land use. Counts are aggregated to distrik.
+  The interpretation boxes are published as a map layer with their stratum, judgement and
+  interpreter confidence; the free-text notes written during interpretation are not published.
+  Modelled fuel is published only as a distrik aggregate, because a fuel class is an inference
+  about a place rather than an observation of it.</p>
+</section>
+
+<section class="block">
+  <h2>Sources</h2>
+  <ul>
+    <li>NASA FIRMS, VIIRS and MODIS active fire products.</li>
+    <li>Himawari-9 AHI, JAXA P-Tree, for the 15:00 to 00:31 WIT window nothing else observes.</li>
+    <li>Copernicus Sentinel-2 Level-2A, with Cloud Score+ for observation quality.</li>
+    <li>S2DR4 1&nbsp;m reconstruction, Gamma Earth, under an academic grant.</li>
+    <li>CHIRPS precipitation and MOD16A2 evapotranspiration for the water balance.</li>
+    <li>MOD13A1 and MOD09A1 for the vegetation indices and their composite quality.</li>
+    <li>ESA WorldCover and JRC Tropical Moist Forest for land cover context.</li>
+    <li>Desa and kelurahan boundaries from BIG, simplified for the web.</li>
+  </ul>
+  <p>Full citations travel with the manuscript. The dated record of what the data turned out to
+  say, including withdrawn figures, is <code>FINDINGS.md</code> in the repository.</p>
+</section>
+<footer>
+  Boundaries: desa/kelurahan (BIG, via this project's extraction). Hotspots: NASA FIRMS
+  (VIIRS S-NPP, NOAA-20, NOAA-21, MODIS) and Himawari-9 AHI. A hotspot is a thermal anomaly,
+  not a confirmed fire; it cannot identify who started anything. Confidence values are shown
+  as raw instrument codes and are not comparable between VIIRS and MODIS.
+  <span id="generated"></span>
+</footer>
+<script src="assets/core.js"></script>
+<script src="assets/methods.js"></script>
+</body>
+</html>

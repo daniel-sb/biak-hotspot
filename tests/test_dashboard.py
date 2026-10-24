@@ -53,9 +53,9 @@ def test_index_exists_with_ethics_and_gap():
     assert INDEX.exists()
     html = INDEX.read_text(encoding="utf-8")
     # PLAN.md section 8 ethics text, in the page source itself (static
-    # aside), before the brief container it must not be buried inside
+    # aside), above the figures it qualifies rather than below them
     assert ETHICS in html
-    assert html.index(ETHICS) < html.index('id="brief"')
+    assert html.index(ETHICS) < html.index('id="figures"')
     # observation gap, stated where a reader will find it
     assert "Nothing observes Biak between 15:00 and 00:31 WIT" in html
     assert "Himawari-9" in html and "2" in html
@@ -91,12 +91,18 @@ def test_pinned_cdn_only():
     """The site talks to three hosts and no others.
 
     gibs.earthdata.nasa.gov was added deliberately for task 09 imagery.
+    services.arcgisonline.com was added for the Esri World Imagery basemap,
+    whose public ArcGIS REST endpoint permits non-commercial use with
+    attribution. Google's satellite tiles are deliberately NOT here: pulling
+    them as XYZ outside Google's own APIs breaks their terms, and the licensed
+    route needs a key, which cannot live in a public static page.
+
     The point of this list is that a new host is a decision someone made,
     not something that arrived with a copied snippet: extend it only
     alongside the reason, in the same commit.
     """
     allowed = ("maplibre-gl@4.7.1", "openfreemap", "gibs.earthdata.nasa.gov",
-               "worldview.earthdata.nasa.gov")
+               "worldview.earthdata.nasa.gov", "services.arcgisonline.com")
     for path, text in pages() + scripts():
         srcs = [s for s in text.split(chr(34)) if s.startswith("http")]
         bad = [s for s in srcs if not any(a in s for a in allowed)]

@@ -62,3 +62,52 @@ footer { padding:12px 16px 20px; font-size:.78rem; color:var(--muted); line-heig
   #map { height:320px; }
   h1 { font-size:1.28rem; }   /* still steps above the 1.12rem h2 at 360 px */
 }
+
+/* Front page became map-first with headline tiles (adr/0010). The old
+   .legend box inside #map is gone: the legend now lists only the layers that
+   are switched on, so it lives beside the map where it can grow. */
+#figures { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:10px; margin:10px 16px; }
+.tile { border:1px solid var(--line); background:#fff; padding:9px 11px; }
+.tile-k { display:block; font-size:.76rem; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.04em; }
+.tile-v { display:block; font-size:1.5rem; line-height:1.15; margin:2px 0; }
+.tile-n { display:block; font-size:.78rem; color:var(--muted); line-height:1.4; }
+#fig-interval { width:100%; height:auto; display:block; margin:2px 0 4px; }
+#read-first, #gap { margin:0 16px 10px; padding:8px 12px; background:#eef2f6;
+  border:1px solid #c9d4de; font-size:.85rem; line-height:1.45; }
+#read-first { background:#fff7ec; border-color:#e3cfa4; }
+#figures-error:empty { display:none; }
+#figures-error { margin:0 16px 10px; color:#7a1010; font-size:.85rem; }
+#maparea { display:grid; grid-template-columns:minmax(0,3fr) minmax(0,1fr);
+  gap:12px; padding:0 16px; }
+#mappanel { border:1px solid var(--line); background:#fff; padding:8px 11px; }
+#mappanel h2 { font-size:.95rem; margin:4px 0 5px; }
+#layers label { display:block; font-size:.84rem; cursor:pointer;
+  line-height:1.6; }
+#layers input { margin-right:5px; vertical-align:-1px; }
+#legend ul { list-style:none; margin:0; padding:0; font-size:.8rem; }
+#legend li { line-height:1.7; }
+#legend .sw { display:inline-block; width:10px; height:10px; margin-right:3px;
+  vertical-align:0; }
+#legend .sw.dot { border-radius:50%; }
+#legend .sw.box { border:1px solid rgba(0,0,0,.35); }
+#legend .sw.ring { border:2px solid #5b3fa8; border-radius:50%;
+  background:transparent; }
+@media (max-width:860px) {
+  #maparea { grid-template-columns:1fr; }
+}
+
+/* prose pages: methods, results */
+.pagenote { margin:10px 16px; font-size:.82rem; color:var(--muted); }
+.block { margin:12px 16px; border:1px solid var(--line); background:#fff;
+  padding:10px 12px; }
+.block h2 { font-size:1.12rem; margin:2px 0 6px; }
+.block h3 { font-size:.96rem; margin:12px 0 4px; }
+.block p, .block li { font-size:.88rem; line-height:1.5; }
+.block table { border-collapse:collapse; font-size:.82rem; margin:6px 0;
+  width:100%; }
+.block th, .block td { border:1px solid var(--line); padding:3px 6px;
+  text-align:left; vertical-align:top; }
+#res-interval { width:100%; height:auto; display:block; margin:4px 0; }
+#results-error:empty { display:none; }

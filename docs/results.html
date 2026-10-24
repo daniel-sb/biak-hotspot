@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biak hotspot monitor — results</title>
+<link href="assets/site.css" rel="stylesheet">
+</head>
+<body>
+<header>
+  <h1>Results, and what they do not support</h1>
+  <p class="sub">Thermal anomalies detected from satellite around Biak, Supiori and Numfor, Papua, Indonesia. Data: NASA FIRMS (VIIRS and MODIS) and Himawari-9.</p>
+</header>
+
+<nav id="nav"><a href="index.html">The 2026 season</a>
+  <a href="conditions.html">Drought and vegetation</a>
+  <a href="history.html">Detection record</a>
+  <a href="results.html" aria-current="page">Results</a>
+  <a href="methods.html">Methodology</a>
+  <a href="brief.html">Daily brief</a></nav>
+
+<ul id="data-errors"></ul>
+
+<p class="pagenote">Every figure on this page is read from
+<code>docs/data/headline.json</code>, written by <code>src/headline_figures.py</code> from the
+products in the repository. None of them is typed into this page.</p>
+
+<div id="results-error"></div>
+
+<section class="block">
+  <h2>Two area figures, two different questions</h2>
+  <p>The project publishes two burned-area numbers and they are not alternatives. One is what
+  the detection-driven product drew across the season. The other is what hand interpretation of
+  1&nbsp;m imagery says actually burned, inside three event footprints, with an interval. The
+  second is not a correction of the first, because it does not cover the same ground.</p>
+
+  <table id="area-table">
+    <thead><tr><th>Figure</th><th>Value</th><th>Covers</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <h3>The estimate against the product, on one axis</h3>
+  <svg id="res-interval" viewBox="0 0 560 60" role="img"
+       aria-label="Estimate with its interval and the product's mapped extent on one scale"></svg>
+  <p id="res-interval-note" class="muted"></p>
+  <p><strong>The product's mapped extent falls outside the interval, below it.</strong> That is
+  the finding: inside the ground we labelled, the product maps less than burned. The gap is
+  omission, and it is not small.</p>
+</section>
+
+<section class="block">
+  <h2>How the sample was stratified</h2>
+  <p>The estimate is stratified because the two kinds of ground behave nothing alike. Where the
+  product claims burning it is nearly always right. Where it claims nothing, inside a footprint,
+  it is wrong about half the time. Pooling those two would hide exactly the thing worth
+  knowing, so the strata are never pooled.</p>
+  <table id="strata-table">
+    <thead><tr><th>Stratum</th><th>Area</th><th>Boxes judged</th><th>Read as burned</th>
+      <th>Rate (95%)</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <p id="strata-what" class="muted"></p>
+</section>
+
+<section class="block">
+  <h2>What these numbers do not support</h2>
+  <ul>
+    <li><strong>They are not a count of fires.</strong> A detection is a thermal anomaly in a
+    satellite pixel. The events on the front page are clusters of detections, not confirmed
+    fires, and nothing here identifies a cause or a person.</li>
+    <li><strong>The validated figure does not scale to the season.</strong> Multiplying the
+    season's mapped extent by the ratio between these two numbers would be an extrapolation
+    from three footprints to twenty-five events, and nobody has tested whether it holds.</li>
+    <li><strong>One interpreter produced the labels.</strong> Agreement between interpreters was
+    never measured, because no second interpreter was available. That is a permanent limitation
+    of this sample, not a gap waiting to be filled.</li>
+    <li><strong>The sampling unit is a 60&nbsp;m box, not a pixel.</strong> A box is a cluster
+    of pixels treated as one judgement, which is why the interval is wider than a pixel count
+    would suggest.</li>
+    <li><strong>Events the product could not assess are excluded, not zero.</strong> Where no
+    usable local reference ring existed, the event carries no area. That is a missing
+    measurement.</li>
+  </ul>
+  <p>The dated record of how these figures changed, including the ones that were withdrawn, is
+  <code>FINDINGS.md</code> in the repository. It is append-only: later entries supersede earlier
+  ones by design, and a superseded number stays visible so the correction can be audited. Read
+  the latest entry on a subject before quoting an earlier one.</p>
+</section>
+<footer>
+  Boundaries: desa/kelurahan (BIG, via this project's extraction). Hotspots: NASA FIRMS
+  (VIIRS S-NPP, NOAA-20, NOAA-21, MODIS) and Himawari-9 AHI. A hotspot is a thermal anomaly,
+  not a confirmed fire; it cannot identify who started anything. Confidence values are shown
+  as raw instrument codes and are not comparable between VIIRS and MODIS.
+  <span id="generated"></span>
+</footer>
+<script src="assets/core.js"></script>
+<script src="assets/results.js"></script>
+</body>
+</html>
