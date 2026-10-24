@@ -98,10 +98,13 @@ body {
 #mappanel > summary::after { content: " ▾"; float: right; }
 #mappanel[open] > summary::after { content: " ▴"; }
 #mappanel .pad { padding: .55rem .6rem .7rem; }
+/* Sentence-case headings, so no tracking: wide letter spacing breaks the
+   word shapes a reader scans by, and only earns its place on short
+   all-caps labels, which these are not. */
 #mappanel h2 {
-  font-size: .72rem;
+  font-size: .78rem;
   font-weight: 600;
-  letter-spacing: .06em;
+  letter-spacing: .01em;
   color: var(--ink-soft);
   margin: .75rem 0 .3rem;
   border-bottom: 1px solid var(--rule);
@@ -143,9 +146,11 @@ body {
   border-color: var(--ink) !important;
   background: rgba(247, 245, 240, .85) !important;
   font-family: "IBM Plex Sans Condensed", system-ui, sans-serif;
-  font-size: .72rem;
+  font-size: .78rem;
 }
-.maplibregl-ctrl-attrib { font-size: .66rem; }
+/* MapLibre's attribution line keeps its conventional size: it is a credit,
+   not body copy, and enlarging it takes map away from the reader. */
+.maplibregl-ctrl-attrib { font-size: .7rem; }
 .maplibregl-popup-content {
   border-radius: 0;
   border: 1px solid var(--rule);
