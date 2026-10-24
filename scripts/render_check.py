@@ -213,6 +213,36 @@ def main() -> int:
                 check("every local layer exists after the basemap upgrade",
                       False, f"missing {missing} ({type(exc).__name__})")
 
+            # Prove the layers survive a style REPLACEMENT, which is what
+            # the basemap upgrade does. Waiting for the real upgrade only
+            # tests whichever order the two fetches happened to finish in;
+            # this forces the swap, and it is the check that would have
+            # caught the re-apply listener unsubscribing itself one tick
+            # before setStyle arrived.
+            # NOT map.getStyle(): that returns the current style including
+            # the layers the page added, so re-setting it restores them and
+            # the check passes whether or not anything re-applies. Swap to a
+            # bare background style, which genuinely wipes.
+            page.evaluate("""() => map.setStyle({
+              version: 8,
+              glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+              sources: {},
+              layers: [{ id: "swap-bg", type: "background",
+                         paint: { "background-color": "#dfe7ee" } }],
+            })""")
+            try:
+                page.wait_for_function(
+                    "() => ['desa-lines','hotspots','burned-fill',"
+                    "'labels-fill','survey-dot'].every(id => map.getLayer(id))",
+                    timeout=20000)
+                check("local layers come back after a forced style swap", True)
+            except Exception:
+                missing = page.evaluate(
+                    "['desa-lines','hotspots','burned-fill','labels-fill',"
+                    "'survey-dot'].filter(id => !map.getLayer(id))")
+                check("local layers come back after a forced style swap",
+                      False, f"missing {missing}")
+
             boxes = page.evaluate(
                 "document.querySelectorAll('#layers input[data-layer]').length")
             check("layer switch rendered", boxes >= 5, f"{boxes} checkboxes")

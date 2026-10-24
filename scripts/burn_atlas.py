@@ -73,9 +73,9 @@ EVENTS = {
 
 INK = "#17201f"
 SOFT = "#5c6460"
-RULE = "#d5cfc3"
-PAPER = "#f7f5f0"
-KARST = "#ede9e1"
+RULE = "#d2d6cf"
+PAPER = "#f4f6f3"
+KARST = "#e7e9e4"
 CANOPY = "#2f5d53"
 SCAR = "#a3341f"
 EMBER = "#c96a2e"

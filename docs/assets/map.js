@@ -70,11 +70,6 @@ map.on("error", (e) => {
    the cached GeoJSON objects. */
 const localData = { desa: null, hotspots: null, recurrent: null,
                     burned: null, labels: null, survey: null };
-/* Every source addLocalLayers() can create. The basemap-upgrade timer stops
-   re-adding layers once they all exist, so this list has to be derived from
-   localData rather than written out: naming three of five here is how the two
-   newest layers silently stopped being added after a style swap. */
-const LOCAL_SOURCES = Object.keys(localData);
 
 /* ---------- NASA GIBS imagery ----------
    Google's tile terms forbid use outside Google's own APIs and Esri's
@@ -690,32 +685,47 @@ map.on("load", async () => {
   addLocalLayers();
 });
 
-/* Basemap upgrade: applied only if the style really loads; setStyle
-   replaces everything, so the local layers are re-added afterwards. There
-   is no single reliable event for "new style fully loaded" (styledata can
-   fire before isStyleLoaded() turns true), so reapply runs on styledata
-   AND on a bounded timer, stopping as soon as the local sources exist. */
-(async () => {
+/* Basemap upgrade: applied only if the style really loads. setStyle replaces
+   everything the page added, so the local layers have to be rebuilt after it,
+   and there is no single reliable event for "the new style is fully loaded"
+   (styledata can fire before isStyleLoaded() turns true). reapply therefore
+   runs on styledata AND on a bounded timer.
+
+   It used to stop as soon as every local source existed, which was a race it
+   lost intermittently: the fetches in map.on("load") can finish BEFORE the
+   basemap fetch returns, in which case addLocalLayers() has already built all
+   six sources, the stop condition is true on the next tick, the listener is
+   removed - and then setStyle arrives and wipes the lot with nothing left
+   watching. The condition cannot be "the layers exist now", because the whole
+   point is that they are about to stop existing. So reapply is registered
+   before anything can replace the style, and keeps running for the bounded
+   window regardless; addLocalLayers() is idempotent, so a tick that finds
+   everything in place costs a dozen getLayer() calls. */
+(() => {
   const reapply = () => {
     if (!map.isStyleLoaded() || !localData.desa) return;
     addLocalLayers();
-    if (LOCAL_SOURCES.every((s) => map.getSource(s))) {
-      clearInterval(reapplyTimer);
-      map.off("styledata", reapply);
-    }
   };
   const reapplyTimer = setInterval(reapply, 400);
-  try {
-    const r = await fetch(BASEMAP_STYLE_URL);
-    if (!r.ok) throw new Error("HTTP " + r.status);
-    const style = await r.json();
-    map.on("styledata", reapply);
-    map.setStyle(style);
-    reapply();
-    setTimeout(() => clearInterval(reapplyTimer), 120000);
-  } catch (e) {
+  map.on("styledata", reapply);
+  const stop = () => {
     clearInterval(reapplyTimer);
-    dataError("basemap", "Basemap (OpenFreeMap) unavailable — showing local " +
-      "data on a plain background. " + e.message);
-  }
+    map.off("styledata", reapply);
+  };
+  (async () => {
+    try {
+      const r = await fetch(BASEMAP_STYLE_URL);
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      const style = await r.json();
+      map.setStyle(style);
+      reapply();
+      // Long enough to outlast the style swap and the tiles behind it on a
+      // slow connection; the timer is a no-op once the layers are back.
+      setTimeout(stop, 120000);
+    } catch (e) {
+      stop();
+      dataError("basemap", "Basemap (OpenFreeMap) unavailable — showing " +
+        "local data on a plain background. " + e.message);
+    }
+  })();
 })();

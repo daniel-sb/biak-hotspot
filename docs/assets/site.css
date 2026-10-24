@@ -4,17 +4,22 @@
 
    The palette is read off the project's own false-colour composite rather
    than chosen from a swatch: karst is Biak's raised coral, canopy the standing
-   forest, scar the burn, ember the SWIR response, sea Cenderawasih Bay. */
+   forest, scar the burn, ember the SWIR response, sea Cenderawasih Bay.
+
+   Karst is a cool grey-green, deliberately not the warm cream that every
+   other page of this kind reaches for. Weathered coral under canopy light is
+   grey; a latte background would be a swatch choice wearing the island's
+   name. The hairline rule is cooled to match, or it reads warm against it. */
 :root {
-  --karst: #ede9e1;
-  --paper: #f7f5f0;
+  --karst: #e7e9e4;
+  --paper: #f4f6f3;
   --ink: #17201f;
   --ink-soft: #5c6460;
   --canopy: #2f5d53;
   --scar: #a3341f;
   --ember: #c96a2e;
   --sea: #7fa9b8;
-  --rule: #d5cfc3;
+  --rule: #d2d6cf;
 }
 
 /* Self-hosted so a reader in Biak fetches two files from this origin instead
